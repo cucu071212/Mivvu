@@ -25,6 +25,7 @@ import {
 import { buildRankedRecommendations } from "@/lib/recommendation-page-integration";
 import { validateContext } from "@/lib/validate-context";
 import { WhatIfSimulator } from "@/components/WhatIfSimulator";
+import { TerminalSchematic } from "@/components/TerminalSchematic";
 
 const GATE_LANDMARKS: GateLandmark[] = [
   "D1",
@@ -316,6 +317,56 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
           })}
         </ul>
       </section>
+
+      <details className="gw-surface-card group">
+        <summary
+          className="gw-focus-ring cursor-pointer list-none px-4 py-4 text-base font-semibold text-card-foreground marker:content-none [&::-webkit-details-marker]:hidden"
+        >
+          <span className="flex min-h-11 items-center justify-between gap-2">
+            <span>D Gates schematic (full directory)</span>
+            <span
+              className="text-sm font-normal text-muted-foreground group-open:hidden"
+              aria-hidden="true"
+            >
+              Expand
+            </span>
+            <span
+              className="hidden text-sm font-normal text-muted-foreground group-open:inline"
+              aria-hidden="true"
+            >
+              Collapse
+            </span>
+          </span>
+        </summary>
+        <div className="flex flex-col gap-3 border-t border-border px-4 pb-4 pt-3">
+          <p className="text-sm text-muted-foreground" role="note">
+            Orientation only — lists all verified facilities from source records.
+            This directory is{" "}
+            <strong className="font-medium text-card-foreground">
+              not filtered
+            </strong>{" "}
+            by search or category above and is{" "}
+            <strong className="font-medium text-card-foreground">
+              not
+            </strong>{" "}
+            the ranked recommendation list.
+          </p>
+          {demoEstimatesEnabled ? (
+            <p className="text-sm text-muted-foreground" role="note">
+              Demo wait/activity estimates affect recommendation cards only.
+              Schematic timing badges still reflect official dataset confidence.
+            </p>
+          ) : null}
+          {!datasetValid ? (
+            <p className="text-sm text-destructive" role="alert">
+              Recommendations are disabled because facility validation failed.
+              The schematic may still show valid rows alongside its own
+              validation notice.
+            </p>
+          ) : null}
+          <TerminalSchematic className="border-0 bg-transparent p-0 shadow-none sm:p-0" />
+        </div>
+      </details>
 
       {contextResult.context ? (
         <WhatIfSimulator
