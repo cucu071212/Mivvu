@@ -24,6 +24,7 @@ import {
 } from "@/lib/browse-integration";
 import { buildRankedRecommendations } from "@/lib/recommendation-page-integration";
 import { validateContext } from "@/lib/validate-context";
+import { WhatIfSimulator } from "@/components/WhatIfSimulator";
 
 const GATE_LANDMARKS: GateLandmark[] = [
   "D1",
@@ -55,6 +56,10 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
   const [bufferInput, setBufferInput] = useState(String(DEFAULT_BUFFER_MINUTES));
   const [gateLandmark, setGateLandmark] = useState<GateLandmark>("D1");
   const [demoEstimatesEnabled, setDemoEstimatesEnabled] = useState(false);
+  const [scenarioMinutesInput, setScenarioMinutesInput] = useState(
+    String(DEFAULT_MINUTES_UNTIL_BOARDING),
+  );
+  const [scenarioQueueInput, setScenarioQueueInput] = useState("0");
   const [filter, setFilter] = useState<AmenityFilterValue>({
     text: "",
     category: "",
@@ -311,6 +316,21 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
           })}
         </ul>
       </section>
+
+      {contextResult.context ? (
+        <WhatIfSimulator
+          enabled={datasetValid && contextValid}
+          baselineContext={contextResult.context}
+          facilities={facilities}
+          filter={filterQuery}
+          useDemoTimeEstimates={demoEstimatesEnabled}
+          scenarioMinutesInput={scenarioMinutesInput}
+          scenarioQueueInput={scenarioQueueInput}
+          bufferInput={bufferInput}
+          onScenarioMinutesChange={setScenarioMinutesInput}
+          onScenarioQueueChange={setScenarioQueueInput}
+        />
+      ) : null}
     </div>
   );
 }
