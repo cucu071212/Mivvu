@@ -24,7 +24,7 @@ Build and extend GateWise per `PLAN.md`. `PLAN.md` defines product requirements,
 - **GW-F1:** `src/lib/resolve-facility-durations.ts`, `src/lib/validate-duration-overrides.ts` and tests — per `docs/GW-F-CONTRACT.md`.
 - **GW-F2:** `src/lib/boarding-countdown.ts` and tests.
 - **GW-E (later):** pure two-stop calculation module(s) and tests — only after GW-F3 + **G-E**.
-- Independent feature branches (e.g. `feature/gw-f-logic`). **No** React/UI edits, **no** merges to `main`, **no** `facilities.json` changes.
+- Independent feature branches (e.g. `feature/gw-f-logic`) **from approved `feature/gw-f-contracts`** after **G-F0** (contract approval ≠ `main` merge). **No** React/UI edits, **no** merges to `main`, **no** `facilities.json` changes.
 
 ### Teammate Codex — optional QA & submission support
 - Independent QA, regression reports, `docs/DEMO_SCRIPT.md`, Devpost/submission copy, data-provenance notes.

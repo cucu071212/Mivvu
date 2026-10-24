@@ -1,8 +1,10 @@
 # GW-F — Technical contract (F1, F2, F3 integration)
 
-**Status:** Proposed — documentation only until human Engineering Lead approves and authorizes implementation tasks.  
-**Baseline:** `main` @ `665e5e85a9b30b8114c678c7097a3b9ce5e9e805`, production https://gate-wise-iota.vercel.app  
-**Does not modify** existing `recommendFacilities`, `UserContext`, or `facilities.json` until a separate integration task (GW-F3) updates lead-owned contracts.
+**Status:** **Approved** (lead decisions D-F1–D-F4 recorded below).  
+**Contract branch:** `feature/gw-f-contracts` — **G-F0** = lead approval of this branch as the shared contract reference; **not** a mandatory merge to `main` (preserve production MVP @ `665e5e8` until a separate release merge).  
+**Baseline MVP:** `main` @ `665e5e85a9b30b8114c678c7097a3b9ce5e9e805`, https://gate-wise-iota.vercel.app  
+**Branching rule:** All GW-F implementation branches (e.g. `feature/gw-f-logic`, lead integration branches) **start from** the approved `feature/gw-f-contracts` tip (or a descendant), not from stale docs on `main`.  
+**Frozen:** `recommendFacilities` signature unchanged; `facilities.json` never mutated by user input.
 
 ---
 
@@ -111,7 +113,7 @@ For **queue** and **activity** separately:
 
 - Do **not** change `Facility.locationConfidence`, `timeConfidence`, `sourceUrl`, or schematic dataset rows when users override durations.
 - Recommendation UI may show resolved source badges (`user_override` vs `demo_estimate` vs official/unknown) on **cards only**; schematic timing badges remain dataset-backed.
-- User overrides are **in-memory / session** unless a future task explicitly adds persistence (out of GW-F scope).
+- User overrides live in **React in-memory state only** (**D-F1**). No `sessionStorage`, `localStorage`, or other browser persistence.
 
 ### 3.5 F1 minimum tests
 
@@ -193,7 +195,7 @@ export function clearCountdown(fallbackMinutes: number): Extract<BoardingCountdo
 - **Device clock:** All ticks use `Date.now()` in the browser; no airline/live flight APIs; copy must state “local clock estimate only.”
 - **Midnight / DST:** Use absolute `Date` math (UTC internally after parse); UI collects local date + time consistent with `parseBoardingStartAt` contract tests.
 - **Zero:** At exact boarding start, `minutesUntilBoarding = 0`, `boardingStarted = true`.
-- **Invalid times:** Empty, malformed, or unreasonably far past/future (optional cap, e.g. > 48h — lead may tighten in UI validation) → `invalid` tick; recommendations use existing `validateContext` failure path.
+- **Invalid times:** Empty, malformed, in the past beyond “boarding started” handling, or boarding start **more than 24 hours** after `now` (**D-F2**) → `invalid` tick; recommendations use existing `validateContext` failure path.
 - **React:** Lead owns `setInterval` / `requestAnimationFrame` throttle (e.g. 1s), cleanup on unmount, pause stops timer, resume restarts.
 
 ### 4.4 F2 minimum tests
@@ -204,6 +206,7 @@ export function clearCountdown(fallbackMinutes: number): Extract<BoardingCountdo
 - Pause 10 min remaining, advance clock 5 min while paused → still 10.
 - Resume → remaining decreases with clock.
 - Clear → manual mode with stored minutes.
+- Boarding start 24h + 1 min in future → invalid (D-F2).
 
 ---
 
@@ -211,15 +214,17 @@ export function clearCountdown(fallbackMinutes: number): Extract<BoardingCountdo
 
 ### 5.1 Recommendations
 
-- Lead applies `resolveFacilityDurations` (or a thin wrapper) **before** `recommendFacilities`, producing effective queue/activity per facility without mutating `facilities.json`.
-- Preferred pattern: extend recommendation input via a **new optional parameter** or wrapper function agreed at GW-F3 (e.g. `recommendFacilitiesWithResolvedDurations`) to avoid silent behavior changes mid-refactor.
-- Countdown mode: on each tick, update `UserContext.minutesUntilBoarding` from `minutesUntilBoardingFromTimestamp`; re-run recommend memo when minutes change (throttled).
+- **D-F4:** Use a **separate wrapper**; **do not** change the `recommendFacilities` signature.
+- Lead-owned export (GW-F3), e.g. `recommendFacilitiesWithPersonalization(context, facilities, travelTimes, options)` where `options` includes `overrides`, `useDemoTimeEstimates`, and demo minute constants. Internally: map facilities through `resolveFacilityDurations`, build **ephemeral** facility copies with resolved `waitMinutes` / `activityMinutes` for the engine call only; never write `facilities.json`.
+- Wrapper delegates to existing `recommendFacilities(context, effectiveFacilities, travelTimes)`.
+- Countdown mode: on each tick, update **baseline** `UserContext.minutesUntilBoarding` from `minutesUntilBoardingFromTimestamp`; re-run recommend memo when minutes change (throttled).
 
-### 5.2 What-if consistency
+### 5.2 What-if consistency (**D-F3**)
 
-- **Baseline** uses baseline context: gate zone, buffer, security, **override map**, **countdown or manual minutes**, and `useDemoTimeEstimates` at baseline.
-- **Scenario** changes only What-if controls (`minutesUntilBoarding` delta and/or `queueAdjustmentMinutes`) unless lead adds explicit scenario override UI (not in F1 scope).
-- When countdown is **running**, both baseline and scenario use the **same** live `minutesUntilBoarding` at tick time; scenario minute slider applies **relative delta** to that live value or switches scenario to fixed minutes — **default:** scenario continues to use explicit scenario minutes field (existing behavior), baseline uses countdown when enabled. Lead documents chosen behavior in GW-F3-002 acceptance.
+- **Baseline** uses baseline context: gate zone, buffer, security, **override map**, **live countdown or manual minutes** (when countdown enabled, baseline minutes tick with device clock), and `useDemoTimeEstimates`.
+- **Scenario** keeps the **existing fixed scenario minutes** control (unchanged product behavior). Live countdown does **not** drive scenario minutes.
+- UI must **clearly label** that baseline may be clock-driven while scenario uses the fixed what-if minutes field.
+- Scenario continues to change only What-if controls (`scenario minutes` and/or `queueAdjustmentMinutes` per existing simulator).
 - Demo toggle affects **both** baseline and scenario (unchanged).
 
 ### 5.3 Regression invariants (must not break)
@@ -240,16 +245,16 @@ GW-E (two-stop planner) **must not** start until:
 
 ---
 
-## 7. Open decisions (lead approval)
+## 7. Lead decisions (final)
 
-| ID | Question |
+| ID | Decision |
 | --- | --- |
-| **D-F1** | Persist overrides in `sessionStorage` for refresh, or session-only? |
-| **D-F2** | Maximum future boarding datetime (e.g. 24h vs 7d)? |
-| **D-F3** | What-if scenario minutes: fixed field vs “delta from live countdown”? |
-| **D-F4** | GW-F3: extend `recommendFacilities` signature vs wrapper export? |
+| **D-F1** | Overrides in **React in-memory state only** — no browser persistence. |
+| **D-F2** | Boarding start must be ≤ **24 hours** in the future (from `now`); reject beyond that. |
+| **D-F3** | **Fixed What-if scenario minutes** preserved. Live countdown updates **baseline only**. UI labels the distinction. |
+| **D-F4** | **`recommendFacilitiesWithPersonalization`** (or equivalent name) **wrapper** — **`recommendFacilities` signature unchanged**. |
 
 ---
 
-**Document version:** 1.0  
+**Document version:** 1.1  
 **Aligned with:** `PLAN.md` post-MVP section, `docs/IMPLEMENTATION_PLAN.md` GW-F tasks, `AGENTS.md` ownership.

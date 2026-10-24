@@ -33,7 +33,7 @@ Technical contract: **`docs/GW-F-CONTRACT.md`**. Implementation tasks: **`docs/I
 | **GW-F3** | Wire F1+F2 into recommendations & What-if; full regression | Lead Cursor | **G-F3** — acceptance before any GW-E work |
 | **GW-E** | Two-stop time-budget planner | Support (logic) + Lead (UI) | **G-E** after **G-F3** only |
 
-**Contract docs branch:** `feature/gw-f-contracts` (planning); logic work expected on `feature/gw-f-logic` after **G-F0** contract approval.
+**Contract branch (G-F0):** `feature/gw-f-contracts` — approved shared contract; **not** merged to `main` yet (avoid unnecessary production deploy). **`feature/gw-f-logic`** and other GW-F branches branch **from** this tip.
 
 ## Optional submission polish (non-blocking for GW-F)
 
@@ -46,11 +46,11 @@ Teammate Codex may execute these in parallel; **must not block** GW-F1/F2.
 
 ## Suggested priority order
 
-1. **Merge** `feature/gw-f-contracts` → `main` when lead approves (documentation only).
-2. **Authorize GW-F1-001** (Support) — duration override modules per contract.
-3. **Authorize GW-F2-001** (Support) — countdown module (can follow F1 or parallel after contract freeze).
-4. **Authorize GW-F3-*** (Lead) — integration + regression on feature branch → merge → deploy.
-5. **GW-E** only if **G-F3** + **G-E** explicit approval and submission timeline safe.
+1. **G-F0** — contract approved on `feature/gw-f-contracts` (no `main` merge required).
+2. **Authorize GW-F1-001** (Support) — branch `feature/gw-f-logic` from `feature/gw-f-contracts`.
+3. **Authorize GW-F2-001** (Support) — same base branch (parallel with F1 allowed).
+4. **Authorize GW-F3-*** (Lead) — integration branch from contract + logic merges; **main** merge/deploy only when lead releases integrated F3.
+5. **GW-E** only after **G-F3** + **G-E** explicit approval.
 
 ## Rollback strategy
 

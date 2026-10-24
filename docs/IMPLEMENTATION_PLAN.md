@@ -513,7 +513,7 @@ Decision needed from human Engineering Lead:
 
 | Gate | Entry criteria | Lead decision |
 | --- | --- | --- |
-| **G-F0** | `docs/GW-F-CONTRACT.md` + plan docs merged to `main` | Authorize Support **GW-F1-001** / **GW-F2-001** |
+| **G-F0** | Human lead **approves** shared contract on branch `feature/gw-f-contracts` (**no** required `main` merge or Vercel deploy) | Authorize Support **GW-F1-001** / **GW-F2-001**; all GW-F branches **base from** approved `feature/gw-f-contracts` |
 | **G-F1** | F1 modules + tests green on feature branch | Authorize lead integration subtasks or **GW-F2** if not started |
 | **G-F2** | F2 module + tests green | Authorize **GW-F3** |
 | **G-F3** | F1+F2 wired; `npm test`, `tsc`, `lint`, `build`; production smoke | Authorize **G-E** / **GW-E1** or defer E |
@@ -540,7 +540,7 @@ Decision needed from human Engineering Lead:
 ### GW-F2-001: Boarding countdown utilities (pure)
 
 **Owner:** Engineering Support Codex  
-**Depends on:** **G-F0** (may parallel **GW-F1-001** after contract merge)  
+**Depends on:** **G-F0** (may parallel **GW-F1-001** after contract branch approval)  
 **Files:**
 - Create: `src/lib/boarding-countdown.ts`, `src/lib/boarding-countdown.test.ts`
 
@@ -552,9 +552,9 @@ Decision needed from human Engineering Lead:
 
 **Owner:** Lead  
 **Depends on:** **G-F1**, GW-F1-001 merged or cherry-picked  
-**Files:** `src/types/airport.ts` (new types), `src/lib/recommend.ts` or documented wrapper, `GateWiseHome.tsx` / recommendation path  
+**Files:** `src/types/airport.ts` (new types), new `recommendFacilitiesWithPersonalization` wrapper ( **`recommendFacilities` signature unchanged** per D-F4), `GateWiseHome.tsx` / recommendation path  
 **Tests:** `npm test`, `recommend.test.ts` green; new integration tests as needed  
-**Acceptance:** Overrides never mutate `facilities.json`; schematic badges unchanged; demo/user/official precedence per contract.
+**Acceptance:** Overrides never mutate `facilities.json`; schematic badges unchanged; demo/user/official precedence per contract; overrides in React state only (D-F1).
 
 ### GW-F3-002: Countdown UI + context wiring
 
@@ -562,7 +562,7 @@ Decision needed from human Engineering Lead:
 **Depends on:** **G-F2**, GW-F2-001  
 **Files:** `GateWiseHome.tsx`, context validation integration, cleanup on unmount  
 **Tests:** Manual + unit hooks; `validateContext` paths for invalid countdown  
-**Acceptance:** Device-clock copy; pause/resume/clear; no live-flight claims.
+**Acceptance:** Device-clock copy; pause/resume/clear; no live-flight claims; boarding start within 24h (D-F2); What-if scenario minutes fixed while baseline may use countdown — labeled in UI (D-F3).
 
 ### GW-F3-003: What-if + regression gate
 
@@ -593,4 +593,4 @@ Decision needed from human Engineering Lead:
 
 **Document version:** 1.2  
 **Aligned with:** `PLAN.md` v1.3, `AGENTS.md`, `docs/GW-F-CONTRACT.md`  
-**Next step (human lead):** Merge `feature/gw-f-contracts` if approved; authorize **G-F0** → **GW-F1-001** or **GW-F2-001**.
+**Next step (human lead):** **G-F0** approved on `feature/gw-f-contracts` — authorize **GW-F1-001** / **GW-F2-001** from that branch; merge to `main` only when releasing integrated GW-F3 (separate authorization).

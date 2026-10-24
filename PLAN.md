@@ -218,3 +218,5 @@ Execute in order; each phase requires an authorized task ID in `docs/IMPLEMENTAT
 | **E** | GW-E | **Two-stop planner** — only after **GW-F3** acceptance and separate **G-E** lead authorization. Same pure-engine rules as §4 E; not real-world route optimization. |
 
 **Agent model:** Engineering Lead Cursor (UI + integration + `main`); Engineering Support Codex (F1/F2/E pure modules + tests); Teammate Codex optional QA/submission — must not block F track. Details in `AGENTS.md`.
+
+**G-F0:** Approved contract lives on `feature/gw-f-contracts`; GW-F work branches from it without requiring an interim `main` merge. Production MVP on `main` @ `665e5e8` stays untouched until a deliberate GW-F3 release merge.
