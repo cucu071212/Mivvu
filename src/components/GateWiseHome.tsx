@@ -1,7 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import type { Facility, GateLandmark } from "@/types/airport";
+import { useMemo, useState } from "react";
+import type {
+  Facility,
+  FacilityValidationError,
+  GateLandmark,
+} from "@/types/airport";
 import {
   DEFAULT_BUFFER_MINUTES,
   SUPPORTED_AIRPORT_IATA,
@@ -10,11 +14,12 @@ import {
 } from "@/types/airport";
 import { AmenityFilter, type AmenityFilterValue } from "@/components/AmenityFilter";
 import { FacilityBrowseCard } from "@/components/FacilityBrowseCard";
-import { demoFacilities } from "@/data/fixtures/demo-facilities";
 import {
-  DEFAULT_DEMO_GATE_LANDMARK,
-  DEFAULT_DEMO_MINUTES_UNTIL_BOARDING,
-} from "@/data/fixtures/demo-context";
+  buildFacilityFilterQuery,
+  buildFlightContextInput,
+} from "@/lib/browse-integration";
+import { filterFacilities } from "@/lib/filter-facilities";
+import { validateContext } from "@/lib/validate-context";
 
 const GATE_LANDMARKS: GateLandmark[] = [
   "D1",
@@ -25,97 +30,55 @@ const GATE_LANDMARKS: GateLandmark[] = [
   "D16",
 ];
 
-type FieldErrors = {
-  minutesUntilBoarding?: string;
-  bufferMinutes?: string;
+const DEFAULT_MINUTES_UNTIL_BOARDING = 50;
+
+export type GateWiseHomeProps = {
+  facilities: Facility[];
+  datasetErrors: FacilityValidationError[];
 };
 
-function parseNonNegativeInt(raw: string): number | null {
-  const trimmed = raw.trim();
-  if (trimmed === "") {
-    return null;
-  }
-  if (!/^-?\d+$/.test(trimmed)) {
-    return null;
-  }
-  const value = Number.parseInt(trimmed, 10);
-  if (!Number.isFinite(value) || value < 0) {
-    return null;
-  }
-  return value;
+function contextErrorMessage(
+  field: "minutesUntilBoarding" | "bufferMinutes",
+  errors: { field: string; message: string }[],
+): string | undefined {
+  return errors.find((error) => error.field === field)?.message;
 }
 
-function filterFacilitiesClient(
-  facilities: Facility[],
-  query: AmenityFilterValue,
-): Facility[] {
-  const text = query.text.trim().toLowerCase();
-  const filtered = facilities.filter((facility) => {
-    if (query.category && facility.category !== query.category) {
-      return false;
-    }
-    if (text && !facility.name.toLowerCase().includes(text)) {
-      const haystack = `${facility.locationDescription ?? ""} ${facility.nearestGateLandmark ?? ""}`.toLowerCase();
-      if (!haystack.includes(text)) {
-        return false;
-      }
-    }
-    return true;
-  });
-
-  return [...filtered].sort((a, b) =>
-    a.name.localeCompare(b.name, "en-US", { sensitivity: "base" }),
-  );
-}
-
-export function GateWiseHome() {
-  const [fixturesReady, setFixturesReady] = useState(false);
+export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
   const [minutesInput, setMinutesInput] = useState(
-    String(DEFAULT_DEMO_MINUTES_UNTIL_BOARDING),
+    String(DEFAULT_MINUTES_UNTIL_BOARDING),
   );
   const [bufferInput, setBufferInput] = useState(String(DEFAULT_BUFFER_MINUTES));
-  const [gateLandmark, setGateLandmark] = useState<GateLandmark>(
-    DEFAULT_DEMO_GATE_LANDMARK,
-  );
+  const [gateLandmark, setGateLandmark] = useState<GateLandmark>("D1");
   const [filter, setFilter] = useState<AmenityFilterValue>({
     text: "",
     category: "",
   });
 
-  useEffect(() => {
-    const timer = window.setTimeout(() => setFixturesReady(true), 120);
-    return () => window.clearTimeout(timer);
-  }, []);
+  const datasetValid = datasetErrors.length === 0;
 
-  const validation = useMemo(() => {
-    const nextErrors: FieldErrors = {};
-    const minutes = parseNonNegativeInt(minutesInput);
-    const buffer = parseNonNegativeInt(bufferInput);
+  const contextResult = useMemo(
+    () =>
+      validateContext(buildFlightContextInput(minutesInput, bufferInput)),
+    [minutesInput, bufferInput],
+  );
 
-    if (minutes === null) {
-      nextErrors.minutesUntilBoarding =
-        "Enter whole minutes until boarding starts (0 or more).";
-    }
-    if (buffer === null) {
-      nextErrors.bufferMinutes =
-        "Enter a whole-number safety buffer (0 or more).";
-    }
-
-    return {
-      valid: Object.keys(nextErrors).length === 0,
-      errors: nextErrors,
-    };
-  }, [minutesInput, bufferInput]);
-
-  const contextValid = validation.valid;
-  const errors = validation.errors;
+  const contextValid = contextResult.context !== null;
+  const minutesError = contextErrorMessage(
+    "minutesUntilBoarding",
+    contextResult.errors,
+  );
+  const bufferError = contextErrorMessage("bufferMinutes", contextResult.errors);
 
   const visibleFacilities = useMemo(() => {
-    if (!fixturesReady || !contextValid) {
+    if (!datasetValid || !contextValid) {
       return [];
     }
-    return filterFacilitiesClient(demoFacilities, filter);
-  }, [fixturesReady, contextValid, filter]);
+    return filterFacilities(
+      facilities,
+      buildFacilityFilterQuery(filter.text, filter.category),
+    );
+  }, [datasetValid, contextValid, facilities, filter]);
 
   return (
     <div className="mx-auto flex min-h-full max-w-2xl flex-col gap-6 px-4 py-8 pb-16 sm:px-6">
@@ -128,10 +91,21 @@ export function GateWiseHome() {
           GateWise
         </h1>
         <p className="text-base text-muted-foreground">
-          Boarding-aware amenity browse (fixture data). Recommendations arrive in
-          a later milestone.
+          Browse verified Terminal 2 D Gates amenities. Boarding-time
+          recommendations arrive in a later milestone.
         </p>
       </header>
+
+      {!datasetValid ? (
+        <p
+          className="gw-surface-card border-destructive/40 p-4 text-sm text-destructive"
+          role="alert"
+        >
+          Facility data failed validation ({datasetErrors.length} issue
+          {datasetErrors.length === 1 ? "" : "s"}). Browsing is unavailable until
+          the dataset is repaired.
+        </p>
+      ) : null}
 
       <section
         className="gw-surface-card flex flex-col gap-4 p-4"
@@ -173,6 +147,9 @@ export function GateWiseHome() {
                 </option>
               ))}
             </select>
+            <span className="text-xs font-normal text-muted-foreground">
+              Landmark for orientation only; not used for filtering yet.
+            </span>
           </label>
 
           <label className="flex flex-col gap-1.5 text-sm font-medium text-card-foreground">
@@ -183,14 +160,12 @@ export function GateWiseHome() {
               className="gw-input gw-focus-ring"
               value={minutesInput}
               onChange={(event) => setMinutesInput(event.target.value)}
-              aria-invalid={Boolean(errors.minutesUntilBoarding)}
-              aria-describedby={
-                errors.minutesUntilBoarding ? "minutes-error" : undefined
-              }
+              aria-invalid={Boolean(minutesError)}
+              aria-describedby={minutesError ? "minutes-error" : undefined}
             />
-            {errors.minutesUntilBoarding ? (
+            {minutesError ? (
               <span id="minutes-error" className="text-sm text-destructive" role="alert">
-                {errors.minutesUntilBoarding}
+                {minutesError}
               </span>
             ) : null}
           </label>
@@ -203,25 +178,23 @@ export function GateWiseHome() {
               className="gw-input gw-focus-ring"
               value={bufferInput}
               onChange={(event) => setBufferInput(event.target.value)}
-              aria-invalid={Boolean(errors.bufferMinutes)}
-              aria-describedby={
-                errors.bufferMinutes ? "buffer-error" : undefined
-              }
+              aria-invalid={Boolean(bufferError)}
+              aria-describedby={bufferError ? "buffer-error" : undefined}
             />
-            {errors.bufferMinutes ? (
+            {bufferError ? (
               <span id="buffer-error" className="text-sm text-destructive" role="alert">
-                {errors.bufferMinutes}
+                {bufferError}
               </span>
             ) : null}
           </label>
-
         </div>
       </section>
 
       <AmenityFilter
         value={filter}
         onChange={setFilter}
-        resultCount={contextValid && fixturesReady ? visibleFacilities.length : 0}
+        resultCount={datasetValid && contextValid ? visibleFacilities.length : 0}
+        disabled={!datasetValid || !contextValid}
       />
 
       <section aria-labelledby="browse-heading" className="flex flex-col gap-3">
@@ -229,22 +202,20 @@ export function GateWiseHome() {
           Places in D Gates
         </h2>
 
-        {!fixturesReady ? (
-          <p className="gw-surface-card p-4 text-sm text-muted-foreground">
-            Loading fixture amenities…
-          </p>
-        ) : null}
-
-        {fixturesReady && !contextValid ? (
-          <p className="gw-surface-card border-destructive/40 p-4 text-sm text-destructive" role="alert">
+        {datasetValid && !contextValid ? (
+          <p
+            className="gw-surface-card border-destructive/40 p-4 text-sm text-destructive"
+            role="alert"
+          >
             Fix flight context errors above to browse amenities.
           </p>
         ) : null}
 
-        {fixturesReady && contextValid && visibleFacilities.length === 0 ? (
+        {datasetValid && contextValid && visibleFacilities.length === 0 ? (
           <p className="gw-surface-card p-4 text-sm text-muted-foreground">
-            No fixtures match your filters. Try clearing search or choosing another
-            category.
+            No places match your filters. Search matches{" "}
+            <strong className="font-medium text-foreground">facility names only</strong>
+            — try another name or clear the category filter.
           </p>
         ) : null}
 

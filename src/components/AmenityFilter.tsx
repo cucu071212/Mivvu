@@ -11,6 +11,7 @@ export type AmenityFilterProps = {
   value: AmenityFilterValue;
   onChange: (next: AmenityFilterValue) => void;
   resultCount: number;
+  disabled?: boolean;
 };
 
 const CATEGORIES: { value: FacilityCategory | ""; label: string }[] = [
@@ -26,6 +27,7 @@ export function AmenityFilter({
   value,
   onChange,
   resultCount,
+  disabled = false,
 }: AmenityFilterProps) {
   return (
     <section
@@ -43,23 +45,28 @@ export function AmenityFilter({
 
       <div className="flex flex-col gap-3">
         <label className="flex flex-col gap-1.5 text-sm font-medium text-card-foreground">
-          Search by name
+          Search by facility name
           <input
             type="search"
-            className="gw-input gw-focus-ring"
-            placeholder="e.g. Peet's, Retail Street"
+            className="gw-input gw-focus-ring disabled:cursor-not-allowed disabled:opacity-60"
+            placeholder="Name only — e.g. Peet's, Napa, Brookstone"
             value={value.text}
             onChange={(event) =>
               onChange({ ...value, text: event.target.value })
             }
             autoComplete="off"
+            disabled={disabled}
+            aria-disabled={disabled}
           />
+          <span className="text-xs font-normal text-muted-foreground">
+            Does not search location descriptions or gate landmarks.
+          </span>
         </label>
 
         <label className="flex flex-col gap-1.5 text-sm font-medium text-card-foreground">
           Category
           <select
-            className="gw-input gw-focus-ring"
+            className="gw-input gw-focus-ring disabled:cursor-not-allowed disabled:opacity-60"
             value={value.category}
             onChange={(event) =>
               onChange({
@@ -67,6 +74,8 @@ export function AmenityFilter({
                 category: event.target.value as FacilityCategory | "",
               })
             }
+            disabled={disabled}
+            aria-disabled={disabled}
           >
             {CATEGORIES.map((option) => (
               <option key={option.label} value={option.value}>
