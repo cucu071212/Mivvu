@@ -12,13 +12,17 @@ import {
   SUPPORTED_BOARDING_AREA_LABEL,
   SUPPORTED_TERMINAL_LABEL,
 } from "@/types/airport";
+import {
+  productionTravelMatrixMetadata,
+  productionTravelMinutes,
+} from "@/data/travel-times";
+import { AmenityCard } from "@/components/AmenityCard";
 import { AmenityFilter, type AmenityFilterValue } from "@/components/AmenityFilter";
-import { FacilityBrowseCard } from "@/components/FacilityBrowseCard";
 import {
   buildFacilityFilterQuery,
   buildFlightContextInput,
 } from "@/lib/browse-integration";
-import { filterFacilities } from "@/lib/filter-facilities";
+import { buildRankedRecommendations } from "@/lib/recommendation-page-integration";
 import { validateContext } from "@/lib/validate-context";
 
 const GATE_LANDMARKS: GateLandmark[] = [
@@ -50,6 +54,7 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
   );
   const [bufferInput, setBufferInput] = useState(String(DEFAULT_BUFFER_MINUTES));
   const [gateLandmark, setGateLandmark] = useState<GateLandmark>("D1");
+  const [demoEstimatesEnabled, setDemoEstimatesEnabled] = useState(false);
   const [filter, setFilter] = useState<AmenityFilterValue>({
     text: "",
     category: "",
@@ -70,15 +75,35 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
   );
   const bufferError = contextErrorMessage("bufferMinutes", contextResult.errors);
 
-  const visibleFacilities = useMemo(() => {
-    if (!datasetValid || !contextValid) {
+  const filterQuery = useMemo(
+    () => buildFacilityFilterQuery(filter.text, filter.category),
+    [filter],
+  );
+
+  const recommendations = useMemo(() => {
+    if (!datasetValid || !contextValid || !contextResult.context) {
       return [];
     }
-    return filterFacilities(
+    return buildRankedRecommendations({
+      context: contextResult.context,
       facilities,
-      buildFacilityFilterQuery(filter.text, filter.category),
-    );
-  }, [datasetValid, contextValid, facilities, filter]);
+      filter: filterQuery,
+      travelTimes: productionTravelMinutes,
+      useDemoTimeEstimates: demoEstimatesEnabled,
+    });
+  }, [
+    datasetValid,
+    contextValid,
+    contextResult.context,
+    facilities,
+    filterQuery,
+    demoEstimatesEnabled,
+  ]);
+
+  const facilityById = useMemo(
+    () => new Map(facilities.map((facility) => [facility.id, facility])),
+    [facilities],
+  );
 
   return (
     <div className="mx-auto flex min-h-full max-w-2xl flex-col gap-6 px-4 py-8 pb-16 sm:px-6">
@@ -91,8 +116,9 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
           GateWise
         </h1>
         <p className="text-base text-muted-foreground">
-          Browse verified Terminal 2 D Gates amenities. Boarding-time
-          recommendations arrive in a later milestone.
+          Boarding-start recommendations for verified Terminal 2 D Gates
+          amenities. Status labels describe the in-app time model only — not a
+          guarantee you will board on time.
         </p>
       </header>
 
@@ -102,8 +128,8 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
           role="alert"
         >
           Facility data failed validation ({datasetErrors.length} issue
-          {datasetErrors.length === 1 ? "" : "s"}). Browsing is unavailable until
-          the dataset is repaired.
+          {datasetErrors.length === 1 ? "" : "s"}). Recommendations are unavailable
+          until the dataset is repaired.
         </p>
       ) : null}
 
@@ -148,7 +174,7 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
               ))}
             </select>
             <span className="text-xs font-normal text-muted-foreground">
-              Landmark for orientation only; not used for filtering yet.
+              Landmark for orientation only; not used in the time model yet.
             </span>
           </label>
 
@@ -187,31 +213,80 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
               </span>
             ) : null}
           </label>
+
+          <div className="flex flex-col gap-2 sm:col-span-2">
+            <label className="flex min-h-11 cursor-pointer items-start gap-3 rounded-md border border-border bg-muted/30 p-3 gw-focus-ring">
+              <input
+                type="checkbox"
+                className="mt-1 size-4 shrink-0 accent-primary"
+                checked={demoEstimatesEnabled}
+                onChange={(event) => setDemoEstimatesEnabled(event.target.checked)}
+                aria-describedby="demo-estimates-help"
+              />
+              <span className="flex flex-col gap-1 text-sm">
+                <span className="font-semibold text-card-foreground">
+                  Demo estimates for wait &amp; activity times
+                </span>
+                <span id="demo-estimates-help" className="text-muted-foreground">
+                  Off (default): official records keep unknown queue/activity
+                  durations. On: temporary in-memory demo values (8 min queue, 10
+                  min activity) labeled{" "}
+                  <strong className="font-medium text-card-foreground">
+                    demo_estimate
+                  </strong>
+                  . Does not change facilities.json.
+                </span>
+              </span>
+            </label>
+            <p className="text-xs text-muted-foreground" role="note">
+              {productionTravelMatrixMetadata.disclaimer}
+            </p>
+            {demoEstimatesEnabled ? (
+              <p
+                className="rounded-md border border-[var(--gw-status-tight-border)] bg-[var(--gw-status-tight-bg)] p-3 text-sm text-[var(--gw-status-tight-fg)]"
+                role="status"
+              >
+                Demo mode is on: queue, activity, and D→D walk legs use labeled
+                demo estimates so you can explore feasible / tight / over-budget
+                outcomes. These are simulated scenarios, not measured SFO times.
+              </p>
+            ) : null}
+          </div>
         </div>
       </section>
 
       <AmenityFilter
         value={filter}
         onChange={setFilter}
-        resultCount={datasetValid && contextValid ? visibleFacilities.length : 0}
+        resultCount={datasetValid && contextValid ? recommendations.length : 0}
         disabled={!datasetValid || !contextValid}
       />
 
-      <section aria-labelledby="browse-heading" className="flex flex-col gap-3">
-        <h2 id="browse-heading" className="text-base font-semibold text-foreground">
-          Places in D Gates
+      <section
+        aria-labelledby="recommendations-heading"
+        className="flex flex-col gap-3"
+      >
+        <h2
+          id="recommendations-heading"
+          className="text-base font-semibold text-foreground"
+        >
+          Ranked recommendations
         </h2>
+        <p className="text-sm text-muted-foreground">
+          Sorted by model outcome (feasible → tight → over budget → unknown →
+          ineligible), then margin within each group.
+        </p>
 
         {datasetValid && !contextValid ? (
           <p
             className="gw-surface-card border-destructive/40 p-4 text-sm text-destructive"
             role="alert"
           >
-            Fix flight context errors above to browse amenities.
+            Fix flight context errors above to see recommendations.
           </p>
         ) : null}
 
-        {datasetValid && contextValid && visibleFacilities.length === 0 ? (
+        {datasetValid && contextValid && recommendations.length === 0 ? (
           <p className="gw-surface-card p-4 text-sm text-muted-foreground">
             No places match your filters. Search matches{" "}
             <strong className="font-medium text-foreground">facility names only</strong>
@@ -219,12 +294,21 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
           </p>
         ) : null}
 
-        <ul className="flex flex-col gap-3">
-          {visibleFacilities.map((facility) => (
-            <li key={facility.id}>
-              <FacilityBrowseCard facility={facility} />
-            </li>
-          ))}
+        <ul className="flex flex-col gap-4">
+          {recommendations.map((recommendation) => {
+            const facility = facilityById.get(recommendation.facilityId);
+            return (
+              <li key={recommendation.facilityId}>
+                <AmenityCard
+                  recommendation={recommendation}
+                  locationDescription={facility?.locationDescription}
+                  nearestGateLandmark={facility?.nearestGateLandmark}
+                  sourceUrl={facility?.sourceUrl}
+                  lastCheckedAt={facility?.lastCheckedAt}
+                />
+              </li>
+            );
+          })}
         </ul>
       </section>
     </div>
