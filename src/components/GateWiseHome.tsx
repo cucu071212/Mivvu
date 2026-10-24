@@ -320,6 +320,7 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
 
       <details className="gw-surface-card group">
         <summary
+          id="terminal-schematic-summary"
           className="gw-focus-ring cursor-pointer list-none px-4 py-4 text-base font-semibold text-card-foreground marker:content-none [&::-webkit-details-marker]:hidden"
         >
           <span className="flex min-h-11 items-center justify-between gap-2">
@@ -338,7 +339,8 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
             </span>
           </span>
         </summary>
-        <div className="flex flex-col gap-3 border-t border-border px-4 pb-4 pt-3">
+        <div className="border-t border-border px-4 pb-4 pt-3">
+          <div className="flex flex-col gap-3">
           <p className="text-sm text-muted-foreground" role="note">
             Orientation only — lists all verified facilities from source records.
             This directory is{" "}
@@ -365,6 +367,7 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
             </p>
           ) : null}
           <TerminalSchematic className="border-0 bg-transparent p-0 shadow-none sm:p-0" />
+          </div>
         </div>
       </details>
 

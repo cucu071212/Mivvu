@@ -348,4 +348,9 @@
   .gw-input:hover {
     border-color: var(--gw-primary);
   }
+
+  /* Preserve native <details> collapse when panel children use Tailwind display utilities */
+  details:not([open]) > :not(summary) {
+    display: none;
+  }
 }
