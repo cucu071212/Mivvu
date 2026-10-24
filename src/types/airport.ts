@@ -1,52 +1,56 @@
 /**
- * GateWise shared contracts (GW-001 freeze).
+ * GateWise shared contracts (GW-001).
+ *
+ * **Import convention**
+ * - Shared types, constants, and function *type* contracts: `@/types/airport`
+ * - Runtime implementations (later tasks):
+ *   - `recommendFacilities` → `@/lib/recommend`
+ *   - `filterFacilities` → `@/lib/filter-facilities`
+ *   - `validateFacilities` → `@/lib/validate-facilities`
+ *   - `validateContext` → `@/lib/validate-context`
  *
  * Production scope: SFO Terminal 2, D Gates only (`Zone = 'D'`).
- * Walking, queue, and activity times are never verified here unless a record
- * explicitly carries `demo_estimate` confidence; otherwise use `null`.
+ *
+ * **Confidence and durations**
+ * - `demo_estimate` marks an unverified modeling assumption (not a measured SFO time).
+ * - Genuinely unknown queue/activity/walk durations stay `null`; never substitute `0`.
+ * - A numeric minute field with `timeConfidence: 'unknown'` is invalid at validation.
  *
  * `minutesUntilBoarding` is minutes until **boarding starts**, not gate closure.
  *
- * Same-zone rule (PLAN §3): for production, `travelTimes['D']['D']` is a single
- * representative between-location estimate within D Gates (demo), applied for
- * outbound and return legs when gate and facility share zone `D`. It is not a
- * measured walk and does not encode gate-to-gate distance.
+ * Same-zone rule (PLAN §3): `travelTimes['D']['D']` is a representative within-D
+ * `demo_estimate` leg, used for outbound and return when gate and facility are in `D`.
  *
- * Illustrative multi-zone types (`IllustrativeZone`, `IllustrativeTravelMatrix`)
- * exist only for GW-012 synthetic regression fixtures (e.g. 42-minute arithmetic).
- * They must not be used as official Terminal 2 zones or relabeled as verified SFO walks.
+ * Illustrative types (`IllustrativeZone`, `IllustrativeRecommendation`, etc.) are for
+ * GW-012 synthetic fixtures only and must not appear in production UI or datasets.
  */
 
 // ---------------------------------------------------------------------------
-// Supported airport scope (official labels; not a facility record)
+// Supported airport scope
 // ---------------------------------------------------------------------------
 
-/** IATA airport code for the supported MVP airport. */
 export const SUPPORTED_AIRPORT_IATA = "SFO";
-
-/** Human-readable terminal label backed by GW-003 provenance. */
 export const SUPPORTED_TERMINAL_LABEL = "Terminal 2";
-
-/** Official boarding / gate area for the MVP (`Zone` maps to this area). */
 export const SUPPORTED_BOARDING_AREA_LABEL = "D Gates";
-
-/** All production boarding zones in scope (Terminal 2 D Gates only). */
 export const PRODUCTION_ZONES: readonly Zone[] = ["D"];
 
+export const DEFAULT_BUFFER_MINUTES = 10;
+export const DEFAULT_QUEUE_ADJUSTMENT_MINUTES = 0;
+
+/** Post-security facility sides eligible for recommendation time modeling. */
+export const POST_ELIGIBLE_SECURITY_ZONES: readonly SecurityZone[] = [
+  "post",
+  "both",
+];
+
 // ---------------------------------------------------------------------------
-// Zones and illustrative regression-only zones
+// Zones
 // ---------------------------------------------------------------------------
 
-/**
- * Production boarding zone for SFO Terminal 2.
- * E and F are Terminal 3 gate areas and are not in scope.
- */
+/** Production boarding zone (Terminal 2 D Gates). */
 export type Zone = "D";
 
-/**
- * Synthetic multi-zone keys for unit-test fixtures only (GW-012).
- * Not valid production `Facility.zone` or Terminal 2 official zones.
- */
+/** Synthetic zones for GW-012 regression fixtures only — not production data. */
 export type IllustrativeZone = "D" | "E" | "F";
 
 // ---------------------------------------------------------------------------
@@ -66,41 +70,23 @@ export type FacilityCategory =
   | "charging"
   | "shop";
 
-/**
- * Security side of a facility relative to the checkpoint.
- * `unknown` must not be treated as post-security eligible.
- */
 export type SecurityZone = "pre" | "post" | "both" | "unknown";
-
-/**
- * MVP passenger context: recommendations assume the traveler is already airside.
- * Pre-security browsing is out of P0 scope.
- */
 export type PassengerSecurityArea = "post";
 
-/**
- * Gate numbers cited on official SFO facility listings (landmarks only).
- * Not a `Zone` and not used as travel-matrix keys.
- */
 export type GateLandmark = "D1" | "D4" | "D7" | "D9" | "D15" | "D16";
 
 // ---------------------------------------------------------------------------
-// Travel matrices (minutes; directed edges; null = unknown / not modeled)
+// Travel matrices (minutes; directed; null = unknown edge)
 // ---------------------------------------------------------------------------
 
-/** Directed travel times between production zones (currently 1×1: D→D only). */
 export type ProductionTravelMatrix = Record<Zone, Record<Zone, number | null>>;
 
-/**
- * Directed travel times for GW-012 illustrative regression fixtures only.
- * Example: PLAN §5 hero arithmetic uses cross-zone legs that are not verified T2 walks.
- */
 export type IllustrativeTravelMatrix = Record<
   IllustrativeZone,
   Record<IllustrativeZone, number | null>
 >;
 
-/** @deprecated Use `ProductionTravelMatrix` in application code. */
+/** @deprecated Use `ProductionTravelMatrix`. */
 export type TravelMatrix = ProductionTravelMatrix;
 
 // ---------------------------------------------------------------------------
@@ -108,81 +94,45 @@ export type TravelMatrix = ProductionTravelMatrix;
 // ---------------------------------------------------------------------------
 
 export type Facility = {
-  /** Stable unique id (slug or uuid); assigned at dataset authoring time. */
   id: string;
   name: string;
-  /** Coarse boarding area; production records use `'D'` only. */
   zone: Zone;
   category: FacilityCategory;
   securityZone: SecurityZone;
-  /**
-   * Queue / wait time in minutes, or `null` if unknown.
-   * Never coerce `null` to `0` for calculations.
-   */
   waitMinutes: number | null;
-  /**
-   * Typical visit / service time in minutes, or `null` if unknown.
-   * Never coerce `null` to `0` for calculations.
-   */
   activityMinutes: number | null;
-  /** Official listing URL when location/name facts are sourced. */
   sourceUrl?: string;
-  /** ISO date (YYYY-MM-DD) when source fields were last checked. */
   lastCheckedAt?: string;
-  /** Confidence for name, terminal, zone, and location description fields. */
   locationConfidence: DataConfidence;
-  /** Confidence for wait/activity/time-related fields. */
   timeConfidence: DataConfidence;
-  /**
-   * Free-text location from the official listing (e.g. "Retail Street").
-   * Not a substitute for `zone`.
-   */
   locationDescription?: string;
-  /**
-   * Nearest published gate landmark when the source names one.
-   * Omitted or `null` when not stated (e.g. some Retail Street entries).
-   */
   nearestGateLandmark?: GateLandmark | null;
 };
 
 // ---------------------------------------------------------------------------
-// User / boarding context
+// User context
 // ---------------------------------------------------------------------------
 
 export type UserContext = {
-  /** Gate area where the passenger is waiting (production: `'D'`). */
   gateZone: Zone;
-  /**
-   * Minutes until boarding **starts** (integer ≥ 0 after validation).
-   */
   minutesUntilBoarding: number;
-  /**
-   * Safety buffer included in required minutes (integer ≥ 0).
-   * Default at validation: {@link DEFAULT_BUFFER_MINUTES}.
-   */
   bufferMinutes: number;
-  /** Optional filter for category-focused views; does not change time math. */
   category?: FacilityCategory;
-  /**
-   * What-if delta added to each facility's `waitMinutes` (integer).
-   * Default at validation: {@link DEFAULT_QUEUE_ADJUSTMENT_MINUTES}.
-   */
-  queueAdjustmentMinutes?: number;
-  /**
-   * MVP assumes post-security recommendations only.
-   * Default at validation: `'post'`.
-   */
-  passengerSecurityArea?: PassengerSecurityArea;
+  queueAdjustmentMinutes: number;
+  passengerSecurityArea: PassengerSecurityArea;
 };
 
-/** Default `bufferMinutes` applied by `validateContext` when omitted. */
-export const DEFAULT_BUFFER_MINUTES = 10;
-
-/** Default `queueAdjustmentMinutes` applied by `validateContext` when omitted. */
-export const DEFAULT_QUEUE_ADJUSTMENT_MINUTES = 0;
+export type UserContextInput = {
+  gateZone?: unknown;
+  minutesUntilBoarding?: unknown;
+  bufferMinutes?: unknown;
+  category?: unknown;
+  queueAdjustmentMinutes?: unknown;
+  passengerSecurityArea?: unknown;
+};
 
 // ---------------------------------------------------------------------------
-// Recommendation outcomes
+// Recommendation outcomes (discriminated unions)
 // ---------------------------------------------------------------------------
 
 export type RecommendationStatus =
@@ -191,86 +141,116 @@ export type RecommendationStatus =
   | "over_budget"
   | "unknown";
 
-/**
- * Policy exclusion (security, scope, etc.).
- * Distinct from `RecommendationStatus.unknown`, which applies when the facility
- * is otherwise eligible but required time inputs are missing.
- */
 export type IneligibilityReason =
   | "security_zone_unknown"
   | "security_zone_pre_only"
   | "passenger_not_airside"
   | "outside_supported_zone";
 
-/**
- * Why an eligible facility could not receive a numeric feasibility status.
- */
 export type UnknownReason =
   | "missing_travel_outbound"
   | "missing_travel_return"
   | "missing_queue_estimate"
   | "missing_activity_estimate";
 
-export type RecommendationTimeBreakdown = {
-  /** Outbound leg minutes, or `null` if unknown. */
+/** Partial breakdown when status is `unknown` (some legs may be null). */
+export type RecommendationTimeBreakdownPartial = {
   outboundMinutes: number | null;
-  /** Return leg minutes, or `null` if unknown. */
   returnMinutes: number | null;
-  /** Queue minutes used in the model (`max(0, wait + adjustment)`), or `null`. */
   queueMinutes: number | null;
-  /** Activity minutes, or `null` if unknown. */
   activityMinutes: number | null;
-  /** Buffer from context (always a number when breakdown is present). */
   bufferMinutes: number;
-  /** Sum of known legs + queue + activity + buffer, or `null` if any required part is unknown. */
   requiredMinutes: number | null;
-  /** `minutesUntilBoarding - requiredMinutes`, or `null` if requiredMinutes is unknown. */
   marginMinutes: number | null;
 };
 
-export type Recommendation = {
+/** Required when status is feasible, tight, or over_budget — all model inputs resolved. */
+export type RecommendationTimeBreakdownComplete = {
+  outboundMinutes: number;
+  returnMinutes: number;
+  queueMinutes: number;
+  activityMinutes: number;
+  bufferMinutes: number;
+  requiredMinutes: number;
+  marginMinutes: number;
+};
+
+type RecommendationIdentity = {
   facilityId: string;
   facilityName: string;
-  /**
-   * Facility zone echoed from input. Production results use `'D'` only;
-   * illustrative regression may use `IllustrativeZone`.
-   */
-  zone: Zone | IllustrativeZone;
   category: FacilityCategory;
   locationConfidence: DataConfidence;
   timeConfidence: DataConfidence;
   securityZone: SecurityZone;
-  /**
-   * `false` when excluded by policy (e.g. security side not post-eligible).
-   * When `false`, do not present as a ranked feasible option.
-   */
-  eligible: boolean;
-  /** Set when `eligible` is `false` (policy). */
-  ineligibilityReason?: IneligibilityReason;
-  /**
-   * Feasibility status when `eligible` is `true`.
-   * When `eligible` is `false`, must be `null`.
-   */
-  status: RecommendationStatus | null;
-  /** Set when `eligible` is `true` and `status` is `unknown`. */
-  unknownReason?: UnknownReason;
-  /** Populated when `eligible` is `true` and status is not blocked by missing inputs. */
-  breakdown?: RecommendationTimeBreakdown;
 };
 
+/** Production recommendation — `zone` is always `'D'`. */
+export type ProductionIneligibleRecommendation = RecommendationIdentity & {
+  kind: "ineligible";
+  zone: Zone;
+  ineligibilityReason: IneligibilityReason;
+};
+
+export type ProductionUnknownRecommendation = RecommendationIdentity & {
+  kind: "unknown";
+  zone: Zone;
+  unknownReason: UnknownReason;
+  breakdown: RecommendationTimeBreakdownPartial;
+};
+
+export type ProductionFeasibilityRecommendation = RecommendationIdentity & {
+  kind: "feasibility";
+  zone: Zone;
+  status: "feasible_in_model" | "tight_in_model" | "over_budget";
+  breakdown: RecommendationTimeBreakdownComplete;
+};
+
+export type ProductionRecommendation =
+  | ProductionIneligibleRecommendation
+  | ProductionUnknownRecommendation
+  | ProductionFeasibilityRecommendation;
+
+/** GW-012 fixtures only — may use `IllustrativeZone`; never use in production UI. */
+export type IllustrativeIneligibleRecommendation = RecommendationIdentity & {
+  kind: "ineligible";
+  zone: IllustrativeZone;
+  ineligibilityReason: IneligibilityReason;
+};
+
+export type IllustrativeUnknownRecommendation = RecommendationIdentity & {
+  kind: "unknown";
+  zone: IllustrativeZone;
+  unknownReason: UnknownReason;
+  breakdown: RecommendationTimeBreakdownPartial;
+};
+
+export type IllustrativeFeasibilityRecommendation = RecommendationIdentity & {
+  kind: "feasibility";
+  zone: IllustrativeZone;
+  status: "feasible_in_model" | "tight_in_model" | "over_budget";
+  breakdown: RecommendationTimeBreakdownComplete;
+};
+
+export type IllustrativeRecommendation =
+  | IllustrativeIneligibleRecommendation
+  | IllustrativeUnknownRecommendation
+  | IllustrativeFeasibilityRecommendation;
+
+/** Production app surfaces use this alias only. */
+export type Recommendation = ProductionRecommendation;
+
 // ---------------------------------------------------------------------------
-// Filtering (GW-006) — pure list operations; no security reclassification
+// Filtering (GW-006)
 // ---------------------------------------------------------------------------
 
 export type FacilityFilterQuery = {
-  /** Case-insensitive substring match on facility name; omit for no text filter. */
   text?: string;
   category?: FacilityCategory;
   zone?: Zone;
 };
 
 // ---------------------------------------------------------------------------
-// Validation — facilities (GW-007)
+// Validation results (GW-007 / GW-008)
 // ---------------------------------------------------------------------------
 
 export type FacilityValidationErrorCode =
@@ -284,34 +264,18 @@ export type FacilityValidationErrorCode =
   | "invalid_url"
   | "invalid_date"
   | "invalid_minutes_field"
-  | "duplicate_id";
+  | "duplicate_id"
+  | "confidence_field_mismatch";
 
 export type FacilityValidationError = {
-  /** JSON path or index (e.g. `[3].securityZone`). */
   path: string;
   code: FacilityValidationErrorCode;
   message: string;
 };
 
 export type ValidateFacilitiesResult = {
-  /** Successfully normalized facilities (may be empty). */
   facilities: Facility[];
-  /** Non-fatal and fatal issues; callers must not silently ignore errors. */
   errors: FacilityValidationError[];
-};
-
-// ---------------------------------------------------------------------------
-// Validation — user context (GW-008)
-// ---------------------------------------------------------------------------
-
-/** Raw form / JSON input before normalization. */
-export type UserContextInput = {
-  gateZone?: unknown;
-  minutesUntilBoarding?: unknown;
-  bufferMinutes?: unknown;
-  category?: unknown;
-  queueAdjustmentMinutes?: unknown;
-  passengerSecurityArea?: unknown;
 };
 
 export type ContextValidationErrorCode =
@@ -330,13 +294,12 @@ export type ContextValidationError = {
 };
 
 export type ValidateContextResult = {
-  /** Normalized context, or `null` when validation fails. */
   context: UserContext | null;
   errors: ContextValidationError[];
 };
 
 // ---------------------------------------------------------------------------
-// Illustrative regression fixtures (GW-012) — types only
+// Illustrative regression fixtures (GW-012)
 // ---------------------------------------------------------------------------
 
 export type IllustrativeRegressionContext = {
@@ -344,7 +307,7 @@ export type IllustrativeRegressionContext = {
   minutesUntilBoarding: number;
   bufferMinutes: number;
   category?: FacilityCategory;
-  queueAdjustmentMinutes?: number;
+  queueAdjustmentMinutes: number;
 };
 
 export type IllustrativeRegressionFacility = Omit<Facility, "zone"> & {
@@ -352,60 +315,116 @@ export type IllustrativeRegressionFacility = Omit<Facility, "zone"> & {
 };
 
 // ---------------------------------------------------------------------------
-// Pure function contracts (implementations in later tasks)
+// Function type contracts (implementations in src/lib/*)
 // ---------------------------------------------------------------------------
 
 /**
- * Boarding-aware ranking and time feasibility (GW-011).
- *
- * Eligibility: `securityZone` must be `'post'` or `'both'` for `eligible: true`.
- * `'unknown'` and `'pre'` yield `eligible: false` with `ineligibilityReason`.
- *
- * Status thresholds when eligible: margin ≥ 10 → `feasible_in_model`;
- * 0–9 → `tight_in_model`; &lt; 0 → `over_budget`; missing required durations → `unknown`.
+ * Boarding-aware recommendations (GW-011).
+ * Post-eligible: `securityZone` is `post` | `both`. Others → `kind: 'ineligible'`.
+ * Thresholds: margin ≥ 10 feasible; 0–9 tight; < 0 over_budget.
  */
-export declare function recommendFacilities(
+export type RecommendFacilities = (
   context: UserContext,
   facilities: readonly Facility[],
   travelTimes: ProductionTravelMatrix,
-): Recommendation[];
-export declare function recommendFacilities(
+) => ProductionRecommendation[];
+
+/** Same algorithm as production; illustrative zones/matrix for GW-012 only. */
+export type RecommendFacilitiesIllustrative = (
   context: IllustrativeRegressionContext,
   facilities: readonly IllustrativeRegressionFacility[],
   travelTimes: IllustrativeTravelMatrix,
-): Recommendation[];
+) => IllustrativeRecommendation[];
 
-/**
- * Deterministic filter/search (GW-006). Does not modify security fields or eligibility.
- * Ordering: stable sort by `name` ascending (locale `en-US`, sensitivity `base`).
- */
-export declare function filterFacilities(
+export type FilterFacilities = (
   facilities: readonly Facility[],
   query: FacilityFilterQuery,
-): Facility[];
+) => Facility[];
 
-/**
- * Parse and normalize facility dataset records (GW-007).
- * Invalid entries are reported in `errors` and omitted from `facilities`.
- */
-export declare function validateFacilities(
-  raw: unknown,
-): ValidateFacilitiesResult;
+export type ValidateFacilities = (raw: unknown) => ValidateFacilitiesResult;
 
-/**
- * Parse flight-context form values (GW-008).
- * Applies {@link DEFAULT_BUFFER_MINUTES} and {@link DEFAULT_QUEUE_ADJUSTMENT_MINUTES}.
- * `gateZone` must be a supported production zone (`'D'`).
- */
-export declare function validateContext(
-  input: UserContextInput,
-): ValidateContextResult;
+export type ValidateContext = (input: UserContextInput) => ValidateContextResult;
 
 // ---------------------------------------------------------------------------
-// Type-only signatures (for satisfies / tests without runtime declare)
+// GW-007 / GW-008 normalization policy (deterministic; implement exactly)
 // ---------------------------------------------------------------------------
 
-export type RecommendFacilitiesFn = typeof recommendFacilities;
-export type FilterFacilitiesFn = typeof filterFacilities;
-export type ValidateFacilitiesFn = typeof validateFacilities;
-export type ValidateContextFn = typeof validateContext;
+/**
+ * ## Shared numeric parsing (`parseRequiredNonNegativeInt`, `parseOptionalInt`)
+ *
+ * Applies to `validateContext` and integer minute fields in `validateFacilities`.
+ *
+ * **Accepted**
+ * - Finite integers ≥ 0: `42`, `"42"` (string trimmed first)
+ * - Optional fields omitted, `null`, or `""` → use documented default (context only)
+ *
+ * **Rejected** (field error; do not coerce)
+ * - `undefined` on required fields
+ * - `""`, whitespace-only strings, `"  "` on required fields
+ * - `null` on required fields
+ * - `NaN`, `Infinity`, `-Infinity`
+ * - Fractions: `8.5`, `"8.5"`
+ * - Negative values where non-negative required
+ * - Non-numeric strings: `"abc"`, `"12px"`
+ * - Booleans, objects, arrays
+ *
+ * **Queue adjustment** (`queueAdjustmentMinutes`): any finite integer (negative allowed for what-if).
+ * Default when omitted/null/"" : {@link DEFAULT_QUEUE_ADJUSTMENT_MINUTES}.
+ *
+ * ### `validateContext` examples
+ * - Valid: `{ gateZone: "D", minutesUntilBoarding: 50 }` → buffer 10, queue adj 0, passenger post
+ * - Valid: `{ gateZone: "D", minutesUntilBoarding: "35", bufferMinutes: "15" }`
+ * - Invalid: `{ minutesUntilBoarding: 50 }` → missing gateZone
+ * - Invalid: `{ gateZone: "E", minutesUntilBoarding: 50 }` → invalid_gate_zone
+ * - Invalid: `{ gateZone: "D", minutesUntilBoarding: "" }` → invalid_minutes_until_boarding
+ * - Invalid: `{ gateZone: "D", minutesUntilBoarding: 8.5 }` → invalid_minutes_until_boarding
+ *
+ * **Defaults** (only when optional field omitted, null, or blank string)
+ * - `bufferMinutes` → {@link DEFAULT_BUFFER_MINUTES}
+ * - `queueAdjustmentMinutes` → {@link DEFAULT_QUEUE_ADJUSTMENT_MINUTES}
+ * - `passengerSecurityArea` → `"post"`; any other value → error
+ * - `gateZone` → required; must normalize to `"D"` (trim; case-sensitive)
+ * - `category` → omit when absent/blank; otherwise must be a {@link FacilityCategory}
+ *
+ * ## `validateFacilities` policy
+ *
+ * **Input shape**: `raw` must be a JSON array. Otherwise one `invalid_shape` error; empty facilities.
+ *
+ * **Required per record** (missing → error, row skipped): `id`, `name`, `zone`, `category`,
+ * `securityZone`, `locationConfidence`, `timeConfidence`. `waitMinutes` and `activityMinutes`
+ * keys must be present; value may be `null`.
+ *
+ * **ID normalization**
+ * - Trim `id` and `name`; reject empty after trim (`invalid_id` / `missing_required_field`)
+ * - IDs are case-sensitive after trim; no slug rewriting
+ * - Duplicate `id` after normalization: first row kept; later rows skipped with `duplicate_id`
+ *
+ * **Zone**: must be exactly `"D"` after trim (`invalid_zone` otherwise).
+ *
+ * **Security zone**: must be one of {@link SecurityZone}; stored as-is (including `unknown`).
+ * Validation does not upgrade `unknown` to `post`.
+ *
+ * **Minute fields** (`waitMinutes`, `activityMinutes`)
+ * - `null` → unknown duration (valid)
+ * - Integer ≥ 0 per shared numeric rules (numeric strings allowed)
+ * - `timeConfidence: 'demo_estimate'` requires non-null minute value
+ * - `timeConfidence: 'unknown'` requires `null` minutes (`confidence_field_mismatch` otherwise)
+ *
+ * **Officially verified location** (`locationConfidence: 'official_verified'`)
+ * - `sourceUrl` required, `http:` or `https:` URL after trim
+ * - `lastCheckedAt` required, `YYYY-MM-DD` calendar date
+ *
+ * **Officially verified times** (`timeConfidence: 'official_verified'`)
+ * - Both minute fields must be non-null integers (rare for MVP; policy still enforced)
+ *
+ * ### Facility examples
+ * - Valid: `{ id: "napa-farms", name: "Napa Farms Market", zone: "D", category: "food",
+ *   securityZone: "post", waitMinutes: null, activityMinutes: null,
+ *   locationConfidence: "official_verified", timeConfidence: "unknown",
+ *   sourceUrl: "https://www.flysfo.com/...", lastCheckedAt: "2026-10-24" }`
+ * - Valid demo times: `waitMinutes: 8, activityMinutes: 10, timeConfidence: "demo_estimate"`
+ * - Invalid: `zone: "E"` → invalid_zone
+ * - Invalid: `waitMinutes: 0` with `timeConfidence: "unknown"` → confidence_field_mismatch
+ * - Invalid: `locationConfidence: "official_verified"` without `sourceUrl` → missing_required_field
+ * - Invalid: duplicate `id` on second row → duplicate_id, second row omitted
+ */
