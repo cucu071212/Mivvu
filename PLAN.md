@@ -1,6 +1,6 @@
 # GateWise — HackPSU Fall 2026 Final Implementation Plan
 
-**Status:** Approved implementation baseline v1.2 — scope frozen  
+**Status:** Approved implementation baseline v1.3 — P0/P1 frozen; post-MVP **GW-F** track approved (see §11)  
 **Project:** GateWise — *Your airport. Your gate. Your time.*  
 **Event:** October 24–25, 2026 (Eastern Time)  
 **Team:** Engineering lead (Cursor + own Codex) and teammate (Codex, data/utility logic/QA)  
@@ -14,7 +14,7 @@
 
 1. **P0 Core B:** Boarding-aware facility recommendation for **one verified SFO terminal**, using 10–20 facilities where source records are available; reduce the number rather than invent facts.
 2. **P0 Differentiator C:** What-if simulator using **the same recommendation function**, with before/after comparison and a numeric reason for status changes.
-3. **P1 Stretch E:** Evaluate at most **two distinct facility stops** in both orders, only after B+C, tests, deployment and demo readiness are achieved.
+3. **P1 Stretch E:** Evaluate at most **two distinct facility stops** in both orders, only after **GW-F3** (F1+F2 integration) passes acceptance and the human lead separately authorizes **G-E** (see §11). E is a time-budget estimator, not verified indoor route optimization.
 4. Data is separated into **zone-to-zone time matrix**, **facility records**, and **user context**. Verified airport facts and assumed/demo times remain separately labeled.
 5. **No** live flight feeds, real boarding-pass scanning, nationwide airports, production indoor routing, authentication, database, or payments during P0.
 6. **`minutesUntilBoarding` means time until boarding STARTS**, not gate closure. Never call a modeled option "guaranteed safe".
@@ -203,3 +203,18 @@ Event schedule in prior plan: **Sat Oct 24, 2:00 PM → Sun Oct 25, 1:45 PM**; *
 **Decision:** Team approval recorded in conversation; implementation may begin within official allowed hours.
 
 **Engineering lead / UI owner:** Main developer (Cursor + Codex)  **Data / Utilities / QA owner:** Teammate (Codex)
+
+## 11. Post-MVP feature progression (GW-F → GW-E)
+
+**Stable baseline (2026-10-24):** `main` @ `665e5e85a9b30b8114c678c7097a3b9ce5e9e805`, production https://gate-wise-iota.vercel.app — preserves completed P0 MVP, GW-015 schematic, GW-020 deploy, GW-021 submission docs, and GW-022 regression.
+
+Execute in order; each phase requires an authorized task ID in `docs/IMPLEMENTATION_PLAN.md` and lead gate approval.
+
+| Phase | ID | Summary |
+| --- | --- | --- |
+| **F1** | GW-F1 | **Personalized time estimates** — users may supply per-facility queue and/or activity minutes. User values beat demo estimates; missing values stay unknown unless demo mode is on. **Never** mutate `facilities.json` or official location provenance. |
+| **F2** | GW-F2 | **Boarding countdown** — user sets boarding-start date/time; remaining minutes update from the device clock. Handle invalid input, zero, pause/resume, clear, and component cleanup. Not live airline integration. |
+| **F3** | GW-F3 | **Integration & regression** — wire F1 and F2 into recommendations and What-if; preserve all current behavior. Technical contract: `docs/GW-F-CONTRACT.md`. |
+| **E** | GW-E | **Two-stop planner** — only after **GW-F3** acceptance and separate **G-E** lead authorization. Same pure-engine rules as §4 E; not real-world route optimization. |
+
+**Agent model:** Engineering Lead Cursor (UI + integration + `main`); Engineering Support Codex (F1/F2/E pure modules + tests); Teammate Codex optional QA/submission — must not block F track. Details in `AGENTS.md`.

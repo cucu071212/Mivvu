@@ -16,7 +16,7 @@
 - Unverified walks, queues, and activity times labeled **demo estimates**; never imply a recommendation guarantees catching a flight.
 - Recommendation thresholds: margin ≥ 10 → `feasible_in_model`; 0–9 → `tight_in_model`; &lt; 0 → `over_budget`; missing essentials → `unknown` (never zero-fill unknown durations).
 - Required minutes = directed outbound + directed return + queue + activity + safety buffer (directed matrix; do not assume symmetry).
-- P1 stretch **E** (two-stop planner): **optional** only after B+C is **deployed**, key tests pass, demo readiness is confirmed, and the human lead **explicitly** approves; cancel E if B+C incomplete at **22:00 ET**. **Never** start or continue E if it threatens **Sunday submission** (GW-022 / GW-023 / **G6** take priority; revert E first).
+- P1 stretch **E** (two-stop planner): **optional** only after **GW-F3** acceptance (**G-F3**), prior B+C deploy/tests, and human lead **G-E** authorization. Post-hackathon, E must not start before F-track integration. Revert E if it threatens submission or F3 regression.
 - File ownership per `AGENTS.md` is binding; cross-owner edits require lead-mediated handoff.
 - Branches: lead `feature/core-app`, teammate `feature/data-utils`; lead merges `main` and deploys.
 
@@ -501,6 +501,96 @@ Decision needed from human Engineering Lead:
 
 ---
 
-**Document version:** 1.1  
-**Aligned with:** `PLAN.md` v1.2, `AGENTS.md`  
-**Next step (human lead):** Approve this plan, authorize **GW-000** or confirm scaffold exists, then dispatch **one** task ID at a time.
+---
+
+## Post-MVP — GW-F track (F1 → F2 → F3 → GW-E)
+
+**Contract:** `docs/GW-F-CONTRACT.md` (APIs, precedence, countdown semantics, What-if rules).  
+**Baseline:** `main` @ `665e5e8`, https://gate-wise-iota.vercel.app  
+**Do not start GW-E** until **G-F3** passed and human lead issues **G-E** (replaces hackathon-only “after G4” timing for new work).
+
+### Approval gates (GW-F)
+
+| Gate | Entry criteria | Lead decision |
+| --- | --- | --- |
+| **G-F0** | `docs/GW-F-CONTRACT.md` + plan docs merged to `main` | Authorize Support **GW-F1-001** / **GW-F2-001** |
+| **G-F1** | F1 modules + tests green on feature branch | Authorize lead integration subtasks or **GW-F2** if not started |
+| **G-F2** | F2 module + tests green | Authorize **GW-F3** |
+| **G-F3** | F1+F2 wired; `npm test`, `tsc`, `lint`, `build`; production smoke | Authorize **G-E** / **GW-E1** or defer E |
+| **G-E** | **G-F3** done; submission timeline safe | Authorize **GW-E1** (unchanged E rules in optional P1 section) |
+
+### GW-F1-001: Duration override resolution (pure)
+
+**Owner:** Engineering Support Codex  
+**Depends on:** **G-F0**  
+**Files:**
+- Create: `src/lib/validate-duration-overrides.ts`, `src/lib/validate-duration-overrides.test.ts`
+- Create: `src/lib/resolve-facility-durations.ts`, `src/lib/resolve-facility-durations.test.ts`
+
+**Tests:** `npm test -- resolve-facility-durations validate-duration-overrides`  
+**Acceptance:** `docs/GW-F-CONTRACT.md` §3 precedence, partial overrides, validation errors, queue adjustment interaction documented in tests.  
+**Integration:** Lead consumes in **GW-F3-001**; types added to `airport.ts` at integration only.
+
+### GW-F1-002: Contract review handoff (optional)
+
+**Owner:** Lead  
+**Depends on:** GW-F1-001 pushed  
+**Acceptance:** Lead confirms APIs match contract or requests revision via handoff (no UI).
+
+### GW-F2-001: Boarding countdown utilities (pure)
+
+**Owner:** Engineering Support Codex  
+**Depends on:** **G-F0** (may parallel **GW-F1-001** after contract merge)  
+**Files:**
+- Create: `src/lib/boarding-countdown.ts`, `src/lib/boarding-countdown.test.ts`
+
+**Tests:** `npm test -- boarding-countdown`  
+**Acceptance:** §4 rounding (floor minutes), past → 0, pause/resume/clear, invalid input codes.  
+**Integration:** Lead UI timer in **GW-F3-002**.
+
+### GW-F3-001: Engine integration — resolved durations
+
+**Owner:** Lead  
+**Depends on:** **G-F1**, GW-F1-001 merged or cherry-picked  
+**Files:** `src/types/airport.ts` (new types), `src/lib/recommend.ts` or documented wrapper, `GateWiseHome.tsx` / recommendation path  
+**Tests:** `npm test`, `recommend.test.ts` green; new integration tests as needed  
+**Acceptance:** Overrides never mutate `facilities.json`; schematic badges unchanged; demo/user/official precedence per contract.
+
+### GW-F3-002: Countdown UI + context wiring
+
+**Owner:** Lead  
+**Depends on:** **G-F2**, GW-F2-001  
+**Files:** `GateWiseHome.tsx`, context validation integration, cleanup on unmount  
+**Tests:** Manual + unit hooks; `validateContext` paths for invalid countdown  
+**Acceptance:** Device-clock copy; pause/resume/clear; no live-flight claims.
+
+### GW-F3-003: What-if + regression gate
+
+**Owner:** Lead (execute); Teammate optional QA report  
+**Depends on:** GW-F3-001, GW-F3-002  
+**Tests:** `npm test`, `npx tsc --noEmit`, `npm run lint`, `npm run build`; production smoke checklist (GW-022 R01–R10 subset + F scenarios)  
+**Acceptance:** **G-F3** — What-if rules §5.2; hero demo margins unchanged with defaults; GW-015 schematic intact.
+
+### GW-E (unchanged scope, updated precondition)
+
+**Precondition addendum:** **G-F3** passed in addition to prior deploy/test/demo rules when starting E after GW-F track.
+
+---
+
+## Task index supplement (GW-F)
+
+| ID | Owner | Gate | Summary |
+| --- | --- | --- | --- |
+| GW-F1-001 | Support Codex | G-F0 | Override validate + resolve modules |
+| GW-F1-002 | Lead | G-F1 | API handoff review |
+| GW-F2-001 | Support Codex | G-F0 | Boarding countdown pure lib |
+| GW-F3-001 | Lead | G-F1 | Recommend integration |
+| GW-F3-002 | Lead | G-F2 | Countdown UI |
+| GW-F3-003 | Lead + optional Teammate | **G-F3** | Regression + What-if |
+| GW-E1 / GW-E2 | Lead + Support | **G-E** after **G-F3** | Two-stop planner |
+
+---
+
+**Document version:** 1.2  
+**Aligned with:** `PLAN.md` v1.3, `AGENTS.md`, `docs/GW-F-CONTRACT.md`  
+**Next step (human lead):** Merge `feature/gw-f-contracts` if approved; authorize **G-F0** → **GW-F1-001** or **GW-F2-001**.

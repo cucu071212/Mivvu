@@ -1,83 +1,67 @@
 # GateWise — Remaining work roadmap
 
-Last updated: 2026-10-24 (integration consolidation).  
-**Not authorization to implement optional features.**
+Last updated: 2026-10-24 (GW-F planning).  
+**Task IDs are not authorization to implement** unless the human Engineering Lead assigns them.
 
-## Completed work and Git integration status
+## Stable release baseline
 
-| Task | Description | Git status |
+| Item | Value |
+| --- | --- |
+| **Production URL** | https://gate-wise-iota.vercel.app |
+| **`main` SHA** | `665e5e85a9b30b8114c678c7097a3b9ce5e9e805` (`665e5e8`) |
+| **Scope** | P0 B+C, GW-015 collapsible D Gates schematic, GW-020 deploy, GW-021 submission docs, GW-022 production regression (keyboard `<details>` concern triaged — real browser PASS) |
+
+## Completed (preserve — do not regress)
+
+| ID | Deliverable | Status |
 | --- | --- | --- |
-| GW-012–014 | Recommendation engine, browse UI, ranked cards | **On `origin/main`** (`babaf96` and ancestors) |
-| GW-017 | What-if simulator | **On `origin/main`** @ `babaf968269a7ecb1a7dc1efb153915ee3c1502c` |
-| GW-020 | Production deploy + smoke | **Live** at https://gate-wise-iota.vercel.app (MVP without schematic); deployment **git SHA unverified** from CI/agent (lead confirms in Vercel UI) |
-| GW-015 | `TerminalSchematic.tsx` | **On `origin/feature/terminal-map`** @ `fbcdf109` — **cherry-picked into `feature/integration-gw015`** (not on `main`) |
-| GW-021 | README + Devpost drafts | **On `origin/feat/data-utils`** — docs cherry-picked into integration branch (`docs/README-draft.md`, `docs/devpost-submission.md`) |
-| GW-022 prep | Release QA prep doc | **On `origin/feat/data-utils`** — `docs/release-qa-prep.md` on integration branch |
-| GW-015 QA | Integration review | **On `origin/feat/data-utils`** — `docs/gw015-review.md` on integration branch |
+| GW-012–014 | Engine + ranked cards | On `main` |
+| GW-015 | Terminal schematic + collapse/a11y fix | On `main` @ `665e5e8` |
+| GW-017 | What-if simulator | On `main` |
+| GW-020 | Production deploy + smoke | Live URL above |
+| GW-021 | README/Devpost drafts | Docs on repo branches; lead may promote README |
+| GW-022 | Production regression report | `docs/gw022-production-regression-report.md` on `feat/data-utils` |
 
-**Integration branch:** `feature/integration-gw015` (from `origin/main` + selective files only; no wholesale branch merges).
+## Active development track — GW-F (approved order)
 
-## Stable deployment
+Technical contract: **`docs/GW-F-CONTRACT.md`**. Implementation tasks: **`docs/IMPLEMENTATION_PLAN.md`** (GW-F1 / GW-F2 / GW-F3).
 
-- **Production URL (current public MVP):** https://gate-wise-iota.vercel.app  
-- **Expected `main` SHA:** `babaf968269a7ecb1a7dc1efb153915ee3c1502c`  
-- **Deployment metadata:** Hosting commit not independently verified in agent environment; treat as **unverified** until Vercel → Production → Source matches `babaf96` or newer approved `main`.
+| Phase | Summary | Owner | Gate |
+| --- | --- | --- | --- |
+| **GW-F1** | Per-facility user queue/activity overrides; precedence over demo; no dataset mutation | Support Codex | **G-F1** — modules + tests merged for lead integration |
+| **GW-F2** | Boarding-start countdown (device clock); pause/resume/clear | Support Codex | **G-F2** — countdown module + tests |
+| **GW-F3** | Wire F1+F2 into recommendations & What-if; full regression | Lead Cursor | **G-F3** — acceptance before any GW-E work |
+| **GW-E** | Two-stop time-budget planner | Support (logic) + Lead (UI) | **G-E** after **G-F3** only |
 
-## Issues found during GW-015 integration
+**Contract docs branch:** `feature/gw-f-contracts` (planning); logic work expected on `feature/gw-f-logic` after **G-F0** contract approval.
 
-1. **Schematic vs recommendations scope** — Schematic always shows all 12 source-backed rows; filters affect cards only. Mitigated with collapsible section copy and GW-015 QA notes in UI.
-2. **Demo mode badge mismatch** — Schematic keeps dataset `timeConfidence`; recommendations use demo overlay when toggled. Mitigated with explicit note when demo is on.
-3. **Invalid dataset split behavior** — Main blocks recommendations; schematic may show partial valid rows + alert (by design). Mitigated with alert when `datasetErrors.length > 0`.
-4. **Page length** — Collapsible schematic defaults closed to reduce scroll/keyboard burden.
-5. **ESLint noise** — Local `.vercel/` build artifacts can pollute `npm run lint` if present; `.gitignore` includes `.vercel` on integration branch.
+## Optional submission polish (non-blocking for GW-F)
 
-No new airport facts or `facilities.json` changes in integration.
+| ID | Owner | Notes |
+| --- | --- | --- |
+| GW-021 | Lead + Teammate | Promote README; align Devpost with `665e5e8` + live URL |
+| GW-023 | Teammate + Lead | Demo recording ≤5 min; Devpost submit per event rules |
 
-## Mandatory submission track (GW-021 / GW-022 / GW-023)
+Teammate Codex may execute these in parallel; **must not block** GW-F1/F2.
 
-| ID | Owner | Priority | Deliverable | Minimum acceptance |
-| --- | --- | --- | --- | --- |
-| **GW-021** | Lead + Teammate | P0 | Promote `docs/README-draft.md` → `README.md`; finalize `docs/devpost-submission.md` on Devpost | Accurate stack, limitations, setup, live URL, no overclaims |
-| **GW-022** | Teammate execute / Lead fix | P0 | Full regression per `docs/release-qa-prep.md` + `docs/qa-checklist.md` | `npm test`, `tsc`, `lint`, `build` green; deployed smoke on **post-merge** URL |
-| **GW-023** | Teammate + Lead | P0 (**G6**) | Demo recording ≤5 min; Devpost initial submit **Sun 12:00 ET** | Hero path: context → demo → recommendations → what-if; schematic optional in recording |
+## Suggested priority order
 
-**Dependencies:** GW-022 after lead **merges** integration (or `main` at approved SHA) and **re-deploys**; GW-023 after GW-022 sign-off.
-
-## Optional GW-E (two-stop planner)
-
-**Approval gate:** Human Engineering Lead **G-E** only — see `docs/IMPLEMENTATION_PLAN.md` optional P1 section.
-
-**Prerequisites (all required):**
-
-1. B+C deployed and verified (**G4** / GW-020).  
-2. `npm test` recommendation + utility suites green.  
-3. GW-019 hero acceptance on deployed URL.  
-4. Sunday submission (**GW-022 / GW-023 / G6**) not at risk.
-
-**If started:** extend `recommend.ts` (lead); teammate tests; no auth/DB/live flights.
-
-## Suggested priority order (next actions)
-
-1. **Review** `feature/integration-gw015` PR — schematic + docs only.  
-2. **Merge to `main`** when lead authorizes (not done in consolidation task).  
-3. **Deploy** integration build to Vercel; re-run production smoke including schematic expand/collapse.  
-4. **GW-021** — README + Devpost copy with confirmed production URL and SHA.  
-5. **GW-022** — full regression checklist (R01–R10+ in `release-qa-prep.md`).  
-6. **GW-023** — record demo and submit Devpost before **G6**.  
-7. **GW-E** — only if lead explicitly approves and submission path is safe.
+1. **Merge** `feature/gw-f-contracts` → `main` when lead approves (documentation only).
+2. **Authorize GW-F1-001** (Support) — duration override modules per contract.
+3. **Authorize GW-F2-001** (Support) — countdown module (can follow F1 or parallel after contract freeze).
+4. **Authorize GW-F3-*** (Lead) — integration + regression on feature branch → merge → deploy.
+5. **GW-E** only if **G-F3** + **G-E** explicit approval and submission timeline safe.
 
 ## Rollback strategy
 
-1. **Git:** `git revert` the integration merge commit on `main`, or reset deployment to previous Vercel production deployment (Vercel dashboard → Promote prior deployment).  
-2. **Feature-only:** Remove `TerminalSchematic` import and `<details>` block from `GateWiseHome.tsx`; redeploy — core B+C unchanged.  
-3. **Docs-only:** Revert doc commits without touching `src/`.  
-4. **Emergency Sunday:** Drop GW-E first; if schematic blocks submission, ship `main` @ `babaf96` without GW-015 and document schematic as post-hackathon.
+1. **F features:** Revert GW-F3 integration commit; pure F1/F2 modules unused if UI wiring removed.
+2. **Schematic:** Remove `TerminalSchematic` block from `GateWiseHome.tsx` (GW-015 rollback) without touching engine.
+3. **Production:** Vercel promote prior deployment to last known good `main`.
 
-## Minimum acceptance tests (post-merge deploy)
+## Minimum acceptance after GW-F3
 
-- 12 facilities, official links, SFO T2 D Gates scope.  
-- Demo OFF unknown / ON calculated (34 min required, margins at 50/43/33).  
-- What-if baseline fixed; scenario changes outcomes.  
-- Search/category filters; invalid context errors.  
-- Schematic: expand/collapse, 12 entries, filter-independent, disclaimers visible.  
-- Mobile ~375px, keyboard focus on summary/links, no reproducible hydration errors on production `next start` / Vercel.
+- All P0/GW-015 hero scenarios still pass (`npm test`, build, production smoke).
+- User override: partial queue-only override; demo precedence respected.
+- Countdown: tick updates minutes; pause holds; clear returns to manual.
+- What-if: baseline/scenario rules per `docs/GW-F-CONTRACT.md` §5.2.
+- No changes to official `facilities.json` rows from user input.
