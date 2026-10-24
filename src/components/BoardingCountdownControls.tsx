@@ -3,20 +3,25 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   clearCountdown,
-  minutesUntilBoardingFromTimestamp,
   parseBoardingStartAt,
-  pauseCountdown,
-  resumeCountdown,
   type BoardingCountdownState,
 } from "@/lib/boarding-countdown";
+import {
+  evaluateRunningCountdownTick,
+  manualMinutesAfterClear,
+  safePauseCountdown,
+  safeResumeCountdown,
+} from "@/lib/boarding-countdown-ui";
 
 export type BoardingCountdownControlsProps = {
   state: BoardingCountdownState;
   onStateChange: (next: BoardingCountdownState) => void;
-  /** Syncs baseline flight-context minutes (countdown updates baseline only). */
+  /** Syncs baseline flight-context minutes while countdown is active. */
   onBaselineMinutesChange: (minutes: number) => void;
-  /** Used when clearing countdown back to manual mode. */
-  manualFallbackMinutes: number;
+  /** Last manual baseline minutes before countdown overwrites the field. */
+  preservedManualMinutes: number;
+  /** Exit countdown and restore manual baseline (invalid tick, failed pause/resume, clear). */
+  onExitToManual: (minutes: number, userMessage?: string) => void;
   disabled?: boolean;
 };
 
@@ -34,8 +39,11 @@ function errorMessage(code: string): string {
       return "This local time is ambiguous (timezone). Add an explicit offset or pick another minute.";
     case "invalid_boarding_start":
       return "Enter a valid boarding date and time.";
+    case "countdown_pause_failed":
+    case "countdown_resume_failed":
+      return "Countdown could not be updated safely and was stopped. Baseline minutes were restored.";
     default:
-      return "Could not start countdown with that time.";
+      return "Countdown stopped. Baseline minutes were restored to your last manual value.";
   }
 }
 
@@ -43,38 +51,42 @@ export function BoardingCountdownControls({
   state,
   onStateChange,
   onBaselineMinutesChange,
-  manualFallbackMinutes,
+  preservedManualMinutes,
+  onExitToManual,
   disabled = false,
 }: BoardingCountdownControlsProps) {
   const [datetimeLocal, setDatetimeLocal] = useState("");
   const [startError, setStartError] = useState<string | null>(null);
+  const [runtimeError, setRuntimeError] = useState<string | null>(null);
+
+  const exitToManual = useCallback(
+    (userMessage?: string) => {
+      const minutes = manualMinutesAfterClear(preservedManualMinutes);
+      onExitToManual(minutes, userMessage);
+      setRuntimeError(userMessage ?? null);
+    },
+    [onExitToManual, preservedManualMinutes],
+  );
 
   const tickAndSync = useCallback(
-    (nextState: BoardingCountdownState) => {
-      if (nextState.mode !== "countdown") {
-        return;
-      }
-      if (nextState.runState === "paused") {
-        const minutes = Math.floor(nextState.pausedRemainingMs / 60_000);
-        onBaselineMinutesChange(minutes);
-        return;
-      }
-      const tick = minutesUntilBoardingFromTimestamp(
-        new Date(nextState.boardingStartAt),
+    (running: Extract<BoardingCountdownState, { mode: "countdown"; runState: "running" }>) => {
+      const result = evaluateRunningCountdownTick(
+        running.boardingStartAt,
         new Date(),
       );
-      if (!tick.invalid) {
-        onBaselineMinutesChange(tick.minutesUntilBoarding);
+      if (result.kind === "invalid") {
+        exitToManual(errorMessage(result.code));
+        return;
       }
+      onBaselineMinutesChange(result.minutesUntilBoarding);
     },
-    [onBaselineMinutesChange],
+    [exitToManual, onBaselineMinutesChange],
   );
 
   useEffect(() => {
     if (state.mode !== "countdown" || state.runState !== "running") {
       return undefined;
     }
-    tickAndSync(state);
     const id = window.setInterval(() => tickAndSync(state), 1000);
     return () => window.clearInterval(id);
   }, [state, tickAndSync]);
@@ -92,7 +104,7 @@ export function BoardingCountdownControls({
   const handleStart = () => {
     const boardingInput =
       datetimeLocal.trim() === ""
-        ? defaultDatetimeLocal(new Date(), 50)
+        ? defaultDatetimeLocal(new Date(), preservedManualMinutes)
         : datetimeLocal;
     if (datetimeLocal.trim() === "") {
       setDatetimeLocal(boardingInput);
@@ -103,6 +115,7 @@ export function BoardingCountdownControls({
       return;
     }
     setStartError(null);
+    setRuntimeError(null);
     const next: BoardingCountdownState = {
       mode: "countdown",
       runState: "running",
@@ -114,23 +127,36 @@ export function BoardingCountdownControls({
 
   const handlePause = () => {
     if (state.mode !== "countdown" || state.runState !== "running") return;
-    const paused = pauseCountdown(state, new Date());
-    onStateChange(paused);
-    tickAndSync(paused);
+    const result = safePauseCountdown(state, new Date());
+    if (!result.ok) {
+      exitToManual(errorMessage(result.code));
+      return;
+    }
+    setRuntimeError(null);
+    onStateChange(result.state);
+    const minutes = Math.floor(result.state.pausedRemainingMs / 60_000);
+    onBaselineMinutesChange(minutes);
   };
 
   const handleResume = () => {
     if (state.mode !== "countdown" || state.runState !== "paused") return;
-    const running = resumeCountdown(state, new Date());
-    onStateChange(running);
-    tickAndSync(running);
+    const result = safeResumeCountdown(state, new Date());
+    if (!result.ok) {
+      exitToManual(errorMessage(result.code));
+      return;
+    }
+    setRuntimeError(null);
+    onStateChange(result.state);
+    tickAndSync(result.state);
   };
 
   const handleClear = () => {
-    const manual = clearCountdown(manualFallbackMinutes);
+    const minutes = manualMinutesAfterClear(preservedManualMinutes);
+    const manual = clearCountdown(minutes);
     onStateChange(manual);
     onBaselineMinutesChange(manual.minutesUntilBoarding);
     setStartError(null);
+    setRuntimeError(null);
   };
 
   return (
@@ -178,6 +204,9 @@ export function BoardingCountdownControls({
 
       {startError ? (
         <p className="text-sm text-destructive" role="alert">{startError}</p>
+      ) : null}
+      {runtimeError ? (
+        <p className="text-sm text-destructive" role="alert">{runtimeError}</p>
       ) : null}
 
       <div className="flex flex-wrap gap-2">

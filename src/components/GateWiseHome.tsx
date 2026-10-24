@@ -84,14 +84,16 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
     mode: "manual",
     minutesUntilBoarding: DEFAULT_MINUTES_UNTIL_BOARDING,
   });
+  const [preservedManualMinutes, setPreservedManualMinutes] = useState(
+    DEFAULT_MINUTES_UNTIL_BOARDING,
+  );
 
   const baselineUsesLiveCountdown = countdownState.mode === "countdown";
-  const manualFallbackMinutes = useMemo(() => {
-    const parsed = Number.parseInt(minutesInput.trim(), 10);
-    return Number.isInteger(parsed) && parsed >= 0
-      ? parsed
-      : DEFAULT_MINUTES_UNTIL_BOARDING;
-  }, [minutesInput]);
+
+  const handleExitCountdownToManual = (minutes: number) => {
+    setCountdownState({ mode: "manual", minutesUntilBoarding: minutes });
+    setMinutesInput(String(minutes));
+  };
 
   const facilityIds = useMemo(
     () => facilities.map((facility) => facility.id),
@@ -245,7 +247,8 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
             onBaselineMinutesChange={(minutes) =>
               setMinutesInput(String(minutes))
             }
-            manualFallbackMinutes={manualFallbackMinutes}
+            preservedManualMinutes={preservedManualMinutes}
+            onExitToManual={handleExitCountdownToManual}
             disabled={!datasetValid}
           />
 
@@ -273,6 +276,7 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
                 setMinutesInput(event.target.value);
                 const parsed = Number.parseInt(event.target.value.trim(), 10);
                 if (Number.isInteger(parsed) && parsed >= 0) {
+                  setPreservedManualMinutes(parsed);
                   setCountdownState({
                     mode: "manual",
                     minutesUntilBoarding: parsed,
