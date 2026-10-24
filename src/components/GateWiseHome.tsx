@@ -22,6 +22,7 @@ import {
   buildFacilityFilterQuery,
   buildFlightContextInput,
 } from "@/lib/browse-integration";
+import { acceptedMinutesUntilBoardingFromDraft } from "@/lib/preserved-manual-minutes";
 import { buildRankedRecommendations } from "@/lib/recommendation-page-integration";
 import {
   DEMO_ACTIVITY_MINUTES,
@@ -281,15 +282,20 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
               className="gw-input gw-focus-ring disabled:cursor-not-allowed disabled:bg-muted/50"
               value={minutesInput}
               onChange={(event) => {
-                setMinutesInput(event.target.value);
-                const parsed = Number.parseInt(event.target.value.trim(), 10);
-                if (Number.isInteger(parsed) && parsed >= 0) {
-                  setPreservedManualMinutes(parsed);
-                  setCountdownState({
-                    mode: "manual",
-                    minutesUntilBoarding: parsed,
-                  });
+                const nextMinutes = event.target.value;
+                setMinutesInput(nextMinutes);
+                const accepted = acceptedMinutesUntilBoardingFromDraft(
+                  nextMinutes,
+                  bufferInput,
+                );
+                if (accepted === undefined) {
+                  return;
                 }
+                setPreservedManualMinutes(accepted);
+                setCountdownState({
+                  mode: "manual",
+                  minutesUntilBoarding: accepted,
+                });
               }}
               readOnly={baselineUsesLiveCountdown}
               aria-readonly={baselineUsesLiveCountdown}

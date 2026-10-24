@@ -22,6 +22,11 @@ import {
 } from "@/lib/what-if-compare";
 import { validateContext } from "@/lib/validate-context";
 import { buildFlightContextInput } from "@/lib/browse-integration";
+import {
+  WHAT_IF_DEMO_MODE_OFF_NOTE,
+  WHAT_IF_DEMO_MODE_ON_NOTE,
+  WHAT_IF_DURATION_PRECEDENCE,
+} from "@/lib/what-if-duration-copy";
 
 export type WhatIfSimulatorProps = {
   enabled: boolean;
@@ -176,10 +181,10 @@ export function WhatIfSimulator({
           <strong className="font-medium text-card-foreground">
             personal time overrides
           </strong>{" "}
-          (when valid). Per facility, durations resolve as: your override → demo
-          estimate (when enabled) → official dataset value → unknown (never
-          zero-filled). Scenario controls change minutes until boarding and
-          queue adjustment only — not your saved overrides.
+          (when valid). Per facility, durations resolve as:{" "}
+          {WHAT_IF_DURATION_PRECEDENCE} (never zero-filled). Scenario controls
+          change minutes until boarding and queue adjustment only — not your
+          saved overrides.
         </p>
         {baselineUsesLiveCountdown ? (
           <p className="text-xs text-muted-foreground" role="note">
@@ -189,13 +194,11 @@ export function WhatIfSimulator({
         ) : null}
         {useDemoTimeEstimates ? (
           <p className="text-xs text-muted-foreground" role="note">
-            Demo mode: 8 min queue and 10 min activity apply where you have not
-            entered a personal override and the official record has no time.
+            {WHAT_IF_DEMO_MODE_ON_NOTE}
           </p>
         ) : (
           <p className="text-xs text-muted-foreground" role="note">
-            Demo mode is off: missing official queue/activity times stay unknown
-            unless you supply a personal override for that field.
+            {WHAT_IF_DEMO_MODE_OFF_NOTE}
           </p>
         )}
       </header>
