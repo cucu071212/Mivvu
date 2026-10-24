@@ -36,6 +36,8 @@ import {
   PersonalizedTimeControls,
   type FacilityDurationOverrideMap,
 } from "@/components/PersonalizedTimeControls";
+import { BoardingCountdownControls } from "@/components/BoardingCountdownControls";
+import type { BoardingCountdownState } from "@/lib/boarding-countdown";
 import type { ResolvedFacilityDurations } from "@/types/airport";
 
 const GATE_LANDMARKS: GateLandmark[] = [
@@ -78,6 +80,18 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
   });
   const [durationOverrides, setDurationOverrides] =
     useState<FacilityDurationOverrideMap>({});
+  const [countdownState, setCountdownState] = useState<BoardingCountdownState>({
+    mode: "manual",
+    minutesUntilBoarding: DEFAULT_MINUTES_UNTIL_BOARDING,
+  });
+
+  const baselineUsesLiveCountdown = countdownState.mode === "countdown";
+  const manualFallbackMinutes = useMemo(() => {
+    const parsed = Number.parseInt(minutesInput.trim(), 10);
+    return Number.isInteger(parsed) && parsed >= 0
+      ? parsed
+      : DEFAULT_MINUTES_UNTIL_BOARDING;
+  }, [minutesInput]);
 
   const facilityIds = useMemo(
     () => facilities.map((facility) => facility.id),
@@ -225,14 +239,41 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
             </span>
           </label>
 
+          <BoardingCountdownControls
+            state={countdownState}
+            onStateChange={setCountdownState}
+            onBaselineMinutesChange={(minutes) =>
+              setMinutesInput(String(minutes))
+            }
+            manualFallbackMinutes={manualFallbackMinutes}
+            disabled={!datasetValid}
+          />
+
           <label className="flex flex-col gap-1.5 text-sm font-medium text-card-foreground">
             Minutes until boarding starts
+            {baselineUsesLiveCountdown ? (
+              <span className="text-xs font-normal text-muted-foreground">
+                Updated from device-clock countdown (baseline). What-if scenario
+                minutes stay separate below.
+              </span>
+            ) : null}
             <input
               type="text"
               inputMode="numeric"
-              className="gw-input gw-focus-ring"
+              className="gw-input gw-focus-ring disabled:cursor-not-allowed disabled:bg-muted/50"
               value={minutesInput}
-              onChange={(event) => setMinutesInput(event.target.value)}
+              onChange={(event) => {
+                setMinutesInput(event.target.value);
+                const parsed = Number.parseInt(event.target.value.trim(), 10);
+                if (Number.isInteger(parsed) && parsed >= 0) {
+                  setCountdownState({
+                    mode: "manual",
+                    minutesUntilBoarding: parsed,
+                  });
+                }
+              }}
+              readOnly={baselineUsesLiveCountdown}
+              aria-readonly={baselineUsesLiveCountdown}
               aria-invalid={Boolean(minutesError)}
               aria-describedby={minutesError ? "minutes-error" : undefined}
             />
@@ -432,6 +473,7 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
           filter={filterQuery}
           useDemoTimeEstimates={demoEstimatesEnabled}
           durationOverrides={durationOverrides}
+          baselineUsesLiveCountdown={baselineUsesLiveCountdown}
           scenarioMinutesInput={scenarioMinutesInput}
           scenarioQueueInput={scenarioQueueInput}
           bufferInput={bufferInput}

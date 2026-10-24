@@ -30,6 +30,7 @@ export type WhatIfSimulatorProps = {
   filter: FacilityFilterQuery;
   useDemoTimeEstimates: boolean;
   durationOverrides: FacilityDurationOverrideMap;
+  baselineUsesLiveCountdown?: boolean;
   scenarioMinutesInput: string;
   scenarioQueueInput: string;
   bufferInput: string;
@@ -62,6 +63,7 @@ export function WhatIfSimulator({
   filter,
   useDemoTimeEstimates,
   durationOverrides,
+  baselineUsesLiveCountdown = false,
   scenarioMinutesInput,
   scenarioQueueInput,
   bufferInput,
@@ -172,6 +174,12 @@ export function WhatIfSimulator({
           </strong>{" "}
           engine — model results only, not a boarding guarantee.
         </p>
+        {baselineUsesLiveCountdown ? (
+          <p className="text-xs text-muted-foreground" role="note">
+            Baseline minutes follow the live boarding countdown; scenario minutes
+            use the fixed field below (not the clock).
+          </p>
+        ) : null}
         {useDemoTimeEstimates ? (
           <p className="text-xs text-muted-foreground" role="note">
             Demo queue/activity estimates are active for both baseline and scenario.
