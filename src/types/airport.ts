@@ -153,7 +153,15 @@ export type UnknownReason =
   | "missing_queue_estimate"
   | "missing_activity_estimate";
 
-/** Partial breakdown when status is `unknown` (some legs may be null). */
+/**
+ * Partial breakdown for `kind: 'unknown'` recommendations.
+ *
+ * Individual legs may be known numbers while others are `null`.
+ * **Invariant (GW-011):** If any essential duration is missing — outbound, return,
+ * queue, or activity — then `requiredMinutes` and `marginMinutes` must both be `null`.
+ * Do not compute a partial total or margin when any essential leg is unknown.
+ * `bufferMinutes` is always taken from context and is never null here.
+ */
 export type RecommendationTimeBreakdownPartial = {
   outboundMinutes: number | null;
   returnMinutes: number | null;
@@ -243,7 +251,12 @@ export type Recommendation = ProductionRecommendation;
 // Filtering (GW-006)
 // ---------------------------------------------------------------------------
 
+/**
+ * Optional filters for {@link FilterFacilities}. Supplied criteria are combined with **AND**
+ * (a facility must satisfy every provided filter).
+ */
 export type FacilityFilterQuery = {
+  /** Case-insensitive substring match on `facility.name` (trimmed query; empty/omitted = no text filter). */
   text?: string;
   category?: FacilityCategory;
   zone?: Zone;
@@ -273,6 +286,11 @@ export type FacilityValidationError = {
   message: string;
 };
 
+/**
+ * **Guarantees (GW-007)**
+ * - Every invalid input row is **omitted** from `facilities` and described in `errors`.
+ * - Duplicate `id` values: the **first valid** row is kept; later duplicates are omitted with `duplicate_id`.
+ */
 export type ValidateFacilitiesResult = {
   facilities: Facility[];
   errors: FacilityValidationError[];
@@ -293,6 +311,11 @@ export type ContextValidationError = {
   message: string;
 };
 
+/**
+ * **Guarantees (GW-008)**
+ * - If `errors.length > 0`, `context` **must** be `null`.
+ * - If validation succeeds, `context` is the fully normalized {@link UserContext} and `errors` is `[]`.
+ */
 export type ValidateContextResult = {
   context: UserContext | null;
   errors: ContextValidationError[];
@@ -336,6 +359,14 @@ export type RecommendFacilitiesIllustrative = (
   travelTimes: IllustrativeTravelMatrix,
 ) => IllustrativeRecommendation[];
 
+/**
+ * Pure facility list filter (GW-006).
+ *
+ * - **Text:** case-insensitive substring search on `name` when `query.text` is non-empty.
+ * - **Combine:** `text`, `category`, and `zone` filters use logical **AND**.
+ * - **Order:** stable alphabetical sort by `name` ascending (`localeCompare`, `en-US`, `base`).
+ * - **Determinism:** same input array + query → same output order and membership (no randomness).
+ */
 export type FilterFacilities = (
   facilities: readonly Facility[],
   query: FacilityFilterQuery,
@@ -427,4 +458,8 @@ export type ValidateContext = (input: UserContextInput) => ValidateContextResult
  * - Invalid: `waitMinutes: 0` with `timeConfidence: "unknown"` → confidence_field_mismatch
  * - Invalid: `locationConfidence: "official_verified"` without `sourceUrl` → missing_required_field
  * - Invalid: duplicate `id` on second row → duplicate_id, second row omitted
+ *
+ * ### Result guarantees (summary)
+ * - `validateFacilities`: invalid rows never appear in `facilities`; each failure has a matching `errors` entry.
+ * - `validateContext`: any error ⇒ `context: null`; success ⇒ normalized `context` and `errors: []`.
  */
