@@ -2,16 +2,22 @@ import assert from "node:assert/strict";
 import { describe, it } from "vitest";
 import type {
   Facility,
+  IllustrativeRecommendation,
+  IllustrativeRegressionContext,
+  IllustrativeRegressionFacility,
+  IllustrativeTravelMatrix,
   ProductionFeasibilityRecommendation,
   ProductionRecommendation,
   ProductionTravelMatrix,
   RecommendFacilities,
+  RecommendFacilitiesIllustrative,
   UserContext,
 } from "@/types/airport";
-import { recommendFacilities } from "./recommend";
+import { recommendFacilities, recommendFacilitiesIllustrative } from "./recommend";
 
 // Synthetic assumptions only. No real facility or measured SFO time is used.
-// Production fixtures are D-only; no illustrative zone is cast to a production Zone.
+// Valid production fixtures are D-only. Out-of-scope runtime inputs are explicitly
+// marked rejection tests below; they do not widen the production Zone contract.
 const context: UserContext = {
   gateZone: "D", minutesUntilBoarding: 50, bufferMinutes: 10,
   queueAdjustmentMinutes: 0, passengerSecurityArea: "post",
@@ -186,6 +192,39 @@ describe("recommendFacilities — production D-only contract", () => {
     assert.ok(!("status" in result));
   });
 
+  for (const invalidDuration of [-1, NaN, Infinity]) {
+    it(`does not model invalid production travel duration ${invalidDuration} or replace it with zero`, () => {
+      const result = single(facility(), context, { D: { D: invalidDuration } });
+      assert.ok(result.kind === "unknown");
+      assert.ok(["missing_travel_outbound", "missing_travel_return"].includes(result.unknownReason));
+      assert.equal(result.breakdown.outboundMinutes, null);
+      assert.equal(result.breakdown.returnMinutes, null);
+      assert.equal(result.breakdown.requiredMinutes, null);
+      assert.equal(result.breakdown.marginMinutes, null);
+      assert.ok(!("status" in result));
+    });
+  }
+
+  for (const zone of ["E", "F"] as const) {
+    it(`rejects runtime facility zone ${zone} through the production API`, () => {
+      // Deliberately malformed runtime input, never a valid production fixture.
+      const outside = { ...facility(), zone } as unknown as Facility;
+      const result = single(outside);
+      assert.ok(result.kind === "ineligible");
+      assert.equal(result.ineligibilityReason, "outside_supported_zone");
+      assert.ok(!("breakdown" in result));
+      assert.ok(!("status" in result));
+    });
+    it(`rejects runtime gate zone ${zone} through the production API`, () => {
+      const outside = { ...context, gateZone: zone } as unknown as UserContext;
+      const result = single(facility(), outside);
+      assert.ok(result.kind === "ineligible");
+      assert.equal(result.ineligibilityReason, "outside_supported_zone");
+      assert.ok(!("breakdown" in result));
+      assert.ok(!("status" in result));
+    });
+  }
+
   for (const securityZone of ["post", "both"] as const) {
     it(`models a ${securityZone} facility for a post-security passenger`, () => {
       const result = feasibility(single(facility({ securityZone })));
@@ -246,14 +285,140 @@ describe("recommendFacilities — production D-only contract", () => {
   });
 });
 
-describe("illustrative-only directed D/E/F fixtures — runtime export pending lead confirmation", () => {
-  // The human lead requested these remain pending. RecommendFacilitiesIllustrative
-  // defines a function TYPE, but its runtime export name is not frozen yet.
-  // Do not cast recommendFacilities to that type or feed E/F to production fixtures.
-  // These are independent arithmetic targets, not real SFO zones or measured walks.
-  it.todo("uses asymmetric D→E 7 and E→D 11: 7+11+8+10+10=46 required, margin +4 at 50");
-  it.todo("hero D↔E 7 each: 42 required; margins +8 at 50, -7 at 35, +10 at 52");
-  it.todo("missing D→E yields missing_travel_outbound; required/margin null, even with E→D known");
-  it.todo("missing E→D yields missing_travel_return; required/margin null, even with D→E known");
-  it.todo("uses synthetic D→F 12 and F→D 4: 12+4+8+10+10=44 required, margin +6 at 50");
+// Approved illustrative export only: these E/F fixtures never reach the production API.
+// All values below are synthetic, independently calculated examples, not airport facts.
+const illustrativeContext: IllustrativeRegressionContext = {
+  gateZone: "D", minutesUntilBoarding: 50, bufferMinutes: 10, queueAdjustmentMinutes: 0,
+};
+const illustrativeFacility: IllustrativeRegressionFacility = {
+  ...facility(), id: "synthetic-e", name: "Synthetic E Cafe", zone: "E",
+};
+const illustrativeTravel: IllustrativeTravelMatrix = {
+  D: { D: 3, E: 7, F: 12 },
+  E: { D: 11, E: 3, F: 6 },
+  F: { D: 4, E: 6, F: 3 },
+};
+const recommendIllustrative: RecommendFacilitiesIllustrative = recommendFacilitiesIllustrative;
+
+function singleIllustrative(
+  row: IllustrativeRegressionFacility = illustrativeFacility,
+  input: IllustrativeRegressionContext = illustrativeContext,
+  matrix: IllustrativeTravelMatrix = illustrativeTravel,
+): IllustrativeRecommendation {
+  const result = recommendIllustrative(input, [row], matrix);
+  assert.equal(result.length, 1);
+  return result[0];
+}
+
+describe("recommendFacilitiesIllustrative — synthetic D/E/F arithmetic only", () => {
+  it("uses directed outbound 7 and return 11 rather than assuming symmetry", () => {
+    // 7 + 11 + 8 + 10 + 10 = 46; 50 - 46 = 4.
+    const result = singleIllustrative();
+    assert.ok(result.kind === "feasibility");
+    assert.equal(result.zone, "E");
+    assert.equal(result.status, "tight_in_model");
+    assert.deepEqual(result.breakdown, {
+      outboundMinutes: 7, returnMinutes: 11, queueMinutes: 8, activityMinutes: 10,
+      bufferMinutes: 10, requiredMinutes: 46, marginMinutes: 4,
+    });
+  });
+
+  it("reverses the directed legs when gate E visits a synthetic D facility", () => {
+    const result = singleIllustrative({ ...illustrativeFacility, zone: "D" },
+      { ...illustrativeContext, gateZone: "E" });
+    assert.ok(result.kind === "feasibility");
+    assert.deepEqual(result.breakdown, {
+      outboundMinutes: 11, returnMinutes: 7, queueMinutes: 8, activityMinutes: 10,
+      bufferMinutes: 10, requiredMinutes: 46, marginMinutes: 4,
+    });
+  });
+
+  for (const [available, margin, status] of [
+    [50, 8, "tight_in_model"], [35, -7, "over_budget"], [52, 10, "feasible_in_model"],
+    [41, -1, "over_budget"], [42, 0, "tight_in_model"], [51, 9, "tight_in_model"],
+  ] as const) {
+    it(`calculates the 42-minute hero scenario at ${available} available minutes (margin ${margin})`, () => {
+      // 7 + 7 + 8 + 10 + 10 = 42. Expected margins/statuses are literals.
+      const matrix: IllustrativeTravelMatrix = {
+        ...illustrativeTravel, E: { ...illustrativeTravel.E, D: 7 },
+      };
+      const result = singleIllustrative(illustrativeFacility,
+        { ...illustrativeContext, minutesUntilBoarding: available }, matrix);
+      assert.ok(result.kind === "feasibility");
+      assert.equal(result.status, status);
+      assert.deepEqual(result.breakdown, {
+        outboundMinutes: 7, returnMinutes: 7, queueMinutes: 8, activityMinutes: 10,
+        bufferMinutes: 10, requiredMinutes: 42, marginMinutes: margin,
+      });
+    });
+  }
+
+  it("explains missing outbound travel while preserving the known return leg", () => {
+    const matrix: IllustrativeTravelMatrix = {
+      ...illustrativeTravel, D: { ...illustrativeTravel.D, E: null },
+    };
+    const result = singleIllustrative(illustrativeFacility, illustrativeContext, matrix);
+    assert.ok(result.kind === "unknown");
+    assert.equal(result.unknownReason, "missing_travel_outbound");
+    assert.deepEqual(result.breakdown, {
+      outboundMinutes: null, returnMinutes: 11, queueMinutes: 8, activityMinutes: 10,
+      bufferMinutes: 10, requiredMinutes: null, marginMinutes: null,
+    });
+    assert.ok(!("status" in result));
+  });
+
+  it("explains missing return travel while preserving the known outbound leg", () => {
+    const matrix: IllustrativeTravelMatrix = {
+      ...illustrativeTravel, E: { ...illustrativeTravel.E, D: null },
+    };
+    const result = singleIllustrative(illustrativeFacility, illustrativeContext, matrix);
+    assert.ok(result.kind === "unknown");
+    assert.equal(result.unknownReason, "missing_travel_return");
+    assert.deepEqual(result.breakdown, {
+      outboundMinutes: 7, returnMinutes: null, queueMinutes: 8, activityMinutes: 10,
+      bufferMinutes: 10, requiredMinutes: null, marginMinutes: null,
+    });
+    assert.ok(!("status" in result));
+  });
+
+  it("uses synthetic D→F 12 and F→D 4 for 44 required minutes and margin +6", () => {
+    // 12 + 4 + 8 + 10 + 10 = 44; 50 - 44 = 6.
+    const result = singleIllustrative({ ...illustrativeFacility, zone: "F" });
+    assert.ok(result.kind === "feasibility");
+    assert.equal(result.zone, "F");
+    assert.equal(result.status, "tight_in_model");
+    assert.deepEqual(result.breakdown, {
+      outboundMinutes: 12, returnMinutes: 4, queueMinutes: 8, activityMinutes: 10,
+      bufferMinutes: 10, requiredMinutes: 44, marginMinutes: 6,
+    });
+  });
+
+  for (const invalidDuration of [-1, NaN, Infinity]) {
+    it(`treats invalid outbound duration ${invalidDuration} as unknown without a partial total`, () => {
+      const matrix: IllustrativeTravelMatrix = {
+        ...illustrativeTravel, D: { ...illustrativeTravel.D, E: invalidDuration },
+      };
+      const result = singleIllustrative(illustrativeFacility, illustrativeContext, matrix);
+      assert.ok(result.kind === "unknown");
+      assert.equal(result.unknownReason, "missing_travel_outbound");
+      assert.deepEqual(result.breakdown, {
+        outboundMinutes: null, returnMinutes: 11, queueMinutes: 8, activityMinutes: 10,
+        bufferMinutes: 10, requiredMinutes: null, marginMinutes: null,
+      });
+      assert.ok(!("status" in result));
+    });
+    it(`treats invalid return duration ${invalidDuration} as unknown without a partial total`, () => {
+      const matrix: IllustrativeTravelMatrix = {
+        ...illustrativeTravel, E: { ...illustrativeTravel.E, D: invalidDuration },
+      };
+      const result = singleIllustrative(illustrativeFacility, illustrativeContext, matrix);
+      assert.ok(result.kind === "unknown");
+      assert.equal(result.unknownReason, "missing_travel_return");
+      assert.deepEqual(result.breakdown, {
+        outboundMinutes: 7, returnMinutes: null, queueMinutes: 8, activityMinutes: 10,
+        bufferMinutes: 10, requiredMinutes: null, marginMinutes: null,
+      });
+      assert.ok(!("status" in result));
+    });
+  }
 });
