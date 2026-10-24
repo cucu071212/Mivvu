@@ -1,22 +1,14 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
-import type { Facility, FacilityCategory } from "@/types/airport";
+import type {
+  Facility,
+  FacilityCategory,
+  FacilityDurationOverride,
+  FacilityDurationOverrideMap,
+} from "@/types/airport";
 
-/**
- * GW-F contract mirror (GW-F3 will move to `@/types/airport`).
- * One facility row in the override map; optional fields mean “no override”.
- */
-export type FacilityDurationOverride = {
-  facilityId: string;
-  queueMinutes?: number;
-  activityMinutes?: number;
-};
-
-/** Read-only map keyed by `facilityId` for O(1) lookup in integration. */
-export type FacilityDurationOverrideMap = Readonly<
-  Record<string, FacilityDurationOverride>
->;
+export type { FacilityDurationOverride, FacilityDurationOverrideMap };
 
 /** Facility rows shown in the editor (subset of {@link Facility}). */
 export type PersonalizedFacilityRow = Pick<

@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import type {
   Facility,
+  FacilityDurationOverrideMap,
   FacilityFilterQuery,
   ProductionRecommendation,
   UserContext,
@@ -28,6 +29,7 @@ export type WhatIfSimulatorProps = {
   facilities: readonly Facility[];
   filter: FacilityFilterQuery;
   useDemoTimeEstimates: boolean;
+  durationOverrides: FacilityDurationOverrideMap;
   scenarioMinutesInput: string;
   scenarioQueueInput: string;
   bufferInput: string;
@@ -59,6 +61,7 @@ export function WhatIfSimulator({
   facilities,
   filter,
   useDemoTimeEstimates,
+  durationOverrides,
   scenarioMinutesInput,
   scenarioQueueInput,
   bufferInput,
@@ -84,8 +87,16 @@ export function WhatIfSimulator({
       filter,
       travelTimes: productionTravelMinutes,
       useDemoTimeEstimates,
+      durationOverrides,
     });
-  }, [enabled, baselineContext, facilities, filter, useDemoTimeEstimates]);
+  }, [
+    enabled,
+    baselineContext,
+    facilities,
+    filter,
+    useDemoTimeEstimates,
+    durationOverrides,
+  ]);
 
   const scenarioRecommendations = useMemo(() => {
     if (!enabled || !scenarioValid || !scenarioContextResult.context) {
@@ -97,6 +108,7 @@ export function WhatIfSimulator({
       filter,
       travelTimes: productionTravelMinutes,
       useDemoTimeEstimates,
+      durationOverrides,
     });
   }, [
     enabled,
@@ -105,6 +117,7 @@ export function WhatIfSimulator({
     facilities,
     filter,
     useDemoTimeEstimates,
+    durationOverrides,
   ]);
 
   const comparisons = useMemo(() => {

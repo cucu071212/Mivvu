@@ -132,6 +132,34 @@ export type UserContextInput = {
 };
 
 // ---------------------------------------------------------------------------
+// GW-F1 — per-facility duration overrides (in-memory; never mutates facilities.json)
+// ---------------------------------------------------------------------------
+
+/** Minutes the user supplied for one facility in the UI. */
+export type FacilityDurationOverride = {
+  facilityId: string;
+  queueMinutes?: number;
+  activityMinutes?: number;
+};
+
+export type FacilityDurationOverrideMap = Readonly<
+  Record<string, FacilityDurationOverride>
+>;
+
+export type ResolvedDurationSource =
+  | "user_override"
+  | "demo_estimate"
+  | "official_record"
+  | "unknown";
+
+export type ResolvedFacilityDurations = {
+  queueMinutes: number | null;
+  activityMinutes: number | null;
+  queueSource: ResolvedDurationSource;
+  activitySource: ResolvedDurationSource;
+};
+
+// ---------------------------------------------------------------------------
 // Recommendation outcomes (discriminated unions)
 // ---------------------------------------------------------------------------
 

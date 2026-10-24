@@ -23,9 +23,20 @@ import {
   buildFlightContextInput,
 } from "@/lib/browse-integration";
 import { buildRankedRecommendations } from "@/lib/recommendation-page-integration";
+import {
+  DEMO_ACTIVITY_MINUTES,
+  DEMO_QUEUE_MINUTES,
+} from "@/lib/demo-estimate-facilities";
+import { resolveFacilityDurations } from "@/lib/resolve-facility-durations";
 import { validateContext } from "@/lib/validate-context";
+import { validateDurationOverrides } from "@/lib/validate-duration-overrides";
 import { WhatIfSimulator } from "@/components/WhatIfSimulator";
 import { TerminalSchematic } from "@/components/TerminalSchematic";
+import {
+  PersonalizedTimeControls,
+  type FacilityDurationOverrideMap,
+} from "@/components/PersonalizedTimeControls";
+import type { ResolvedFacilityDurations } from "@/types/airport";
 
 const GATE_LANDMARKS: GateLandmark[] = [
   "D1",
@@ -65,6 +76,18 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
     text: "",
     category: "",
   });
+  const [durationOverrides, setDurationOverrides] =
+    useState<FacilityDurationOverrideMap>({});
+
+  const facilityIds = useMemo(
+    () => facilities.map((facility) => facility.id),
+    [facilities],
+  );
+
+  const handleDurationOverridesChange = (next: FacilityDurationOverrideMap) => {
+    const { overrides } = validateDurationOverrides(next, facilityIds);
+    setDurationOverrides(overrides);
+  };
 
   const datasetValid = datasetErrors.length === 0;
 
@@ -96,6 +119,7 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
       filter: filterQuery,
       travelTimes: productionTravelMinutes,
       useDemoTimeEstimates: demoEstimatesEnabled,
+      durationOverrides,
     });
   }, [
     datasetValid,
@@ -104,7 +128,24 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
     facilities,
     filterQuery,
     demoEstimatesEnabled,
+    durationOverrides,
   ]);
+
+  const resolvedDurationsByFacilityId = useMemo(() => {
+    const map = new Map<string, ResolvedFacilityDurations>();
+    for (const facility of facilities) {
+      map.set(
+        facility.id,
+        resolveFacilityDurations(facility, {
+          overrides: durationOverrides,
+          useDemoTimeEstimates: demoEstimatesEnabled,
+          demoQueueMinutes: DEMO_QUEUE_MINUTES,
+          demoActivityMinutes: DEMO_ACTIVITY_MINUTES,
+        }),
+      );
+    }
+    return map;
+  }, [facilities, durationOverrides, demoEstimatesEnabled]);
 
   const facilityById = useMemo(
     () => new Map(facilities.map((facility) => [facility.id, facility])),
@@ -268,6 +309,15 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
         disabled={!datasetValid || !contextValid}
       />
 
+      {datasetValid ? (
+        <PersonalizedTimeControls
+          facilities={facilities}
+          overrides={durationOverrides}
+          onChange={handleDurationOverridesChange}
+          disabled={!contextValid}
+        />
+      ) : null}
+
       <section
         aria-labelledby="recommendations-heading"
         className="flex flex-col gap-3"
@@ -311,6 +361,9 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
                   nearestGateLandmark={facility?.nearestGateLandmark}
                   sourceUrl={facility?.sourceUrl}
                   lastCheckedAt={facility?.lastCheckedAt}
+                  resolvedDurations={resolvedDurationsByFacilityId.get(
+                    recommendation.facilityId,
+                  )}
                 />
               </li>
             );
@@ -378,6 +431,7 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
           facilities={facilities}
           filter={filterQuery}
           useDemoTimeEstimates={demoEstimatesEnabled}
+          durationOverrides={durationOverrides}
           scenarioMinutesInput={scenarioMinutesInput}
           scenarioQueueInput={scenarioQueueInput}
           bufferInput={bufferInput}

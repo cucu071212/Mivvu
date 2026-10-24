@@ -1,4 +1,12 @@
-import type { GateLandmark, ProductionRecommendation } from "@/types/airport";
+import type {
+  GateLandmark,
+  ProductionRecommendation,
+  ResolvedFacilityDurations,
+} from "@/types/airport";
+import {
+  durationModelBadgeClass,
+  durationModelLabel,
+} from "@/lib/duration-model-label";
 import { ConfidenceBadge } from "@/components/ConfidenceBadge";
 import { AmenityDetail } from "@/components/AmenityDetail";
 import { recommendationStatusPresentation } from "@/lib/recommendation-present";
@@ -9,6 +17,11 @@ export type AmenityCardProps = {
   nearestGateLandmark?: GateLandmark | null;
   sourceUrl?: string;
   lastCheckedAt?: string;
+  /** GW-F1 model inputs for queue/activity (separate from dataset timeConfidence). */
+  resolvedDurations?: Pick<
+    ResolvedFacilityDurations,
+    "queueSource" | "activitySource"
+  >;
 };
 
 function locationLine(props: AmenityCardProps): string {
@@ -75,6 +88,25 @@ export function AmenityCard(props: AmenityCardProps) {
         <ConfidenceBadge confidence={recommendation.locationConfidence} />
         {recommendation.timeConfidence !== "unknown" ? (
           <ConfidenceBadge confidence={recommendation.timeConfidence} />
+        ) : null}
+        {props.resolvedDurations ? (
+          <span className="flex flex-wrap gap-1" role="note">
+            <span
+              className={durationModelBadgeClass(
+                props.resolvedDurations.queueSource,
+              )}
+            >
+              Queue: {durationModelLabel(props.resolvedDurations.queueSource)}
+            </span>
+            <span
+              className={durationModelBadgeClass(
+                props.resolvedDurations.activitySource,
+              )}
+            >
+              Activity:{" "}
+              {durationModelLabel(props.resolvedDurations.activitySource)}
+            </span>
+          </span>
         ) : null}
         <span
           className={`gw-status-chip text-xs ${
