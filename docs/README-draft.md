@@ -4,7 +4,7 @@
 
 GateWise helps travelers compare airport amenities against the time remaining until **boarding starts**. An airport map answers “Where is it?” GateWise adds “What would this visit require, including returning to the gate?”
 
-[Live demo](https://gate-wise-iota.vercel.app) · [Source code](https://github.com/cucu071212/GateWise)
+[Live demo](https://gate-wise-iota.vercel.app) · [Source repository — private; judge access pending](https://github.com/cucu071212/GateWise)
 
 > GW-021/023 README replacement for lead adoption, updated 2026-10-24 (Eastern Time). Root README is unchanged. Source reference: `origin/main` at `babaf96`; live smoke evidence: [consolidated QA](consolidated-qa-report.md). The production URL was reopened during finalization; exact deployed SHA is not verified. Links are relative to `docs/`; adjust them when adopting this as root README.
 
@@ -79,6 +79,8 @@ Baseline and hypothetical inputs run through the same function. The UI source in
 The inspected manifest declares Next.js `16.4.3`, React `19.3.0`, Tailwind v4 and Vitest. These are repository declarations, not a claim that dependency installation succeeded in this environment.
 
 ## Local setup
+
+The source repository is private (GitHub metadata checked 2026-10-24); cloning requires authorized GitHub access. The live demo is separate from source-code access. See the [source delivery checklist](submission-checklist.md#safe-source-code-delivery-recommendation) before sharing a code link with judges.
 
 Use a reviewed integration checkout containing the application flow. This documentation branch has not merged the newer application commits. The inspected lockfile declares Node **>=20.9.0** for Next.js; use a compatible Node/npm installation.
 

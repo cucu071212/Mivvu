@@ -58,11 +58,19 @@ The live browser audit exercised this sequence using synthetic timing assumption
 
 The same engine explains each change. With visit estimates off, the real dataset's missing durations stay unknown instead of being silently replaced with zero.
 
-## Engineering challenges and takeaways
+## Challenges we ran into
 
 The central challenge was separating a trustworthy location claim from an uncertain duration. Official sources can disagree about a nearby gate or business name, while even a valid listing does not provide a current queue. The project addresses this with documented exclusions, nullable durations and explicit source/estimate labels.
 
 A second challenge was keeping the calculator and what-if comparison consistent. Shared contracts, one pure recommendation engine and independently calculated expected outputs make the assumptions inspectable. The model can be checked against independently calculated expected results, including boundary margins and missing-data cases.
+
+## Accomplishments we are proud of
+
+We built a focused, working boarding-budget and What-if flow around one shared calculation engine, while keeping official facility facts separate from demonstration timings. Unknown data stays visible rather than becoming a misleading recommendation.
+
+## What we learned
+
+A published location is different from a known visit duration. Nullable inputs, independent arithmetic checks and clear explanations make the limits of a recommendation easier to inspect and communicate.
 
 ## Limitations
 
@@ -82,15 +90,16 @@ The public MVP is hosted at the Vercel URL above. No live-data or AI service is 
 
 | Field | Value / evidence state |
 | --- | --- |
-| Source repository | [cucu071212/GateWise](https://github.com/cucu071212/GateWise) |
+| Source repository | [cucu071212/GateWise](https://github.com/cucu071212/GateWise) — **private**, confirmed via GitHub metadata 2026-10-24. Judge-accessible source delivery is pending; do not present this as a public code link |
 | Inspected implementation snapshot | `origin/main` at `babaf96`; exact deployed SHA still needs lead confirmation |
 | Live demo URL | [Production MVP](https://gate-wise-iota.vercel.app), reopened 2026-10-24 |
-| Demo video URL | Not supplied or verified; no recording claim |
+| Demo video URL | **MISSING:** actual recording and verified playback URL; script prepared |
+| Screenshots / project image | **MISSING:** final selected and uploaded image assets |
 | Final tests, TypeScript and build result | Required from the configured lead environment; npm/npx unavailable here |
 | Browser evidence | B+C smoke, margin boundaries, representative validation and data-confidence behavior passed in the independent audit; not full regression |
 | Mobile/accessibility | Still pending against the final build |
 | GW-015 schematic | Integration branch exists; not visible on production at finalization check. Do not describe as deployed until confirmed |
-| Team names, contributions and applicable event disclosure fields | Human lead supplies and confirms |
+| Team names, contributions and applicable event disclosure fields | **MISSING / HUMAN CONFIRMATION:** names/accounts, contributions and form-specific answers |
 | Submission completion | Not submitted by this task |
 
-Before publishing, complete [submission-checklist.md](submission-checklist.md), record [demo-script.md](demo-script.md), and reconcile copy with the final deployed commit. Keep any schematic claim gated on a fresh production check. No GW-E implementation is claimed. The lead owns final submission and deployment decisions.
+Before publishing, complete [submission-checklist.md](submission-checklist.md), record [demo-script.md](demo-script.md), and reconcile copy with the final deployed commit. Keep GW-015 pending production until the Engineering Lead confirms deployment and a fresh production check verifies it. No GW-E implementation is claimed. The lead owns final submission and deployment decisions.
