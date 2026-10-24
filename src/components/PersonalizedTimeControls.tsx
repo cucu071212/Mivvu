@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type {
   Facility,
   FacilityCategory,
@@ -20,8 +20,16 @@ export type PersonalizedTimeControlsProps = {
   facilities: readonly PersonalizedFacilityRow[];
   overrides: FacilityDurationOverrideMap;
   onChange: (next: FacilityDurationOverrideMap) => void;
+  /** False while any field has a validation error (draft not committed). */
+  onDraftValidityChange?: (draftsValid: boolean) => void;
   disabled?: boolean;
 };
+
+export function personalizationDraftsAreValid(
+  fieldErrors: Partial<Record<string, string>>,
+): boolean {
+  return Object.keys(fieldErrors).length === 0;
+}
 
 export type OverrideField = "queueMinutes" | "activityMinutes";
 
@@ -128,6 +136,7 @@ export function PersonalizedTimeControls({
   facilities,
   overrides,
   onChange,
+  onDraftValidityChange,
   disabled = false,
 }: PersonalizedTimeControlsProps) {
   const [drafts, setDrafts] = useState<Partial<Record<FieldDraftKey, string>>>(
@@ -141,6 +150,12 @@ export function PersonalizedTimeControls({
     () => Object.keys(overrides).length,
     [overrides],
   );
+
+  const draftsValid = personalizationDraftsAreValid(fieldErrors);
+
+  useEffect(() => {
+    onDraftValidityChange?.(draftsValid);
+  }, [draftsValid, onDraftValidityChange]);
 
   const clearFieldError = useCallback((key: FieldDraftKey) => {
     setFieldErrors((prev) => {
@@ -241,6 +256,14 @@ export function PersonalizedTimeControls({
           Personal estimate
         </span>
       </div>
+
+      {!draftsValid ? (
+        <p className="text-sm text-destructive" role="alert">
+          Fix invalid personal estimates below. Recommendations and What-if are
+          paused until every field is blank or a valid whole number — saved
+          overrides are not updated while an error is shown.
+        </p>
+      ) : null}
 
       <div className="flex flex-wrap items-center gap-2">
         <p className="text-sm text-muted-foreground" aria-live="polite">

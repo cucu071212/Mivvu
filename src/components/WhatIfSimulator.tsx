@@ -167,12 +167,19 @@ export function WhatIfSimulator({
           What-if simulator
         </h2>
         <p className="text-sm text-muted-foreground">
-          Compare your current flight context with a hypothetical scenario. Both
-          sides use the same{" "}
+          Compare baseline flight context with a fixed scenario. Both sides call
+          the same{" "}
           <strong className="font-medium text-card-foreground">
             recommendFacilities
           </strong>{" "}
-          engine — model results only, not a boarding guarantee.
+          engine with the same facility list and{" "}
+          <strong className="font-medium text-card-foreground">
+            personal time overrides
+          </strong>{" "}
+          (when valid). Per facility, durations resolve as: your override → demo
+          estimate (when enabled) → official dataset value → unknown (never
+          zero-filled). Scenario controls change minutes until boarding and
+          queue adjustment only — not your saved overrides.
         </p>
         {baselineUsesLiveCountdown ? (
           <p className="text-xs text-muted-foreground" role="note">
@@ -182,12 +189,13 @@ export function WhatIfSimulator({
         ) : null}
         {useDemoTimeEstimates ? (
           <p className="text-xs text-muted-foreground" role="note">
-            Demo queue/activity estimates are active for both baseline and scenario.
+            Demo mode: 8 min queue and 10 min activity apply where you have not
+            entered a personal override and the official record has no time.
           </p>
         ) : (
           <p className="text-xs text-muted-foreground" role="note">
-            Demo estimates are off: facilities with unknown wait/activity times stay
-            unknown in both runs.
+            Demo mode is off: missing official queue/activity times stay unknown
+            unless you supply a personal override for that field.
           </p>
         )}
       </header>

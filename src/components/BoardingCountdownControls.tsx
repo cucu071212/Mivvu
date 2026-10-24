@@ -101,14 +101,19 @@ export function BoardingCountdownControls({
     return "Live device-clock countdown (baseline only)";
   }, [state]);
 
+  const handleSuggestFromManualBudget = () => {
+    setDatetimeLocal(defaultDatetimeLocal(new Date(), preservedManualMinutes));
+    setStartError(null);
+  };
+
   const handleStart = () => {
-    const boardingInput =
-      datetimeLocal.trim() === ""
-        ? defaultDatetimeLocal(new Date(), preservedManualMinutes)
-        : datetimeLocal;
     if (datetimeLocal.trim() === "") {
-      setDatetimeLocal(boardingInput);
+      setStartError(
+        "Select a boarding start date and time, or use “Suggest from manual budget” to fill the field, before starting the countdown.",
+      );
+      return;
     }
+    const boardingInput = datetimeLocal;
     const parsed = parseBoardingStartAt(boardingInput, new Date());
     if ("error" in parsed) {
       setStartError(errorMessage(parsed.error));
@@ -182,17 +187,36 @@ export function BoardingCountdownControls({
       </p>
 
       {state.mode === "manual" ? (
-        <label className="flex flex-col gap-1.5 text-sm font-medium text-card-foreground">
-          Boarding starts (local date & time)
-          <input
-            type="datetime-local"
-            className="gw-input gw-focus-ring min-h-11 disabled:cursor-not-allowed disabled:opacity-60"
-            value={datetimeLocal}
-            onChange={(event) => setDatetimeLocal(event.target.value)}
+        <div className="flex flex-col gap-2">
+          <label className="flex flex-col gap-1.5 text-sm font-medium text-card-foreground">
+            Boarding starts (local date & time)
+            <span className="text-xs font-normal text-muted-foreground">
+              Required before Start countdown. Your manual minute budget stays
+              active until a valid countdown is running.
+            </span>
+            <input
+              type="datetime-local"
+              className="gw-input gw-focus-ring min-h-11 disabled:cursor-not-allowed disabled:opacity-60"
+              value={datetimeLocal}
+              onChange={(event) => {
+                setDatetimeLocal(event.target.value);
+                setStartError(null);
+              }}
+              disabled={disabled}
+              required
+              aria-required="true"
+              aria-invalid={Boolean(startError)}
+            />
+          </label>
+          <button
+            type="button"
+            className="gw-focus-ring min-h-11 self-start rounded-md border border-border px-3 py-2 text-sm font-medium disabled:opacity-60"
+            onClick={handleSuggestFromManualBudget}
             disabled={disabled}
-            placeholder="Select local boarding start"
-          />
-        </label>
+          >
+            Suggest from manual budget ({preservedManualMinutes} min)
+          </button>
+        </div>
       ) : (
         <p className="text-sm text-muted-foreground">
           Target:{" "}

@@ -3,6 +3,7 @@ import {
   applyOverrideField,
   formatPersonalizedMinutesValue,
   parsePersonalizedMinutesInput,
+  personalizationDraftsAreValid,
 } from "./PersonalizedTimeControls";
 
 describe("parsePersonalizedMinutesInput", () => {
@@ -59,6 +60,30 @@ describe("applyOverrideField", () => {
       { kind: "empty" },
     );
     expect(next).toEqual({});
+  });
+});
+
+describe("personalizationDraftsAreValid", () => {
+  it("blocks recommendations when any field error exists", () => {
+    expect(personalizationDraftsAreValid({})).toBe(true);
+    expect(
+      personalizationDraftsAreValid({
+        "sfo-t2-d-brookstone:queue": "bad",
+      }),
+    ).toBe(false);
+  });
+});
+
+describe("applyOverrideField on invalid parse", () => {
+  it("does not mutate the override map", () => {
+    const map = {
+      cafe: { facilityId: "cafe", queueMinutes: 5 },
+    };
+    const next = applyOverrideField(map, "cafe", "queueMinutes", {
+      kind: "error",
+      message: "nope",
+    });
+    expect(next).toEqual(map);
   });
 });
 

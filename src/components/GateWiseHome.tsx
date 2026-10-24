@@ -87,6 +87,8 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
   const [preservedManualMinutes, setPreservedManualMinutes] = useState(
     DEFAULT_MINUTES_UNTIL_BOARDING,
   );
+  const [personalizationDraftsValid, setPersonalizationDraftsValid] =
+    useState(true);
 
   const baselineUsesLiveCountdown = countdownState.mode === "countdown";
 
@@ -126,7 +128,12 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
   );
 
   const recommendations = useMemo(() => {
-    if (!datasetValid || !contextValid || !contextResult.context) {
+    if (
+      !datasetValid ||
+      !contextValid ||
+      !contextResult.context ||
+      !personalizationDraftsValid
+    ) {
       return [];
     }
     return buildRankedRecommendations({
@@ -145,6 +152,7 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
     filterQuery,
     demoEstimatesEnabled,
     durationOverrides,
+    personalizationDraftsValid,
   ]);
 
   const resolvedDurationsByFacilityId = useMemo(() => {
@@ -373,6 +381,7 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
           facilities={facilities}
           overrides={durationOverrides}
           onChange={handleDurationOverridesChange}
+          onDraftValidityChange={setPersonalizationDraftsValid}
           disabled={!contextValid}
         />
       ) : null}
@@ -401,7 +410,18 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
           </p>
         ) : null}
 
-        {datasetValid && contextValid && recommendations.length === 0 ? (
+        {datasetValid && contextValid && !personalizationDraftsValid ? (
+          <p className="gw-surface-card border-destructive/40 p-4 text-sm text-destructive" role="alert">
+            Recommendations are paused until personal estimate fields are valid
+            or cleared. What-if uses the same rule so results stay consistent
+            with the baseline.
+          </p>
+        ) : null}
+
+        {datasetValid &&
+        contextValid &&
+        personalizationDraftsValid &&
+        recommendations.length === 0 ? (
           <p className="gw-surface-card p-4 text-sm text-muted-foreground">
             No places match your filters. Search matches{" "}
             <strong className="font-medium text-foreground">facility names only</strong>
@@ -485,7 +505,7 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
 
       {contextResult.context ? (
         <WhatIfSimulator
-          enabled={datasetValid && contextValid}
+          enabled={datasetValid && contextValid && personalizationDraftsValid}
           baselineContext={contextResult.context}
           facilities={facilities}
           filter={filterQuery}
