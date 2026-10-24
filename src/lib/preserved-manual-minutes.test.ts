@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { manualMinutesAfterClear } from "@/lib/boarding-countdown-ui";
-import { acceptedMinutesUntilBoardingFromDraft } from "@/lib/preserved-manual-minutes";
+import {
+  acceptedMinutesUntilBoardingFromDraft,
+  nextPreservedManualMinutes,
+} from "@/lib/preserved-manual-minutes";
 
 const DEFAULT_BUFFER = "10";
 
@@ -20,6 +23,32 @@ describe("acceptedMinutesUntilBoardingFromDraft", () => {
 
   it("rejects fractional drafts such as 12.5 (parseInt would wrongly accept 12)", () => {
     expect(acceptedMinutesUntilBoardingFromDraft("12.5", DEFAULT_BUFFER)).toBeUndefined();
+  });
+});
+
+function syncPreservedWhenManualValid(
+  preserved: number,
+  minutesDraft: string,
+  bufferDraft: string,
+): number {
+  return nextPreservedManualMinutes(preserved, minutesDraft, bufferDraft);
+}
+
+describe("preserved manual minutes when buffer is corrected after minutes edit", () => {
+  it("updates preserved to 60 after invalid buffer is fixed (50 → invalid buffer → 60 → buffer 10)", () => {
+    let preserved = syncPreservedWhenManualValid(50, "50", "10");
+    expect(preserved).toBe(50);
+
+    preserved = syncPreservedWhenManualValid(preserved, "50", "x");
+    expect(preserved).toBe(50);
+
+    preserved = syncPreservedWhenManualValid(preserved, "60", "x");
+    expect(preserved).toBe(50);
+
+    preserved = syncPreservedWhenManualValid(preserved, "60", "10");
+    expect(preserved).toBe(60);
+
+    expect(manualMinutesAfterClear(preserved)).toBe(60);
   });
 });
 

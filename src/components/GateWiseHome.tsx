@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import type {
   Facility,
   FacilityValidationError,
@@ -22,7 +22,7 @@ import {
   buildFacilityFilterQuery,
   buildFlightContextInput,
 } from "@/lib/browse-integration";
-import { acceptedMinutesUntilBoardingFromDraft } from "@/lib/preserved-manual-minutes";
+import { preservedManualMinutesFromValidContext } from "@/lib/preserved-manual-minutes";
 import { buildRankedRecommendations } from "@/lib/recommendation-page-integration";
 import {
   DEMO_ACTIVITY_MINUTES,
@@ -92,6 +92,24 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
     useState(true);
 
   const baselineUsesLiveCountdown = countdownState.mode === "countdown";
+
+  const syncPreservedManualFromDrafts = useCallback(
+    (minutesDraft: string, bufferDraft: string) => {
+      if (countdownState.mode !== "manual") {
+        return;
+      }
+      const accepted = preservedManualMinutesFromValidContext(
+        minutesDraft,
+        bufferDraft,
+      );
+      if (accepted === undefined) {
+        return;
+      }
+      setPreservedManualMinutes(accepted);
+      setCountdownState({ mode: "manual", minutesUntilBoarding: accepted });
+    },
+    [countdownState.mode],
+  );
 
   const handleExitCountdownToManual = (minutes: number) => {
     setCountdownState({ mode: "manual", minutesUntilBoarding: minutes });
@@ -284,18 +302,7 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
               onChange={(event) => {
                 const nextMinutes = event.target.value;
                 setMinutesInput(nextMinutes);
-                const accepted = acceptedMinutesUntilBoardingFromDraft(
-                  nextMinutes,
-                  bufferInput,
-                );
-                if (accepted === undefined) {
-                  return;
-                }
-                setPreservedManualMinutes(accepted);
-                setCountdownState({
-                  mode: "manual",
-                  minutesUntilBoarding: accepted,
-                });
+                syncPreservedManualFromDrafts(nextMinutes, bufferInput);
               }}
               readOnly={baselineUsesLiveCountdown}
               aria-readonly={baselineUsesLiveCountdown}
@@ -323,7 +330,11 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
               inputMode="numeric"
               className="gw-input gw-focus-ring"
               value={bufferInput}
-              onChange={(event) => setBufferInput(event.target.value)}
+              onChange={(event) => {
+                const nextBuffer = event.target.value;
+                setBufferInput(nextBuffer);
+                syncPreservedManualFromDrafts(minutesInput, nextBuffer);
+              }}
               aria-invalid={Boolean(bufferError)}
               aria-describedby={bufferError ? "buffer-error" : undefined}
             />
