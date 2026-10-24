@@ -1,6 +1,6 @@
-# GateWise — Devpost submission draft
+# GateWise — Devpost submission copy
 
-Prepared 2026-10-24 (Eastern Time), GW-021. **Editorial draft for lead review; not submitted.** Code descriptions are supported by inspected `origin/main` commit `babaf96`. Browser behavior, test/build success and deployment were not verified in this task. Remove editorial notes and fill verified submission links before publishing; do not turn planned work into completed claims.
+Finalized 2026-10-24 (Eastern Time), GW-021/023. Submission copy prepared for the Engineering Lead; **not submitted**. Live MVP: [gate-wise-iota.vercel.app](https://gate-wise-iota.vercel.app). Core browser smoke evidence is recorded in [consolidated QA](consolidated-qa-report.md); the URL was reopened successfully during finalization. Final deployed SHA, full automated regression and mobile/accessibility sign-off remain unverified. Use the narrative sections below for Devpost; the handoff section is an internal checklist, not judge-facing copy.
 
 ## Project name
 
@@ -20,7 +20,7 @@ Knowing where an airport café is does not tell a traveler whether a visit fits 
 
 ## What it does
 
-The inspected implementation supports a boarding-start time input, safety buffer, facility-name/category filters, ranked recommendation cards and a what-if comparison. The MVP is deliberately limited to SFO Terminal 2, D Gates, with twelve approved official-source facility records.
+GateWise supports a boarding-start time input, safety buffer, facility-name/category filters, ranked recommendation cards and a what-if comparison. The MVP is deliberately limited to SFO Terminal 2, D Gates, with twelve approved official-source facility records.
 
 Each outcome exposes a numeric breakdown when essential durations are known: feasible in the model, tight, or over budget. Missing durations remain unknown, and incompatible or unverified security-side access is explained as ineligible. “Feasible” describes assumptions inside the model; it does not promise boarding success.
 
@@ -43,13 +43,13 @@ Margins of at least 10 are feasible in the model; margins at least 0 and below 1
 
 The twelve-record dataset contains names, location descriptions, official SFO source URLs, checked dates and confidence labels. Companion provenance documents post-security evidence. The research date is 2026-10-24; it is not a guarantee of current service availability.
 
-The source JSON has null queue and activity durations. An opt-in mode in the inspected implementation applies labeled demo estimates to in-memory copies: eight minutes for queue and ten for activity. The D→D travel model uses an unverified three-minute estimate per leg. These values are demonstrations, not airport measurements or live predictions.
+The source JSON has null queue and activity durations. An opt-in mode applies labeled demo estimates to in-memory copies: eight minutes for queue and ten for activity. The D→D travel model uses an unverified three-minute estimate per leg. These values are demonstrations, not airport measurements or live predictions.
 
 The initial dataset excludes three unresolved location/identity cases rather than presenting uncertainty as fact. [Data provenance and exclusions](data-provenance.md) are available for review.
 
 ## Demonstration example
 
-This is simulated arithmetic, not a verified real-world visit or a claim that a demo recording has been completed:
+The live browser audit exercised this sequence using synthetic timing assumptions, not a measured real-world visit:
 
 - Three minutes outbound, three returning, eight in queue, ten for the activity and a ten-minute buffer total **34 minutes**.
 - With 50 minutes until boarding starts, the margin is **+16: feasible in the model**.
@@ -62,7 +62,7 @@ The same engine explains each change. With visit estimates off, the real dataset
 
 The central challenge was separating a trustworthy location claim from an uncertain duration. Official sources can disagree about a nearby gate or business name, while even a valid listing does not provide a current queue. The project addresses this with documented exclusions, nullable durations and explicit source/estimate labels.
 
-A second challenge was keeping the calculator and what-if comparison consistent. Shared contracts, one pure recommendation engine and independently calculated expected outputs make the assumptions inspectable. The tests are implementation artifacts; this draft does not claim that a full test suite or deployed acceptance run passed in this environment.
+A second challenge was keeping the calculator and what-if comparison consistent. Shared contracts, one pure recommendation engine and independently calculated expected outputs make the assumptions inspectable. The model can be checked against independently calculated expected results, including boundary margins and missing-data cases.
 
 ## Limitations
 
@@ -70,25 +70,27 @@ The MVP covers one terminal and one coarse boarding zone. Gate landmarks are ori
 
 ## What's next
 
-Priorities are final regression/mobile/accessibility checks, a verified live build and a recorded walkthrough. After that, better evidenced within-terminal travel data and clearer uncertainty could improve the model. Additional coverage and optional two-stop planning would require separate approval and supporting data.
+Priorities are final regression/mobile/accessibility checks and a recorded walkthrough on the final reviewed deployment. After that, better evidenced within-terminal travel data and clearer uncertainty could improve the model. Additional coverage and optional two-stop planning would require separate approval and supporting data.
 
 ## Built with
 
-Next.js, React, TypeScript, Tailwind CSS, local JSON, Vitest, GitHub.
+Next.js, React, TypeScript, Tailwind CSS, local JSON, Vitest, GitHub, Vercel.
 
-Vercel is the intended hosting target; it is omitted from completed deployment claims until the lead verifies a project and URL. No live-data or AI service is listed as a dependency.
+The public MVP is hosted at the Vercel URL above. No live-data or AI service is listed as a dependency.
 
-## Submission fields and evidence still needed
+## Internal submission handoff — do not paste as project narrative
 
 | Field | Value / evidence state |
 | --- | --- |
 | Source repository | [cucu071212/GateWise](https://github.com/cucu071212/GateWise) |
-| Inspected implementation snapshot | `origin/main` at `babaf96`; source review only |
-| Live demo URL | Not verified; lead must supply the actual deployed URL |
+| Inspected implementation snapshot | `origin/main` at `babaf96`; exact deployed SHA still needs lead confirmation |
+| Live demo URL | [Production MVP](https://gate-wise-iota.vercel.app), reopened 2026-10-24 |
 | Demo video URL | Not supplied or verified; no recording claim |
 | Final tests, TypeScript and build result | Required from the configured lead environment; npm/npx unavailable here |
-| Mobile, accessibility and deployed smoke evidence | Not executed during this task; record results against the final build |
+| Browser evidence | B+C smoke, margin boundaries, representative validation and data-confidence behavior passed in the independent audit; not full regression |
+| Mobile/accessibility | Still pending against the final build |
+| GW-015 schematic | Integration branch exists; not visible on production at finalization check. Do not describe as deployed until confirmed |
 | Team names, contributions and applicable event disclosure fields | Human lead supplies and confirms |
 | Submission completion | Not submitted by this task |
 
-Before publishing, reconcile this copy with the final reviewed commit and actual verified behavior. Follow [qa-checklist.md](qa-checklist.md) and rehearse [demo-script.md](demo-script.md); their source-snapshot caveats remain relevant. The lead owns final submission and deployment decisions.
+Before publishing, complete [submission-checklist.md](submission-checklist.md), record [demo-script.md](demo-script.md), and reconcile copy with the final deployed commit. Keep any schematic claim gated on a fresh production check. No GW-E implementation is claimed. The lead owns final submission and deployment decisions.

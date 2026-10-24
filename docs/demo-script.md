@@ -1,43 +1,57 @@
-# GateWise judge walkthrough — GW-018
+# GateWise — recording shot list and presentation script
 
-Target: **2–3 minutes**; prepared 2026-10-24 (Eastern Time). This is a rehearsal script and proposed acceptance scenario, not evidence that the UI already works. The local checkout currently contains a design-system preview; engine and what-if integration are absent. No live walkthrough or timed spoken rehearsal has been completed.
+GW-021/023, finalized 2026-10-24 (Eastern Time). Target **2:40**, not yet a measured rehearsal or completed recording. [Production](https://gate-wise-iota.vercel.app) loads; the core sequence below was exercised in the [independent live audit](consolidated-qa-report.md). Recheck the final deployment before recording. No source JSON edits or new timing assumptions are needed.
 
-The human requested this lowercase filename; no second `DEMO_SCRIPT.md` is created. QA cases and recording guidance are in [qa-checklist.md](qa-checklist.md); facility evidence is in [data-provenance.md](data-provenance.md).
+## Setup and concise shot list
 
-## Presenter readiness
+Start a clean production view: main boarding **50**, buffer **10**, scenario **50**, queue delta **0**, demo estimates **off**, filters cleared. Close unrelated tabs/notifications; record readable text and clear audio. If the live behavior differs, pause and report it rather than narrating an expected result as observed.
 
-Use the live-action version only after the lead verifies the reviewed build has context input, search, recommendations and what-if comparison. Confirm sources/estimate labels are visible and all demo steps pass on that build.
-
-The real 12-record dataset has null waiting/activity times. Start by explaining unknown results. A numerical demo additionally needs an **explicitly approved, clearly labeled synthetic D-only scenario**, separate from the production JSON. The proposed arithmetic below does not approve new time values, implement a fixture, or assign estimates to Napa Farms/Peet's/16th & Dolores. If this setup is unavailable, use the honest fallback below.
-
-Proposed model-only scenario: D→D 3 outbound + 3 return + queue 8 + activity 10 + buffer 10 = **34 minutes required**. The three-minute legs are already labeled demo estimates; queue/activity assumptions still need explicit lead approval. This is separate from the original 42-minute D/E regression, which belongs only to illustrative tests.
-
-## 2:30 narrative with conditional action cues
-
-| Time | Presenter narration | Action, only if verified in the reviewed build |
+| Time | Shot / action | Evidence to keep readable |
 | --- | --- | --- |
-| 0:00–0:25 | “You have time before boarding, but an airport map only tells you where things are. The harder question is whether you have time for coffee or food and still return to your gate. GateWise helps make that tradeoff visible.” | Show the opening view. |
-| 0:25–0:50 | “Our MVP focuses on SFO Terminal 2, D Gates. We have twelve sourced facility records. We keep official location information separate from timing assumptions. Those sources do not tell us the current queue or guarantee that a business is open.” | Show the scope and sourced entries. If search is verified, find Peet's near D7 and briefly switch category. |
-| 0:50–1:20 | “When visit times are unknown, the model says unknown. For the next example, we use clearly simulated inputs. The model adds outbound travel, return travel, queue, activity and one buffer. Here that is three plus three plus eight plus ten plus ten: thirty-four minutes. With fifty minutes until boarding starts, the margin is sixteen: feasible in the model.” | First show unknown on the unmodified dataset. Then use only the approved synthetic scenario; show its full breakdown and labels. |
-| 1:20–1:55 | “What if boarding starts in thirty-five minutes instead? The same visit now leaves one minute of margin: tight. Now add seven minutes to the queue assumption. Required time rises to forty-one minutes, leaving a six-minute deficit: over budget. The comparison explains what changed while keeping the baseline visible.” | Keep baseline at 50/queue delta 0; hypothetical 35/0, then 35/+7. Verify +16 → +1 → -6 margins. |
-| 1:55–2:20 | “These are model outcomes, not live airport measurements. Missing information stays unknown. A facility whose security-side eligibility is unverified must not be treated as eligible. Our aim is to show the assumptions and the reason for a recommendation.” | Show source/estimate details and unknown/ineligible explanation only if an approved fixture and UI support it. Otherwise explain verbally. |
-| 2:20–2:30 | “GateWise helps travelers compare options with the time they have. It does not promise boarding success; travelers must follow their airline's instructions and allow for changing conditions.” | End on the comparison or opening view. |
+| 0:00–0:20 | Presenter/project title, then production opening view | Team GateWise; URL; passenger problem. Use the actual team names in the submission fields. |
+| 0:20–0:45 | Scope and 12-place count; select Coffee, optionally search Peet | Terminal 2 D Gates; approved Peet's D7; official listing/date; unknown timing. |
+| 0:45–1:15 | Enable demo estimates; show Peet's breakdown | Demo banner; 3 + 3 + 8 + 10 + 10 = 34; 50 available → +16 feasible. |
+| 1:15–1:45 | Scroll to What-if, change scenario only to 35; queue stays 0 | Baseline +16 preserved; scenario +1 tight; explanation. |
+| 1:45–2:10 | Change scenario queue delta to +7 | Baseline +16; scenario −6 over budget; 15 fewer available + 7 more queue reduces margin by 22. |
+| 2:10–2:25 | Briefly turn demo estimates off | Both runs unknown; no zero-filled queue or invented total. |
+| 2:25–2:40 | Presenter closing over readable app view | Implementation, future work and no boarding guarantee. |
 
-The spoken text is approximately 250 words; the timing is an estimate until rehearsed, allowing pauses for actions, calculations and labels. Do not read the setup notes to judges or imply that conditional UI actions have already been demonstrated.
+Capture 3–4 stills from the **final reviewed build**: opening/scope, source-plus-estimate breakdown, before/after comparison, and (only if confirmed deployed) the schematic with its disclaimer. Avoid credentials, unrelated personal information, stale preview UI or screenshots implying unknown times are measured. Screenshot/recording creation and upload remain pending human execution.
 
-## If integration or the numeric fixture is unavailable
+## Read-aloud script (approximately 300 words)
 
-Use a clearly announced design-preview walkthrough. Replace live-action claims with:
+**0:00–0:20**
 
-“This build currently shows our design preview. The sourced twelve-record dataset and validation/filtering utilities are prepared, but the recommendation and what-if flow has not been verified in this build. The intended calculation is transparent: for a hypothetical thirty-four-minute visit, fifty minutes until boarding leaves sixteen minutes of margin; thirty-five leaves one. Adding a seven-minute queue assumption creates a six-minute deficit. That arithmetic illustrates the planned comparison, not a live result.”
+“We're team GateWise. Imagine waiting at your gate and wondering whether you have time for coffee. A map tells you where a café is, but it doesn't show whether a visit and the trip back fit before boarding starts. That's the problem we built GateWise to make clearer.”
 
-Show only what actually exists, reference the written calculation if useful, and close with the same uncertainty and boarding-success caveat. Do not click a static chip and describe it as a computed outcome, invent a recording, or claim the demo is deployed. Keep the full walkthrough within 2–3 minutes by shortening the middle section rather than repeating both versions.
+**0:20–0:45**
 
-## Rehearsal checks
+“Our MVP focuses on SFO Terminal 2, D Gates, with twelve sourced facility records. I'll filter to coffee and show Peet's near D7. Its location comes from official SFO information. That doesn't tell us today's queue or whether the business is currently open, so visit timing starts as unknown.”
 
-- Confirm the exact build/URL and whether each action is available; otherwise use the fallback.
-- Keep the original production JSON unchanged: unknown visit durations remain null.
-- Confirm hypothetical changes use the shared engine and preserve baseline values.
-- Confirm the audience can read the timing breakdown, source date and estimate badges.
-- Check arithmetic against QA cases N05–N08 and W01–W03. D/E/F tests must not appear as actual Terminal 2 zones.
-- Time one spoken rehearsal and record actual duration. This script alone is not a completed regression run or demo recording.
+**0:45–1:15**
+
+“Now I'll enable clearly labeled demo estimates. These are synthetic assumptions, not airport measurements. We add three minutes outbound, three returning, eight in queue, ten for the activity and a ten-minute buffer. That's thirty-four required minutes. With fifty minutes until boarding starts, the margin is sixteen: feasible in the model.”
+
+**1:15–1:45**
+
+“What if boarding starts in thirty-five minutes instead? I change only the hypothetical scenario. The baseline stays at fifty, while the scenario leaves one minute of margin: tight. Both sides use the same recommendation engine.”
+
+**1:45–2:10**
+
+“Add seven minutes to the queue assumption and the visit needs forty-one minutes, leaving a six-minute deficit: over budget. Fifteen fewer available minutes plus seven extra queue minutes reduce the margin by twenty-two. The comparison explains what changed.”
+
+**2:10–2:25**
+
+“Turn estimates off and both results return to unknown. We don't replace missing information with zero. We also keep unverified security-side access out of eligible recommendations.”
+
+**2:25–2:40**
+
+“We built this with Next.js, React, TypeScript and one deterministic time-budget engine. Next we want better evidenced travel data and stronger accessibility validation. GateWise exposes assumptions; it never promises boarding success.”
+
+## GW-015 and recording gates
+
+GW-015 is undergoing final integration/deployment. It was **not visible on production** when this package was finalized. The base script does not depend on it. Only after a fresh production check confirms all 12 entries, source/confidence labels and the non-geographic disclaimer may the presenter add: “This schematic groups published landmarks; its spacing is not geography, distance or a walking route.” Replace part of the scope shot; keep the total under three minutes. Do not infer travel times from boxes or claim gate landmarks change the calculations.
+
+Do not demonstrate E/F as Terminal 2 zones or use the 42-minute synthetic regression example. Do not claim GW-E/two-stop planning, live flights, real-time queues, AI inference, current operating hours or measured indoor navigation. Explain ineligible policy verbally; the approved dataset has no live ineligible example to show.
+
+Rehearse once with a timer, record actual duration, watch the export, verify audio/readability, and test the video link without signing in. The official event permits a video up to five minutes; this script targets 2–3. See [submission-checklist.md](submission-checklist.md) for the source and final handoff gates. No recording, upload or submission is claimed by this script.
