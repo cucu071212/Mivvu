@@ -249,15 +249,22 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
             disabled={!datasetValid}
           />
 
-          <label className="flex flex-col gap-1.5 text-sm font-medium text-card-foreground">
-            Minutes until boarding starts
+          <label
+            className="flex flex-col gap-1.5 text-sm font-medium text-card-foreground"
+            htmlFor="baseline-minutes-until-boarding"
+          >
+            Baseline: minutes until boarding starts
             {baselineUsesLiveCountdown ? (
-              <span className="text-xs font-normal text-muted-foreground">
+              <span
+                id="baseline-countdown-hint"
+                className="text-xs font-normal text-muted-foreground"
+              >
                 Updated from device-clock countdown (baseline). What-if scenario
                 minutes stay separate below.
               </span>
             ) : null}
             <input
+              id="baseline-minutes-until-boarding"
               type="text"
               inputMode="numeric"
               className="gw-input gw-focus-ring disabled:cursor-not-allowed disabled:bg-muted/50"
@@ -275,7 +282,14 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
               readOnly={baselineUsesLiveCountdown}
               aria-readonly={baselineUsesLiveCountdown}
               aria-invalid={Boolean(minutesError)}
-              aria-describedby={minutesError ? "minutes-error" : undefined}
+              aria-describedby={
+                [
+                  baselineUsesLiveCountdown ? "baseline-countdown-hint" : null,
+                  minutesError ? "minutes-error" : null,
+                ]
+                  .filter(Boolean)
+                  .join(" ") || undefined
+              }
             />
             {minutesError ? (
               <span id="minutes-error" className="text-sm text-destructive" role="alert">

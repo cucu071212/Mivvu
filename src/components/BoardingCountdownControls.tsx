@@ -47,9 +47,6 @@ export function BoardingCountdownControls({
   disabled = false,
 }: BoardingCountdownControlsProps) {
   const [datetimeLocal, setDatetimeLocal] = useState("");
-  useEffect(() => {
-    setDatetimeLocal(defaultDatetimeLocal(new Date(), 50));
-  }, []);
   const [startError, setStartError] = useState<string | null>(null);
 
   const tickAndSync = useCallback(
@@ -93,7 +90,14 @@ export function BoardingCountdownControls({
   }, [state]);
 
   const handleStart = () => {
-    const parsed = parseBoardingStartAt(datetimeLocal, new Date());
+    const boardingInput =
+      datetimeLocal.trim() === ""
+        ? defaultDatetimeLocal(new Date(), 50)
+        : datetimeLocal;
+    if (datetimeLocal.trim() === "") {
+      setDatetimeLocal(boardingInput);
+    }
+    const parsed = parseBoardingStartAt(boardingInput, new Date());
     if ("error" in parsed) {
       setStartError(errorMessage(parsed.error));
       return;
@@ -160,6 +164,7 @@ export function BoardingCountdownControls({
             value={datetimeLocal}
             onChange={(event) => setDatetimeLocal(event.target.value)}
             disabled={disabled}
+            placeholder="Select local boarding start"
           />
         </label>
       ) : (

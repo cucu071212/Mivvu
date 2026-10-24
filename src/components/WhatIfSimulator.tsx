@@ -193,9 +193,13 @@ export function WhatIfSimulator({
       </header>
 
       <div className="grid gap-3 sm:grid-cols-2">
-        <label className="flex flex-col gap-1.5 text-sm font-medium text-card-foreground">
+        <label
+          className="flex flex-col gap-1.5 text-sm font-medium text-card-foreground"
+          htmlFor="whatif-scenario-minutes"
+        >
           Scenario: minutes until boarding starts
           <input
+            id="whatif-scenario-minutes"
             type="text"
             inputMode="numeric"
             className="gw-input gw-focus-ring"
