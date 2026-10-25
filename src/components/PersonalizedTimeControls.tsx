@@ -151,6 +151,11 @@ export function PersonalizedTimeControls({
     [overrides],
   );
 
+  const hasDraftEdits = useMemo(
+    () => Object.keys(drafts).length > 0,
+    [drafts],
+  );
+
   const draftsValid = personalizationDraftsAreValid(fieldErrors);
 
   useEffect(() => {
@@ -275,7 +280,7 @@ export function PersonalizedTimeControls({
           type="button"
           className="gw-focus-ring min-h-11 rounded-md border border-border bg-card px-3 py-2 text-sm font-medium text-card-foreground transition-colors hover:border-primary disabled:cursor-not-allowed disabled:opacity-60"
           onClick={handleResetAll}
-          disabled={disabled || overrideCount === 0}
+          disabled={disabled || (overrideCount === 0 && draftsValid && !hasDraftEdits)}
         >
           Reset all overrides
         </button>
@@ -286,6 +291,13 @@ export function PersonalizedTimeControls({
           const queueKey = draftKey(facility.id, "queueMinutes");
           const activityKey = draftKey(facility.id, "activityMinutes");
           const hasOverride = Boolean(overrides[facility.id]);
+          const hasFacilityDraft =
+            drafts[queueKey] !== undefined || drafts[activityKey] !== undefined;
+          const hasFacilityError = Boolean(
+            fieldErrors[queueKey] || fieldErrors[activityKey],
+          );
+          const canClearFacility =
+            hasOverride || hasFacilityDraft || hasFacilityError;
 
           return (
             <li
@@ -305,7 +317,7 @@ export function PersonalizedTimeControls({
                   type="button"
                   className="gw-focus-ring min-h-11 shrink-0 rounded-md px-2 text-sm font-medium text-primary underline-offset-2 hover:underline disabled:cursor-not-allowed disabled:opacity-60"
                   onClick={() => handleClearFacility(facility.id)}
-                  disabled={disabled || !hasOverride}
+                  disabled={disabled || !canClearFacility}
                 >
                   Clear this place
                 </button>

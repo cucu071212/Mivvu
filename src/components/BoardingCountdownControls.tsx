@@ -1,17 +1,18 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   clearCountdown,
   parseBoardingStartAt,
   type BoardingCountdownState,
 } from "@/lib/boarding-countdown";
+import type { CountdownManualExitPayload } from "@/lib/countdown-baseline-recovery";
 import {
-  evaluateRunningCountdownTick,
   manualMinutesAfterClear,
   safePauseCountdown,
   safeResumeCountdown,
 } from "@/lib/boarding-countdown-ui";
+import { runRunningCountdownTick } from "@/lib/running-countdown-tick";
 
 export type BoardingCountdownControlsProps = {
   state: BoardingCountdownState;
@@ -20,8 +21,7 @@ export type BoardingCountdownControlsProps = {
   onBaselineMinutesChange: (minutes: number) => void;
   /** Last manual baseline minutes before countdown overwrites the field. */
   preservedManualMinutes: number;
-  /** Exit countdown and restore manual baseline (invalid tick, failed pause/resume, clear). */
-  onExitToManual: (minutes: number, userMessage?: string) => void;
+  onCountdownExit: (payload: CountdownManualExitPayload) => void;
   disabled?: boolean;
 };
 
@@ -41,9 +41,9 @@ function errorMessage(code: string): string {
       return "Enter a valid boarding date and time.";
     case "countdown_pause_failed":
     case "countdown_resume_failed":
-      return "Countdown could not be updated safely and was stopped. Baseline minutes were restored.";
+      return "Countdown could not be updated safely and was stopped.";
     default:
-      return "Countdown stopped. Baseline minutes were restored to your last manual value.";
+      return "Countdown stopped because the device clock or boarding time could not be trusted.";
   }
 }
 
@@ -52,44 +52,80 @@ export function BoardingCountdownControls({
   onStateChange,
   onBaselineMinutesChange,
   preservedManualMinutes,
-  onExitToManual,
+  onCountdownExit,
   disabled = false,
 }: BoardingCountdownControlsProps) {
   const [datetimeLocal, setDatetimeLocal] = useState("");
   const [startError, setStartError] = useState<string | null>(null);
   const [runtimeError, setRuntimeError] = useState<string | null>(null);
+  const [boardingStartedVisible, setBoardingStartedVisible] = useState(false);
 
-  const exitToManual = useCallback(
-    (userMessage?: string) => {
-      const minutes = manualMinutesAfterClear(preservedManualMinutes);
-      onExitToManual(minutes, userMessage);
-      setRuntimeError(userMessage ?? null);
-    },
-    [onExitToManual, preservedManualMinutes],
-  );
-
-  const tickAndSync = useCallback(
-    (running: Extract<BoardingCountdownState, { mode: "countdown"; runState: "running" }>) => {
-      const result = evaluateRunningCountdownTick(
-        running.boardingStartAt,
-        new Date(),
-      );
-      if (result.kind === "invalid") {
-        exitToManual(errorMessage(result.code));
-        return;
-      }
-      onBaselineMinutesChange(result.minutesUntilBoarding);
-    },
-    [exitToManual, onBaselineMinutesChange],
-  );
+  const stateRef = useRef(state);
+  const lastBaselineMinutesRef = useRef(preservedManualMinutes);
+  const onBaselineMinutesChangeRef = useRef(onBaselineMinutesChange);
+  const onCountdownExitRef = useRef(onCountdownExit);
+  const preservedManualMinutesRef = useRef(preservedManualMinutes);
 
   useEffect(() => {
-    if (state.mode !== "countdown" || state.runState !== "running") {
+    stateRef.current = state;
+    onBaselineMinutesChangeRef.current = onBaselineMinutesChange;
+    onCountdownExitRef.current = onCountdownExit;
+    preservedManualMinutesRef.current = preservedManualMinutes;
+  }, [state, onBaselineMinutesChange, onCountdownExit, preservedManualMinutes]);
+
+  const failCountdown = useCallback(
+    (message: string, lastBaselineMinutes: number) => {
+      setRuntimeError(message);
+      const manual = clearCountdown(lastBaselineMinutes);
+      onStateChange(manual);
+      stateRef.current = manual;
+      onCountdownExitRef.current({
+        reason: "countdown_failure",
+        preservedManualMinutes: preservedManualMinutesRef.current,
+        lastBaselineMinutes,
+        message,
+      });
+    },
+    [onStateChange],
+  );
+
+  const applyTickOutcome = useCallback((outcome: ReturnType<typeof runRunningCountdownTick>) => {
+    if (outcome.kind === "noop") {
+      return;
+    }
+    if (outcome.kind === "invalid") {
+      failCountdown(errorMessage(outcome.code), outcome.lastBaselineMinutes);
+      return;
+    }
+    lastBaselineMinutesRef.current = outcome.minutesUntilBoarding;
+    onBaselineMinutesChangeRef.current(outcome.minutesUntilBoarding);
+    if (outcome.boardingStarted) {
+      setBoardingStartedVisible(true);
+    }
+  }, [failCountdown]);
+
+  const tickNow = useCallback(() => {
+    applyTickOutcome(
+      runRunningCountdownTick(
+        stateRef.current,
+        new Date(),
+        lastBaselineMinutesRef.current,
+      ),
+    );
+  }, [applyTickOutcome]);
+
+  const runningBoardingStartAt =
+    state.mode === "countdown" && state.runState === "running"
+      ? state.boardingStartAt
+      : null;
+
+  useEffect(() => {
+    if (!runningBoardingStartAt) {
       return undefined;
     }
-    const id = window.setInterval(() => tickAndSync(state), 1000);
+    const id = window.setInterval(tickNow, 1000);
     return () => window.clearInterval(id);
-  }, [state, tickAndSync]);
+  }, [runningBoardingStartAt, tickNow]);
 
   const liveLabel = useMemo(() => {
     if (state.mode === "manual") {
@@ -98,8 +134,11 @@ export function BoardingCountdownControls({
     if (state.runState === "paused") {
       return "Countdown paused (baseline frozen)";
     }
+    if (boardingStartedVisible) {
+      return "Boarding has started (baseline at 0)";
+    }
     return "Live device-clock countdown (baseline only)";
-  }, [state]);
+  }, [state, boardingStartedVisible]);
 
   const handleSuggestFromManualBudget = () => {
     setDatetimeLocal(defaultDatetimeLocal(new Date(), preservedManualMinutes));
@@ -121,25 +160,31 @@ export function BoardingCountdownControls({
     }
     setStartError(null);
     setRuntimeError(null);
+    setBoardingStartedVisible(false);
+    lastBaselineMinutesRef.current = preservedManualMinutesRef.current;
     const next: BoardingCountdownState = {
       mode: "countdown",
       runState: "running",
       boardingStartAt: parsed.boardingStartAt.toISOString(),
     };
     onStateChange(next);
-    tickAndSync(next);
+    stateRef.current = next;
+    applyTickOutcome(
+      runRunningCountdownTick(next, new Date(), lastBaselineMinutesRef.current),
+    );
   };
 
   const handlePause = () => {
     if (state.mode !== "countdown" || state.runState !== "running") return;
     const result = safePauseCountdown(state, new Date());
     if (!result.ok) {
-      exitToManual(errorMessage(result.code));
+      failCountdown(errorMessage(result.code), lastBaselineMinutesRef.current);
       return;
     }
     setRuntimeError(null);
     onStateChange(result.state);
     const minutes = Math.floor(result.state.pausedRemainingMs / 60_000);
+    lastBaselineMinutesRef.current = minutes;
     onBaselineMinutesChange(minutes);
   };
 
@@ -147,21 +192,33 @@ export function BoardingCountdownControls({
     if (state.mode !== "countdown" || state.runState !== "paused") return;
     const result = safeResumeCountdown(state, new Date());
     if (!result.ok) {
-      exitToManual(errorMessage(result.code));
+      failCountdown(errorMessage(result.code), lastBaselineMinutesRef.current);
       return;
     }
     setRuntimeError(null);
     onStateChange(result.state);
-    tickAndSync(result.state);
+    stateRef.current = result.state;
+    applyTickOutcome(
+      runRunningCountdownTick(
+        result.state,
+        new Date(),
+        lastBaselineMinutesRef.current,
+      ),
+    );
   };
 
   const handleClear = () => {
     const minutes = manualMinutesAfterClear(preservedManualMinutes);
     const manual = clearCountdown(minutes);
     onStateChange(manual);
-    onBaselineMinutesChange(manual.minutesUntilBoarding);
+    onCountdownExit({
+      reason: "user_clear",
+      preservedManualMinutes: minutes,
+      lastBaselineMinutes: lastBaselineMinutesRef.current,
+    });
     setStartError(null);
     setRuntimeError(null);
+    setBoardingStartedVisible(false);
   };
 
   return (
@@ -185,6 +242,17 @@ export function BoardingCountdownControls({
         minutes until boarding; What-if scenario minutes stay a separate fixed
         field.
       </p>
+
+      {boardingStartedVisible ? (
+        <p
+          className="rounded-md border border-[var(--gw-status-tight-border)] bg-[var(--gw-status-tight-bg)] p-3 text-sm font-semibold text-[var(--gw-status-tight-fg)]"
+          role="alert"
+          aria-live="assertive"
+        >
+          Boarding has started per your device clock. Baseline minutes are at 0
+          in the model — not a guarantee you can still board.
+        </p>
+      ) : null}
 
       {state.mode === "manual" ? (
         <div className="flex flex-col gap-2">
@@ -237,7 +305,7 @@ export function BoardingCountdownControls({
         {state.mode === "manual" ? (
           <button
             type="button"
-            className="gw-focus-ring min-h-11 rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground disabled:opacity-60"
+            className="gw-focus-ring min-h-11 rounded-md border-2 border-[var(--gw-primary)] bg-[var(--gw-primary)] px-3 py-2 text-sm font-semibold text-[var(--gw-on-primary)] shadow-sm hover:bg-[var(--gw-primary-hover)] disabled:opacity-60"
             onClick={handleStart}
             disabled={disabled}
           >

@@ -39,6 +39,11 @@ import {
 } from "@/components/PersonalizedTimeControls";
 import { BoardingCountdownControls } from "@/components/BoardingCountdownControls";
 import type { BoardingCountdownState } from "@/lib/boarding-countdown";
+import {
+  baselineRecoveryRequiredAfterExit,
+  minutesInputAfterCountdownExit,
+  type CountdownManualExitPayload,
+} from "@/lib/countdown-baseline-recovery";
 import type { ResolvedFacilityDurations } from "@/types/airport";
 
 const GATE_LANDMARKS: GateLandmark[] = [
@@ -90,6 +95,11 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
   );
   const [personalizationDraftsValid, setPersonalizationDraftsValid] =
     useState(true);
+  const [baselineRecoveryRequired, setBaselineRecoveryRequired] =
+    useState(false);
+  const [baselineRecoveryMessage, setBaselineRecoveryMessage] = useState<
+    string | null
+  >(null);
 
   const baselineUsesLiveCountdown = countdownState.mode === "countdown";
 
@@ -111,10 +121,40 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
     [countdownState.mode],
   );
 
-  const handleExitCountdownToManual = (minutes: number) => {
-    setCountdownState({ mode: "manual", minutesUntilBoarding: minutes });
+  const handleBaselineMinutesFromCountdown = useCallback((minutes: number) => {
     setMinutesInput(String(minutes));
-  };
+  }, []);
+
+  const handleCountdownExit = useCallback(
+    (payload: CountdownManualExitPayload) => {
+      const minutes = payload.reason === "user_clear"
+        ? payload.preservedManualMinutes
+        : payload.lastBaselineMinutes;
+      setCountdownState({ mode: "manual", minutesUntilBoarding: minutes });
+      setMinutesInput(minutesInputAfterCountdownExit(payload));
+      if (baselineRecoveryRequiredAfterExit(payload.reason)) {
+        setBaselineRecoveryRequired(true);
+        setBaselineRecoveryMessage(
+          payload.message ??
+            "Countdown stopped. Recommendations stay paused until you restore your last manual minutes.",
+        );
+        return;
+      }
+      setBaselineRecoveryRequired(false);
+      setBaselineRecoveryMessage(null);
+    },
+    [],
+  );
+
+  const handleRestoreManualBaseline = useCallback(() => {
+    setBaselineRecoveryRequired(false);
+    setBaselineRecoveryMessage(null);
+    setMinutesInput(String(preservedManualMinutes));
+    setCountdownState({
+      mode: "manual",
+      minutesUntilBoarding: preservedManualMinutes,
+    });
+  }, [preservedManualMinutes]);
 
   const facilityIds = useMemo(
     () => facilities.map((facility) => facility.id),
@@ -151,7 +191,8 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
       !datasetValid ||
       !contextValid ||
       !contextResult.context ||
-      !personalizationDraftsValid
+      !personalizationDraftsValid ||
+      baselineRecoveryRequired
     ) {
       return [];
     }
@@ -172,6 +213,7 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
     demoEstimatesEnabled,
     durationOverrides,
     personalizationDraftsValid,
+    baselineRecoveryRequired,
   ]);
 
   const resolvedDurationsByFacilityId = useMemo(() => {
@@ -268,14 +310,35 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
             </span>
           </label>
 
+          {baselineRecoveryRequired ? (
+            <div
+              className="gw-surface-card flex flex-col gap-3 border-destructive/40 p-4 sm:col-span-2"
+              role="alert"
+            >
+              <p className="text-sm text-destructive">
+                {baselineRecoveryMessage}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Your last manual budget ({preservedManualMinutes} min) was not
+                restored automatically. Confirm below to use it again for
+                recommendations.
+              </p>
+              <button
+                type="button"
+                className="gw-focus-ring min-h-11 self-start rounded-md border-2 border-[var(--gw-primary)] bg-[var(--gw-primary)] px-3 py-2 text-sm font-semibold text-[var(--gw-on-primary)] hover:bg-[var(--gw-primary-hover)]"
+                onClick={handleRestoreManualBaseline}
+              >
+                Restore last manual minutes ({preservedManualMinutes})
+              </button>
+            </div>
+          ) : null}
+
           <BoardingCountdownControls
             state={countdownState}
             onStateChange={setCountdownState}
-            onBaselineMinutesChange={(minutes) =>
-              setMinutesInput(String(minutes))
-            }
+            onBaselineMinutesChange={handleBaselineMinutesFromCountdown}
             preservedManualMinutes={preservedManualMinutes}
-            onExitToManual={handleExitCountdownToManual}
+            onCountdownExit={handleCountdownExit}
             disabled={!datasetValid}
           />
 
@@ -427,6 +490,13 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
           </p>
         ) : null}
 
+        {datasetValid && contextValid && baselineRecoveryRequired ? (
+          <p className="gw-surface-card border-destructive/40 p-4 text-sm text-destructive" role="alert">
+            Recommendations are paused until you restore your last manual minutes
+            after the countdown stopped unexpectedly.
+          </p>
+        ) : null}
+
         {datasetValid && contextValid && !personalizationDraftsValid ? (
           <p className="gw-surface-card border-destructive/40 p-4 text-sm text-destructive" role="alert">
             Recommendations are paused until personal estimate fields are valid
@@ -522,7 +592,12 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
 
       {contextResult.context ? (
         <WhatIfSimulator
-          enabled={datasetValid && contextValid && personalizationDraftsValid}
+          enabled={
+            datasetValid &&
+            contextValid &&
+            personalizationDraftsValid &&
+            !baselineRecoveryRequired
+          }
           baselineContext={contextResult.context}
           facilities={facilities}
           filter={filterQuery}
