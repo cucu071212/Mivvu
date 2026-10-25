@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef } from "react";
 import type { Facility } from "@/types/airport";
 import { ConfidenceBadge } from "@/components/ConfidenceBadge";
 import { FacilityInformation } from "@/components/FacilityInformation";
+import { FacilityVisualMedia } from "@/components/FacilityVisualMedia";
 import {
   facilityTerminalBoardingLabel,
   recommendEligibilityLabel,
@@ -110,6 +111,11 @@ export function FacilityDetailDialog({
         </header>
 
         <div className="min-h-0 flex-1 overflow-y-auto pr-1">
+          <FacilityVisualMedia
+            facility={facility}
+            variant="detail"
+            className="mb-3"
+          />
           {!facility.recommendEligible ? (
             <p
               className="mb-3 rounded-md border border-border bg-muted/40 p-3 text-sm text-muted-foreground"

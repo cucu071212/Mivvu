@@ -1,0 +1,55 @@
+{
+  "version": "gw-facility-visual-v1",
+  "assets": [
+    {
+      "facilityId": "sfo-t2-d-books-inc",
+      "imagePath": "/facility-visual/approved/sfo-t2-d-books-inc.jpg",
+      "rightsStatus": "approved",
+      "imageRole": "venue",
+      "depictsSfoLocation": true,
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Compass_Books,_SFO.jpg",
+      "rightsEvidence": "Creative Commons CC0 1.0 (https://creativecommons.org/publicdomain/zero/1.0/). Uploader released rights on Wikimedia Commons; description states Compass Books in Terminal 2 at SFO.",
+      "attribution": "Photo: Wikimedia Commons (CC0). Compass Books at SFO Terminal 2 — related to the Books Inc. airport listing."
+    },
+    {
+      "facilityId": "sfo-t2-d-peets-coffee-d7",
+      "imagePath": "/facility-visual/approved/sfo-t2-d-peets-coffee-d7.jpg",
+      "rightsStatus": "approved",
+      "imageRole": "illustrative",
+      "depictsSfoLocation": false,
+      "sourceUrl": "https://unsplash.com/photos/coffee-beans-on-brown-wooden-table-4kgy3GP2pPE",
+      "rightsEvidence": "Unsplash License (https://unsplash.com/license) — royalty-free use including commercial; not a photograph of Peet's Coffee at SFO.",
+      "attribution": "Illustrative photo: Nathan Dumlao / Unsplash"
+    },
+    {
+      "facilityId": "sfo-t2-d-burger-joint",
+      "imagePath": "/facility-visual/approved/sfo-t2-d-burger-joint.jpg",
+      "rightsStatus": "approved",
+      "imageRole": "illustrative",
+      "depictsSfoLocation": false,
+      "sourceUrl": "https://unsplash.com/photos/cheeseburger-on-wooden-table-1550547660",
+      "rightsEvidence": "Unsplash License (https://unsplash.com/license) — royalty-free use including commercial; not a photograph of Burger Joint at SFO.",
+      "attribution": "Illustrative photo: Ilya Mashkov / Unsplash"
+    },
+    {
+      "facilityId": "sfo-t2-d-napa-farms-market",
+      "imagePath": "/facility-visual/approved/sfo-t2-d-napa-farms-market.jpg",
+      "rightsStatus": "approved",
+      "imageRole": "illustrative",
+      "depictsSfoLocation": false,
+      "sourceUrl": "https://unsplash.com/photos/green-vegetables-on-brown-wooden-chopping-board-1542838132",
+      "rightsEvidence": "Unsplash License (https://unsplash.com/license) — royalty-free use including commercial; not a photograph of Napa Farms Market at SFO.",
+      "attribution": "Illustrative photo: Markus Spiske / Unsplash"
+    },
+    {
+      "facilityId": "sfo-t2-d-wakaba",
+      "imagePath": "/facility-visual/approved/sfo-t2-d-wakaba.jpg",
+      "rightsStatus": "approved",
+      "imageRole": "illustrative",
+      "depictsSfoLocation": false,
+      "sourceUrl": "https://unsplash.com/photos/sushi-on-black-ceramic-plate-1617196034796",
+      "rightsEvidence": "Unsplash License (https://unsplash.com/license) — royalty-free use including commercial; not a photograph of Wakaba at SFO.",
+      "attribution": "Illustrative photo: Jez Timms / Unsplash"
+    }
+  ]
+}
