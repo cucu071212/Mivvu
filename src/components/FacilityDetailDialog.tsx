@@ -2,9 +2,12 @@
 
 import { useCallback, useEffect, useRef } from "react";
 import type { Facility } from "@/types/airport";
+import type { GetFacilityLocationEvidence } from "@/types/facility-location-evidence";
 import { ConfidenceBadge } from "@/components/ConfidenceBadge";
 import { FacilityInformation } from "@/components/FacilityInformation";
 import { FacilityVisualMedia } from "@/components/FacilityVisualMedia";
+import { LocationGuidance } from "@/components/LocationGuidance";
+import { getFacilityLocationEvidence } from "@/lib/location-guidance-evidence";
 import {
   facilityTerminalBoardingLabel,
   recommendEligibilityLabel,
@@ -14,6 +17,8 @@ export type FacilityDetailDialogProps = {
   facility: Facility | null;
   open: boolean;
   onClose: () => void;
+  /** 테스트에서 Codex 픽스처를 주입한다. 기본값은 Unknown 시임. */
+  getLocationEvidence?: GetFacilityLocationEvidence;
 };
 
 function timingConfidenceNote(facility: Facility): string {
@@ -27,6 +32,7 @@ export function FacilityDetailDialog({
   facility,
   open,
   onClose,
+  getLocationEvidence = getFacilityLocationEvidence,
 }: FacilityDetailDialogProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -130,6 +136,11 @@ export function FacilityDetailDialog({
           <FacilityInformation
             facility={facility}
             idPrefix={`detail-${facility.id}`}
+          />
+
+          <LocationGuidance
+            facility={facility}
+            evidence={getLocationEvidence(facility.id)}
           />
 
           <section

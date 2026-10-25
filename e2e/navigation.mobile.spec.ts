@@ -19,3 +19,21 @@ test("390px mobile navigation is usable and preserves flight inputs", async ({ p
   }
   await expect(page.getByLabel("Baseline: minutes until boarding starts")).toHaveValue("40");
 });
+
+test("390px Explore facility details show Location guidance", async ({ page }) => {
+  await page.goto("/explore");
+  const trigger = page
+    .getByRole("region", { name: "Facility directory", exact: true })
+    .getByRole("button", { name: "View facility details" })
+    .first();
+  await trigger.scrollIntoViewIfNeeded();
+  await trigger.tap();
+  const dialog = page.getByRole("dialog");
+  await expect(dialog).toBeVisible();
+  await expect(
+    dialog.getByRole("region", { name: /Location guidance/i }),
+  ).toBeVisible();
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1),
+  ).toBe(true);
+});

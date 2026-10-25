@@ -4,6 +4,7 @@ import { cleanup, fireEvent, render, screen, within } from "@testing-library/rea
 import { afterEach } from "vitest";
 import { describe, it, vi } from "vitest";
 import { PRODUCTION_T2_D_FACILITY_LOCATION } from "@/data/fixtures/production-facility-defaults";
+import { TEST_VERIFIED_AREA_EVIDENCE } from "@/data/fixtures/location-evidence-test-fixture";
 import type { Facility } from "@/types/airport";
 import { FacilityDetailDialog } from "./FacilityDetailDialog";
 
@@ -88,6 +89,67 @@ describe("FacilityDetailDialog (GW-C-001)", () => {
     );
     assert.ok(
       within(dialog).getByText(/Queue and activity times are unknown/i),
+    );
+  });
+
+  it("shows Codex verified area evidence for Brookstone", () => {
+    render(
+      <FacilityDetailDialog
+        facility={recommendEligible}
+        open
+        onClose={() => {}}
+      />,
+    );
+    const dialog = screen.getByRole("dialog", { name: /Brookstone/i });
+    const guidance = within(dialog).getByRole("region", {
+      name: /Location guidance/i,
+    });
+    assert.ok(within(guidance).getByText("Verified area"));
+    assert.ok(within(guidance).getByText("Terminal 2 · D Gates · Near Gate D1"));
+    assert.ok(within(guidance).getByText(/Map directory cell E2/i));
+    assert.ok(
+      within(guidance).getByRole("link", {
+        name: /Evidence source \(opens in a new tab\)/i,
+      }),
+    );
+  });
+
+  it("shows Unknown location evidence for facilities outside the Codex package", () => {
+    render(
+      <FacilityDetailDialog facility={browseOnly} open onClose={() => {}} />,
+    );
+    const dialog = screen.getByRole("dialog", { name: /Bun Mee/i });
+    const guidance = within(dialog).getByRole("region", {
+      name: /Location guidance/i,
+    });
+    assert.ok(within(guidance).getByText("Unknown"));
+    assert.ok(within(guidance).getByText(/does not infer a location/i));
+    assert.ok(
+      within(guidance).getByText(
+        /conceptual area guide covers SFO Terminal 2 D Gates only/i,
+      ),
+    );
+  });
+
+  it("renders injected verified evidence inside facility details", () => {
+    render(
+      <FacilityDetailDialog
+        facility={recommendEligible}
+        open
+        onClose={() => {}}
+        getLocationEvidence={() => TEST_VERIFIED_AREA_EVIDENCE}
+      />,
+    );
+    const dialog = screen.getByRole("dialog", { name: /Brookstone/i });
+    const guidance = within(dialog).getByRole("region", {
+      name: /Location guidance/i,
+    });
+    assert.ok(within(guidance).getByText("Verified area"));
+    assert.ok(within(guidance).getByText("Terminal 2 · D Gates · Near Gate D7"));
+    assert.ok(
+      within(guidance).getByRole("link", {
+        name: /Evidence source \(opens in a new tab\)/i,
+      }),
     );
   });
 });
