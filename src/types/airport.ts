@@ -166,6 +166,50 @@ export type ProductionTravelMatrix = Record<
   Record<RecommendScopeZone, number | null>
 >;
 
+/** Production travel model mode (GW-B-002 metadata; graph mode not implemented). */
+export type ProductionTravelMode =
+  | {
+      kind: "legacy_zone";
+      gateZone: RecommendScopeZone;
+      modelId: "legacy-d-demo-v1";
+    }
+  | {
+      kind: "location_graph";
+      graphId: string;
+      policyId: string;
+    };
+
+export type ProductionTravelProvenanceRef =
+  | {
+      kind: "policy_doc";
+      path: string;
+      note: string;
+    }
+  | {
+      kind: "plan_section";
+      section: string;
+      note: string;
+    };
+
+export type ProductionTravelEdgeMetadata = {
+  fromZone: RecommendScopeZone;
+  toZone: RecommendScopeZone;
+  /** Directed leg minutes used by `recommendFacilities` (null = unknown edge). */
+  minutes: number | null;
+  timeConfidence: DataConfidence;
+  /** Matrix legs are directed even when symmetric minutes are used today. */
+  directed: true;
+  /** Minutes for the reverse zone pair when explicitly modeled; null if unknown. */
+  reverseMinutes: number | null;
+  asymmetryNote: string;
+  provenanceRefs: readonly ProductionTravelProvenanceRef[];
+};
+
+export type ProductionTravelEdgeMetadataMatrix = Record<
+  RecommendScopeZone,
+  Record<RecommendScopeZone, ProductionTravelEdgeMetadata | undefined>
+>;
+
 export type IllustrativeTravelMatrix = Record<
   IllustrativeZone,
   Record<IllustrativeZone, number | null>
