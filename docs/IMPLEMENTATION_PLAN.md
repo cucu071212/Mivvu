@@ -606,7 +606,7 @@ Decision needed from human Engineering Lead:
 ## Post-submission — Roadmap (Phase A → X → B → C → D)
 
 **Product spec:** `PLAN.md` §12–§13. **Priority table:** `docs/REMAINING_ROADMAP.md`.  
-**Production baseline:** `af5fe21` (Phase A complete). **Active priority:** Phase **X** (SFO-wide expansion).  
+**Production baseline:** `main` after stabilization merges (see § Phase B status). **Active priority:** Phase **B** (metadata-only travel policy); Phase **X** **COMPLETE**.  
 **Preserve:** `recommendFacilities` contract, countdown/personalization/What-if (GW-F), security headers, Phase A **12** D Gates records.
 
 ### Approval gates (post-submission)
@@ -618,6 +618,7 @@ Decision needed from human Engineering Lead:
 | **G-A1** | Enriched `facilities.json` + validators + tests green; provenance doc updated | GW-B-R001, GW-C-* (partial) |
 | **G-A1 status** | **APPROVED 2026-10-25** — GW-A-002 merged to `main` @ `7010c32` (includes `6e2827f`); GW-A-003 authorized | — |
 | **G-B0** | GW-B-R001 + GW-B-001 policy doc approved | GW-B-002 |
+| **G-B0 (scoped)** | **2026-10-25** — Human Engineering Lead approved **metadata-only** GW-B-002 (no graph routing, no new numeric legs, no GW-E). Requires merged R001 + integration architecture + lead review on `main`. Does **not** authorize physical graph routing or G-B1 matrix expansion. | GW-B-002 implementation branch only until separate merge authorization |
 | **G-B1** | Matrix changes labeled; regression tests pass | GW-C-* (full), production data release |
 | **G-C0** | UX smoke + a11y on preview deploy | **G-E** re-authorization for GW-E |
 | **G-E** | G-F3 shipped + **G-Data** (G-X3 + G-B1 + G-C0) | GW-E1, GW-E2 |
@@ -633,7 +634,8 @@ Decision needed from human Engineering Lead:
 | **G-X2** | Agreed dataset milestone documented; each new row has provenance; no invented fields | GW-X-003 |
 | **G-X2 (signed)** | **2026-10-25** — 21-facility dataset on `main` @ `8c84da5` (12 recommend + 6 T2 browse + 3 HM1 browse); validation + recommend regressions green | GW-X-003 |
 | **G-X3** | GW-X-004 regression green on preview; limitation copy approved | GW-B-R001, further GW-X-002 batches |
-| **G-X3 (signed)** | **2026-10-25** — GW-X-004 @ `6375ae7` on production; **631** tests; **26** browse / **12** recommend; hours `rawText` fix verified (AG1, Vino Volo); report [`GW-X-004-integration-regression-report.md`](./GW-X-004-integration-regression-report.md) | GW-B-R001 (authorized when lead dispatches) |
+| **G-X3 (signed)** | **2026-10-25** — GW-X-004 @ `6375ae7` on production; **26** browse / **12** recommend; hours `rawText` fix verified (AG1, Vino Volo); report [`GW-X-004-integration-regression-report.md`](./GW-X-004-integration-regression-report.md) | Phase B research + design |
+| **G-X3 (production note)** | Stabilization merge adds red-team, Playwright E2E, and a11y on `main`; **640** Vitest + **9** Playwright specs before Phase B doc merge | — |
 
 ### Phase A — Verified airport data (**SHIPPED** @ `af5fe21`)
 
@@ -730,29 +732,32 @@ Decision needed from human Engineering Lead:
 **Tests:** Full `npm test`, `tsc`, `lint`, `build`; production smoke checklist  
 **Acceptance:** **G-X3** — 602+ tests green; Flight countdown, What-if, personalization unchanged; security headers unchanged; D Gates smoke passes.
 
-### Phase B — Distance & walking time (after Phase X)
+### Phase B — Distance & walking time (**ACTIVE** — Phase X complete)
+
+**Architecture (adopted 2026-10-25):** Dual travel modes documented — `legacy_zone` (current 1×1 `D→D` demo matrix) and future `location_graph` (partial graph → Unknown, no invented connectivity). Decisions **C01–C18** accepted per [`GW-B-001-lead-architecture-review.md`](./GW-B-001-lead-architecture-review.md). **GW-E** and physical graph routing remain **unauthorized**.
+
+| Artifact | Location | SHA (authoritative content) |
+| --- | --- | --- |
+| GW-B-R001 | `docs/walking-time-policy.md` | `452686683cb84ff2fa156fc3ea13d8a3b159aa9d` |
+| GW-B-001 integration study | `docs/GW-B-GW-E-integration-architecture.md` | `f9ab25745d89dbe225b8ffc93b43e870d3751152` |
+| Lead review | `docs/GW-B-001-lead-architecture-review.md` | `e0d11a3` |
 
 #### GW-B-R001: Indoor location and routing research (research)
 
-**Owner:** Lead + Teammate  
-**Depends on:** **G-X3** (recommended)  
-**Deliverable:** `docs/data-provenance.md` or `docs/walking-time-policy.md` — options evaluated (SFO PDF/tabloid map, third-party indoor maps), licensing, accuracy limits, **recommended: stay demo_estimate until verified edge list exists**.  
-**Acceptance:** Document states clearly if **no** acceptable automated source exists.
+**Status:** **COMPLETE** — merged to `main` as `docs/walking-time-policy.md`.  
+**Acceptance:** No acceptable automated SFO-wide routing source; smallest safe change is per-edge metadata on legacy matrix.
 
 #### GW-B-001: Travel-time representation policy (design)
 
-**Owner:** Lead  
-**Depends on:** GW-B-R001  
-**Deliverable:** Directed edge list or matrix extension rules: per-edge `DataConfidence`, provenance fields, fallback to `unknown`.  
-**Acceptance:** Aligns with `PLAN.md` §3–§4; asymmetry preserved.
+**Status:** **COMPLETE (design)** — C01–C18 adopted for scoped implementation; human **G-B0** limited to metadata-only GW-B-002 (not G-B1 graph release).
 
 #### GW-B-002: Implement labeled travel updates (implementation)
 
-**Owner:** Lead (`travel-times.ts`) + tests  
-**Depends on:** GW-B-001, **G-B0**  
-**Files:** `src/data/travel-times.ts`, `src/lib/recommend.test.ts` / teammate independent tests  
-**Tests:** `npm test -- recommend`  
-**Acceptance:** **G-B1** — no unlabeled minutes; P0 §5 cases pass or documented baseline change approved by lead.
+**Owner:** Lead (`travel-times.ts`, types, tests)  
+**Depends on:** GW-B-001, **G-B0 (scoped metadata-only)**  
+**Scope:** Explicit per-edge provenance/confidence on existing **D→D = 3** demo minutes only; versioned **12** recommend ID manifest; stronger disclaimers/tests. **Out of scope:** graph search, new walking times, cross-terminal routing, GW-E, `facilities.json` edits.  
+**Tests:** `npm test`, recommend regressions, 12-ID guard  
+**Acceptance:** Numeric recommend outputs unchanged; branch merge/deploy requires separate authorization.
 
 ### Phase C — Real-world usability
 
@@ -806,6 +811,6 @@ Decision needed from human Engineering Lead:
 
 ---
 
-**Document version:** 1.4  
-**Aligned with:** `PLAN.md` v1.5 (Phase A complete; Phase X next), `AGENTS.md`, `docs/GW-F-CONTRACT.md`, `docs/REMAINING_ROADMAP.md`  
-**Next step (human lead):** Authorize **GW-B-R001** (Phase B research) when ready; **G-B0** before travel-matrix implementation. Optional future **GW-X-002** dataset batches per R002 — not implied by Phase X completion.
+**Document version:** 1.5  
+**Aligned with:** `PLAN.md` v1.5 (Phase A + Phase X complete), `AGENTS.md`, `docs/GW-F-CONTRACT.md`, `docs/REMAINING_ROADMAP.md`  
+**Next step (human lead):** Review **GW-B-002** implementation branch; authorize merge + **G-B1** only when metadata slice accepted. Support **GW-C-SUPPORT-BUNDLE** proceeds independently. Optional **GW-X-002** batches require separate authorization.
