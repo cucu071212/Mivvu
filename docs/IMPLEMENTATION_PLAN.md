@@ -631,6 +631,7 @@ Decision needed from human Engineering Lead:
 | **G-X1** | GW-X-001 merged; legacy **12** D facilities + recommend regression green; migration notes in provenance | GW-X-002 (batch 1+) |
 | **G-X1 (signed)** | **2026-10-25** — GW-X-001 @ `eac44dd` merged to `main`; backward-compat + recommend safeguards verified | GW-X-002 batch 1+ |
 | **G-X2** | Agreed dataset milestone documented; each new row has provenance; no invented fields | GW-X-003 |
+| **G-X2 (signed)** | **2026-10-25** — 21-facility dataset on `main` @ `8c84da5` (12 recommend + 6 T2 browse + 3 HM1 browse); validation + recommend regressions green | GW-X-003 |
 | **G-X3** | GW-X-004 regression green on preview; limitation copy approved | GW-B-R001, further GW-X-002 batches |
 
 ### Phase A — Verified airport data (**SHIPPED** @ `af5fe21`)
