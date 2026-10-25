@@ -1,6 +1,7 @@
 import type { Facility } from "@/types/airport";
 import { ConfidenceBadge } from "@/components/ConfidenceBadge";
 import { facilityPublishedHoursPresentation } from "@/lib/facility-hours-label";
+import { FacilityVisualMedia } from "@/components/FacilityVisualMedia";
 import {
   facilityLocationSummary,
   facilityTaglineSummary,
@@ -35,9 +36,10 @@ export function FacilityBrowseCard({
 
   return (
     <article
-      className="gw-surface-card flex flex-col gap-3 p-4 transition-shadow duration-200 hover:shadow-md"
+      className="gw-surface-card flex flex-col gap-3 overflow-hidden p-4 transition-shadow duration-200 hover:shadow-md"
       aria-labelledby={`facility-${facility.id}-title`}
     >
+      <FacilityVisualMedia facility={facility} variant="card" />
       <div className="flex flex-col gap-2">
         <div className="flex flex-wrap items-start justify-between gap-2">
           <h3

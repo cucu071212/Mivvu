@@ -926,6 +926,37 @@
     background: rgb(0 0 0 / 0.45);
   }
 
+  .gw-facility-visual {
+    margin: 0;
+    width: 100%;
+    overflow: hidden;
+    border-radius: var(--gw-radius-md, 0.5rem);
+    border: 1px solid var(--gw-border);
+    background: var(--gw-muted);
+  }
+
+  .gw-facility-visual-card {
+    aspect-ratio: 16 / 9;
+  }
+
+  .gw-facility-visual-detail {
+    aspect-ratio: 16 / 9;
+    max-height: 14rem;
+  }
+
+  .gw-facility-visual-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .gw-facility-visual-caption {
+    padding: 0.35rem 0.65rem 0.5rem;
+    border-top: 1px solid var(--gw-border);
+    background: color-mix(in srgb, var(--gw-card) 92%, var(--gw-muted));
+  }
+
   .gw-welcome-airport {
     display: flex;
     min-height: 100dvh;
