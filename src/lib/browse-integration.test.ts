@@ -16,7 +16,7 @@ describe("browse integration (GW-010)", () => {
     );
     const { facilities, datasetErrors } = prepareProductionFacilities(raw);
     assert.equal(datasetErrors.length, 0);
-    assert.equal(facilities.length, 21);
+    assert.equal(facilities.length, 23);
   });
 
   it("validates flight context from string form fields with frozen defaults", () => {

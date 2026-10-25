@@ -40,10 +40,10 @@ const recommendContext: UserContext = {
 };
 
 describe("GW-X-002 batch 2 — Harvey Milk T1 B/C browse-only", () => {
-  it("validates 21 facilities with zero errors", () => {
+  it("validates production dataset with zero errors (includes later IT pilot rows)", () => {
     const { facilities, errors } = validateFacilities(productionJson);
     assert.equal(errors.length, 0);
-    assert.equal(facilities.length, 21);
+    assert.ok(facilities.length >= 21);
   });
 
   it("adds three HM1 rows with correct terminal, zones, and browse-only eligibility", () => {

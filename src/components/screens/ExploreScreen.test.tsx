@@ -18,7 +18,7 @@ describe("ExploreScreen (GW-X-003)", () => {
       </GateWiseSessionProvider>,
     );
     assert.ok(screen.getByRole("heading", { name: "Browse vs recommend" }));
-    assert.ok(screen.getByText(/21 of 21 facilities/i));
+    assert.ok(screen.getByText(/23 of 23 facilities/i));
     assert.ok(screen.getByRole("heading", { name: "Bun Mee" }));
     assert.ok(screen.getAllByText(/Harvey Milk Terminal 1 · B Gates/i).length >= 1);
     assert.ok(screen.getAllByText(/Browse only — not in recommend scope/i).length >= 1);

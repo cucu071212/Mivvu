@@ -12,10 +12,10 @@ const productionJson = JSON.parse(
 ) as unknown;
 
 describe("filterBrowseDirectory", () => {
-  it("returns 21 browse-eligible production facilities with no filters", () => {
+  it("returns 23 browse-eligible production facilities with no filters", () => {
     const { facilities } = validateFacilities(productionJson);
-    assert.equal(countBrowseEligible(facilities), 21);
-    assert.equal(filterBrowseDirectory(facilities, {}).length, 21);
+    assert.equal(countBrowseEligible(facilities), 23);
+    assert.equal(filterBrowseDirectory(facilities, {}).length, 23);
   });
 
   it("filters Harvey Milk Terminal 1 boarding area B", () => {
