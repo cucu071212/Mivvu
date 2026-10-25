@@ -1,5 +1,6 @@
 import type { Facility } from "@/types/airport";
 import { ConfidenceBadge } from "@/components/ConfidenceBadge";
+import { FacilityInformation } from "@/components/FacilityInformation";
 
 function securityLabel(securityZone: Facility["securityZone"]): string {
   if (securityZone === "post" || securityZone === "both") {
@@ -12,12 +13,6 @@ function securityLabel(securityZone: Facility["securityZone"]): string {
 }
 
 export function FacilityBrowseCard({ facility }: { facility: Facility }) {
-  const locationLine =
-    facility.locationDescription ??
-    (facility.nearestGateLandmark
-      ? `Near Gate ${facility.nearestGateLandmark}`
-      : "D Gates");
-
   const securityUnverified =
     facility.securityZone === "unknown" || facility.securityZone === "pre";
 
@@ -38,9 +33,9 @@ export function FacilityBrowseCard({ facility }: { facility: Facility }) {
         </span>
       </div>
 
-      <p className="text-sm text-muted-foreground">{locationLine}</p>
+      <FacilityInformation facility={facility} idPrefix={`facility-${facility.id}`} />
 
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2 border-t border-border pt-3">
         <ConfidenceBadge confidence={facility.locationConfidence} />
         {facility.timeConfidence !== "unknown" && (
           <ConfidenceBadge confidence={facility.timeConfidence} />
@@ -55,17 +50,6 @@ export function FacilityBrowseCard({ facility }: { facility: Facility }) {
           </span>
         )}
       </div>
-
-      {facility.sourceUrl ? (
-        <a
-          href={facility.sourceUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-sm font-medium"
-        >
-          View official listing
-        </a>
-      ) : null}
     </article>
   );
 }

@@ -1,7 +1,7 @@
 import facilityData from "@/data/facilities.json";
 import { validateFacilities } from "@/lib/validate-facilities";
 import type { Facility } from "@/types/airport";
-import { ConfidenceBadge } from "@/components/ConfidenceBadge";
+import { FacilityInformation } from "@/components/FacilityInformation";
 
 export type TerminalSchematicProps = {
   className?: string;
@@ -23,28 +23,13 @@ function FacilityList({ facilities }: { facilities: readonly Facility[] }) {
           <p className="break-words text-base font-semibold text-card-foreground">
             {facility.name}
           </p>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {facility.locationDescription}
-          </p>
-          <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-            <span>Location:</span>
-            <ConfidenceBadge confidence={facility.locationConfidence} />
-            <span>Timing:</span>
-            <ConfidenceBadge confidence={facility.timeConfidence} />
+          <div className="mt-2">
+            <FacilityInformation
+              facility={facility}
+              idPrefix={`schematic-${facility.id}`}
+              variant="compact"
+            />
           </div>
-          {facility.sourceUrl ? (
-            <a
-              className="gw-focus-ring mt-2 inline-flex min-h-11 items-center text-sm font-medium underline"
-              href={facility.sourceUrl}
-            >
-              SFO listing for {facility.name}
-            </a>
-          ) : null}
-          {facility.lastCheckedAt ? (
-            <p className="text-xs text-muted-foreground">
-              Source checked <time dateTime={facility.lastCheckedAt}>{facility.lastCheckedAt}</time>
-            </p>
-          ) : null}
         </li>
       ))}
     </ul>
