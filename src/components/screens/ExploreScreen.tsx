@@ -30,6 +30,14 @@ export function ExploreScreen() {
     [session.facilities],
   );
 
+  const showT3ConstructionNotice = useMemo(
+    () =>
+      directoryFacilities.some(
+        (facility) => facility.terminalCode === "terminal_3",
+      ),
+    [directoryFacilities],
+  );
+
   return (
     <div className="flex flex-col gap-4">
       <header className="flex flex-col gap-1">
@@ -76,6 +84,28 @@ export function ExploreScreen() {
           </li>
         </ul>
       </section>
+
+      {showT3ConstructionNotice ? (
+        <p
+          className="text-sm text-muted-foreground"
+          role="note"
+          data-testid="t3-construction-notice"
+        >
+          Terminal 3 is under renovation; official SFO guidance describes
+          check-in, walkway, and curbside changes that may affect how you reach
+          E and F Gates.{" "}
+          <a
+            href="https://www.flysfo.com/about/construction/terminal-3-construction"
+            className="font-semibold underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            SFO Terminal 3 construction
+          </a>{" "}
+          — orientation only; GateWise does not model paths, transfer times, or
+          live construction status.
+        </p>
+      ) : null}
 
       <AmenityFilter
         value={session.filter}

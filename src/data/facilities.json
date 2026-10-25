@@ -810,5 +810,107 @@
       "officialBadges": ["open_past_10pm", "sit_down_restaurant"],
       "aboutExcerpt": "Post-security classification per GW-X-IT-AG S6-G directory filter (International Terminal G + Post-Security)."
     }
+  },
+  {
+    "id": "sfo-t3-e-ag1",
+    "name": "AG1",
+    "zone": "E",
+    "airportIata": "SFO",
+    "terminalCode": "terminal_3",
+    "boardingAreaCode": "E",
+    "browseEligible": true,
+    "recommendEligible": false,
+    "category": "shop",
+    "securityZone": "post",
+    "waitMinutes": null,
+    "activityMinutes": null,
+    "sourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/ag1",
+    "lastCheckedAt": "2026-10-25",
+    "locationConfidence": "official_verified",
+    "timeConfidence": "unknown",
+    "locationDescription": "Near Gate E2, Terminal 3",
+    "hours": {
+      "kind": "unknown",
+      "rawText": "Sunday - Saturday Open 24 hours"
+    },
+    "hoursLastCheckedAt": "2026-10-25",
+    "hoursSourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/ag1",
+    "amenityDetails": {
+      "tagline": "AG1 nutrition supplements on-the-go",
+      "officialBadges": ["open_past_10pm"],
+      "aboutExcerpt": "Post-security classification per GW-X-T3-EF S7 directory filter (Terminal 3 + Post-Security). Terminal 3 construction may affect access paths — see official SFO construction page; not modeled in GateWise."
+    }
+  },
+  {
+    "id": "sfo-t3-f-aletitude",
+    "name": "Aletitude",
+    "zone": "F",
+    "airportIata": "SFO",
+    "terminalCode": "terminal_3",
+    "boardingAreaCode": "F",
+    "browseEligible": true,
+    "recommendEligible": false,
+    "category": "food",
+    "securityZone": "post",
+    "waitMinutes": null,
+    "activityMinutes": null,
+    "sourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/aletitude",
+    "lastCheckedAt": "2026-10-25",
+    "locationConfidence": "official_verified",
+    "timeConfidence": "unknown",
+    "locationDescription": "Near Gate F13, Terminal 3",
+    "hours": {
+      "kind": "weekly_same_all_days",
+      "rawText": "Sunday- Saturday 6:30 am-11:00 pm",
+      "openLocal": "06:30",
+      "closeLocal": "23:00",
+      "timezone": "America/Los_Angeles"
+    },
+    "hoursConfidence": "official_verified",
+    "hoursLastCheckedAt": "2026-10-25",
+    "hoursSourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/aletitude",
+    "amenityDetails": {
+      "tagline": "Full-service restaurant and sports bar offering hot-pressed sandwiches, soups, salads, and casual American fare",
+      "officialBadges": ["open_past_10pm", "military_discount"],
+      "aboutExcerpt": "Post-security classification per GW-X-T3-EF S7 directory filter (Terminal 3 + Post-Security). Terminal 3 construction may affect access paths — see official SFO construction page; not modeled in GateWise."
+    }
+  },
+  {
+    "id": "sfo-t3-f-amoura",
+    "name": "Amoura",
+    "zone": "F",
+    "airportIata": "SFO",
+    "terminalCode": "terminal_3",
+    "boardingAreaCode": "F",
+    "browseEligible": true,
+    "recommendEligible": false,
+    "category": "food",
+    "securityZone": "post",
+    "waitMinutes": null,
+    "activityMinutes": null,
+    "sourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/amoura",
+    "lastCheckedAt": "2026-10-25",
+    "locationConfidence": "official_verified",
+    "timeConfidence": "unknown",
+    "locationDescription": "Food Court near Gates F11 to F22, Terminal 3",
+    "hours": {
+      "kind": "weekly_same_all_days",
+      "rawText": "Sunday- Saturday 5:00 am-11:00 pm",
+      "openLocal": "05:00",
+      "closeLocal": "23:00",
+      "timezone": "America/Los_Angeles"
+    },
+    "hoursConfidence": "official_verified",
+    "hoursLastCheckedAt": "2026-10-25",
+    "hoursSourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/amoura",
+    "contact": {
+      "phoneE164OrDisplay": "650-821-8330",
+      "phoneSource": "official_listing"
+    },
+    "amenityDetails": {
+      "tagline": "Mediterranean cuisine with breakfast, sandwiches, salads and flat bread pizza",
+      "officialBadges": ["open_past_10pm", "sfo_green_business"],
+      "aboutExcerpt": "Post-security classification per GW-X-T3-EF S7 directory filter (Terminal 3 + Post-Security). Coarse F11–F22 food court location per official listing. Terminal 3 construction may affect access paths — see official SFO construction page; not modeled in GateWise."
+    }
   }
 ]
