@@ -3,7 +3,7 @@ export function FuturePlannerPlaceholder() {
   return (
     <section
       id="gw-section-planner"
-      className="gw-surface-card gw-planner-placeholder flex flex-col gap-2 p-4 sm:p-5"
+      className="gw-surface-card gw-planner-placeholder gw-premium-card flex flex-col gap-2 p-4 sm:p-5"
       aria-labelledby="planner-future-heading"
     >
       <div className="flex flex-wrap items-center justify-between gap-2">

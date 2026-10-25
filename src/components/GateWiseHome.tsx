@@ -38,7 +38,7 @@ import {
   type FacilityDurationOverrideMap,
 } from "@/components/PersonalizedTimeControls";
 import { BoardingCountdownControls } from "@/components/BoardingCountdownControls";
-import { FlightTimeBudgetStrip } from "@/components/FlightTimeBudgetStrip";
+import { FlightHeroPass } from "@/components/FlightHeroPass";
 import { GateWiseSectionNav } from "@/components/GateWiseSectionNav";
 import { FuturePlannerPlaceholder } from "@/components/FuturePlannerPlaceholder";
 import type { BoardingCountdownState } from "@/lib/boarding-countdown";
@@ -260,9 +260,12 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
           {SUPPORTED_AIRPORT_IATA} · {SUPPORTED_TERMINAL_LABEL} ·{" "}
           {SUPPORTED_BOARDING_AREA_LABEL}
         </p>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-          GateWise
-        </h1>
+        <div className="gw-brand-mark">
+          <span className="gw-brand-icon" aria-hidden="true">GW</span>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            GateWise
+          </h1>
+        </div>
         <p className="max-w-2xl text-base leading-relaxed text-muted-foreground">
           Boarding-start recommendations for verified Terminal 2 D Gates
           amenities. Status labels describe the in-app time model only — not a
@@ -285,26 +288,14 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
 
       <section
         id="gw-section-context"
-        className="gw-surface-card flex flex-col gap-4 p-4 sm:p-5 scroll-mt-24"
+        className="flex flex-col gap-4 scroll-mt-24"
         aria-labelledby="flight-context-heading"
       >
-        <div className="flex flex-col gap-1">
-          <h2
-            id="flight-context-heading"
-            className="text-lg font-semibold text-card-foreground"
-          >
-            Flight context
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            Minutes until{" "}
-            <strong className="font-semibold text-card-foreground">
-              boarding begins
-            </strong>{" "}
-            — not gate closure.
-          </p>
-        </div>
+        <h2 id="flight-context-heading" className="sr-only">
+          Flight context
+        </h2>
 
-        <FlightTimeBudgetStrip
+        <FlightHeroPass
           minutesUntilBoarding={
             contextResult.context?.minutesUntilBoarding ?? null
           }
@@ -315,9 +306,12 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
           countdownPaused={countdownPaused}
           boardingStarted={boardingStartedForStrip}
           contextValid={contextValid}
+          airportLabel={SUPPORTED_AIRPORT_IATA}
+          terminalLabel={SUPPORTED_TERMINAL_LABEL}
+          zoneLabel={SUPPORTED_BOARDING_AREA_LABEL}
         />
 
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="gw-surface-card grid gap-4 p-4 sm:grid-cols-2 sm:p-5">
           <label className="flex flex-col gap-1.5 text-sm font-medium text-card-foreground sm:col-span-2">
             Boarding area
             <input

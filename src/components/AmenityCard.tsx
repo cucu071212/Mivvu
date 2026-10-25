@@ -56,7 +56,7 @@ export function AmenityCard(props: AmenityCardProps) {
 
   return (
     <article
-      className={`gw-surface-card flex flex-col gap-4 p-4 sm:p-5 ${accent}`}
+      className={`gw-surface-card gw-premium-card flex flex-col gap-4 p-4 sm:p-5 ${accent}`}
       aria-labelledby={titleId}
     >
       <header className="flex flex-col gap-3">

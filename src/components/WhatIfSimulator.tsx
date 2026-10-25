@@ -163,7 +163,7 @@ export function WhatIfSimulator({
 
   return (
     <section
-      className="gw-surface-card flex flex-col gap-4 p-4 sm:p-5"
+      className="gw-surface-card gw-premium-card flex flex-col gap-4 p-4 sm:p-5"
       aria-label="What-if simulator"
       aria-labelledby="what-if-heading"
     >
@@ -205,43 +205,42 @@ export function WhatIfSimulator({
 
       {scenarioValid && scenarioMinutes !== undefined ? (
         <div
-          className="grid gap-3 rounded-lg border border-border bg-muted/20 p-3 sm:grid-cols-2"
+          className="gw-whatif-compare"
           role="group"
           aria-label="Baseline versus scenario time budget"
         >
-          <div className="flex flex-col gap-1">
-            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          <div className="gw-whatif-pane gw-whatif-pane-baseline">
+            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
               Baseline
             </p>
-            <p className="text-2xl font-bold tabular-nums text-card-foreground">
+            <p className="mt-1 text-3xl font-extrabold tabular-nums text-card-foreground">
               {baselineMinutes}
-              <span className="ml-1 text-sm font-semibold text-muted-foreground">
+              <span className="ml-1 text-base font-semibold text-muted-foreground">
                 min
               </span>
             </p>
-            <p className="text-xs text-muted-foreground">
+            <p className="mt-1 text-xs text-muted-foreground">
               {baselineUsesLiveCountdown
                 ? "Live countdown (device clock)"
                 : "Manual entry"}
             </p>
           </div>
-          <div className="flex flex-col gap-1 border-t border-border pt-3 sm:border-l sm:border-t-0 sm:pl-4 sm:pt-0">
-            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          <div className="gw-whatif-pane gw-whatif-pane-scenario">
+            <p className="text-xs font-bold uppercase tracking-widest text-[var(--gw-cyan-muted)]">
               Scenario
             </p>
-            <p className="text-2xl font-bold tabular-nums text-card-foreground">
+            <p className="mt-1 text-3xl font-extrabold tabular-nums text-card-foreground">
               {scenarioMinutes}
-              <span className="ml-1 text-sm font-semibold text-muted-foreground">
+              <span className="ml-1 text-base font-semibold text-muted-foreground">
                 min
               </span>
             </p>
-            <p className="text-xs text-muted-foreground">
+            <p className="mt-1 text-xs text-muted-foreground">
               Fixed what-if field (not the clock)
             </p>
             {scenarioMinutes !== baselineMinutes ? (
-              <p className="text-sm font-medium text-card-foreground">
-                Δ{" "}
-                {formatSignedMinutes(scenarioMinutes - baselineMinutes)}
+              <p className="mt-2 inline-flex rounded-full border border-[var(--gw-cyan-muted)] bg-[color-mix(in_srgb,var(--gw-cyan)_12%,var(--gw-card))] px-2.5 py-1 text-sm font-semibold text-card-foreground">
+                Δ {formatSignedMinutes(scenarioMinutes - baselineMinutes)}
               </p>
             ) : null}
           </div>
@@ -313,7 +312,7 @@ export function WhatIfSimulator({
         {comparisons.map((comparison) => (
           <li
             key={comparison.facilityId}
-            className="rounded-lg border border-border bg-card/50 p-4"
+            className="gw-surface-card rounded-lg border border-border bg-card/50 p-4"
           >
             <h3 className="text-base font-semibold text-card-foreground">
               {comparison.facilityName}

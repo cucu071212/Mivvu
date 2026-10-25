@@ -298,7 +298,7 @@ export function PersonalizedTimeControls({
   return (
     <details
       id="gw-section-estimates"
-      className="gw-surface-card group scroll-mt-24"
+      className="gw-surface-card gw-premium-card group scroll-mt-24"
       open
     >
       <summary

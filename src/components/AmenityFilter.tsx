@@ -31,7 +31,7 @@ export function AmenityFilter({
 }: AmenityFilterProps) {
   return (
     <section
-      className="gw-surface-card flex flex-col gap-4 p-4 sm:p-5"
+      className="gw-surface-card gw-premium-card flex flex-col gap-4 p-4 sm:p-5"
       aria-labelledby="filter-heading"
     >
       <div className="flex flex-wrap items-end justify-between gap-2">
