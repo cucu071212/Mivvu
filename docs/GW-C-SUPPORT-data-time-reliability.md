@@ -102,6 +102,24 @@ When a Lead-owned Phase B manifest exists, adapt its authoritative version and I
 
 This audit protects the existing D-only validator contract. A future expansion of recommendation scope requires the Lead's shared-contract/validator work and a reviewed baseline version; merely passing new IDs does not authorize cross-terminal recommendations.
 
+### Completion-time integration update
+
+After the verified implementation was committed/pushed, remote main advanced to **`ba90a7914bcf7974b931c00eea719c835d2037a0`**. A read-only comparison found **no overlapping changed file paths** with this eight-file package. Main now includes the Lead-owned `src/data/approved-recommend-facility-ids.ts` from GW-B-002. Its 12 IDs match this package's frozen acceptance fixture; its version is `legacy-d-v1`. No manifest was copied, changed, or merged into this support branch. Use this concrete adapter on the Lead's integration branch:
+
+```ts
+import {
+  APPROVED_LEGACY_RECOMMEND_FACILITY_IDS,
+  APPROVED_LEGACY_RECOMMEND_MANIFEST_VERSION,
+} from "@/data/approved-recommend-facility-ids";
+
+const approvedBaseline = {
+  version: APPROVED_LEGACY_RECOMMEND_MANIFEST_VERSION,
+  approvedFacilityIds: APPROVED_LEGACY_RECOMMEND_FACILITY_IDS,
+};
+```
+
+The source manifest does not exist at this support branch's starting commit, so this is an integration instruction rather than a new runtime import here. Main also includes new facility-detail UI, browser tests/dependencies, and travel metadata; the support package's green verification applies to its recorded base plus its additions, **not** the later combined main. Lead integration must rerun the latest main checks and preview smoke tests. `FacilityInformation` still calls the existing presenter on that main revision, so the replacement below remains applicable.
+
 ## Exact integration steps for Cursor
 
 1. Review the isolated branch against starting main. Merge/cherry-pick only through the Lead's normal review process. The package does not itself approve G-C0.
