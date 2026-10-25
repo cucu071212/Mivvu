@@ -36,6 +36,15 @@ export function presentFacilityHours(
   hoursConfidence: Facility["hoursConfidence"],
 ): FacilityHoursPresentation {
   if (!hours || hours.kind === "unknown") {
+    const rawText = hours?.rawText?.trim();
+    if (rawText) {
+      return {
+        scheduleLine: rawText,
+        disclaimer: HOURS_DISCLAIMER,
+        spansMidnight: false,
+        isUnknown: true,
+      };
+    }
     return {
       scheduleLine: "Hours not published on the official listing we checked.",
       disclaimer: HOURS_DISCLAIMER,
