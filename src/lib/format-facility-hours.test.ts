@@ -9,6 +9,17 @@ describe("presentFacilityHours", () => {
     assert.match(result.scheduleLine, /not published/i);
   });
 
+  it("shows verbatim listing text for unknown kind when rawText is present", () => {
+    const raw = "Sunday - Saturday Open 24 hours";
+    const result = presentFacilityHours(
+      { kind: "unknown", rawText: raw },
+      undefined,
+    );
+    assert.equal(result.isUnknown, true);
+    assert.equal(result.scheduleLine, raw);
+    assert.match(result.disclaimer, /not live open/i);
+  });
+
   it("formats normalized daily hours in Pacific Time", () => {
     const result = presentFacilityHours(
       {
