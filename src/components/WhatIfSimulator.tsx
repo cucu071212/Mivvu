@@ -15,12 +15,16 @@ import {
 import { buildRankedRecommendations } from "@/lib/recommendation-page-integration";
 import { RecommendationStatusBadge } from "@/components/RecommendationStatusBadge";
 import { formatSignedMinutes } from "@/lib/recommendation-present";
+import { TimeBudgetTimeline } from "@/components/TimeBudgetTimeline";
 import {
   buildWhatIfInputSummary,
   compareRecommendationRuns,
   recommendationMarginMinutes,
-  recommendationOutcomeLabel,
 } from "@/lib/what-if-compare";
+import {
+  whatIfMarginDelta,
+  whatIfStatusChanged,
+} from "@/lib/what-if-present";
 import { validateContext } from "@/lib/validate-context";
 import { buildFlightContextInput } from "@/lib/browse-integration";
 import {
@@ -309,39 +313,61 @@ export function WhatIfSimulator({
       ) : null}
 
       <ul className="flex flex-col gap-4">
-        {comparisons.map((comparison) => (
-          <li
-            key={comparison.facilityId}
-            className="gw-surface-card rounded-lg border border-border bg-card/50 p-4"
-          >
-            <h3 className="text-base font-semibold text-card-foreground">
-              {comparison.facilityName}
-            </h3>
-            <div className="mt-3 grid gap-4 sm:grid-cols-2">
-              <div className="flex flex-col gap-2">
-                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                  Baseline
-                </p>
-                <OutcomeChip recommendation={comparison.baseline} />
-                <MarginLine recommendation={comparison.baseline} />
-                <p className="text-xs text-muted-foreground">
-                  {recommendationOutcomeLabel(comparison.baseline).replaceAll("_", " ")}
-                </p>
+        {comparisons.map((comparison) => {
+          const statusChanged = whatIfStatusChanged(
+            comparison.baseline,
+            comparison.scenario,
+          );
+          const marginDelta = whatIfMarginDelta(
+            comparison.baseline,
+            comparison.scenario,
+          );
+          return (
+            <li
+              key={comparison.facilityId}
+              className={`gw-whatif-facility-card gw-surface-card rounded-lg border bg-card/50 p-4 ${
+                statusChanged ? "gw-whatif-facility-card-changed" : ""
+              }`}
+            >
+              <div className="flex flex-wrap items-start justify-between gap-2">
+                <h3 className="text-base font-semibold text-card-foreground">
+                  {comparison.facilityName}
+                </h3>
+                {statusChanged ? (
+                  <span className="gw-whatif-change-badge" role="status">
+                    Status changed
+                  </span>
+                ) : marginDelta !== null && marginDelta !== 0 ? (
+                  <span className="gw-whatif-change-badge gw-whatif-change-badge-muted" role="status">
+                    Margin {formatSignedMinutes(marginDelta)}
+                  </span>
+                ) : null}
               </div>
-              <div className="flex flex-col gap-2">
-                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                  Scenario
-                </p>
-                <OutcomeChip recommendation={comparison.scenario} />
-                <MarginLine recommendation={comparison.scenario} />
-                <p className="text-xs text-muted-foreground">
-                  {recommendationOutcomeLabel(comparison.scenario).replaceAll("_", " ")}
-                </p>
+
+              <div className="mt-3 flex flex-col gap-4 lg:grid lg:grid-cols-2">
+                <div className="gw-whatif-facility-pane gw-whatif-facility-pane-baseline">
+                  <p className="gw-whatif-facility-pane-label">Baseline</p>
+                  <OutcomeChip recommendation={comparison.baseline} />
+                  <MarginLine recommendation={comparison.baseline} />
+                  <TimeBudgetTimeline
+                    recommendation={comparison.baseline}
+                    compact
+                  />
+                </div>
+                <div className="gw-whatif-facility-pane gw-whatif-facility-pane-scenario">
+                  <p className="gw-whatif-facility-pane-label">What-if scenario</p>
+                  <OutcomeChip recommendation={comparison.scenario} />
+                  <MarginLine recommendation={comparison.scenario} />
+                  <TimeBudgetTimeline
+                    recommendation={comparison.scenario}
+                    compact
+                  />
+                </div>
               </div>
-            </div>
-            <p className="mt-3 text-sm text-card-foreground">{comparison.explanation}</p>
-          </li>
-        ))}
+              <p className="mt-3 text-sm text-card-foreground">{comparison.explanation}</p>
+            </li>
+          );
+        })}
       </ul>
     </section>
   );

@@ -1,7 +1,14 @@
+import Link from "next/link";
 import type { GateLandmark } from "@/types/airport";
 
 /** Visual cap for the hero ring (model display only — not a flight schedule). */
 const HERO_RING_MAX_MINUTES = 90;
+
+export type FlightHeroPassAction = {
+  href: string;
+  label: string;
+  variant?: "primary" | "secondary";
+};
 
 export type FlightHeroPassProps = {
   minutesUntilBoarding: number | null;
@@ -15,6 +22,7 @@ export type FlightHeroPassProps = {
   airportLabel: string;
   terminalLabel: string;
   zoneLabel: string;
+  actions?: readonly FlightHeroPassAction[];
 };
 
 function TimeBudgetRing({
@@ -76,6 +84,7 @@ export function FlightHeroPass({
   airportLabel,
   terminalLabel,
   zoneLabel,
+  actions = [],
 }: FlightHeroPassProps) {
   const bufferDisplay =
     contextValid && bufferMinutes !== null ? String(bufferMinutes) : "—";
@@ -139,6 +148,24 @@ export function FlightHeroPass({
           Minutes until boarding <strong>starts</strong> in the app model — not gate
           closure or airline data.
         </p>
+
+        {actions.length > 0 ? (
+          <div className="gw-boarding-pass-actions">
+            {actions.map((action) => (
+              <Link
+                key={action.href}
+                href={action.href}
+                className={
+                  action.variant === "primary"
+                    ? "gw-boarding-pass-btn gw-boarding-pass-btn-primary no-underline"
+                    : "gw-boarding-pass-btn gw-boarding-pass-btn-secondary no-underline"
+                }
+              >
+                {action.label}
+              </Link>
+            ))}
+          </div>
+        ) : null}
       </div>
     </div>
   );

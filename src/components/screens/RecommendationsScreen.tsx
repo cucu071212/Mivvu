@@ -15,8 +15,13 @@ export function RecommendationsScreen() {
           Recommendations
         </h1>
         <p className="text-sm text-muted-foreground">
-          Ranked by the shared time model. Personal estimates (above) and What-if
-          share the same validation gates as baseline results.
+          Ranked by the shared time model. Each card shows how walking, queue,
+          activity, and safety buffer consume your time budget — plus remaining
+          margin when the model has complete inputs.
+        </p>
+        <p className="text-sm text-muted-foreground">
+          Personal estimates and What-if use the same validation gates as baseline
+          results.
         </p>
         <p className="text-xs text-muted-foreground">
           Baseline: {session.minutesInput} min · Buffer: {session.bufferInput}{" "}

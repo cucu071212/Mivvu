@@ -87,6 +87,8 @@ export function AmenityCard(props: AmenityCardProps) {
         </div>
       </header>
 
+      <AmenityDetail recommendation={recommendation} />
+
       {facility ? (
         <div className="rounded-lg border border-border/80 bg-muted/20 p-3 sm:p-4">
           <FacilityInformation
@@ -95,8 +97,6 @@ export function AmenityCard(props: AmenityCardProps) {
           />
         </div>
       ) : null}
-
-      <AmenityDetail recommendation={recommendation} />
 
       <div className="flex flex-wrap gap-2">
         <ConfidenceBadge confidence={recommendation.locationConfidence} />

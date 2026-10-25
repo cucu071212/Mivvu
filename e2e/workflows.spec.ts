@@ -98,8 +98,11 @@ test("Demo estimates and What-if update visible margins without changing baselin
   await expect(card.getByText("Activity: Demo estimate", { exact: true })).toBeVisible();
   // Independent demo arithmetic: 3 outbound + 3 return + 8 queue + 10 activity
   // + 10 buffer = 34 required; 50 - 34 = +16. Not actual SFO walk times.
-  await expect(card.getByRole("definition").filter({ hasText: /^34 min$/ })).toBeVisible();
-  await expect(card.getByRole("definition").filter({ hasText: /^\+16 min$/ })).toBeVisible();
+  await expect(
+    card.getByRole("group", { name: "Time budget breakdown" }),
+  ).toBeVisible();
+  await expect(card.getByText(/Total required \(model\):.*34 min/)).toBeVisible();
+  await expect(card.getByText(/Margin:.*\+16 min/)).toBeVisible();
   const simulator = page.getByRole("region", { name: "What-if simulator", exact: true });
   const comparison = simulator.getByRole("listitem").filter({
     has: page.getByRole("heading", { name: "Burger Joint", exact: true }),
@@ -111,7 +114,7 @@ test("Demo estimates and What-if update visible margins without changing baselin
   await expect(comparison.getByText("Model margin: -6 min", { exact: true })).toBeVisible();
   await expect(comparison.getByLabel(/^Over budget in model\./)).toBeVisible();
   await expect(comparison.getByText("Model margin: +16 min", { exact: true })).toBeVisible();
-  await expect(card.getByRole("definition").filter({ hasText: /^\+16 min$/ })).toBeVisible();
+  await expect(card.getByText(/Margin:.*\+16 min/)).toBeVisible();
   await simulator.getByLabel("Scenario: minutes until boarding starts").fill("invalid");
   await expect(simulator.getByText("Fix scenario inputs to compare results.", { exact: true })).toBeVisible();
   await expect(simulator.getByRole("listitem")).toHaveCount(0);
