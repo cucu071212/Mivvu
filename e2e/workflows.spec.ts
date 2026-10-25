@@ -111,7 +111,7 @@ test("Demo estimates and What-if update visible margins without changing baselin
   await expect(comparison.getByText("Model margin: +1 min", { exact: true })).toBeVisible();
   await expect(comparison.getByLabel(/^Tight in model\./)).toBeVisible();
   await simulator.getByLabel(/Scenario: simulated queue adjustment/).fill("7");
-  await expect(comparison.getByText("Model margin: -6 min", { exact: true })).toBeVisible();
+  await expect(comparison.getByText("Model deficit: −6 min", { exact: true })).toBeVisible();
   await expect(comparison.getByLabel(/^Over budget in model\./)).toBeVisible();
   await expect(comparison.getByText("Model margin: +16 min", { exact: true })).toBeVisible();
   await expect(card.getByText(/Margin:.*\+16 min/)).toBeVisible();

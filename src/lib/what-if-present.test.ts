@@ -1,6 +1,11 @@
 import assert from "node:assert/strict";
 import { describe, it } from "vitest";
-import { whatIfMarginDelta, whatIfStatusChanged } from "./what-if-present";
+import {
+  summarizeWhatIfComparisonAnnouncement,
+  whatIfMarginDelta,
+  whatIfStatusChanged,
+} from "./what-if-present";
+import { partitionWhatIfComparisons } from "./what-if-compare";
 import type { ProductionFeasibilityRecommendation } from "@/types/airport";
 
 function row(
@@ -56,5 +61,60 @@ describe("what-if-present", () => {
       ),
       null,
     );
+  });
+
+  it("summarizes eligible comparison announcements for screen readers", () => {
+    const announcement = summarizeWhatIfComparisonAnnouncement([
+      {
+        facilityId: "a",
+        facilityName: "A",
+        baseline: row("feasible_in_model", 12),
+        scenario: row("tight_in_model", 5),
+        explanation: "x",
+      },
+    ]);
+    assert.match(announcement, /1 eligible facilities/);
+    assert.match(announcement, /1 status change/);
+  });
+
+  it("partitions browse-only rows out of the primary What-if list", () => {
+    const { primary, excludedBrowseOnly } = partitionWhatIfComparisons([
+      {
+        facilityId: "a",
+        facilityName: "A",
+        baseline: row("feasible_in_model", 12),
+        scenario: row("feasible_in_model", 12),
+        explanation: "x",
+      },
+      {
+        facilityId: "b",
+        facilityName: "B",
+        baseline: {
+          kind: "ineligible",
+          facilityId: "b",
+          facilityName: "B",
+          category: "food",
+          zone: "B",
+          locationConfidence: "official_verified",
+          timeConfidence: "unknown",
+          securityZone: "post",
+          ineligibilityReason: "outside_recommend_eligibility",
+        },
+        scenario: {
+          kind: "ineligible",
+          facilityId: "b",
+          facilityName: "B",
+          category: "food",
+          zone: "B",
+          locationConfidence: "official_verified",
+          timeConfidence: "unknown",
+          securityZone: "post",
+          ineligibilityReason: "outside_recommend_eligibility",
+        },
+        explanation: "unchanged",
+      },
+    ]);
+    assert.equal(primary.length, 1);
+    assert.equal(excludedBrowseOnly.length, 1);
   });
 });

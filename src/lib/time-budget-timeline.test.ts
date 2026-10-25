@@ -77,6 +77,62 @@ describe("buildTimeBudgetTimeline", () => {
     assert.ok(!model!.segments.some((s) => s.id === "margin"));
   });
 
+  it("lists the missing directed leg when only one walking leg is known", () => {
+    const outboundOnly = buildTimeBudgetTimeline({
+      kind: "unknown",
+      facilityId: "x",
+      facilityName: "X",
+      category: "food",
+      zone: "D",
+      locationConfidence: "official_verified",
+      timeConfidence: "unknown",
+      securityZone: "post",
+      unknownReason: "missing_travel_return",
+      breakdown: {
+        outboundMinutes: 5,
+        returnMinutes: null,
+        queueMinutes: 8,
+        activityMinutes: 10,
+        bufferMinutes: 10,
+        requiredMinutes: null,
+        marginMinutes: null,
+      },
+    });
+    assert.ok(outboundOnly!.missingLabels.includes("Return walking time"));
+    assert.equal(outboundOnly!.segments.find((s) => s.id === "walk-out")?.minutes, 5);
+
+    const returnOnly = buildTimeBudgetTimeline({
+      kind: "unknown",
+      facilityId: "x",
+      facilityName: "X",
+      category: "food",
+      zone: "D",
+      locationConfidence: "official_verified",
+      timeConfidence: "unknown",
+      securityZone: "post",
+      unknownReason: "missing_travel_outbound",
+      breakdown: {
+        outboundMinutes: null,
+        returnMinutes: 5,
+        queueMinutes: 8,
+        activityMinutes: 10,
+        bufferMinutes: 10,
+        requiredMinutes: null,
+        marginMinutes: null,
+      },
+    });
+    assert.ok(returnOnly!.missingLabels.includes("Outbound walking time"));
+  });
+
+  it("labels negative margin segments as deficits", () => {
+    const model = buildTimeBudgetTimeline(
+      feasibilityFixture({ marginMinutes: -6, requiredMinutes: 41 }),
+    );
+    const margin = model!.segments.find((s) => s.id === "margin");
+    assert.equal(margin?.label, "Time deficit (model)");
+    assert.equal(margin?.minutes, 6);
+  });
+
   it("returns null for ineligible recommendations", () => {
     assert.equal(
       buildTimeBudgetTimeline({

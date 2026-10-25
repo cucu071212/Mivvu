@@ -13,6 +13,21 @@ describe("parsePersonalizedMinutesInput", () => {
     expect(parsePersonalizedMinutesInput("   ")).toEqual({ kind: "empty" });
   });
 
+  it("shows no focused rows when search is blank and no overrides exist", () => {
+    const facilities = [
+      { id: "a", name: "Alpha Cafe", category: "coffee" as const },
+    ];
+    expect(
+      filterPersonalizationFacilities(facilities, {
+        search: "",
+        overrides: {},
+        fieldErrors: {},
+        drafts: {},
+        showAll: false,
+      }),
+    ).toEqual([]);
+  });
+
   it("filters personalization rows by search and overrides", () => {
     const facilities = [
       { id: "a", name: "Alpha Cafe", category: "coffee" as const },

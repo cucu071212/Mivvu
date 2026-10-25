@@ -381,7 +381,11 @@ export function PersonalizedTimeControls({
 
         {visibleFacilities.length === 0 ? (
           <p className="text-sm text-muted-foreground">
-            No places match. Try another search or browse all places.
+            {search.trim() !== ""
+              ? "No places match this search. Try another name or browse all places."
+              : showAll
+                ? "No places available to edit."
+                : "Search for a place to edit personal queue and activity times, or browse all places."}
           </p>
         ) : null}
 

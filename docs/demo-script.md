@@ -1,6 +1,6 @@
 # GateWise judge walkthrough — GW-018
 
-Target: **2–3 minutes**; prepared 2026-10-24 (Eastern Time). This is a rehearsal script and proposed acceptance scenario, not evidence that the UI already works. The local checkout currently contains a design-system preview; engine and what-if integration are absent. No live walkthrough or timed spoken rehearsal has been completed.
+Target: **2–3 minutes**; updated 2026-10-25 for the **GW-E2 + GW-UX-POLISH release candidate**. Rehearse on the **exact preview or production SHA** the lead approves. The app includes Flight context, Explore (26 browse / 12 recommend-eligible D Gates), Results with timeline and what-if, and a **demo-only** two-stop planner on My Plan.
 
 Integration note (2026-10-24): imported from teammate commit `e7d06298806a0023e2fce20a0c907719b65451de` onto `feature/core-app`, based on GW-013 commit `140ef64`. References to the "local checkout," "this build" and the preview fallback describe the teammate's authoring snapshot at `4689e47`. Select the narrative/fallback only after checking the actual presentation build; this import makes no new claims about UI readiness.
 
@@ -8,7 +8,7 @@ The human requested this lowercase filename; no second `DEMO_SCRIPT.md` is creat
 
 ## Presenter readiness
 
-Use the live-action version only after the lead verifies the reviewed build has context input, search, recommendations and what-if comparison. Confirm sources/estimate labels are visible and all demo steps pass on that build.
+Use the live-action version only after the lead verifies the reviewed build: SFO welcome, Flight inputs, Explore directory, Results rankings, what-if comparison, and (optional) My Plan two-stop demo with disclaimers visible.
 
 The real 12-record dataset has null waiting/activity times. Start by explaining unknown results. A numerical demo additionally needs an **explicitly approved, clearly labeled synthetic D-only scenario**, separate from the production JSON. The proposed arithmetic below does not approve new time values, implement a fixture, or assign estimates to Napa Farms/Peet's/16th & Dolores. If this setup is unavailable, use the honest fallback below.
 

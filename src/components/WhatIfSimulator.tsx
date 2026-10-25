@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import type {
   Facility,
   FacilityDurationOverrideMap,
@@ -19,9 +19,11 @@ import { TimeBudgetTimeline } from "@/components/TimeBudgetTimeline";
 import {
   buildWhatIfInputSummary,
   compareRecommendationRuns,
+  partitionWhatIfComparisons,
   recommendationMarginMinutes,
 } from "@/lib/what-if-compare";
 import {
+  summarizeWhatIfComparisonAnnouncement,
   whatIfMarginDelta,
   whatIfStatusChanged,
 } from "@/lib/what-if-present";
@@ -54,9 +56,21 @@ function OutcomeChip({ recommendation }: { recommendation: ProductionRecommendat
 
 function MarginLine({ recommendation }: { recommendation: ProductionRecommendation }) {
   const margin = recommendationMarginMinutes(recommendation);
+  if (margin === null) {
+    return (
+      <p className="font-mono text-sm text-muted-foreground">Margin not modeled</p>
+    );
+  }
+  if (margin < 0) {
+    return (
+      <p className="font-mono text-sm text-muted-foreground">
+        Model deficit: {formatSignedMinutes(margin)}
+      </p>
+    );
+  }
   return (
     <p className="font-mono text-sm text-muted-foreground">
-      {margin === null ? "Margin not modeled" : `Model margin: ${margin > 0 ? "+" : ""}${margin} min`}
+      Model margin: {formatSignedMinutes(margin)}
     </p>
   );
 }
@@ -75,6 +89,9 @@ export function WhatIfSimulator({
   onScenarioMinutesChange,
   onScenarioQueueChange,
 }: WhatIfSimulatorProps) {
+  const [showBrowseOnlyComparisons, setShowBrowseOnlyComparisons] =
+    useState(false);
+
   const scenarioContextResult = useMemo(
     () =>
       validateContext({
@@ -150,6 +167,20 @@ export function WhatIfSimulator({
     scenarioContextResult.context,
     scenarioValid,
   ]);
+
+  const { primary: primaryComparisons, excludedBrowseOnly } = useMemo(
+    () => partitionWhatIfComparisons(comparisons),
+    [comparisons],
+  );
+
+  const displayedComparisons = showBrowseOnlyComparisons
+    ? [...primaryComparisons, ...excludedBrowseOnly]
+    : primaryComparisons;
+
+  const comparisonAnnouncement = useMemo(
+    () => summarizeWhatIfComparisonAnnouncement(primaryComparisons),
+    [primaryComparisons],
+  );
 
   if (!enabled) {
     return null;
@@ -312,8 +343,26 @@ export function WhatIfSimulator({
         </p>
       ) : null}
 
+      {scenarioValid && primaryComparisons.length > 0 ? (
+        <p className="sr-only" aria-live="polite" aria-atomic="true">
+          {comparisonAnnouncement}
+        </p>
+      ) : null}
+
+      {excludedBrowseOnly.length > 0 ? (
+        <button
+          type="button"
+          className="gw-focus-ring min-h-11 self-start rounded-md border border-border bg-card px-3 py-2 text-sm font-medium text-card-foreground"
+          onClick={() => setShowBrowseOnlyComparisons((value) => !value)}
+        >
+          {showBrowseOnlyComparisons
+            ? "Hide browse-only facilities"
+            : `Show ${excludedBrowseOnly.length} browse-only facilities (not time-modeled)`}
+        </button>
+      ) : null}
+
       <ul className="flex flex-col gap-4">
-        {comparisons.map((comparison) => {
+        {displayedComparisons.map((comparison) => {
           const statusChanged = whatIfStatusChanged(
             comparison.baseline,
             comparison.scenario,
@@ -334,11 +383,9 @@ export function WhatIfSimulator({
                   {comparison.facilityName}
                 </h3>
                 {statusChanged ? (
-                  <span className="gw-whatif-change-badge" role="status">
-                    Status changed
-                  </span>
+                  <span className="gw-whatif-change-badge">Status changed</span>
                 ) : marginDelta !== null && marginDelta !== 0 ? (
-                  <span className="gw-whatif-change-badge gw-whatif-change-badge-muted" role="status">
+                  <span className="gw-whatif-change-badge gw-whatif-change-badge-muted">
                     Margin {formatSignedMinutes(marginDelta)}
                   </span>
                 ) : null}

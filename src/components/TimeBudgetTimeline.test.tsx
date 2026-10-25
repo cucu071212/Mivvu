@@ -1,6 +1,6 @@
 /** @vitest-environment jsdom */
-import { describe, expect, it } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it } from "vitest";
 import { TimeBudgetTimeline } from "@/components/TimeBudgetTimeline";
 import type { ProductionFeasibilityRecommendation } from "@/types/airport";
 
@@ -25,7 +25,23 @@ const feasible: ProductionFeasibilityRecommendation = {
   },
 };
 
+afterEach(cleanup);
+
 describe("TimeBudgetTimeline", () => {
+  it("labels negative margin as a deficit in the legend", () => {
+    render(
+      <TimeBudgetTimeline
+        recommendation={{
+          ...feasible,
+          status: "over_budget",
+          breakdown: { ...feasible.breakdown, marginMinutes: -6, requiredMinutes: 41 },
+        }}
+      />,
+    );
+    expect(screen.getAllByText(/Time deficit \(model\)/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/−6 min/).length).toBeGreaterThan(0);
+  });
+
   it("renders labeled segments and margin summary for feasible recommendations", () => {
     render(<TimeBudgetTimeline recommendation={feasible} />);
     expect(screen.getByRole("group", { name: /time budget breakdown/i })).toBeTruthy();

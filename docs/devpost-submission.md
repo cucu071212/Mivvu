@@ -1,6 +1,6 @@
 # GateWise — Devpost submission draft
 
-Prepared 2026-10-24 (Eastern Time), GW-021. **Editorial draft for lead review; not submitted.** Code descriptions are supported by inspected `origin/main` commit `babaf96`. Browser behavior, test/build success and deployment were not verified in this task. Remove editorial notes and fill verified submission links before publishing; do not turn planned work into completed claims.
+Prepared 2026-10-25 (Eastern Time), GW-021 — **release candidate refresh.** Align claims with branch `release/rc-gw-e2-ux-polish` and the lead-verified deployed SHA/URL. Do not submit until preview QA and production promotion are explicitly approved.
 
 ## Project name
 
@@ -20,7 +20,7 @@ Knowing where an airport café is does not tell a traveler whether a visit fits 
 
 ## What it does
 
-The inspected implementation supports a boarding-start time input, safety buffer, facility-name/category filters, ranked recommendation cards and a what-if comparison. The MVP is deliberately limited to SFO Terminal 2, D Gates, with twelve approved official-source facility records.
+The release candidate supports SFO airport selection, boarding-start input, safety buffer, a **26-facility Explore directory**, ranked recommendation cards for **12 eligible Terminal 2 D Gates** listings, time-budget timelines, what-if comparison, and a **demo-only** two-stop planner on My Plan (illustrative travel opt-in; not measured routing).
 
 Each outcome exposes a numeric breakdown when essential durations are known: feasible in the model, tight, or over budget. Missing durations remain unknown, and incompatible or unverified security-side access is explained as ineligible. “Feasible” describes assumptions inside the model; it does not promise boarding success.
 
@@ -66,7 +66,7 @@ A second challenge was keeping the calculator and what-if comparison consistent.
 
 ## Limitations
 
-The MVP covers one terminal and one coarse boarding zone. Gate landmarks are orientation aids, not measured routing inputs. Queue, activity and walking estimates are demonstrations; source-checked locations do not establish current opening or availability. The claimed scope includes no live flight integration, real-time queue service, AI model or production indoor navigation. No two-stop planner is claimed. GateWise never guarantees catching a flight.
+Time-based recommendations cover one coarse boarding zone (D Gates); Explore spans multiple SFO terminals for browse-only context. Gate landmarks are orientation aids, not measured routing inputs. Queue, activity and walking estimates are demonstrations unless labeled unknown. No live flight integration, real-time queue service, AI model, or production indoor navigation. The two-stop planner is an **in-app demo** with explicit disclaimers—not a safety-certified itinerary tool. GateWise never guarantees catching a flight.
 
 ## What's next
 
@@ -83,10 +83,10 @@ Vercel is the intended hosting target; it is omitted from completed deployment c
 | Field | Value / evidence state |
 | --- | --- |
 | Source repository | [cucu071212/GateWise](https://github.com/cucu071212/GateWise) |
-| Inspected implementation snapshot | `origin/main` at `babaf96`; source review only |
-| Live demo URL | Not verified; lead must supply the actual deployed URL |
-| Demo video URL | Not supplied or verified; no recording claim |
-| Final tests, TypeScript and build result | Required from the configured lead environment; npm/npx unavailable here |
+| Release candidate branch | `release/rc-gw-e2-ux-polish` — verify HEAD SHA before submit |
+| Live demo URL | Lead-verified Vercel preview or production URL (Deployment Protection may apply) |
+| Demo video URL | Lead supplies after recording on the same SHA |
+| Final tests, TypeScript and build | Run `npm test`, `tsc`, `lint`, `build`, `test:e2e:run` on the promoted SHA |
 | Mobile, accessibility and deployed smoke evidence | Not executed during this task; record results against the final build |
 | Team names, contributions and applicable event disclosure fields | Human lead supplies and confirms |
 | Submission completion | Not submitted by this task |

@@ -46,11 +46,13 @@ function walkingSegments(
     ];
   }
   if (outbound !== null) {
+    missing.push(MISSING_RETURN);
     return [
       { id: "walk-out", label: "Walking (outbound)", minutes: outbound, tone: "walk" },
     ];
   }
   if (returnMinutes !== null) {
+    missing.push(MISSING_OUTBOUND);
     return [
       { id: "walk-return", label: "Walking (return)", minutes: returnMinutes, tone: "walk" },
     ];
@@ -79,6 +81,12 @@ function marginTone(margin: number): TimelineSegmentTone {
   if (margin > 0) return "margin-positive";
   if (margin < 0) return "margin-negative";
   return "margin-zero";
+}
+
+export function marginSegmentLabel(marginMinutes: number): string {
+  if (marginMinutes < 0) return "Time deficit (model)";
+  if (marginMinutes > 0) return "Remaining margin (model)";
+  return "No remaining margin (model)";
 }
 
 export function buildTimeBudgetTimeline(
@@ -129,7 +137,7 @@ export function buildTimeBudgetTimeline(
   if (breakdown.marginMinutes !== null) {
     segments.push({
       id: "margin",
-      label: "Remaining margin (model)",
+      label: marginSegmentLabel(breakdown.marginMinutes),
       minutes: Math.abs(breakdown.marginMinutes),
       tone: marginTone(breakdown.marginMinutes),
     });

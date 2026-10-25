@@ -109,3 +109,17 @@ export function compareRecommendationRuns(
     };
   });
 }
+
+/** Recommend-eligible rows vs browse-only ineligible rows for What-if UI. */
+export function partitionWhatIfComparisons(
+  comparisons: readonly RecommendationComparison[],
+): {
+  primary: RecommendationComparison[];
+  excludedBrowseOnly: RecommendationComparison[];
+} {
+  const primary = comparisons.filter((row) => row.baseline.kind !== "ineligible");
+  const excludedBrowseOnly = comparisons.filter(
+    (row) => row.baseline.kind === "ineligible",
+  );
+  return { primary, excludedBrowseOnly };
+}
