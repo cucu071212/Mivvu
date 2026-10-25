@@ -10,13 +10,13 @@ import { filterFacilities } from "./filter-facilities";
 import { validateContext } from "./validate-context";
 
 describe("browse integration (GW-010)", () => {
-  it("loads all 12 approved production facilities with no dataset errors", () => {
+  it("loads all approved production facilities with no dataset errors", () => {
     const raw = JSON.parse(
       readFileSync(new URL("../data/facilities.json", import.meta.url), "utf8"),
     );
     const { facilities, datasetErrors } = prepareProductionFacilities(raw);
     assert.equal(datasetErrors.length, 0);
-    assert.equal(facilities.length, 12);
+    assert.equal(facilities.length, 18);
   });
 
   it("validates flight context from string form fields with frozen defaults", () => {
@@ -50,8 +50,8 @@ describe("browse integration (GW-010)", () => {
       facilities,
       buildFacilityFilterQuery("peet", ""),
     );
-    assert.equal(peetsMatches.length, 1);
-    assert.ok(peetsMatches[0].name.includes("Peet"));
+    assert.equal(peetsMatches.length, 2);
+    assert.ok(peetsMatches.every((row) => row.name.includes("Peet")));
   });
 
   it("omits empty category from the filter query", () => {

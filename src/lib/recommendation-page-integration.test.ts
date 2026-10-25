@@ -32,8 +32,19 @@ describe("recommendation page integration (GW-014)", () => {
       travelTimes: productionTravelMinutes,
       useDemoTimeEstimates: false,
     });
-    assert.equal(recommendations.length, 12);
-    assert.ok(recommendations.every((row) => row.kind === "unknown"));
+    assert.equal(recommendations.length, 18);
+    assert.equal(
+      recommendations.filter((row) => row.kind === "unknown").length,
+      12,
+    );
+    assert.equal(
+      recommendations.filter(
+        (row) =>
+          row.kind === "ineligible" &&
+          row.ineligibilityReason === "outside_recommend_eligibility",
+      ).length,
+      6,
+    );
     assert.ok(
       facilities.every((row) => row.waitMinutes === null && row.activityMinutes === null),
     );
@@ -137,7 +148,9 @@ describe("recommendation page integration (GW-014)", () => {
       travelTimes: productionTravelMinutes,
       useDemoTimeEstimates: true,
     });
-    assert.equal(recommendations.length, 1);
-    assert.equal(recommendations[0].facilityName, "Peet's Coffee");
+    assert.equal(recommendations.length, 2);
+    assert.ok(
+      recommendations.every((row) => row.facilityName.includes("Peet")),
+    );
   });
 });
