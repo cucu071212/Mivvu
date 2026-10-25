@@ -1,3 +1,9 @@
+import { SFO_T2_LOCATION_EVIDENCE } from "@/data/sfo-t2-location-evidence";
+import type {
+  FacilityLocationEvidence,
+  KnownFacilityLocationEvidence,
+} from "@/types/facility-location";
+
 import {
   POST_ELIGIBLE_SECURITY_ZONES,
   PRODUCTION_RECOMMEND_SCOPE_ZONES,
@@ -153,4 +159,33 @@ export function isFacilityRecommendEligibleForEngine(
   facility: Pick<Facility, "recommendEligible">,
 ): boolean {
   return facility.recommendEligible;
+}
+
+// GW-B coarse location evidence. Kept separate from eligibility normalization and
+// recommendation math; these records never imply a route or travel duration.
+const locationEvidenceById = new Map(
+  SFO_T2_LOCATION_EVIDENCE.map((row) => [row.facilityId, row] as const),
+);
+
+/** Return sourced area evidence or an explicit Unknown result for any other ID. */
+export function getFacilityLocationEvidence(
+  facilityId: string,
+): FacilityLocationEvidence {
+  return (
+    locationEvidenceById.get(facilityId) ??
+    Object.freeze({
+      facilityId,
+      locationConfidence: "unknown" as const,
+      terminalLabel: null,
+      gateAreaLabel: null,
+      areaLabel: null,
+      sourceUrl: null,
+      evidenceNotes: "No supported location evidence for this facility ID.",
+    })
+  );
+}
+
+/** List only the twelve sourced T2 D Gates records in stable manifest order. */
+export function listFacilityLocationEvidence(): readonly KnownFacilityLocationEvidence[] {
+  return SFO_T2_LOCATION_EVIDENCE;
 }
