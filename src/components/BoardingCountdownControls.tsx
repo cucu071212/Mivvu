@@ -412,6 +412,7 @@ export function BoardingCountdownControls({
               required
               aria-required="true"
               aria-invalid={Boolean(startError)}
+              aria-describedby={startError ? "boarding-countdown-error" : undefined}
             />
           </label>
           <button
@@ -433,7 +434,9 @@ export function BoardingCountdownControls({
       )}
 
       {startError ? (
-        <p className="text-sm text-destructive" role="alert">{startError}</p>
+        <p id="boarding-countdown-error" className="text-sm text-destructive" role="alert">
+          {startError}
+        </p>
       ) : null}
       <div className="flex flex-wrap gap-2">
         {state.mode === "manual" ? (

@@ -1077,3 +1077,27 @@
     color: var(--gw-muted-foreground);
   }
 }
+
+/* Keyboard bypass for the shared navigation and countdown. */
+@layer components {
+  .gw-skip-link {
+    position: fixed;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 50;
+    padding: 0.75rem 1rem;
+    border-radius: var(--gw-radius-md);
+    background: var(--gw-card);
+    color: var(--gw-primary);
+    font-weight: 600;
+    transform: translateY(-200%);
+  }
+
+  .gw-skip-link:focus {
+    transform: translateY(0);
+  }
+
+  #main-content {
+    scroll-margin-top: 16rem;
+  }
+}

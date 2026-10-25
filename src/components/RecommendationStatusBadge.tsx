@@ -86,7 +86,11 @@ export function RecommendationStatusBadge({
   const status = recommendationStatusPresentation(recommendation);
   const kind = statusKind(recommendation);
   return (
-    <span className={`${status.chipClass} gap-1.5`} aria-label={status.accessibleLabel}>
+    <span
+      role="img"
+      className={`${status.chipClass} gap-1.5`}
+      aria-label={status.accessibleLabel}
+    >
       <StatusIcon kind={kind} />
       <span aria-hidden="true">{status.shortLabel}</span>
     </span>
