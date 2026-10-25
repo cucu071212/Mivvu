@@ -613,6 +613,7 @@ Decision needed from human Engineering Lead:
 | Gate | Entry criteria | Unlocks |
 | --- | --- | --- |
 | **G-A0** | GW-A-R001 + GW-A-R002 accepted; schema proposal reviewed | GW-A-001 |
+| **G-A0 status** | **APPROVED 2026-10-25** — Human Engineering Lead accepted R001 (`72782f2`), R002 (`c163b20`), schema R002 §6; merged to `main` @ `c163b20`; GW-A-001 authorized | — |
 | **G-A1** | Enriched dataset + validators + tests green; provenance doc updated | GW-B-R001, GW-C-* (partial) |
 | **G-B0** | GW-B-R001 + GW-B-001 policy doc approved | GW-B-002 |
 | **G-B1** | Matrix changes labeled; regression tests pass | GW-C-* (full), production data release |

@@ -76,6 +76,63 @@ export type PassengerSecurityArea = "post";
 export type GateLandmark = "D1" | "D4" | "D7" | "D9" | "D15" | "D16";
 
 // ---------------------------------------------------------------------------
+// Facility hours & amenities (GW-A-001 — static official listings only)
+// ---------------------------------------------------------------------------
+
+/** IANA zone for interpreting open/close times copied from flysfo.com (SFO local). */
+export const FACILITY_HOURS_TIMEZONE = "America/Los_Angeles" as const;
+
+export type FacilityHoursTimezone = typeof FACILITY_HOURS_TIMEZONE;
+
+/** Official site published one daily range for all days of the week. */
+export type FacilityWeeklyHours = {
+  kind: "weekly_same_all_days";
+  /** Verbatim hours line from the listing (audit trail). */
+  rawText: string;
+  /** Normalized 24h HH:mm in {@link FACILITY_HOURS_TIMEZONE}; null if not parsed. */
+  openLocal: string | null;
+  closeLocal: string | null;
+  timezone: FacilityHoursTimezone;
+};
+
+export type FacilityHoursUnknown = {
+  kind: "unknown";
+  rawText?: string;
+};
+
+export type FacilityHours = FacilityWeeklyHours | FacilityHoursUnknown;
+
+export type FacilityOfficialBadge =
+  | "open_past_10pm"
+  | "military_discount"
+  | "sit_down_restaurant"
+  | "sfo_green_business";
+
+export const FACILITY_OFFICIAL_BADGES: readonly FacilityOfficialBadge[] = [
+  "open_past_10pm",
+  "military_discount",
+  "sit_down_restaurant",
+  "sfo_green_business",
+];
+
+export type FacilityPhoneSource = "official_listing" | "unknown";
+
+export type FacilityContact = {
+  /** Published phone string as shown on the listing (not normalized to E.164). */
+  phoneE164OrDisplay: string | null;
+  phoneSource: FacilityPhoneSource;
+};
+
+export type FacilityAmenityDetails = {
+  tagline: string | null;
+  officialBadges: FacilityOfficialBadge[];
+  aboutExcerpt: string | null;
+};
+
+/** Max length for optional marketing “About” excerpts stored in the dataset. */
+export const FACILITY_ABOUT_EXCERPT_MAX_LENGTH = 2000;
+
+// ---------------------------------------------------------------------------
 // Travel matrices (minutes; directed; null = unknown edge)
 // ---------------------------------------------------------------------------
 
@@ -107,6 +164,13 @@ export type Facility = {
   timeConfidence: DataConfidence;
   locationDescription?: string;
   nearestGateLandmark?: GateLandmark | null;
+  /** Static published hours; omit in JSON for legacy rows (treated as unknown in UI). */
+  hours?: FacilityHours;
+  hoursConfidence?: DataConfidence;
+  hoursLastCheckedAt?: string;
+  hoursSourceUrl?: string;
+  contact?: FacilityContact;
+  amenityDetails?: FacilityAmenityDetails;
 };
 
 // ---------------------------------------------------------------------------
@@ -307,7 +371,11 @@ export type FacilityValidationErrorCode =
   | "invalid_date"
   | "invalid_minutes_field"
   | "duplicate_id"
-  | "confidence_field_mismatch";
+  | "confidence_field_mismatch"
+  | "invalid_hours"
+  | "invalid_contact"
+  | "invalid_amenity_details"
+  | "hours_parse_partial";
 
 export type FacilityValidationError = {
   path: string;
