@@ -940,6 +940,10 @@
     min-height: 100dvh;
   }
 
+  .gw-welcome-airport-inner-wide {
+    width: min(36rem, 100%);
+  }
+
   .gw-welcome-airport-inner {
     display: flex;
     width: min(32rem, 100%);
@@ -990,6 +994,47 @@
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
+  }
+
+  .gw-welcome-coverage {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--gw-radius-md, 0.5rem);
+    border: 1px solid var(--gw-border);
+    background: color-mix(in srgb, var(--gw-muted) 45%, var(--gw-card));
+  }
+
+  .gw-airport-catalog-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    max-height: min(18rem, 45vh);
+    overflow-y: auto;
+  }
+
+  .gw-airport-catalog-item {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--gw-border);
+    border-radius: var(--gw-radius-md, 0.5rem);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .gw-airport-catalog-item-selected {
+    border-color: var(--gw-ring);
+    background: color-mix(in srgb, var(--gw-cyan) 8%, var(--gw-card));
+  }
+
+  .gw-airport-catalog-item-unavailable {
+    opacity: 0.92;
   }
 
   .gw-app-header {

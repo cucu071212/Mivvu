@@ -23,31 +23,43 @@ function LayoutFixture() {
   );
 }
 
-describe("WelcomeAirportScreen (GW-C-003 full page)", () => {
+describe("WelcomeAirportScreen (searchable directory)", () => {
   afterEach(() => {
     cleanup();
     clearStoredAirportSelection();
   });
 
-  it("shows a full-page welcome before the dashboard on first visit", async () => {
+  it("shows searchable directory and enters app only with SFO", async () => {
     render(<LayoutFixture />);
-    const welcome = await screen.findByRole("heading", {
-      name: /Where are you flying from/i,
-    });
-    assert.ok(welcome);
-    assert.equal(screen.queryByRole("heading", { name: "Flight context" }), null);
-    assert.equal(screen.queryByRole("navigation", { name: /Primary/i }), null);
-    assert.ok(screen.getByText(/San Francisco International Airport \(SFO\)/i));
-    fireEvent.click(
-      screen.getByRole("button", { name: /Continue to Flight dashboard/i }),
-    );
+    await screen.findByRole("heading", { name: /Where are you flying from/i });
+    assert.ok(screen.getByLabelText(/Search airports/i));
+    assert.ok(screen.getByText(/Starting with San Francisco/i));
+    fireEvent.click(screen.getByRole("button", { name: /Continue to Flight dashboard/i }));
     assert.ok(screen.getByRole("heading", { name: "Flight context" }));
   });
 
-  it("does not show a second airport option", async () => {
+  it("filters airports by city and blocks continue for coming-soon selection", async () => {
     render(<LayoutFixture />);
     await screen.findByRole("heading", { name: /Where are you flying from/i });
+    fireEvent.change(screen.getByLabelText(/Search airports/i), {
+      target: { value: "chicago" },
+    });
+    assert.ok(screen.getByText(/O'Hare International Airport/i));
     assert.equal(screen.getAllByRole("radio").length, 1);
-    assert.equal(screen.getAllByRole("radio")[0].getAttribute("value"), "SFO");
+    fireEvent.click(screen.getByRole("radio", { name: /ORD/i }));
+    const continueBtn = screen.getByRole("button", {
+      name: /Continue to Flight dashboard/i,
+    });
+    assert.equal((continueBtn as HTMLButtonElement).disabled, true);
+    assert.ok(screen.getByText(/not available in GateWise yet/i));
+  });
+
+  it("shows empty state when search has no matches", async () => {
+    render(<LayoutFixture />);
+    await screen.findByRole("heading", { name: /Where are you flying from/i });
+    fireEvent.change(screen.getByLabelText(/Search airports/i), {
+      target: { value: "zzz-no-match" },
+    });
+    assert.ok(screen.getByText(/No airports match your search/i));
   });
 });
