@@ -1,6 +1,6 @@
 # GateWise — Remaining work roadmap
 
-Last updated: 2026-10-24 (GW-F3 security production release).  
+Last updated: **2026-10-25** (post-Devpost submission; Level 2.7 on production).  
 **Task IDs are not authorization to implement** unless the human Engineering Lead assigns them.
 
 ## Stable release baseline
@@ -8,62 +8,98 @@ Last updated: 2026-10-24 (GW-F3 security production release).
 | Item | Value |
 | --- | --- |
 | **Production URL** | https://gate-wise-iota.vercel.app |
-| **`main` SHA** | `35ef72dcacadb0c79698e44a9f2ff5717cd5f016` (`35ef72d`) |
-| **Scope** | P0 + GW-F1/F2/F3 (personalization, boarding countdown, What-if wiring), post-audit security hardening (strict minutes, production CSP without `unsafe-eval`, countdown clock policy), GW-015 schematic |
-| **Prior rollback SHAs** | `e458fdc` (pre–block-fix GW-F3 on `main`); `665e5e8` (tag `mvp-p0-baseline-665e5e8`, MVP P0 only) |
+| **`main` SHA** | `b0b58c698179eb8241765f3ac8a93233cfc20676` (`b0b58c6`) |
+| **Scope** | SFO Terminal 2 **D Gates** only; 12 verified facilities in `facilities.json`; directed zone-time **demo model**; multipage App Router (`/`, `/explore`, `/recommendations`, `/plan`) |
+| **Shipped product** | P0 B+C, GW-015 schematic, GW-F1–F3, Level 2.0–2.7 UX, security headers (CSP, frame deny, etc.) |
+| **Prior production SHAs** | `35ef72d` (GW-F3 security RC); `665e5e8` (MVP P0 tag `mvp-p0-baseline-665e5e8`) |
 
 ## Completed (preserve — do not regress)
 
-| ID | Deliverable | Status |
+| Track | Deliverable | Notes |
 | --- | --- | --- |
-| GW-012–014 | Engine + ranked cards | On `main` |
-| GW-015 | Terminal schematic + collapse/a11y fix | On `main` |
-| GW-F1–F3 | Personalization, countdown, integration + security RC | On `main` @ `35ef72d` (Codex APPROVE post–block-fixes) |
-| GW-017 | What-if simulator | On `main` |
-| GW-020 | Production deploy + smoke | Live URL above |
-| GW-021 | README/Devpost drafts | Docs on repo branches; lead may promote README |
-| GW-022 | Production regression report | `docs/gw022-production-regression-report.md` on `feat/data-utils` |
+| P0 | Engine, cards, What-if, deploy | `recommendFacilities` contract §4 `PLAN.md` |
+| GW-015 | Terminal schematic + a11y | Orientation only — not navigation |
+| GW-F1–F3 | Personalization, countdown, integration | `docs/GW-F-CONTRACT.md` |
+| Security RC | Strict minutes, production CSP, countdown clock policy | `next.config.ts` headers |
+| Level 2.x | Mobile-first UX, premium tokens, multipage session, layout rail + countdown dock | Merged via `b0b58c6` |
+| Submission | Devpost + demo artifacts | Historical; see `docs/DEMO_SCRIPT.md` |
 
-## Active development track — GW-F (approved order)
+## Active development — data-first (Phase A → D)
 
-Technical contract: **`docs/GW-F-CONTRACT.md`**. Implementation tasks: **`docs/IMPLEMENTATION_PLAN.md`** (GW-F1 / GW-F2 / GW-F3).
+**Why:** The app is deployable and honest about **unknown** queue/activity times, but travelers still lack **official hours, richer facility facts, and credible walk labels**. Next work prioritizes **verified data** over UI polish or GW-E.
 
-| Phase | Summary | Owner | Gate |
-| --- | --- | --- | --- |
-| **GW-F1** | Per-facility user queue/activity overrides; precedence over demo; no dataset mutation | Support Codex | **G-F1** — modules + tests merged for lead integration |
-| **GW-F2** | Boarding-start countdown (device clock); pause/resume/clear | Support Codex | **G-F2** — countdown module + tests |
-| **GW-F3** | Wire F1+F2 into recommendations & What-if; full regression | Lead Cursor | **G-F3** — acceptance before any GW-E work |
-| **GW-E** | Two-stop time-budget planner | Support (logic) + Lead (UI) | **G-E** after **G-F3** only |
+**Execution plan (task IDs, owners, tests):** `docs/IMPLEMENTATION_PLAN.md` § Post-submission Phase A–D.  
+**Product gates:** `PLAN.md` §12.
 
-**Contract branch (G-F0):** `feature/gw-f-contracts` — approved shared contract; **not** merged to `main` yet (avoid unnecessary production deploy). **`feature/gw-f-logic`** and other GW-F branches branch **from** this tip.
+### Phase A — Verified airport data (current priority)
 
-## Optional submission polish (non-blocking for GW-F)
+| Order | ID | Type | Summary | Depends on | Gate |
+| --- | --- | --- | --- | --- | --- |
+| 1 | **GW-A-R001** | Research | Audit official SFO sources/APIs; document what is publishable vs unavailable; update `docs/data-provenance.md` | — | **G-A0** |
+| 2 | **GW-A-R002** | Research | Per-facility hours + amenity field extraction plan for all **12** shipped facilities | GW-A-R001 | **G-A0** |
+| 3 | **GW-A-001** | Implement | Extend facility schema + validators (hours, amenities, location precision) without breaking recommend safety | **G-A0** | **G-A1** |
+| 4 | **GW-A-002** | Implement | Populate enriched records from verified sources only; refresh `lastCheckedAt` | GW-A-001 | **G-A1** |
+| 5 | **GW-A-003** | Implement | UI: facility detail + hours presentation with unknown/live disclaimers | GW-A-002 | **G-A1** |
 
-| ID | Owner | Notes |
+**Acceptance (Phase A):** Every new field has source URL + checked date or is explicitly `unknown`; `npm test` + validation tests pass; no recommendation threshold changes without documented re-baseline; no invented hours or queues.
+
+### Phase B — Distance & walking time
+
+| Order | ID | Type | Summary | Depends on | Gate |
+| --- | --- | --- | --- | --- | --- |
+| 1 | **GW-B-R001** | Research | Indoor routing / distance options (SFO maps, third-party); license and accuracy limits | **G-A1** | **G-B0** |
+| 2 | **GW-B-001** | Design | Document travel-edge model: `verified` \| `demo_estimate` \| `unknown` per directed edge | GW-B-R001 | **G-B0** |
+| 3 | **GW-B-002** | Implement | Apply matrix/edge updates only where policy allows; keep directed asymmetry | GW-B-001, **G-B0** | **G-B1** |
+
+**Acceptance (Phase B):** No edge presented as measured without provenance; missing edges stay `unknown` (not 0); hero demo scenarios in `PLAN.md` §5 still pass or are explicitly revised in docs.
+
+### Phase C — Real-world usability
+
+| Order | ID | Type | Summary | Depends on | Gate |
+| --- | --- | --- | --- | --- | --- |
+| 1 | **GW-C-001** | Implement | Facility detail surfaces (Explore + Results) using Phase A data | **G-A1** | **G-C0** |
+| 2 | **GW-C-002** | Implement | Opening-hours UX (schedules, unknown, “not live availability”) | GW-A-003 | **G-C0** |
+| 3 | **GW-C-003** | Implement | First-run / discovery improvements tied to real data (not generic tours) | GW-C-001 | **G-C0** |
+
+**Acceptance (Phase C):** Mobile smoke on all four routes; accessibility spot-check; copy still states model-only, not boarding guarantee.
+
+### Phase D — GW-E two-stop planner (deferred)
+
+| ID | Summary | Preconditions |
 | --- | --- | --- |
-| GW-021 | Lead + Teammate | Promote README; align Devpost with `665e5e8` + live URL |
-| GW-023 | Teammate + Lead | Demo recording ≤5 min; Devpost submit per event rules |
+| **GW-E1** | Pure two-stop engine (both orders), tests independent of implementation | **G-E** + **G-Data** (`G-C0` + **G-B1**) |
+| **GW-E2** | **My Plan** UI wiring (placeholder exists) | GW-E1 merged |
 
-Teammate Codex may execute these in parallel; **must not block** GW-F1/F2.
+Do **not** start GW-E until Phase A–C gates close and the human lead re-issues **G-E**.
 
-## Suggested priority order
+## Archived / no longer on active roadmap
 
-1. **G-F0** — contract approved on `feature/gw-f-contracts` (no `main` merge required).
-2. **Authorize GW-F1-001** (Support) — branch `feature/gw-f-logic` from `feature/gw-f-contracts`.
-3. **Authorize GW-F2-001** (Support) — same base branch (parallel with F1 allowed).
-4. **Authorize GW-F3-*** (Lead) — integration branch from contract + logic merges; **main** merge/deploy only when lead releases integrated F3.
-5. **GW-E** only after **G-F3** + **G-E** explicit approval.
+| Item | Reason |
+| --- | --- |
+| Hackathon milestones M1–M6, gates G0–G6 | Event complete |
+| GW-F0–F3 authorization queue | **Shipped** on `main` |
+| GW-021 / GW-023 submission polish | Devpost submitted |
+| Level 2.5–2.7 layout refinement | **Shipped** @ `0d1a041` → `b0b58c6` |
+| Optional visual polish without data | Deprioritized post-submission |
+
+## Unavailable or unknown data (explicit)
+
+Until research proves otherwise, treat as **not available** for automation:
+
+- Live SFO queue/wait times API
+- Live flight / boarding gate API (out of scope permanently for P0+)
+- Official turn-by-turn indoor routing API for T2 D Gates
+- Real-time open/closed per facility (may only exist as static or marketing copy on flysfo.com)
 
 ## Rollback strategy
 
-1. **F features:** Revert GW-F3 integration commit; pure F1/F2 modules unused if UI wiring removed.
-2. **Schematic:** Remove `TerminalSchematic` block from `GateWiseHome.tsx` (GW-015 rollback) without touching engine.
-3. **Production:** Vercel promote prior deployment (e.g. build for `e458fdc` or `665e5e8`) without rewriting Git history.
+1. **Data enrichment:** Revert `facilities.json` commit; validators and UI fall back to pre-A schema if migration added.
+2. **Travel matrix:** Revert `travel-times.ts` to last `demo_estimate`-labeled baseline.
+3. **Production:** Vercel promote prior deployment (e.g. `b0b58c6` parent or `35ef72d`) without rewriting Git history.
 
-## Minimum acceptance after GW-F3
+## Minimum acceptance before next production release
 
-- All P0/GW-015 hero scenarios still pass (`npm test`, build, production smoke).
-- User override: partial queue-only override; demo precedence respected.
-- Countdown: tick updates minutes; pause holds; clear returns to manual.
-- What-if: baseline/scenario rules per `docs/GW-F-CONTRACT.md` §5.2.
-- No changes to official `facilities.json` rows from user input.
+- All existing tests + build green on release branch.
+- Production security headers unchanged unless intentional, reviewed diff in `next.config.ts`.
+- Production smoke: Flight, Explore, Results, Plan; countdown dock; personalization invalid gating; What-if independence.
+- Data changes: provenance appendix updated in `docs/data-provenance.md`.

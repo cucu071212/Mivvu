@@ -1,6 +1,6 @@
 # GateWise — HackPSU Fall 2026 Final Implementation Plan
 
-**Status:** Approved implementation baseline v1.3 — P0/P1 frozen; post-MVP **GW-F** track approved (see §11)  
+**Status:** Approved product baseline **v1.4 (post-submission)** — HackPSU P0/P1, **GW-F1–F3**, Level 2 multipage UX, and security hardening **shipped** on production `main` @ `b0b58c6` (see §11–§12). **Active development** is data-first (Phase A–C) before **GW-E** (§12).  
 **Project:** GateWise — *Your airport. Your gate. Your time.*  
 **Event:** October 24–25, 2026 (Eastern Time)  
 **Team:** Engineering lead (Cursor + own Codex) and teammate (Codex, data/utility logic/QA)  
@@ -204,19 +204,56 @@ Event schedule in prior plan: **Sat Oct 24, 2:00 PM → Sun Oct 25, 1:45 PM**; *
 
 **Engineering lead / UI owner:** Main developer (Cursor + Codex)  **Data / Utilities / QA owner:** Teammate (Codex)
 
-## 11. Post-MVP feature progression (GW-F → GW-E)
+## 11. Post-MVP feature progression (GW-F → GW-E) — historical record
 
-**Stable baseline (2026-10-24):** `main` @ `665e5e85a9b30b8114c678c7097a3b9ce5e9e805`, production https://gate-wise-iota.vercel.app — preserves completed P0 MVP, GW-015 schematic, GW-020 deploy, GW-021 submission docs, and GW-022 regression.
+**Production baseline (2026-10-25):** https://gate-wise-iota.vercel.app · `main` @ `b0b58c698179eb8241765f3ac8a93233cfc20676` (`b0b58c6`). Includes P0 B+C, GW-015 schematic, GW-F1–F3 (personalization, boarding countdown, What-if wiring), Level 2.0–2.7 multipage App Router UX, and post-audit security headers (production CSP without `unsafe-eval`).
 
-Execute in order; each phase requires an authorized task ID in `docs/IMPLEMENTATION_PLAN.md` and lead gate approval.
+| Phase | ID | Status | Summary |
+| --- | --- | --- | --- |
+| **F1** | GW-F1 | **Shipped** | Per-facility user queue/activity overrides; precedence over demo; no `facilities.json` mutation. Contract: `docs/GW-F-CONTRACT.md`. |
+| **F2** | GW-F2 | **Shipped** | Boarding-start countdown from device clock; pause/resume/clear; not live airline data. |
+| **F3** | GW-F3 | **Shipped** | F1+F2 integrated into recommendations and What-if; shared session across `/`, `/explore`, `/recommendations`, `/plan`. |
+| **E** | GW-E | **Not started** | Two-stop planner — §4 E semantics; requires **G-E** plus post-submission **G-Data** gate (§12). |
 
-| Phase | ID | Summary |
+**Preserved contracts (do not weaken):** `recommendFacilities` thresholds and breakdown semantics (§4); `minutesUntilBoarding` = minutes until boarding **starts**; unknown durations never zero-filled; What-if uses the same engine for baseline and scenario; user overrides never alter official dataset rows.
+
+**Agent model (unchanged):** Engineering Lead Cursor (UI + integration + `main`); Engineering Support Codex (pure logic modules); optional Teammate for data/QA — see `AGENTS.md`.
+
+## 12. Post-submission roadmap (data-first → GW-E)
+
+**Mission after Devpost:** Make GateWise useful with **real, labeled airport information** for the existing **SFO Terminal 2 D Gates** scope — not more visual polish or speculative features without data backing.
+
+**Active task breakdown:** `docs/IMPLEMENTATION_PLAN.md` (Phase A–D). **Current priority order:** `docs/REMAINING_ROADMAP.md`.
+
+| Phase | Goal | Outcome |
 | --- | --- | --- |
-| **F1** | GW-F1 | **Personalized time estimates** — users may supply per-facility queue and/or activity minutes. User values beat demo estimates; missing values stay unknown unless demo mode is on. **Never** mutate `facilities.json` or official location provenance. |
-| **F2** | GW-F2 | **Boarding countdown** — user sets boarding-start date/time; remaining minutes update from the device clock. Handle invalid input, zero, pause/resume, clear, and component cleanup. Not live airline integration. |
-| **F3** | GW-F3 | **Integration & regression** — wire F1 and F2 into recommendations and What-if; preserve all current behavior. Technical contract: `docs/GW-F-CONTRACT.md`. |
-| **E** | GW-E | **Two-stop planner** — only after **GW-F3** acceptance and separate **G-E** lead authorization. Same pure-engine rules as §4 E; not real-world route optimization. |
+| **A — Verified airport data** | Enrich the shipped **12** facilities with official hours, amenity facts, finer location text, source URLs, and `lastCheckedAt` — without inventing fields SFO does not publish. | Travelers see **what is officially known** vs **unknown**; dataset validation stays strict. |
+| **B — Distance & walking time** | Research credible indoor routing; define how verified, estimated, and unknown directed travel minutes are stored and labeled. | Replace silent demo assumptions only where evidence exists; matrix edges remain **directed** and non-symmetric. |
+| **C — Real-world usability** | Present enriched data in facility detail, hours, discovery, and recommendations copy. | First-time users understand scope, limits, and how to act on a recommendation. |
+| **D — GW-E two-stop planner** | Implement approved two-stop time-budget module + UI on **My Plan** after A–C foundations. | Same engine rules as §4 E; not indoor navigation or live routing. |
 
-**Agent model:** Engineering Lead Cursor (UI + integration + `main`); Engineering Support Codex (F1/F2/E pure modules + tests); Teammate Codex optional QA/submission — must not block F track. Details in `AGENTS.md`.
+### Approval gates (post-submission)
 
-**G-F0:** Approved contract lives on `feature/gw-f-contracts`; GW-F work branches from it without requiring an interim `main` merge. Production MVP on `main` @ `665e5e8` stays untouched until a deliberate GW-F3 release merge.
+| Gate | Entry criteria | Lead decision |
+| --- | --- | --- |
+| **G-A0** | GW-A-R001 research report accepted; enrichment schema does not break validation or recommendation safety | Authorize **GW-A-001** implementation tasks |
+| **G-A1** | Enriched `facilities.json` + validators green; provenance doc updated | Authorize **GW-B-R001** / Phase B design |
+| **G-B0** | Walking-time policy written (verified / demo_estimate / unknown); no unlabeled measurements | Authorize matrix or edge-model changes (**GW-B-001+**) |
+| **G-B1** | Any new travel minutes labeled and tested; P0 hero margins unchanged unless explicitly re-baselined | Authorize Phase C UX tasks |
+| **G-C0** | Production-preview UX for hours/detail/discovery passes smoke + accessibility check | Re-authorize **G-E** for **GW-E** |
+| **G-E** | **G-F3** shipped (done) + **G-Data** (**G-C0** and **G-B1**) | Authorize **GW-E1** / **GW-E2** |
+
+### Data sources — known constraints (2026-10-24 research)
+
+Documented in `docs/data-provenance.md`. Unless separately verified:
+
+- **No** official SFO public API for live facility hours, queue times, or indoor turn-by-turn routing in this project scope.
+- **Yes** official HTML listings on flysfo.com (Shop/Dine/Relax, per-facility pages, filtered directory); hours may be static text or badges — **not** guaranteed real-time.
+- **No** production use of third-party indoor maps without explicit lead approval and licensing review.
+- Restrooms/charging at gate-level precision remain **research gaps**; do not fabricate POIs to fill categories.
+
+### Scope freeze (post-submission)
+
+- Stay on **one terminal** (T2 D Gates) until the human Engineering Lead authorizes expansion.
+- Do not add auth, database, live flights, payments, or multi-airport coverage.
+- New ideas → `BACKLOG.md`; contract changes → lead approval + `PLAN.md` / `AGENTS.md` update.
