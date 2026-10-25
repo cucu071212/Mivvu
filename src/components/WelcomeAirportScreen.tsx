@@ -3,32 +3,35 @@
 import { SUPPORTED_AIRPORT_IATA } from "@/types/airport";
 import { useAirportSelection } from "@/context/airport-selection";
 
-export function AirportSelectionGate() {
-  const { gateOpen, hydrated, storageAvailable, completeSelection } =
-    useAirportSelection();
-
-  if (!hydrated || !gateOpen) return null;
+export function WelcomeAirportScreen() {
+  const { storageAvailable, completeSelection } = useAirportSelection();
 
   return (
-    <div
-      className="gw-airport-selection-overlay"
-      role="dialog"
-      aria-modal="true"
-      aria-label="Where are you flying from?"
-      aria-labelledby="gw-airport-selection-title"
-      aria-describedby="gw-airport-selection-desc"
-    >
-      <div className="gw-airport-selection-panel gw-surface-card">
-        <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-          GateWise · First visit
-        </p>
+    <div className="gw-welcome-airport">
+      <main
+        className="gw-welcome-airport-inner"
+        aria-labelledby="gw-welcome-airport-title"
+        aria-describedby="gw-welcome-airport-desc"
+      >
+        <header className="flex flex-col gap-2">
+          <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+            GateWise · Welcome
+          </p>
+          <div className="gw-brand-mark">
+            <span className="gw-brand-icon" aria-hidden="true">GW</span>
+            <p className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+              GateWise
+            </p>
+          </div>
+        </header>
+
         <h1
-          id="gw-airport-selection-title"
+          id="gw-welcome-airport-title"
           className="text-2xl font-bold tracking-tight text-card-foreground sm:text-3xl"
         >
           Where are you flying from?
         </h1>
-        <p id="gw-airport-selection-desc" className="text-sm text-muted-foreground">
+        <p id="gw-welcome-airport-desc" className="text-sm leading-relaxed text-muted-foreground">
           GateWise currently models one verified airport. Select your departure
           airport to continue. This demo does not use live flight feeds.
         </p>
@@ -55,7 +58,7 @@ export function AirportSelectionGate() {
             </span>
           </label>
           <p
-            className="gw-airport-selection-unavailable text-sm text-muted-foreground"
+            className="text-sm text-muted-foreground"
             role="note"
           >
             Other airports are not supported yet. Multi-airport routing and live
@@ -83,7 +86,7 @@ export function AirportSelectionGate() {
         >
           Continue to Flight dashboard
         </button>
-      </div>
+      </main>
     </div>
   );
 }

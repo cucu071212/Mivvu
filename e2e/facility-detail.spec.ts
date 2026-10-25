@@ -2,6 +2,7 @@ import { test, expect } from "./fixtures";
 
 test("Explore facility detail modal closes and restores focus", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
+  await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/explore");
 
   const trigger = page
