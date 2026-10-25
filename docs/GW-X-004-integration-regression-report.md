@@ -2,11 +2,10 @@
 
 **Task:** GW-X-004 (Phase X closure integration)  
 **Executed:** **2026-10-25 (America/New_York)**  
-**Production `main`:** `a92467d16da023c9e52483a9ddcb51e9ee3df2db` (merge T3 pilot @ `7ebf3e9`)  
+**Production `main`:** `6375ae7beaa7f838188f1359e68780205a3bff49` (merge GW-X-004 hours fix @ `fbf6fc9` on `a92467d`)  
 **Production URL:** https://gate-wise-iota.vercel.app  
-**Vercel deployment:** `gate-wise-bi6xiwr08-gate-wise.vercel.app` (READY)  
-**GW-X-004 doc/fix branch:** `docs/gw-x-004-integration-regression` (hours `rawText` fix + this report)  
-**G-X3:** **Not signed** — human Engineering Lead approval required per `IMPLEMENTATION_PLAN.md`.
+**Vercel deployment:** `gate-wise-q1aq2wf7s-gate-wise.vercel.app` (READY)  
+**G-X3:** **APPROVED 2026-10-25** — Engineering Lead authorization after production verification below.
 
 ---
 
@@ -14,7 +13,7 @@
 
 | Criterion | Evidence | Result |
 | --- | --- | --- |
-| **602+ tests green** | `npm test` → **630** passed (37 files) | **PASS** |
+| **602+ tests green** | `npm test` → **631** passed (37 files) @ `6375ae7` | **PASS** |
 | Flight countdown unchanged | Production `/` — countdown section + manual budget; `boarding-countdown.test.ts` in suite | **PASS** |
 | What-if unchanged | Production `/recommendations` — What-if simulator region; `what-if-compare.test.ts` in suite | **PASS** |
 | Personalization unchanged | Results — “Your time estimates” + browse 26; override tests in suite | **PASS** |
@@ -53,24 +52,29 @@
 
 ---
 
-## 4. Automated commands (`main` @ `a92467d`)
+## 4. Automated commands (`main` @ `6375ae7`)
 
 | Command | Result |
 | --- | --- |
-| `npm test` | **630** PASS |
+| `npm test` | **631** PASS |
 | `npx tsc --noEmit` | PASS |
 | `npm run lint` | PASS |
 | `npm run build` | PASS |
 
 ---
 
-## 5. Scoped fix (GW-X-004)
+## 5. Hours `rawText` fix — production verification (2026-10-25)
 
-**Issue:** `presentFacilityHours` treated `hours.kind: unknown` as “not published” even when `rawText` was present (AG1 24-hour listing, Vino Volo day-split text).
+**Issue (resolved):** `presentFacilityHours` treated `hours.kind: unknown` as “not published” even when `rawText` was present.
 
-**Fix:** `src/lib/format-facility-hours.ts` — show trimmed `rawText` with `isUnknown: true` and standard disclaimer; test in `format-facility-hours.test.ts`.
+**Fix:** `src/lib/format-facility-hours.ts` @ `fbf6fc9` — show trimmed `rawText` with `isUnknown: true` and standard disclaimer.
 
-**Not in production until:** merge `docs/gw-x-004-integration-regression` (or cherry-pick) + deploy.
+| Facility | Expected `rawText` (dataset) | Production Explore (`gate-wise-iota.vercel.app`) |
+| --- | --- | --- |
+| **AG1** | `Sunday - Saturday Open 24 hours` | **PASS** — card shows verbatim text under When (published) |
+| **Vino Volo** | `Sunday- Friday 9:00 am-9:00 pm Saturday 9:00 am-7:00 pm` | **PASS** — card shows verbatim text |
+
+Disclaimer “Published hours from SFO — not live open/closed status” remains on cards.
 
 ---
 
@@ -85,12 +89,14 @@
 
 ---
 
-## 7. G-X3 recommendation (for human lead)
+## 7. G-X3 decision
 
-| Recommendation | **READY** |
+| Decision | **APPROVED** |
 | --- | --- |
-| Rationale | GW-X-004 checklist green on production @ `a92467d`; 630 tests; browse/recommend split verified; D Gates legacy preserved. Optional: merge hours `rawText` display fix before signing if AG1/Vino copy must match dataset on first paint. |
-| Not signed here | Per task authorization — **G-X3** remains human sign-off in `IMPLEMENTATION_PLAN.md`. |
+| **Date** | 2026-10-25 |
+| **Production SHA** | `6375ae7` |
+| **Evidence** | GW-X-004 checklist green; **631** tests; **26** browse / **12** recommend; AG1 + Vino Volo hours verified on live site; security headers unchanged. |
+| **Tracker** | Recorded in `docs/IMPLEMENTATION_PLAN.md` — **G-X3 (signed)**; **Phase X COMPLETE**. |
 
 ---
 
@@ -100,4 +106,4 @@
 
 ---
 
-**Document version:** 1.0
+**Document version:** 1.1 (production hours fix verified @ `6375ae7`)

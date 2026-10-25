@@ -633,6 +633,7 @@ Decision needed from human Engineering Lead:
 | **G-X2** | Agreed dataset milestone documented; each new row has provenance; no invented fields | GW-X-003 |
 | **G-X2 (signed)** | **2026-10-25** — 21-facility dataset on `main` @ `8c84da5` (12 recommend + 6 T2 browse + 3 HM1 browse); validation + recommend regressions green | GW-X-003 |
 | **G-X3** | GW-X-004 regression green on preview; limitation copy approved | GW-B-R001, further GW-X-002 batches |
+| **G-X3 (signed)** | **2026-10-25** — GW-X-004 @ `6375ae7` on production; **631** tests; **26** browse / **12** recommend; hours `rawText` fix verified (AG1, Vino Volo); report [`GW-X-004-integration-regression-report.md`](./GW-X-004-integration-regression-report.md) | GW-B-R001 (authorized when lead dispatches) |
 
 ### Phase A — Verified airport data (**SHIPPED** @ `af5fe21`)
 
@@ -677,7 +678,11 @@ Decision needed from human Engineering Lead:
 **Tests:** Component/integration tests where applicable; manual mobile smoke  
 **Acceptance:** Copy states hours are **not** live availability; unknown hours visible as unknown.
 
-### Phase X — SFO-wide expansion (**NEXT**)
+### Phase X — SFO-wide expansion (**COMPLETE** @ `6375ae7`)
+
+**Status:** **COMPLETE** — **G-X3** approved 2026-10-25. Delivered: GW-X-001 through GW-X-004, multi-terminal Explore directory, **26** browse-only staged facilities across T1/T2/T3/IT with **12** T2 D Gates recommend scope unchanged. SFO Shop/Dine inventory is **not** exhaustive (R002 representative batches only). Further GW-X-002 batches require separate authorization.
+
+---
 
 #### GW-X-R001: SFO coverage source research (research)
 
@@ -803,4 +808,4 @@ Decision needed from human Engineering Lead:
 
 **Document version:** 1.4  
 **Aligned with:** `PLAN.md` v1.5 (Phase A complete; Phase X next), `AGENTS.md`, `docs/GW-F-CONTRACT.md`, `docs/REMAINING_ROADMAP.md`  
-**Next step (human lead):** Authorize **GW-X-R001** (research only) on a docs or research branch; **G-X0** before any schema or `facilities.json` expansion merge to `main`.
+**Next step (human lead):** Authorize **GW-B-R001** (Phase B research) when ready; **G-B0** before travel-matrix implementation. Optional future **GW-X-002** dataset batches per R002 — not implied by Phase X completion.
