@@ -3,8 +3,8 @@
 import type { ReactNode } from "react";
 import type { Facility, FacilityValidationError } from "@/types/airport";
 import { GateWiseSessionProvider } from "@/context/gatewise-session";
-import { AppShell } from "@/components/AppShell";
-import { AirportSelectionHost } from "@/components/AirportSelectionHost";
+import { AirportSelectionProvider } from "@/context/airport-selection";
+import { AirportSelectionLayout } from "@/components/AirportSelectionLayout";
 
 export type GateWiseProvidersProps = {
   facilities: Facility[];
@@ -18,13 +18,13 @@ export function GateWiseProviders({
   children,
 }: GateWiseProvidersProps) {
   return (
-    <AirportSelectionHost>
+    <AirportSelectionProvider>
       <GateWiseSessionProvider
         facilities={facilities}
         datasetErrors={datasetErrors}
       >
-        <AppShell>{children}</AppShell>
+        <AirportSelectionLayout>{children}</AirportSelectionLayout>
       </GateWiseSessionProvider>
-    </AirportSelectionHost>
+    </AirportSelectionProvider>
   );
 }
