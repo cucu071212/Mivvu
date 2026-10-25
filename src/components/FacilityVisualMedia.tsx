@@ -14,6 +14,10 @@ export function FacilityVisualMedia({
   className = "",
 }: FacilityVisualMediaProps) {
   const visual = resolveFacilityVisual(facility);
+  if (!visual) {
+    return null;
+  }
+
   const frameClass =
     variant === "detail"
       ? "gw-facility-visual gw-facility-visual-detail"
@@ -34,9 +38,9 @@ export function FacilityVisualMedia({
             : "(max-width: 640px) 100vw, 20rem"
         }
       />
-      {visual.kind === "category_fallback" ? (
+      {visual.caption ? (
         <figcaption className="gw-facility-visual-caption text-xs text-muted-foreground">
-          Category illustration — not a photograph of this venue.
+          {visual.caption}
         </figcaption>
       ) : null}
       {visual.attribution ? (

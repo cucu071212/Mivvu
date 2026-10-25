@@ -10,13 +10,24 @@
 | Metric | Count |
 | --- | --- |
 | Facilities audited | **26** |
-| **Approved photographs/logos in manifest** | **0** |
-| Category fallback (GateWise-owned illustration) | **26** |
+| **Approved images in manifest** | **5** (1 venue at SFO, 4 illustrative) |
+| Facilities with hero photography in UI | **5** |
+| Facilities without hero (no blank placeholder) | **21** |
 | Recommendation-eligible (unchanged) | **12** |
 
 Official SFO shop/dine listings may display photography for **identification on flysfo.com only**. GateWise did **not** obtain reuse licenses, vendor releases, or SFO media-kit grants for those assets. **Hotlinking listing hero images is not approved.**
 
-Approved imagery in this release is limited to **first-party category fallback SVGs** in `public/facility-visual/fallback-*.svg` (project-authored, no trademarked logos).
+Approved imagery is registered in `src/data/facility-visual-manifest.json` and stored under `public/facility-visual/approved/`. Facilities without manifest entries **do not** show a hero image (legacy SVG fallbacks are not rendered in the UI).
+
+### Approved manifest entries (hackathon slice)
+
+| Facility ID | Role | Depicts SFO location? | Source |
+| --- | --- | --- | --- |
+| `sfo-t2-d-books-inc` | Venue | Yes (Compass Books, T2) | [Wikimedia CC0](https://commons.wikimedia.org/wiki/File:Compass_Books,_SFO.jpg) |
+| `sfo-t2-d-peets-coffee-d7` | Illustrative | No | [Unsplash](https://unsplash.com/photos/coffee-beans-on-brown-wooden-table-4kgy3GP2pPE) |
+| `sfo-t2-d-burger-joint` | Illustrative | No | [Unsplash](https://unsplash.com/photos/cheeseburger-on-wooden-table-1550547660) |
+| `sfo-t2-d-napa-farms-market` | Illustrative | No | [Unsplash](https://unsplash.com/photos/green-vegetables-on-brown-wooden-chopping-board-1542838132) |
+| `sfo-t2-d-wakaba` | Illustrative | No | [Unsplash](https://unsplash.com/photos/sushi-on-black-ceramic-plate-1617196034796) |
 
 ## How to add a facility photo later
 

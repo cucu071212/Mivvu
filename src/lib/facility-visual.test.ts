@@ -5,24 +5,35 @@ import { validateFacilities } from "./validate-facilities";
 import { resolveFacilityVisual } from "./facility-visual";
 import { loadFacilityVisualManifest } from "./facility-visual-manifest";
 
+const MANIFEST_IDS = new Set(
+  loadFacilityVisualManifest().assets.map((row) => row.facilityId),
+);
+
 describe("resolveFacilityVisual", () => {
-  it("uses category fallbacks for all 26 production facilities when manifest is empty", () => {
+  it("returns null for facilities without manifest assets (no SVG heroes)", () => {
     const { facilities } = validateFacilities(rawFacilities);
-    assert.equal(facilities.length, 26);
-    assert.equal(loadFacilityVisualManifest().assets.length, 0);
-    for (const facility of facilities) {
-      const visual = resolveFacilityVisual(facility);
-      assert.equal(visual.kind, "category_fallback");
-      assert.match(visual.src, /^\/facility-visual\/fallback-/);
-      assert.match(visual.alt, /not a photograph/i);
+    const withoutAsset = facilities.filter((f) => !MANIFEST_IDS.has(f.id));
+    assert.ok(withoutAsset.length > 0);
+    for (const facility of withoutAsset) {
+      assert.equal(resolveFacilityVisual(facility), null);
     }
   });
 
-  it("maps coffee and shop categories to distinct fallback assets", () => {
+  it("maps manifest entries to venue or illustrative photos", () => {
     const { facilities } = validateFacilities(rawFacilities);
-    const peets = facilities.find((f) => f.id === "sfo-t2-d-peets-coffee-d7")!;
-    const brookstone = facilities.find((f) => f.id === "sfo-t2-d-brookstone")!;
-    assert.match(resolveFacilityVisual(peets).src, /coffee/);
-    assert.match(resolveFacilityVisual(brookstone).src, /shop/);
+    for (const asset of loadFacilityVisualManifest().assets) {
+      const facility = facilities.find((f) => f.id === asset.facilityId)!;
+      const visual = resolveFacilityVisual(facility);
+      assert.ok(visual);
+      assert.equal(visual!.src, asset.imagePath);
+      if (asset.imageRole === "venue" && asset.depictsSfoLocation) {
+        assert.equal(visual!.kind, "venue_photo");
+        assert.match(visual!.alt, /verified venue photograph/i);
+      } else {
+        assert.equal(visual!.kind, "illustrative_photo");
+        assert.match(visual!.alt, /not this SFO location/i);
+        assert.match(visual!.caption ?? "", /Illustrative photo/i);
+      }
+    }
   });
 });
