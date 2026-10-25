@@ -7,6 +7,11 @@ import type {
   ProductionTravelMatrix,
   UserContext,
 } from "@/types/airport";
+import {
+  ILLUSTRATIVE_T3_E_FACILITY_LOCATION,
+  ILLUSTRATIVE_T3_F_FACILITY_LOCATION,
+  PRODUCTION_T2_D_FACILITY_LOCATION,
+} from "@/data/fixtures/production-facility-defaults";
 import { productionTravelMinutes } from "@/data/travel-times";
 import {
   recommendFacilities,
@@ -14,6 +19,7 @@ import {
 } from "./recommend";
 
 const timedFacility: Facility = {
+  ...PRODUCTION_T2_D_FACILITY_LOCATION,
   id: "timed",
   name: "Timed Cafe",
   zone: "D",
@@ -61,6 +67,7 @@ describe("recommendFacilities travel leg validation (GW-011 review)", () => {
 
 describe("recommendFacilitiesIllustrative travel leg validation", () => {
   const facility: IllustrativeRegressionFacility = {
+    ...ILLUSTRATIVE_T3_E_FACILITY_LOCATION,
     id: "e-food",
     name: "Zone E Example",
     zone: "E",
@@ -100,6 +107,7 @@ describe("recommendFacilitiesIllustrative travel leg validation", () => {
 
 describe("recommendFacilitiesIllustrative (GW-011 review)", () => {
   const illustrativeFacility: IllustrativeRegressionFacility = {
+    ...ILLUSTRATIVE_T3_E_FACILITY_LOCATION,
     id: "e-food",
     name: "Zone E Example",
     zone: "E",
@@ -151,6 +159,7 @@ describe("recommendFacilitiesIllustrative (GW-011 review)", () => {
     assert.equal(productionResult[0].kind, "feasibility");
     const illustrativeOnly: IllustrativeRegressionFacility = {
       ...illustrativeFacility,
+      ...ILLUSTRATIVE_T3_F_FACILITY_LOCATION,
       zone: "F",
     };
     const illustrativeResult = recommendFacilitiesIllustrative(

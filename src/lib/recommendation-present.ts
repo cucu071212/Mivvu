@@ -19,6 +19,8 @@ const INELIGIBILITY_LABELS: Record<IneligibilityReason, string> = {
   passenger_not_airside: "Recommendations assume you are already post-security.",
   outside_supported_zone:
     "This facility is outside the supported Terminal 2 D Gates scope.",
+  outside_recommend_eligibility:
+    "This facility is not eligible for time-based recommendations in the current model.",
 };
 
 const UNKNOWN_LABELS: Record<UnknownReason, string> = {

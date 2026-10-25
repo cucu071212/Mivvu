@@ -1,8 +1,20 @@
+import {
+  BOARDING_AREA_TO_TERMINAL,
+  defaultAirportIata,
+  defaultBoardingAreaFromZone,
+  defaultBrowseEligible,
+  defaultRecommendEligible,
+  defaultTerminalCode,
+  isBoardingAreaCode,
+  recommendEligibilityViolations,
+} from "@/lib/facility-location";
 import { parseStrictInteger } from "@/lib/strict-integer";
 import {
   FACILITY_ABOUT_EXCERPT_MAX_LENGTH,
   FACILITY_HOURS_TIMEZONE,
   FACILITY_OFFICIAL_BADGES,
+  SUPPORTED_AIRPORT_IATA,
+  type BoardingAreaCode,
   type DataConfidence,
   type Facility,
   type FacilityAmenityDetails,
@@ -15,8 +27,16 @@ import {
   type FacilityValidationErrorCode,
   type GateLandmark,
   type SecurityZone,
+  type TerminalCode,
   type ValidateFacilities,
 } from "@/types/airport";
+
+const terminalCodes = [
+  "harvey_milk_1",
+  "terminal_2",
+  "terminal_3",
+  "international",
+] as const satisfies readonly TerminalCode[];
 
 const categories = ["food", "coffee", "restroom", "charging", "shop"] as const satisfies readonly FacilityCategory[];
 const securityZones = ["pre", "post", "both", "unknown"] as const satisfies readonly SecurityZone[];
@@ -44,6 +64,14 @@ function calendarDate(value: string): boolean {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
   const parsed = new Date(`${value}T00:00:00.000Z`);
   return Number.isFinite(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
+}
+
+function parseBooleanField(
+  value: unknown,
+): boolean | undefined | "invalid" {
+  if (value === undefined) return undefined;
+  if (typeof value === "boolean") return value;
+  return "invalid";
 }
 
 function httpUrl(value: string): boolean {
@@ -349,7 +377,9 @@ export const validateFacilities: ValidateFacilities = (raw) => {
 
     if (!id) error("id", "invalid_id", "ID must be a non-empty string.");
     if (!name) error("name", "missing_required_field", "Name must be a non-empty string.");
-    if (zone !== "D") error("zone", "invalid_zone", "Zone must be D (Terminal 2).");
+    if (zone === undefined || !isBoardingAreaCode(zone)) {
+      error("zone", "invalid_zone", "Zone must be a supported SFO boarding area code (A–G).");
+    }
     if (category === undefined) error("category", "invalid_category", "Unsupported facility category.");
     if (securityZone === undefined) error("securityZone", "invalid_security_zone", "Unsupported security-side value.");
     if (locationConfidence === undefined) error("locationConfidence", "invalid_confidence", "Unsupported location confidence.");
@@ -409,6 +439,103 @@ export const validateFacilities: ValidateFacilities = (raw) => {
       error("nearestGateLandmark", "invalid_shape", "Gate landmark must be a supported D gate or null.");
     }
 
+    let airportIata: typeof SUPPORTED_AIRPORT_IATA | undefined;
+    if (row.airportIata !== undefined) {
+      if (typeof row.airportIata !== "string" || row.airportIata.trim() !== SUPPORTED_AIRPORT_IATA) {
+        error("airportIata", "invalid_shape", `airportIata must be ${SUPPORTED_AIRPORT_IATA}.`);
+      } else {
+        airportIata = SUPPORTED_AIRPORT_IATA;
+      }
+    }
+
+    let terminalCode: TerminalCode | undefined;
+    if (row.terminalCode !== undefined) {
+      const parsedTerminal = member(row.terminalCode, terminalCodes);
+      if (parsedTerminal === undefined) {
+        error("terminalCode", "invalid_terminal", "Unsupported terminal code.");
+      } else {
+        terminalCode = parsedTerminal;
+      }
+    }
+
+    let boardingAreaCode: BoardingAreaCode | undefined;
+    if (row.boardingAreaCode !== undefined) {
+      const trimmed =
+        typeof row.boardingAreaCode === "string" ? row.boardingAreaCode.trim() : undefined;
+      if (trimmed === undefined || !isBoardingAreaCode(trimmed)) {
+        error("boardingAreaCode", "invalid_boarding_area", "Unsupported boarding area code.");
+      } else {
+        boardingAreaCode = trimmed;
+      }
+    }
+
+    let browseEligible: boolean | undefined;
+    if (row.browseEligible !== undefined) {
+      const parsed = parseBooleanField(row.browseEligible);
+      if (parsed === "invalid") {
+        error("browseEligible", "invalid_eligibility_flag", "browseEligible must be a boolean.");
+      } else {
+        browseEligible = parsed;
+      }
+    }
+
+    let recommendEligible: boolean | undefined;
+    if (row.recommendEligible !== undefined) {
+      const parsed = parseBooleanField(row.recommendEligible);
+      if (parsed === "invalid") {
+        error("recommendEligible", "invalid_eligibility_flag", "recommendEligible must be a boolean.");
+      } else {
+        recommendEligible = parsed;
+      }
+    }
+
+    const resolvedZone = zone as BoardingAreaCode | undefined;
+    if (
+      resolvedZone &&
+      boardingAreaCode !== undefined &&
+      boardingAreaCode !== resolvedZone
+    ) {
+      error(
+        "boardingAreaCode",
+        "terminal_boarding_mismatch",
+        "boardingAreaCode must match zone when both are provided.",
+      );
+    }
+
+    const effectiveBoarding =
+      boardingAreaCode ?? (resolvedZone ? defaultBoardingAreaFromZone(resolvedZone) : undefined);
+    const expectedTerminal =
+      effectiveBoarding !== undefined
+        ? BOARDING_AREA_TO_TERMINAL[effectiveBoarding]
+        : undefined;
+    if (
+      terminalCode !== undefined &&
+      expectedTerminal !== undefined &&
+      terminalCode !== expectedTerminal
+    ) {
+      error(
+        "terminalCode",
+        "terminal_boarding_mismatch",
+        "terminalCode does not match the boarding area mapping.",
+      );
+    }
+
+    if (
+      resolvedZone &&
+      securityZone !== undefined &&
+      errors.length === start
+    ) {
+      const eligibilityMessage = recommendEligibilityViolations({
+        zone: resolvedZone,
+        securityZone,
+        browseEligible,
+        recommendEligible,
+      });
+      if (eligibilityMessage !== null) {
+        error("recommendEligible", "recommend_eligibility_mismatch", eligibilityMessage);
+      }
+    }
+
     const { hours, hoursConfidence } = parseHoursBlock(row, error);
     const { hoursLastCheckedAt, hoursSourceUrl } = parseHoursProvenance(row, error, hours, hoursConfidence);
     const contact = parseContact(row, error);
@@ -417,14 +544,39 @@ export const validateFacilities: ValidateFacilities = (raw) => {
     if (id && seen.has(id)) error("id", "duplicate_id", `Duplicate facility ID: ${id}.`);
 
     // The guards also narrow unknown input to the frozen Facility contract.
-    if (errors.length > start || !id || !name || zone !== "D" ||
+    if (errors.length > start || !id || !name || resolvedZone === undefined ||
+      !isBoardingAreaCode(resolvedZone) ||
       category === undefined || securityZone === undefined ||
       locationConfidence === undefined || timeConfidence === undefined ||
       waitMinutes === undefined || activityMinutes === undefined) continue;
 
+    const normalizedLocation = {
+      airportIata: defaultAirportIata(airportIata),
+      terminalCode: defaultTerminalCode(
+        boardingAreaCode ?? defaultBoardingAreaFromZone(resolvedZone),
+        terminalCode,
+      ),
+      boardingAreaCode:
+        boardingAreaCode ?? defaultBoardingAreaFromZone(resolvedZone),
+      browseEligible: defaultBrowseEligible(browseEligible),
+      recommendEligible: defaultRecommendEligible(
+        resolvedZone,
+        securityZone,
+        recommendEligible,
+      ),
+    };
+
     facilities.push({
-      id, name, zone, category, securityZone, waitMinutes, activityMinutes,
-      locationConfidence, timeConfidence,
+      id,
+      name,
+      zone: resolvedZone,
+      ...normalizedLocation,
+      category,
+      securityZone,
+      waitMinutes,
+      activityMinutes,
+      locationConfidence,
+      timeConfidence,
       ...(sourceUrl !== undefined ? { sourceUrl } : {}),
       ...(lastCheckedAt !== undefined ? { lastCheckedAt } : {}),
       ...(locationDescription !== undefined ? { locationDescription } : {}),

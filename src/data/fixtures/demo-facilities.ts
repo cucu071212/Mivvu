@@ -1,4 +1,5 @@
 import type { Facility } from "@/types/airport";
+import { PRODUCTION_T2_D_FACILITY_LOCATION } from "@/data/fixtures/production-facility-defaults";
 
 /**
  * GW-009 browse fixtures only — subset aligned with docs/data-provenance.md (GW-003).
@@ -7,6 +8,7 @@ import type { Facility } from "@/types/airport";
  */
 export const demoFacilities: Facility[] = [
   {
+    ...PRODUCTION_T2_D_FACILITY_LOCATION,
     id: "burger-joint-t2",
     name: "Burger Joint",
     zone: "D",
@@ -23,6 +25,7 @@ export const demoFacilities: Facility[] = [
     locationDescription: "Near Gate D15",
   },
   {
+    ...PRODUCTION_T2_D_FACILITY_LOCATION,
     id: "napa-farms-market",
     name: "Napa Farms Market",
     zone: "D",
@@ -38,6 +41,7 @@ export const demoFacilities: Facility[] = [
     locationDescription: "D Gates, Retail Street",
   },
   {
+    ...PRODUCTION_T2_D_FACILITY_LOCATION,
     id: "wakaba",
     name: "Wakaba",
     zone: "D",
@@ -53,6 +57,7 @@ export const demoFacilities: Facility[] = [
     locationDescription: "Near Gate D9",
   },
   {
+    ...PRODUCTION_T2_D_FACILITY_LOCATION,
     id: "peets-coffee-d7",
     name: "Peet's Coffee (D7)",
     zone: "D",
@@ -69,6 +74,7 @@ export const demoFacilities: Facility[] = [
     locationDescription: "Near Gate D7",
   },
   {
+    ...PRODUCTION_T2_D_FACILITY_LOCATION,
     id: "peets-coffee-d15",
     name: "Peet's Coffee (D15)",
     zone: "D",
@@ -85,6 +91,7 @@ export const demoFacilities: Facility[] = [
     locationDescription: "D Gates, near Gate D15",
   },
   {
+    ...PRODUCTION_T2_D_FACILITY_LOCATION,
     id: "16th-dolores",
     name: "16th & Dolores General Store",
     zone: "D",
@@ -101,6 +108,7 @@ export const demoFacilities: Facility[] = [
     locationDescription: "D Gates, near Gate D16",
   },
   {
+    ...PRODUCTION_T2_D_FACILITY_LOCATION,
     id: "books-inc",
     name: "Books Inc.",
     zone: "D",
@@ -116,6 +124,7 @@ export const demoFacilities: Facility[] = [
     locationDescription: "D Gates, Retail Street",
   },
   {
+    ...PRODUCTION_T2_D_FACILITY_LOCATION,
     id: "brookstone-t2",
     name: "Brookstone",
     zone: "D",
@@ -132,6 +141,8 @@ export const demoFacilities: Facility[] = [
     locationDescription: "Near Gate D1",
   },
   {
+    ...PRODUCTION_T2_D_FACILITY_LOCATION,
+    recommendEligible: false,
     id: "cat-cora",
     name: "Cat Cora",
     zone: "D",
@@ -147,6 +158,8 @@ export const demoFacilities: Facility[] = [
     locationDescription: "Near Gate D9",
   },
   {
+    ...PRODUCTION_T2_D_FACILITY_LOCATION,
+    recommendEligible: false,
     id: "kiehls-t2",
     name: "Kiehl's",
     zone: "D",

@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "vitest";
+import { PRODUCTION_T2_D_FACILITY_LOCATION } from "@/data/fixtures/production-facility-defaults";
 import type { Facility, UserContext } from "@/types/airport";
 import { validateContext } from "./validate-context";
 import { validateDurationOverrides } from "./validate-duration-overrides";
@@ -11,6 +12,7 @@ const context: UserContext = {
   queueAdjustmentMinutes: 0, passengerSecurityArea: "post",
 };
 const facility: Facility = {
+  ...PRODUCTION_T2_D_FACILITY_LOCATION,
   id: "sample", name: "Sample", zone: "D", category: "food", securityZone: "post",
   waitMinutes: 8, activityMinutes: 10,
   locationConfidence: "demo_estimate", timeConfidence: "demo_estimate",

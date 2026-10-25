@@ -9,7 +9,8 @@
  *   - `validateFacilities` → `@/lib/validate-facilities`
  *   - `validateContext` → `@/lib/validate-context`
  *
- * Production scope: SFO Terminal 2, D Gates only (`Zone = 'D'`).
+ * Production recommend scope: SFO Terminal 2, D Gates (`RecommendScopeZone = 'D'`).
+ * Facility `zone` is the boarding area code (B–G); browse may span terminals (GW-X-001).
  *
  * **Confidence and durations**
  * - `demo_estimate` marks an unverified modeling assumption (not a measured SFO time).
@@ -32,7 +33,34 @@
 export const SUPPORTED_AIRPORT_IATA = "SFO";
 export const SUPPORTED_TERMINAL_LABEL = "Terminal 2";
 export const SUPPORTED_BOARDING_AREA_LABEL = "D Gates";
-export const PRODUCTION_ZONES: readonly Zone[] = ["D"];
+
+/** SFO terminal identifiers (GW-X-R002 / GW-X-001). */
+export type TerminalCode =
+  | "harvey_milk_1"
+  | "terminal_2"
+  | "terminal_3"
+  | "international";
+
+/** Boarding areas across Harvey Milk T1, T2, T3, and International Terminal. */
+export type BoardingAreaCode = "A" | "B" | "C" | "D" | "E" | "F" | "G";
+
+/**
+ * Physical facility location at SFO (`Facility.zone`).
+ * Legacy production rows use `D` (Terminal 2 D Gates).
+ */
+export type Zone = BoardingAreaCode;
+
+/** Gate context and directed travel matrix keys for production recommendations. */
+export type RecommendScopeZone = "D";
+
+/** Boarding areas authorized for time-based recommendations today. */
+export const PRODUCTION_RECOMMEND_SCOPE_ZONES: readonly RecommendScopeZone[] = [
+  "D",
+];
+
+/** @deprecated Use {@link PRODUCTION_RECOMMEND_SCOPE_ZONES}. */
+export const PRODUCTION_ZONES: readonly RecommendScopeZone[] =
+  PRODUCTION_RECOMMEND_SCOPE_ZONES;
 
 export const DEFAULT_BUFFER_MINUTES = 10;
 export const DEFAULT_QUEUE_ADJUSTMENT_MINUTES = 0;
@@ -44,13 +72,10 @@ export const POST_ELIGIBLE_SECURITY_ZONES: readonly SecurityZone[] = [
 ];
 
 // ---------------------------------------------------------------------------
-// Zones
+// Illustrative regression zones (GW-012)
 // ---------------------------------------------------------------------------
 
-/** Production boarding zone (Terminal 2 D Gates). */
-export type Zone = "D";
-
-/** Synthetic zones for GW-012 regression fixtures only — not production data. */
+/** Synthetic boarding areas for GW-012 regression fixtures only — not production data. */
 export type IllustrativeZone = "D" | "E" | "F";
 
 // ---------------------------------------------------------------------------
@@ -136,7 +161,10 @@ export const FACILITY_ABOUT_EXCERPT_MAX_LENGTH = 2000;
 // Travel matrices (minutes; directed; null = unknown edge)
 // ---------------------------------------------------------------------------
 
-export type ProductionTravelMatrix = Record<Zone, Record<Zone, number | null>>;
+export type ProductionTravelMatrix = Record<
+  RecommendScopeZone,
+  Record<RecommendScopeZone, number | null>
+>;
 
 export type IllustrativeTravelMatrix = Record<
   IllustrativeZone,
@@ -153,7 +181,15 @@ export type TravelMatrix = ProductionTravelMatrix;
 export type Facility = {
   id: string;
   name: string;
+  /** Boarding area at SFO; recommend scope is gated separately. */
   zone: Zone;
+  airportIata: typeof SUPPORTED_AIRPORT_IATA;
+  terminalCode: TerminalCode;
+  boardingAreaCode: BoardingAreaCode;
+  /** Airport-wide directory inclusion (browse ≠ recommend). */
+  browseEligible: boolean;
+  /** Time-based `recommendFacilities` inclusion; requires verified scope + post-security. */
+  recommendEligible: boolean;
   category: FacilityCategory;
   securityZone: SecurityZone;
   waitMinutes: number | null;
@@ -178,7 +214,7 @@ export type Facility = {
 // ---------------------------------------------------------------------------
 
 export type UserContext = {
-  gateZone: Zone;
+  gateZone: RecommendScopeZone;
   minutesUntilBoarding: number;
   bufferMinutes: number;
   category?: FacilityCategory;
@@ -237,7 +273,8 @@ export type IneligibilityReason =
   | "security_zone_unknown"
   | "security_zone_pre_only"
   | "passenger_not_airside"
-  | "outside_supported_zone";
+  | "outside_supported_zone"
+  | "outside_recommend_eligibility";
 
 export type UnknownReason =
   | "missing_travel_outbound"
@@ -375,7 +412,12 @@ export type FacilityValidationErrorCode =
   | "invalid_hours"
   | "invalid_contact"
   | "invalid_amenity_details"
-  | "hours_parse_partial";
+  | "hours_parse_partial"
+  | "invalid_terminal"
+  | "invalid_boarding_area"
+  | "terminal_boarding_mismatch"
+  | "invalid_eligibility_flag"
+  | "recommend_eligibility_mismatch";
 
 export type FacilityValidationError = {
   path: string;

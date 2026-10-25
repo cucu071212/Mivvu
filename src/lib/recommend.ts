@@ -4,9 +4,10 @@ import {
   parseStrictInteger,
   safeIntegerSum,
 } from "@/lib/strict-integer";
+import { isFacilityRecommendEligibleForEngine } from "@/lib/facility-location";
 import {
   POST_ELIGIBLE_SECURITY_ZONES,
-  PRODUCTION_ZONES,
+  PRODUCTION_RECOMMEND_SCOPE_ZONES,
   type Facility,
   type FacilityCategory,
   type IllustrativeRecommendation,
@@ -19,8 +20,8 @@ import {
   type RecommendFacilitiesIllustrative,
   type RecommendationTimeBreakdownComplete,
   type RecommendationTimeBreakdownPartial,
+  type RecommendScopeZone,
   type UnknownReason,
-  type Zone,
 } from "@/types/airport";
 
 type TravelMatrixLike = Record<string, Record<string, number | null | undefined>>;
@@ -31,6 +32,7 @@ type RecommendFacilityLike = {
   zone: string;
   category: FacilityCategory;
   securityZone: Facility["securityZone"];
+  recommendEligible?: Facility["recommendEligible"];
   waitMinutes: number | null;
   activityMinutes: number | null;
   locationConfidence: Facility["locationConfidence"];
@@ -154,13 +156,17 @@ function resolveDirectedTravelLeg(
   return raw;
 }
 
+function isRecommendScopeZone(zone: string): zone is RecommendScopeZone {
+  return (PRODUCTION_RECOMMEND_SCOPE_ZONES as readonly string[]).includes(zone);
+}
+
 function productionZoneIneligibility(
   gateZone: string,
   facilityZone: string,
 ): IneligibilityReason | null {
   if (
-    !PRODUCTION_ZONES.includes(gateZone as Zone) ||
-    !PRODUCTION_ZONES.includes(facilityZone as Zone) ||
+    !isRecommendScopeZone(gateZone) ||
+    !isRecommendScopeZone(facilityZone) ||
     facilityZone !== gateZone
   ) {
     return "outside_supported_zone";
@@ -204,6 +210,16 @@ function evaluateFacilityCore(
       ...identity,
       kind: "ineligible",
       ineligibilityReason: zoneReason,
+    } as RecommendationLike;
+  }
+
+  if (!isFacilityRecommendEligibleForEngine({
+    recommendEligible: facility.recommendEligible ?? true,
+  })) {
+    return {
+      ...identity,
+      kind: "ineligible",
+      ineligibilityReason: "outside_recommend_eligibility",
     } as RecommendationLike;
   }
 

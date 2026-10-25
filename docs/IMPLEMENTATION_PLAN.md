@@ -627,6 +627,7 @@ Decision needed from human Engineering Lead:
 | Gate | Entry criteria | Unlocks |
 | --- | --- | --- |
 | **G-X0** | GW-X-R001 + GW-X-R002 accepted; migration + browse vs recommend eligibility design reviewed | GW-X-001 |
+| **G-X0 (signed)** | **2026-10-25** — Human Engineering Lead approved GW-X-R002 @ `59a14ad` and §6 migration proposal; GW-X-001 authorized on feature branch | GW-X-001 |
 | **G-X1** | GW-X-001 merged; legacy **12** D facilities + recommend regression green; migration notes in provenance | GW-X-002 (batch 1+) |
 | **G-X2** | Agreed dataset milestone documented; each new row has provenance; no invented fields | GW-X-003 |
 | **G-X3** | GW-X-004 regression green on preview; limitation copy approved | GW-B-R001, further GW-X-002 batches |

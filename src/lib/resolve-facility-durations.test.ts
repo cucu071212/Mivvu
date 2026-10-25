@@ -1,4 +1,5 @@
 import { describe, expect, expectTypeOf, it } from "vitest";
+import { PRODUCTION_T2_D_FACILITY_LOCATION } from "@/data/fixtures/production-facility-defaults";
 import type {
   Facility,
   FacilityDurationOverrideMap,
@@ -10,6 +11,7 @@ import { validateDurationOverrides } from "./validate-duration-overrides";
 import { recommendFacilities } from "./recommend";
 
 const facility: Facility = Object.freeze({
+  ...PRODUCTION_T2_D_FACILITY_LOCATION,
   id: "cafe", name: "Test fixture", category: "coffee", zone: "D", securityZone: "post",
   waitMinutes: null, activityMinutes: null, locationConfidence: "official_verified",
   timeConfidence: "unknown", sourceUrl: "https://example.com/fixture",

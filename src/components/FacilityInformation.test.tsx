@@ -2,10 +2,12 @@
 import assert from "node:assert/strict";
 import { render, screen } from "@testing-library/react";
 import { describe, it } from "vitest";
+import { PRODUCTION_T2_D_FACILITY_LOCATION } from "@/data/fixtures/production-facility-defaults";
 import type { Facility } from "@/types/airport";
 import { FacilityInformation } from "./FacilityInformation";
 
 const base: Facility = {
+  ...PRODUCTION_T2_D_FACILITY_LOCATION,
   id: "sample",
   name: "Sample",
   zone: "D",

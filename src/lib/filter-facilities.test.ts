@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { PRODUCTION_T2_D_FACILITY_LOCATION } from "@/data/fixtures/production-facility-defaults";
 import type { Facility, FilterFacilities } from "@/types/airport";
 import { filterFacilities } from "./filter-facilities";
 
@@ -8,6 +9,7 @@ function facility(
   category: Facility["category"],
 ): Facility {
   return {
+    ...PRODUCTION_T2_D_FACILITY_LOCATION,
     id,
     name,
     category,

@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "vitest";
+import { PRODUCTION_T2_D_FACILITY_LOCATION } from "@/data/fixtures/production-facility-defaults";
 import type { UserContext } from "@/types/airport";
 import { productionTravelMinutes } from "@/data/travel-times";
 import { applyDemoTimeEstimates } from "./demo-estimate-facilities";
@@ -19,6 +20,7 @@ const context: UserContext = {
 };
 
 const facility = {
+  ...PRODUCTION_T2_D_FACILITY_LOCATION,
   id: "sample",
   name: "Sample Cafe",
   zone: "D" as const,

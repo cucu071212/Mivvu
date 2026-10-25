@@ -13,6 +13,11 @@ import type {
   RecommendFacilitiesIllustrative,
   UserContext,
 } from "@/types/airport";
+import {
+  ILLUSTRATIVE_T3_E_FACILITY_LOCATION,
+  ILLUSTRATIVE_T3_F_FACILITY_LOCATION,
+  PRODUCTION_T2_D_FACILITY_LOCATION,
+} from "@/data/fixtures/production-facility-defaults";
 import { recommendFacilities, recommendFacilitiesIllustrative } from "./recommend";
 
 // Synthetic assumptions only. No real facility or measured SFO time is used.
@@ -25,6 +30,7 @@ const context: UserContext = {
 const travel: ProductionTravelMatrix = { D: { D: 3 } };
 function facility(overrides: Partial<Facility> = {}): Facility {
   return {
+    ...PRODUCTION_T2_D_FACILITY_LOCATION,
     id: "model-cafe", name: "Model Cafe", zone: "D", category: "food",
     securityZone: "post", waitMinutes: 8, activityMinutes: 10,
     locationConfidence: "demo_estimate", timeConfidence: "demo_estimate",
@@ -291,7 +297,11 @@ const illustrativeContext: IllustrativeRegressionContext = {
   gateZone: "D", minutesUntilBoarding: 50, bufferMinutes: 10, queueAdjustmentMinutes: 0,
 };
 const illustrativeFacility: IllustrativeRegressionFacility = {
-  ...facility(), id: "synthetic-e", name: "Synthetic E Cafe", zone: "E",
+  ...facility(),
+  ...ILLUSTRATIVE_T3_E_FACILITY_LOCATION,
+  id: "synthetic-e",
+  name: "Synthetic E Cafe",
+  zone: "E",
 };
 const illustrativeTravel: IllustrativeTravelMatrix = {
   D: { D: 3, E: 7, F: 12 },
@@ -383,7 +393,11 @@ describe("recommendFacilitiesIllustrative — synthetic D/E/F arithmetic only", 
 
   it("uses synthetic D→F 12 and F→D 4 for 44 required minutes and margin +6", () => {
     // 12 + 4 + 8 + 10 + 10 = 44; 50 - 44 = 6.
-    const result = singleIllustrative({ ...illustrativeFacility, zone: "F" });
+    const result = singleIllustrative({
+      ...illustrativeFacility,
+      ...ILLUSTRATIVE_T3_F_FACILITY_LOCATION,
+      zone: "F",
+    });
     assert.ok(result.kind === "feasibility");
     assert.equal(result.zone, "F");
     assert.equal(result.status, "tight_in_model");

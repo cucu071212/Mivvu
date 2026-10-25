@@ -8,7 +8,16 @@ import type {
 import { validateFacilities } from "./validate-facilities";
 
 // Synthetic complete fixture; no airport facts or time measurements asserted.
+const gwX001Defaults = {
+  airportIata: "SFO" as const,
+  terminalCode: "terminal_2" as const,
+  boardingAreaCode: "D" as const,
+  browseEligible: true,
+  recommendEligible: true,
+};
+
 const valid: Facility = {
+  ...gwX001Defaults,
   id: "sample",
   name: "Sample Cafe",
   zone: "D",
@@ -80,6 +89,7 @@ describe("validateFacilities", () => {
       locationDescription: "D Gates, Retail Street", nearestGateLandmark: null,
     }]);
     assert.deepEqual(result, { facilities: [{
+      ...gwX001Defaults,
       id: "Mixed ID/1", name: "Cafe Name", zone: "D", category: "coffee",
       securityZone: "post", waitMinutes: 8, activityMinutes: 10,
       locationConfidence: "official_verified", timeConfidence: "demo_estimate",
@@ -97,11 +107,30 @@ describe("validateFacilities", () => {
     });
   }
 
-  for (const value of ["E", "d", "", null, 1]) {
+  for (const value of ["X", "d", "", null, 1]) {
     it(`rejects unsupported zone ${JSON.stringify(value)}`, () => {
       rejected({ ...valid, zone: value }, "zone", "invalid_zone");
     });
   }
+
+  it("accepts boarding area E as a location zone without implying recommend scope", () => {
+    const row = {
+      id: "t3-e-sample",
+      name: "T3 E Sample",
+      zone: "E",
+      category: "food",
+      securityZone: "unknown",
+      waitMinutes: null,
+      activityMinutes: null,
+      locationConfidence: "unknown",
+      timeConfidence: "unknown",
+    };
+    const result = validate([row]);
+    assert.equal(result.errors.length, 0);
+    assert.equal(result.facilities[0]?.terminalCode, "terminal_3");
+    assert.equal(result.facilities[0]?.boardingAreaCode, "E");
+    assert.equal(result.facilities[0]?.recommendEligible, false);
+  });
 
   for (const category of ["food", "coffee", "restroom", "charging", "shop"] as const) {
     it(`accepts category ${category}`, () => {
@@ -118,8 +147,12 @@ describe("validateFacilities", () => {
 
   for (const securityZone of ["pre", "post", "both", "unknown"] as const) {
     it(`preserves security status ${securityZone} without upgrading it`, () => {
-      assert.deepEqual(validate([{ ...valid, securityZone }]), {
-        facilities: [{ ...valid, securityZone }], errors: [],
+      const { recommendEligible: _eligibility, ...withoutEligibility } = valid;
+      void _eligibility;
+      const recommendEligible =
+        securityZone === "post" || securityZone === "both";
+      assert.deepEqual(validate([{ ...withoutEligibility, securityZone }]), {
+        facilities: [{ ...valid, securityZone, recommendEligible }], errors: [],
       });
     });
   }
@@ -188,7 +221,14 @@ describe("validateFacilities", () => {
     const row = { id: "unknown", name: "Unknown location", zone: "D", category: "food",
       securityZone: "unknown", waitMinutes: null, activityMinutes: null,
       locationConfidence: "unknown", timeConfidence: "unknown" };
-    assert.deepEqual(validate([row]), { facilities: [row], errors: [] });
+    assert.deepEqual(validate([row]), {
+      facilities: [{
+        ...row,
+        ...gwX001Defaults,
+        recommendEligible: false,
+      }],
+      errors: [],
+    });
   });
   for (const sourceUrl of [null, 42, "", "not a url", "ftp://example.com", "javascript:alert(1)"]) {
     it(`rejects invalid provided source URL ${JSON.stringify(sourceUrl)} even for non-official locations`, () => {
@@ -210,7 +250,7 @@ describe("validateFacilities", () => {
 
   it("keeps the first valid normalized duplicate ID, not the first invalid occurrence", () => {
     const result = validate([
-      { ...valid, id: " same ", zone: "E" },
+      { ...valid, id: " same ", zone: "Z" },
       { ...valid, id: "same", name: "First valid" },
       { ...valid, id: " same ", name: "Later duplicate" },
       { ...valid, id: "Same", name: "Case-distinct" },
@@ -235,7 +275,7 @@ describe("validateFacilities", () => {
   }
 
   it("reports multiple invalid fields and excludes the entire row", () => {
-    const result = validate([{ ...valid, zone: "E", category: "lounge", waitMinutes: -1 }]);
+    const result = validate([{ ...valid, zone: "Z", category: "lounge", waitMinutes: -1 }]);
     assert.deepEqual(result.facilities, []);
     assert.ok(result.errors.some((error) => error.code === "invalid_zone"));
     assert.ok(result.errors.some((error) => error.code === "invalid_category"));
