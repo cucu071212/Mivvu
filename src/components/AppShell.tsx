@@ -21,6 +21,9 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="gw-app-shell">
+      <a href="#main-content" className="gw-skip-link">
+        Skip to main content
+      </a>
       <header className="gw-app-header">
         <div className="gw-rail">
           <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
@@ -74,7 +77,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </div>
 
-      <main className="gw-app-main">
+      <main id="main-content" className="gw-app-main" tabIndex={-1}>
         <div className="gw-rail gw-rail-stack">
           {session.datasetValid ? (
             <div
