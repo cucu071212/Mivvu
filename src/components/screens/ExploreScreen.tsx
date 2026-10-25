@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { AmenityFilter } from "@/components/AmenityFilter";
 import { FacilityBrowseCard } from "@/components/FacilityBrowseCard";
+import { FacilityDetailDialog } from "@/components/FacilityDetailDialog";
 import { TerminalSchematic } from "@/components/TerminalSchematic";
 import { useGateWiseSession } from "@/context/gatewise-session";
 import {
@@ -13,6 +14,7 @@ import {
 
 export function ExploreScreen() {
   const session = useGateWiseSession();
+  const [detailFacilityId, setDetailFacilityId] = useState<string | null>(null);
 
   const browseTotal = useMemo(
     () => countBrowseEligible(session.facilities),
@@ -28,6 +30,14 @@ export function ExploreScreen() {
     () =>
       session.facilities.filter((facility) => facility.recommendEligible).length,
     [session.facilities],
+  );
+
+  const detailFacility = useMemo(
+    () =>
+      detailFacilityId
+        ? session.facilities.find((row) => row.id === detailFacilityId) ?? null
+        : null,
+    [detailFacilityId, session.facilities],
   );
 
   const showT3ConstructionNotice = useMemo(
@@ -127,8 +137,10 @@ export function ExploreScreen() {
       ) : null}
 
       <section
-        aria-labelledby="explore-directory-heading"
         className="flex flex-col gap-3"
+        role="region"
+        aria-labelledby="explore-directory-heading"
+        data-testid="explore-facility-directory"
       >
         <div className="flex flex-col gap-1">
           <h2
@@ -157,7 +169,10 @@ export function ExploreScreen() {
           <ul className="flex flex-col gap-4">
             {directoryFacilities.map((facility) => (
               <li key={facility.id}>
-                <FacilityBrowseCard facility={facility} />
+                <FacilityBrowseCard
+                  facility={facility}
+                  onOpenDetails={() => setDetailFacilityId(facility.id)}
+                />
               </li>
             ))}
           </ul>
@@ -210,6 +225,12 @@ export function ExploreScreen() {
       >
         Open ranked results (T2 D Gates scope)
       </Link>
+
+      <FacilityDetailDialog
+        facility={detailFacility}
+        open={detailFacility !== null}
+        onClose={() => setDetailFacilityId(null)}
+      />
     </div>
   );
 }

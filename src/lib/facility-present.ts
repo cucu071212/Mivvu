@@ -38,3 +38,17 @@ export function recommendEligibilityLabel(facility: Facility): string {
     ? "Time-based recommendations (T2 D Gates)"
     : "Browse only — not in recommend scope";
 }
+
+export function facilityLocationSummary(facility: Facility): string {
+  if (facility.locationDescription) {
+    return facility.locationDescription;
+  }
+  if (facility.nearestGateLandmark) {
+    return `Near Gate ${facility.nearestGateLandmark}`;
+  }
+  return facilityTerminalBoardingLabel(facility);
+}
+
+export function facilityTaglineSummary(facility: Facility): string | null {
+  return facility.amenityDetails?.tagline ?? null;
+}
