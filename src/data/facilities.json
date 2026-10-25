@@ -8,11 +8,26 @@
     "waitMinutes": null,
     "activityMinutes": null,
     "sourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/16th-dolores-general-store",
-    "lastCheckedAt": "2026-10-24",
+    "lastCheckedAt": "2026-10-25",
     "locationConfidence": "official_verified",
     "timeConfidence": "unknown",
     "locationDescription": "D Gates, near Gate D16",
-    "nearestGateLandmark": "D16"
+    "nearestGateLandmark": "D16",
+    "hours": {
+      "kind": "weekly_same_all_days",
+      "rawText": "Sunday - Saturday 4:00 am-11:30 pm",
+      "openLocal": "04:00",
+      "closeLocal": "23:30",
+      "timezone": "America/Los_Angeles"
+    },
+    "hoursConfidence": "official_verified",
+    "hoursLastCheckedAt": "2026-10-25",
+    "hoursSourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/16th-dolores-general-store",
+    "amenityDetails": {
+      "tagline": "Books, magazines, newspapers, snacks, souvenirs and sundries",
+      "officialBadges": ["open_past_10pm"],
+      "aboutExcerpt": null
+    }
   },
   {
     "id": "sfo-t2-d-andale-mexican-kitchen-bar",
@@ -23,11 +38,30 @@
     "waitMinutes": null,
     "activityMinutes": null,
     "sourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/andale-mexican-kitchen-bar",
-    "lastCheckedAt": "2026-10-24",
+    "lastCheckedAt": "2026-10-25",
     "locationConfidence": "official_verified",
     "timeConfidence": "unknown",
     "locationDescription": "Near Gate D16",
-    "nearestGateLandmark": "D16"
+    "nearestGateLandmark": "D16",
+    "hours": {
+      "kind": "weekly_same_all_days",
+      "rawText": "Sunday- Saturday 6:00 am-10:00 pm",
+      "openLocal": "06:00",
+      "closeLocal": "22:00",
+      "timezone": "America/Los_Angeles"
+    },
+    "hoursConfidence": "official_verified",
+    "hoursLastCheckedAt": "2026-10-25",
+    "hoursSourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/andale-mexican-kitchen-bar",
+    "contact": {
+      "phoneE164OrDisplay": "650-821-9306",
+      "phoneSource": "official_listing"
+    },
+    "amenityDetails": {
+      "tagline": "Fresh made-to-order entrees, beer and wine",
+      "officialBadges": [],
+      "aboutExcerpt": null
+    }
   },
   {
     "id": "sfo-t2-d-brookstone",
@@ -38,11 +72,30 @@
     "waitMinutes": null,
     "activityMinutes": null,
     "sourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/brookstone-t2",
-    "lastCheckedAt": "2026-10-24",
+    "lastCheckedAt": "2026-10-25",
     "locationConfidence": "official_verified",
     "timeConfidence": "unknown",
     "locationDescription": "Near Gate D1",
-    "nearestGateLandmark": "D1"
+    "nearestGateLandmark": "D1",
+    "hours": {
+      "kind": "weekly_same_all_days",
+      "rawText": "Sunday - Saturday 6:00 am-10:00 pm",
+      "openLocal": "06:00",
+      "closeLocal": "22:00",
+      "timezone": "America/Los_Angeles"
+    },
+    "hoursConfidence": "official_verified",
+    "hoursLastCheckedAt": "2026-10-25",
+    "hoursSourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/brookstone-t2",
+    "contact": {
+      "phoneE164OrDisplay": "415-770-7073",
+      "phoneSource": "official_listing"
+    },
+    "amenityDetails": {
+      "tagline": "Functional gadgets for health, home, office and travel",
+      "officialBadges": ["military_discount"],
+      "aboutExcerpt": null
+    }
   },
   {
     "id": "sfo-t2-d-burger-joint",
@@ -53,11 +106,30 @@
     "waitMinutes": null,
     "activityMinutes": null,
     "sourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/burger-joint",
-    "lastCheckedAt": "2026-10-24",
+    "lastCheckedAt": "2026-10-25",
     "locationConfidence": "official_verified",
     "timeConfidence": "unknown",
     "locationDescription": "Near Gate D15",
-    "nearestGateLandmark": "D15"
+    "nearestGateLandmark": "D15",
+    "hours": {
+      "kind": "weekly_same_all_days",
+      "rawText": "Sunday- Saturday 5:00 am-11:00 pm",
+      "openLocal": "05:00",
+      "closeLocal": "23:00",
+      "timezone": "America/Los_Angeles"
+    },
+    "hoursConfidence": "official_verified",
+    "hoursLastCheckedAt": "2026-10-25",
+    "hoursSourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/burger-joint",
+    "contact": {
+      "phoneE164OrDisplay": "650-820-9308",
+      "phoneSource": "official_listing"
+    },
+    "amenityDetails": {
+      "tagline": "Niman Ranch burgers, chicken burgers, veggie burgers and hot dogs",
+      "officialBadges": ["open_past_10pm"],
+      "aboutExcerpt": null
+    }
   },
   {
     "id": "sfo-t2-d-cat-cora",
@@ -68,11 +140,30 @@
     "waitMinutes": null,
     "activityMinutes": null,
     "sourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/cat-cora",
-    "lastCheckedAt": "2026-10-24",
+    "lastCheckedAt": "2026-10-25",
     "locationConfidence": "official_verified",
     "timeConfidence": "unknown",
     "locationDescription": "Near Gate D9",
-    "nearestGateLandmark": "D9"
+    "nearestGateLandmark": "D9",
+    "hours": {
+      "kind": "weekly_same_all_days",
+      "rawText": "Sunday- Saturday 7:30 am-10:00 pm",
+      "openLocal": "07:30",
+      "closeLocal": "22:00",
+      "timezone": "America/Los_Angeles"
+    },
+    "hoursConfidence": "official_verified",
+    "hoursLastCheckedAt": "2026-10-25",
+    "hoursSourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/cat-cora",
+    "contact": {
+      "phoneE164OrDisplay": "650-821-9290",
+      "phoneSource": "official_listing"
+    },
+    "amenityDetails": {
+      "tagline": "Full cocktail bar, wine, beer and a diverse small plate menu",
+      "officialBadges": ["sit_down_restaurant"],
+      "aboutExcerpt": "Located in Concourse D, this cocktail and tapas lounge offers small plates with a Greek flair and locally sourced ingredients where possible."
+    }
   },
   {
     "id": "sfo-t2-d-kiehls",
@@ -83,11 +174,30 @@
     "waitMinutes": null,
     "activityMinutes": null,
     "sourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/kiehls",
-    "lastCheckedAt": "2026-10-24",
+    "lastCheckedAt": "2026-10-25",
     "locationConfidence": "official_verified",
     "timeConfidence": "unknown",
     "locationDescription": "D Gates, T2 Retail Street",
-    "nearestGateLandmark": null
+    "nearestGateLandmark": null,
+    "hours": {
+      "kind": "weekly_same_all_days",
+      "rawText": "Sunday - Saturday 6:00 am-10:00 pm",
+      "openLocal": "06:00",
+      "closeLocal": "22:00",
+      "timezone": "America/Los_Angeles"
+    },
+    "hoursConfidence": "official_verified",
+    "hoursLastCheckedAt": "2026-10-25",
+    "hoursSourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/kiehls",
+    "contact": {
+      "phoneE164OrDisplay": "650-821-9151",
+      "phoneSource": "official_listing"
+    },
+    "amenityDetails": {
+      "tagline": "Skin and hair care products",
+      "officialBadges": ["military_discount"],
+      "aboutExcerpt": null
+    }
   },
   {
     "id": "sfo-t2-d-lark-creek-grill",
@@ -98,11 +208,30 @@
     "waitMinutes": null,
     "activityMinutes": null,
     "sourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/lark-creek-grill",
-    "lastCheckedAt": "2026-10-24",
+    "lastCheckedAt": "2026-10-25",
     "locationConfidence": "official_verified",
     "timeConfidence": "unknown",
     "locationDescription": "Near Gate D1",
-    "nearestGateLandmark": "D1"
+    "nearestGateLandmark": "D1",
+    "hours": {
+      "kind": "weekly_same_all_days",
+      "rawText": "Sunday- Saturday 6:00 am-10:00 pm",
+      "openLocal": "06:00",
+      "closeLocal": "22:00",
+      "timezone": "America/Los_Angeles"
+    },
+    "hoursConfidence": "official_verified",
+    "hoursLastCheckedAt": "2026-10-25",
+    "hoursSourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/lark-creek-grill",
+    "contact": {
+      "phoneE164OrDisplay": "650-821-9315",
+      "phoneSource": "official_listing"
+    },
+    "amenityDetails": {
+      "tagline": "Table service restaurant with full bar, seafood, steak and breakfast",
+      "officialBadges": ["sit_down_restaurant"],
+      "aboutExcerpt": "Full-service restaurant serving breakfast, salads, sandwiches, burgers and more."
+    }
   },
   {
     "id": "sfo-t2-d-napa-farms-market",
@@ -113,11 +242,30 @@
     "waitMinutes": null,
     "activityMinutes": null,
     "sourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/napa-farms-market",
-    "lastCheckedAt": "2026-10-24",
+    "lastCheckedAt": "2026-10-25",
     "locationConfidence": "official_verified",
     "timeConfidence": "unknown",
     "locationDescription": "D Gates, Retail Street",
-    "nearestGateLandmark": null
+    "nearestGateLandmark": null,
+    "hours": {
+      "kind": "weekly_same_all_days",
+      "rawText": "Sunday- Saturday 4:30 am-11:00 pm",
+      "openLocal": "04:30",
+      "closeLocal": "23:00",
+      "timezone": "America/Los_Angeles"
+    },
+    "hoursConfidence": "official_verified",
+    "hoursLastCheckedAt": "2026-10-25",
+    "hoursSourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/napa-farms-market",
+    "contact": {
+      "phoneE164OrDisplay": "650-821-9312",
+      "phoneSource": "official_listing"
+    },
+    "amenityDetails": {
+      "tagline": "Gourmet deli, bakery, coffee, desserts and retail sale of food products",
+      "officialBadges": ["open_past_10pm", "sfo_green_business"],
+      "aboutExcerpt": "Farm to Flight: organic salads, cold-pressed juices, handcrafted sandwiches, custom bagel creations, and snacks from local and regional artisans."
+    }
   },
   {
     "id": "sfo-t2-d-peets-coffee-d7",
@@ -128,11 +276,30 @@
     "waitMinutes": null,
     "activityMinutes": null,
     "sourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/peets-coffee-0",
-    "lastCheckedAt": "2026-10-24",
+    "lastCheckedAt": "2026-10-25",
     "locationConfidence": "official_verified",
     "timeConfidence": "unknown",
     "locationDescription": "Near Gate D7",
-    "nearestGateLandmark": "D7"
+    "nearestGateLandmark": "D7",
+    "hours": {
+      "kind": "weekly_same_all_days",
+      "rawText": "Sunday- Saturday 4:30 am-8:30 pm",
+      "openLocal": "04:30",
+      "closeLocal": "20:30",
+      "timezone": "America/Los_Angeles"
+    },
+    "hoursConfidence": "official_verified",
+    "hoursLastCheckedAt": "2026-10-25",
+    "hoursSourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/peets-coffee-0",
+    "contact": {
+      "phoneE164OrDisplay": "650-821-9196",
+      "phoneSource": "official_listing"
+    },
+    "amenityDetails": {
+      "tagline": "Specialty coffee and tea",
+      "officialBadges": ["sfo_green_business"],
+      "aboutExcerpt": "Specialty coffee and tea, pastries, sandwiches and salads"
+    }
   },
   {
     "id": "sfo-t2-d-sunglass-hut",
@@ -143,11 +310,30 @@
     "waitMinutes": null,
     "activityMinutes": null,
     "sourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/sunglass-hut-t2",
-    "lastCheckedAt": "2026-10-24",
+    "lastCheckedAt": "2026-10-25",
     "locationConfidence": "official_verified",
     "timeConfidence": "unknown",
     "locationDescription": "D Gates, Retail Street",
-    "nearestGateLandmark": null
+    "nearestGateLandmark": null,
+    "hours": {
+      "kind": "weekly_same_all_days",
+      "rawText": "Sunday - Saturday 7:00 am-8:00 pm",
+      "openLocal": "07:00",
+      "closeLocal": "20:00",
+      "timezone": "America/Los_Angeles"
+    },
+    "hoursConfidence": "official_verified",
+    "hoursLastCheckedAt": "2026-10-25",
+    "hoursSourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/sunglass-hut-t2",
+    "contact": {
+      "phoneE164OrDisplay": "650-821-9160",
+      "phoneSource": "official_listing"
+    },
+    "amenityDetails": {
+      "tagline": "Designer sunglasses and accessories",
+      "officialBadges": [],
+      "aboutExcerpt": null
+    }
   },
   {
     "id": "sfo-t2-d-the-chocolate-market",
@@ -158,11 +344,30 @@
     "waitMinutes": null,
     "activityMinutes": null,
     "sourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/chocolate-market",
-    "lastCheckedAt": "2026-10-24",
+    "lastCheckedAt": "2026-10-25",
     "locationConfidence": "official_verified",
     "timeConfidence": "unknown",
     "locationDescription": "D Gates, T2 Retail Street",
-    "nearestGateLandmark": null
+    "nearestGateLandmark": null,
+    "hours": {
+      "kind": "weekly_same_all_days",
+      "rawText": "Sunday - Saturday 7:00 am-9:00 pm",
+      "openLocal": "07:00",
+      "closeLocal": "21:00",
+      "timezone": "America/Los_Angeles"
+    },
+    "hoursConfidence": "official_verified",
+    "hoursLastCheckedAt": "2026-10-25",
+    "hoursSourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/chocolate-market",
+    "contact": {
+      "phoneE164OrDisplay": "650-284-9748",
+      "phoneSource": "official_listing"
+    },
+    "amenityDetails": {
+      "tagline": "Featuring artisanal Swiss chocolates; local San Francisco and California specialty chocolatiers.",
+      "officialBadges": [],
+      "aboutExcerpt": null
+    }
   },
   {
     "id": "sfo-t2-d-wakaba",
@@ -173,10 +378,29 @@
     "waitMinutes": null,
     "activityMinutes": null,
     "sourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/wakaba",
-    "lastCheckedAt": "2026-10-24",
+    "lastCheckedAt": "2026-10-25",
     "locationConfidence": "official_verified",
     "timeConfidence": "unknown",
     "locationDescription": "Near Gate D9",
-    "nearestGateLandmark": "D9"
+    "nearestGateLandmark": "D9",
+    "hours": {
+      "kind": "weekly_same_all_days",
+      "rawText": "Sunday- Saturday 6:30 am-10:30 pm",
+      "openLocal": "06:30",
+      "closeLocal": "22:30",
+      "timezone": "America/Los_Angeles"
+    },
+    "hoursConfidence": "official_verified",
+    "hoursLastCheckedAt": "2026-10-25",
+    "hoursSourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/wakaba",
+    "contact": {
+      "phoneE164OrDisplay": "650-821-0818",
+      "phoneSource": "official_listing"
+    },
+    "amenityDetails": {
+      "tagline": "Japanese sushi and noodles, teriyaki and bento boxes. Beer and sake.",
+      "officialBadges": ["sfo_green_business"],
+      "aboutExcerpt": "Made-to-order cuisine-grade sushi, noodles, teriyaki and bento boxes."
+    }
   }
 ]
