@@ -15,9 +15,9 @@ describe("GW-X-001 backward compatibility", () => {
     const { facilities, errors } = validateFacilities(productionJson);
     assert.equal(errors.length, 0);
     assert.ok(facilities.length >= 12);
-    for (const facility of facilities) {
+    const t2 = facilities.filter((row) => row.terminalCode === "terminal_2");
+    for (const facility of t2) {
       assert.equal(facility.airportIata, "SFO");
-      assert.equal(facility.terminalCode, "terminal_2");
       assert.equal(facility.boardingAreaCode, "D");
       assert.equal(facility.zone, "D");
       assert.equal(facility.browseEligible, true);

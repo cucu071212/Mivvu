@@ -43,10 +43,11 @@ const recommendContext: UserContext = {
 };
 
 describe("GW-X-002 batch 1 — T2 D Gates browse-only reserves", () => {
-  it("validates 18 facilities with zero errors", () => {
+  it("validates T2 production slice (18 facilities) with zero errors", () => {
     const { facilities, errors } = validateFacilities(productionJson);
     assert.equal(errors.length, 0);
-    assert.equal(facilities.length, 18);
+    const t2Only = facilities.filter((row) => row.terminalCode === "terminal_2");
+    assert.equal(t2Only.length, 18);
   });
 
   it("keeps 12 legacy rows recommend-eligible and adds 6 browse-only reserves", () => {

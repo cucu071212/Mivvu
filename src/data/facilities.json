@@ -624,5 +624,115 @@
       "officialBadges": [],
       "aboutExcerpt": null
     }
+  },
+  {
+    "id": "sfo-hm1-b-bun-mee",
+    "name": "Bun Mee",
+    "zone": "B",
+    "airportIata": "SFO",
+    "terminalCode": "harvey_milk_1",
+    "boardingAreaCode": "B",
+    "browseEligible": true,
+    "recommendEligible": false,
+    "category": "food",
+    "securityZone": "post",
+    "waitMinutes": null,
+    "activityMinutes": null,
+    "sourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/bun-mee",
+    "lastCheckedAt": "2026-10-25",
+    "locationConfidence": "official_verified",
+    "timeConfidence": "unknown",
+    "locationDescription": "near Gate B3, Harvey Milk Terminal 1",
+    "hours": {
+      "kind": "weekly_same_all_days",
+      "rawText": "Sunday- Saturday 5:30 am-11:00 pm",
+      "openLocal": "05:30",
+      "closeLocal": "23:00",
+      "timezone": "America/Los_Angeles"
+    },
+    "hoursConfidence": "official_verified",
+    "hoursLastCheckedAt": "2026-10-25",
+    "hoursSourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/bun-mee",
+    "contact": {
+      "phoneE164OrDisplay": "650-821-6820",
+      "phoneSource": "official_listing"
+    },
+    "amenityDetails": {
+      "tagline": "Vietnamese cuisine including pho noodle soup, fresh shrimp spring rolls and banh mi sandwiches",
+      "officialBadges": ["open_past_10pm"],
+      "aboutExcerpt": "Post-security classification per GW-X-T1-BC S5 directory filter (HM1 + Post-Security)."
+    }
+  },
+  {
+    "id": "sfo-hm1-b-bourbon-pub",
+    "name": "Bourbon Pub",
+    "zone": "B",
+    "airportIata": "SFO",
+    "terminalCode": "harvey_milk_1",
+    "boardingAreaCode": "B",
+    "browseEligible": true,
+    "recommendEligible": false,
+    "category": "food",
+    "securityZone": "post",
+    "waitMinutes": null,
+    "activityMinutes": null,
+    "sourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/bourbon-pub",
+    "lastCheckedAt": "2026-10-25",
+    "locationConfidence": "official_verified",
+    "timeConfidence": "unknown",
+    "locationDescription": "Near Gate B7, Harvey Milk Terminal 1",
+    "hours": {
+      "kind": "weekly_same_all_days",
+      "rawText": "Sunday- Saturday 5:30 am-10:00 pm",
+      "openLocal": "05:30",
+      "closeLocal": "22:00",
+      "timezone": "America/Los_Angeles"
+    },
+    "hoursConfidence": "official_verified",
+    "hoursLastCheckedAt": "2026-10-25",
+    "hoursSourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/bourbon-pub",
+    "amenityDetails": {
+      "tagline": "Table service restaurant featuring pub fare and a full bar",
+      "officialBadges": ["open_past_10pm", "sit_down_restaurant"],
+      "aboutExcerpt": "Post-security classification per GW-X-T1-BC S5 directory filter (HM1 + Post-Security)."
+    }
+  },
+  {
+    "id": "sfo-hm1-c-49-mile-market",
+    "name": "49 Mile Market",
+    "zone": "C",
+    "airportIata": "SFO",
+    "terminalCode": "harvey_milk_1",
+    "boardingAreaCode": "C",
+    "browseEligible": true,
+    "recommendEligible": false,
+    "category": "shop",
+    "securityZone": "post",
+    "waitMinutes": null,
+    "activityMinutes": null,
+    "sourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/49-mile-market",
+    "lastCheckedAt": "2026-10-25",
+    "locationConfidence": "official_verified",
+    "timeConfidence": "unknown",
+    "locationDescription": "near Gate C2, Harvey Milk Terminal 1",
+    "hours": {
+      "kind": "weekly_same_all_days",
+      "rawText": "Sunday - Saturday 3:30 am-10:30 pm",
+      "openLocal": "03:30",
+      "closeLocal": "22:30",
+      "timezone": "America/Los_Angeles"
+    },
+    "hoursConfidence": "official_verified",
+    "hoursLastCheckedAt": "2026-10-25",
+    "hoursSourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/49-mile-market",
+    "contact": {
+      "phoneE164OrDisplay": "628-399-0544",
+      "phoneSource": "official_listing"
+    },
+    "amenityDetails": {
+      "tagline": "Magazines, books, souvenirs, sundries, snacks, beverages and grab-and-go food",
+      "officialBadges": ["open_past_10pm", "military_discount"],
+      "aboutExcerpt": "Post-security classification per GW-X-T1-BC S5 directory filter (HM1 + Post-Security)."
+    }
   }
 ]

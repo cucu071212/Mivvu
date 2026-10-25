@@ -32,7 +32,7 @@ describe("recommendation page integration (GW-014)", () => {
       travelTimes: productionTravelMinutes,
       useDemoTimeEstimates: false,
     });
-    assert.equal(recommendations.length, 18);
+    assert.equal(recommendations.length, 21);
     assert.equal(
       recommendations.filter((row) => row.kind === "unknown").length,
       12,
@@ -44,6 +44,14 @@ describe("recommendation page integration (GW-014)", () => {
           row.ineligibilityReason === "outside_recommend_eligibility",
       ).length,
       6,
+    );
+    assert.equal(
+      recommendations.filter(
+        (row) =>
+          row.kind === "ineligible" &&
+          row.ineligibilityReason === "outside_supported_zone",
+      ).length,
+      3,
     );
     assert.ok(
       facilities.every((row) => row.waitMinutes === null && row.activityMinutes === null),
