@@ -1,6 +1,6 @@
 # GateWise — HackPSU Fall 2026 Final Implementation Plan
 
-**Status:** Approved product baseline **v1.4 (post-submission)** — HackPSU P0/P1, **GW-F1–F3**, Level 2 multipage UX, and security hardening **shipped** on production `main` @ `b0b58c6` (see §11–§12). **Active development** is data-first (Phase A–C) before **GW-E** (§12).  
+**Status:** Approved product baseline **v1.5 (Phase A complete; Phase X next)** — HackPSU P0/P1, **GW-F1–F3**, Level 2 multipage UX, security hardening, and **Phase A** verified facility data + UI **shipped** on production `main` @ `af5fe2109714dcad8b4f0cf7f72c2561d3656cbe` (`af5fe21`) (see §11–§13). **Active development** is **Phase X — SFO-wide expansion** (§13), then walking-time (Phase B), usability (Phase C), and **GW-E** (Phase D).  
 **Project:** GateWise — *Your airport. Your gate. Your time.*  
 **Event:** October 24–25, 2026 (Eastern Time)  
 **Team:** Engineering lead (Cursor + own Codex) and teammate (Codex, data/utility logic/QA)  
@@ -219,41 +219,64 @@ Event schedule in prior plan: **Sat Oct 24, 2:00 PM → Sun Oct 25, 1:45 PM**; *
 
 **Agent model (unchanged):** Engineering Lead Cursor (UI + integration + `main`); Engineering Support Codex (pure logic modules); optional Teammate for data/QA — see `AGENTS.md`.
 
-## 12. Post-submission roadmap (data-first → GW-E)
+## 12. Post-submission roadmap — Phase A (COMPLETE)
 
-**Mission after Devpost:** Make GateWise useful with **real, labeled airport information** for the existing **SFO Terminal 2 D Gates** scope — not more visual polish or speculative features without data backing.
+**Shipped:** **Phase A — Verified airport data** on production `main` @ **`af5fe21`** (2026-10-25). All **12** SFO Terminal 2 **D Gates** facilities include published hours, amenity taglines/badges, provenance, and Explore/Results UI with **not live** disclaimers. Contracts: GW-A-R001/R002, GW-A-001/002/003; gates **G-A0** / **G-A1** approved.
 
-**Active task breakdown:** `docs/IMPLEMENTATION_PLAN.md` (Phase A–D). **Current priority order:** `docs/REMAINING_ROADMAP.md`.
+**Preserved:** Existing `recommendFacilities` semantics (§4), `minutesUntilBoarding` meaning, unknown durations never zero-filled, What-if and personalization (GW-F). Historical task detail: `docs/IMPLEMENTATION_PLAN.md` § Phase A.
+
+## 13. Active roadmap (Phase X → B → C → D)
+
+**Mission:** Expand GateWise from the hackathon **T2 D Gates** MVP toward **SFO-wide facility discovery** with honest limits — without inventing facilities, hours, walking times, or post-security connectivity.
+
+**Execution:** `docs/IMPLEMENTATION_PLAN.md` (Phase X–D). **Priority table:** `docs/REMAINING_ROADMAP.md`.
 
 | Phase | Goal | Outcome |
 | --- | --- | --- |
-| **A — Verified airport data** | Enrich the shipped **12** facilities with official hours, amenity facts, finer location text, source URLs, and `lastCheckedAt` — without inventing fields SFO does not publish. | Travelers see **what is officially known** vs **unknown**; dataset validation stays strict. |
-| **B — Distance & walking time** | Research credible indoor routing; define how verified, estimated, and unknown directed travel minutes are stored and labeled. | Replace silent demo assumptions only where evidence exists; matrix edges remain **directed** and non-symmetric. |
-| **C — Real-world usability** | Present enriched data in facility detail, hours, discovery, and recommendations copy. | First-time users understand scope, limits, and how to act on a recommendation. |
-| **D — GW-E two-stop planner** | Implement approved two-stop time-budget module + UI on **My Plan** after A–C foundations. | Same engine rules as §4 E; not indoor navigation or live routing. |
+| **X — SFO-wide expansion** | Research official coverage; extend data model; add verified facilities **incrementally**; airport-wide directory UI. | Travelers browse SFO concessions by terminal/boarding area; **recommendation eligibility** stays gated on verified travel model — browsing ≠ reachable before boarding. |
+| **B — Distance & walking time** | After Phase X data model exists: credible indoor distance policy; labeled directed edges. | Facility discovery separated from time-budget **recommendation**; no unlabeled matrix minutes. |
+| **C — Product usability** | Polish expanded-airport UX after X (+ B contracts where routing copy matters). | Clear scope, limitations, and actions on enriched coverage. |
+| **D — GW-E two-stop planner** | Two-stop module + **My Plan** after **G-Data** (revised: X + B + C gates). | §4 E semantics unchanged; not indoor navigation. |
 
-### Approval gates (post-submission)
+### Phase X tasks (summary — authorize individually)
 
-| Gate | Entry criteria | Lead decision |
+| ID | Type | Summary |
 | --- | --- | --- |
-| **G-A0** | GW-A-R001 research report accepted; enrichment schema does not break validation or recommendation safety | Authorize **GW-A-001** implementation tasks |
-| **G-A1** | Enriched `facilities.json` + validators green; provenance doc updated | Authorize **GW-B-R001** / Phase B design |
-| **G-B0** | Walking-time policy written (verified / demo_estimate / unknown); no unlabeled measurements | Authorize matrix or edge-model changes (**GW-B-001+**) |
-| **G-B1** | Any new travel minutes labeled and tested; P0 hero margins unchanged unless explicitly re-baselined | Authorize Phase C UX tasks |
-| **G-C0** | Production-preview UX for hours/detail/discovery passes smoke + accessibility check | Re-authorize **G-E** for **GW-E** |
-| **G-E** | **G-F3** shipped (done) + **G-Data** (**G-C0** and **G-B1**) | Authorize **GW-E1** / **GW-E2** |
+| **GW-X-R001** | Research | Official SFO terminal, boarding area, gate, security-access, and facility data sources |
+| **GW-X-R002** | Research | Location & facility matrix: IDs, relationships, confidence, coverage gaps |
+| **GW-X-001** | Implement | Data model migration (airport/terminal/boarding area/gate/facility); **legacy D Gates behavior preserved** |
+| **GW-X-002** | Implement | Staged dataset expansion (verified rows only) |
+| **GW-X-003** | Implement | Multi-terminal directory UI, filters, location labels, limitations |
+| **GW-X-004** | Implement | Integration & regression (602+ tests, D Gates smoke, recommend safety) |
 
-### Data sources — known constraints (2026-10-24 research)
+### Approval gates (post–Phase A)
 
-Documented in `docs/data-provenance.md`. Unless separately verified:
+| Gate | Entry criteria | Unlocks |
+| --- | --- | --- |
+| **G-X0** | GW-X-R001 + GW-X-R002 accepted; migration & eligibility design reviewed | **GW-X-001** |
+| **G-X1** | Schema + validators + legacy **12** D records unchanged in recommend path; migration doc | **GW-X-002** (staged batches) |
+| **G-X2** | Agreed dataset milestone + provenance for new rows; no invented fields | **GW-X-003** |
+| **G-X3** | GW-X-004 regression green on preview; browse vs recommend rules documented | **GW-B-R001**, further **GW-X-002** batches |
+| **G-B0** | GW-B-R001 + GW-B-001 policy approved | **GW-B-002** |
+| **G-B1** | Matrix changes labeled; regression tests pass | Phase C polish, production data releases |
+| **G-C0** | Expanded-airport UX smoke + a11y on preview | **G-E** re-authorization |
+| **G-E** | **G-F3** shipped (done) + **G-Data** (**G-X3** + **G-B1** + **G-C0**) | **GW-E1** / **GW-E2** |
 
-- **No** official SFO public API for live facility hours, queue times, or indoor turn-by-turn routing in this project scope.
-- **Yes** official HTML listings on flysfo.com (Shop/Dine/Relax, per-facility pages, filtered directory); hours may be static text or badges — **not** guaranteed real-time.
-- **No** production use of third-party indoor maps without explicit lead approval and licensing review.
-- Restrooms/charging at gate-level precision remain **research gaps**; do not fabricate POIs to fill categories.
+### Backward compatibility & migration (Phase X)
 
-### Scope freeze (post-submission)
+1. **Dataset:** Existing **12** facility IDs, `zone: "D"`, and enriched Phase A fields remain valid; validators accept legacy rows without new terminal fields until migration adds optional/required rules per **G-X1** spec.
+2. **Recommendation:** `recommendFacilities` continues to use the **production travel matrix** and **post-eligible** facilities in the **authorized recommend scope** (initially unchanged D Gates model) until a **separate approved task** widens eligibility edges — multi-terminal **browse** must not imply recommend feasibility.
+3. **Staged expansion:** GW-X-002 adds facilities in **batches** (e.g. per terminal or boarding area) with `sourceUrl`, `lastCheckedAt`, and confidence; gaps stay **unknown**, not synthetic.
+4. **Connectivity:** No assumption that airside passengers can cross terminals or pre/post security without explicit sourced evidence per facility row.
+5. **Rollback:** Revert dataset commits per batch; UI falls back to D-only directory; types remain backward compatible where possible.
 
-- Stay on **one terminal** (T2 D Gates) until the human Engineering Lead authorizes expansion.
-- Do not add auth, database, live flights, payments, or multi-airport coverage.
+### Data sources — known constraints (unchanged; see GW-A-R001)
+
+Documented in `docs/data-provenance.md` and `docs/GW-A-R001-sfo-source-api-audit.md`. Phase X research (**GW-X-R001**) must re-validate before any API or scrape automation.
+
+### Scope boundaries (ongoing)
+
+- **SFO only** until lead authorizes another airport; no multi-airport in Phase X without new plan revision.
+- No auth, database, live flights, payments, or production indoor turn-by-turn navigation.
+- Do not invent facilities, hours, queues, or walking minutes.
 - New ideas → `BACKLOG.md`; contract changes → lead approval + `PLAN.md` / `AGENTS.md` update.
