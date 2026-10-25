@@ -134,6 +134,48 @@ function draftKey(
     : `${facilityId}:activity`;
 }
 
+/** Facilities visible in the compact editor (search + overrides + errors). */
+export function filterPersonalizationFacilities(
+  facilities: readonly PersonalizedFacilityRow[],
+  options: {
+    search: string;
+    overrides: FacilityDurationOverrideMap;
+    fieldErrors: Partial<Record<FieldDraftKey, string>>;
+    drafts: Partial<Record<FieldDraftKey, string>>;
+    showAll: boolean;
+  },
+): PersonalizedFacilityRow[] {
+  const q = options.search.trim().toLowerCase();
+  const hasFacilitySignal = (id: string) => {
+    const queueKey = draftKey(id, "queueMinutes");
+    const activityKey = draftKey(id, "activityMinutes");
+    return (
+      Boolean(options.overrides[id]) ||
+      options.drafts[queueKey] !== undefined ||
+      options.drafts[activityKey] !== undefined ||
+      Boolean(options.fieldErrors[queueKey]) ||
+      Boolean(options.fieldErrors[activityKey])
+    );
+  };
+
+  if (options.showAll && q === "") {
+    return [...facilities];
+  }
+
+  return facilities.filter((facility) => {
+    if (hasFacilitySignal(facility.id)) {
+      return true;
+    }
+    if (q === "") {
+      return false;
+    }
+    return (
+      facility.name.toLowerCase().includes(q) ||
+      CATEGORY_LABELS[facility.category].toLowerCase().includes(q)
+    );
+  });
+}
+
 export function PersonalizedTimeControls({
   facilities,
   overrides,
@@ -147,6 +189,8 @@ export function PersonalizedTimeControls({
   const [fieldErrors, setFieldErrors] = useState<
     Partial<Record<FieldDraftKey, string>>
   >({});
+  const [search, setSearch] = useState("");
+  const [showAll, setShowAll] = useState(false);
 
   const overrideCount = useMemo(
     () => Object.keys(overrides).length,
@@ -163,6 +207,18 @@ export function PersonalizedTimeControls({
   useEffect(() => {
     onDraftValidityChange?.(draftsValid);
   }, [draftsValid, onDraftValidityChange]);
+
+  const visibleFacilities = useMemo(
+    () =>
+      filterPersonalizationFacilities(facilities, {
+        search,
+        overrides,
+        fieldErrors,
+        drafts,
+        showAll,
+      }),
+    [facilities, search, overrides, fieldErrors, drafts, showAll],
+  );
 
   const clearFieldError = useCallback((key: FieldDraftKey) => {
     setFieldErrors((prev) => {
@@ -219,6 +275,8 @@ export function PersonalizedTimeControls({
     onChange({});
     setDrafts({});
     setFieldErrors({});
+    setSearch("");
+    setShowAll(false);
   }, [onChange]);
 
   const displayValue = useCallback(
@@ -238,99 +296,130 @@ export function PersonalizedTimeControls({
   );
 
   return (
-    <section
-      className="gw-surface-card flex flex-col gap-4 p-4 sm:p-5"
-      aria-labelledby="personalized-time-heading"
+    <details
+      id="gw-section-estimates"
+      className="gw-surface-card group scroll-mt-24"
+      open
     >
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-        <div className="flex flex-col gap-1">
-          <h2
-            id="personalized-time-heading"
-            className="text-base font-semibold text-card-foreground"
-          >
-            Your time estimates
-          </h2>
-          <p className="text-sm text-muted-foreground" role="note">
-            Optional queue and activity minutes per place. These are{" "}
-            <strong className="font-medium text-card-foreground">
-              your personal estimates
-            </strong>
-            , not official SFO wait or service times. Blank fields use the
-            app&apos;s normal sources (official record, demo mode, or unknown).
-          </p>
-        </div>
-        <span className="gw-badge gw-badge-demo shrink-0 self-start">
-          Personal estimate
-        </span>
-      </div>
-
-      {!draftsValid ? (
-        <p className="text-sm text-destructive" role="alert">
-          Fix invalid personal estimates below. Recommendations and What-if are
-          paused until every field is blank or a valid whole number — saved
-          overrides are not updated while an error is shown.
-        </p>
-      ) : null}
-
-      <div className="flex flex-wrap items-center gap-2">
-        <p className="text-sm text-muted-foreground" aria-live="polite">
-          {overrideCount === 0
-            ? "No overrides set"
-            : `${overrideCount} ${overrideCount === 1 ? "place" : "places"} with overrides`}
-        </p>
-        <button
-          type="button"
-          className="gw-focus-ring min-h-11 rounded-md border border-border bg-card px-3 py-2 text-sm font-medium text-card-foreground transition-colors hover:border-primary disabled:cursor-not-allowed disabled:opacity-60"
-          onClick={handleResetAll}
-          disabled={disabled || (overrideCount === 0 && draftsValid && !hasDraftEdits)}
-        >
-          Reset all overrides
-        </button>
-      </div>
-
-      <ul className="flex flex-col gap-3" role="list">
-        {facilities.map((facility) => {
-          const queueKey = draftKey(facility.id, "queueMinutes");
-          const activityKey = draftKey(facility.id, "activityMinutes");
-          const hasOverride = Boolean(overrides[facility.id]);
-          const hasFacilityDraft =
-            drafts[queueKey] !== undefined || drafts[activityKey] !== undefined;
-          const hasFacilityError = Boolean(
-            fieldErrors[queueKey] || fieldErrors[activityKey],
-          );
-          const canClearFacility =
-            hasOverride || hasFacilityDraft || hasFacilityError;
-
-          return (
-            <li
-              key={facility.id}
-              className="flex flex-col gap-3 rounded-lg border border-border bg-card/50 p-3 sm:p-4"
+      <summary
+        className="gw-focus-ring cursor-pointer list-none px-4 py-4 marker:content-none [&::-webkit-details-marker]:hidden"
+      >
+        <div className="flex min-h-11 items-start justify-between gap-3">
+          <div>
+            <h2
+              id="personalized-time-heading"
+              className="text-base font-semibold text-card-foreground"
             >
-              <div className="flex flex-wrap items-start justify-between gap-2">
-                <div>
+              Your time estimates
+            </h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Optional personal queue &amp; activity minutes — search or expand to
+              edit a place.
+            </p>
+          </div>
+          <span className="gw-badge gw-badge-demo shrink-0">Personal estimate</span>
+        </div>
+      </summary>
+
+      <div className="flex flex-col gap-4 border-t border-border px-4 pb-4 pt-3">
+        <p className="text-sm text-muted-foreground" role="note">
+          These are{" "}
+          <strong className="font-medium text-card-foreground">
+            your personal estimates
+          </strong>
+          , not official SFO wait or service times. Blank fields use the
+          app&apos;s normal sources (official record, demo mode, or unknown).
+        </p>
+
+        {!draftsValid ? (
+          <p className="text-sm text-destructive" role="alert">
+            Fix invalid personal estimates below. Recommendations and What-if are
+            paused until every field is blank or a valid whole number — saved
+            overrides are not updated while an error is shown.
+          </p>
+        ) : null}
+
+        <div className="gw-personalization-toolbar">
+          <label className="flex flex-col gap-1.5 text-sm font-medium text-card-foreground">
+            Find a place to edit
+            <input
+              type="search"
+              className="gw-input gw-focus-ring"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder="Search by name or category"
+              disabled={disabled}
+              autoComplete="off"
+            />
+          </label>
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="text-sm text-muted-foreground" aria-live="polite">
+              {overrideCount === 0
+                ? "No overrides set"
+                : `${overrideCount} ${overrideCount === 1 ? "place" : "places"} with overrides`}
+            </p>
+            <button
+              type="button"
+              className="gw-focus-ring min-h-11 rounded-md border border-border bg-card px-3 py-2 text-sm font-medium text-card-foreground transition-colors hover:border-primary disabled:cursor-not-allowed disabled:opacity-60"
+              onClick={() => setShowAll((value) => !value)}
+              disabled={disabled}
+            >
+              {showAll ? "Show focused list" : `Browse all ${facilities.length} places`}
+            </button>
+            <button
+              type="button"
+              className="gw-focus-ring min-h-11 rounded-md border border-border bg-card px-3 py-2 text-sm font-medium text-card-foreground transition-colors hover:border-primary disabled:cursor-not-allowed disabled:opacity-60"
+              onClick={handleResetAll}
+              disabled={
+                disabled || (overrideCount === 0 && draftsValid && !hasDraftEdits)
+              }
+            >
+              Reset all overrides
+            </button>
+          </div>
+        </div>
+
+        {visibleFacilities.length === 0 ? (
+          <p className="text-sm text-muted-foreground">
+            No places match. Try another search or browse all places.
+          </p>
+        ) : null}
+
+        <ul className="flex flex-col" role="list">
+          {visibleFacilities.map((facility) => {
+            const queueKey = draftKey(facility.id, "queueMinutes");
+            const activityKey = draftKey(facility.id, "activityMinutes");
+            const hasOverride = Boolean(overrides[facility.id]);
+            const hasFacilityDraft =
+              drafts[queueKey] !== undefined ||
+              drafts[activityKey] !== undefined;
+            const hasFacilityError = Boolean(
+              fieldErrors[queueKey] || fieldErrors[activityKey],
+            );
+            const canClearFacility =
+              hasOverride || hasFacilityDraft || hasFacilityError;
+
+            return (
+              <li key={facility.id} className="gw-personalization-row">
+                <div className="min-w-0">
                   <p className="font-medium text-card-foreground">
                     {facility.name}
                   </p>
                   <p className="text-xs text-muted-foreground">
                     {CATEGORY_LABELS[facility.category]}
+                    {hasOverride ? (
+                      <span className="ml-2 gw-badge gw-badge-demo text-[0.65rem]">
+                        Override
+                      </span>
+                    ) : null}
                   </p>
                 </div>
-                <button
-                  type="button"
-                  className="gw-focus-ring min-h-11 shrink-0 rounded-md px-2 text-sm font-medium text-primary underline-offset-2 hover:underline disabled:cursor-not-allowed disabled:opacity-60"
-                  onClick={() => handleClearFacility(facility.id)}
-                  disabled={disabled || !canClearFacility}
-                >
-                  Clear this place
-                </button>
-              </div>
 
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <label
-                  className="flex flex-col gap-1.5 text-sm font-medium text-card-foreground"
+                  className="flex flex-col gap-1 text-xs font-semibold text-muted-foreground sm:contents"
                   htmlFor={`${facility.id}-queue`}
                 >
-                  Queue / wait (min)
+                  <span className="sm:hidden">Queue / wait (min)</span>
                   <input
                     id={`${facility.id}-queue`}
                     name={`${facility.id}-queue`}
@@ -338,7 +427,7 @@ export function PersonalizedTimeControls({
                     inputMode="numeric"
                     pattern="[0-9]*"
                     autoComplete="off"
-                    className="gw-input gw-focus-ring disabled:cursor-not-allowed disabled:opacity-60"
+                    className="gw-input gw-focus-ring text-sm disabled:cursor-not-allowed disabled:opacity-60"
                     value={displayValue(facility.id, "queueMinutes")}
                     onChange={(event) =>
                       handleFieldChange(
@@ -352,30 +441,33 @@ export function PersonalizedTimeControls({
                     aria-describedby={
                       fieldErrors[queueKey]
                         ? `${facility.id}-queue-error`
-                        : undefined
+                        : `${facility.id}-queue-hint`
                     }
-                    placeholder="No override"
+                    placeholder="—"
                   />
                   {fieldErrors[queueKey] ? (
                     <span
                       id={`${facility.id}-queue-error`}
-                      className="text-xs font-normal text-destructive"
+                      className="col-span-full text-xs font-normal text-destructive sm:col-span-4"
                       role="alert"
                     >
                       {fieldErrors[queueKey]}
                     </span>
                   ) : (
-                    <span className="text-xs font-normal text-muted-foreground">
-                      Blank = no override. 0 is allowed.
+                    <span
+                      id={`${facility.id}-queue-hint`}
+                      className="sr-only sm:not-sr-only sm:col-span-4 sm:text-[0.65rem] sm:font-normal"
+                    >
+                      Queue minutes
                     </span>
                   )}
                 </label>
 
                 <label
-                  className="flex flex-col gap-1.5 text-sm font-medium text-card-foreground"
+                  className="flex flex-col gap-1 text-xs font-semibold text-muted-foreground sm:contents"
                   htmlFor={`${facility.id}-activity`}
                 >
-                  Activity (min)
+                  <span className="sm:hidden">Activity (min)</span>
                   <input
                     id={`${facility.id}-activity`}
                     name={`${facility.id}-activity`}
@@ -383,7 +475,7 @@ export function PersonalizedTimeControls({
                     inputMode="numeric"
                     pattern="[0-9]*"
                     autoComplete="off"
-                    className="gw-input gw-focus-ring disabled:cursor-not-allowed disabled:opacity-60"
+                    className="gw-input gw-focus-ring text-sm disabled:cursor-not-allowed disabled:opacity-60"
                     value={displayValue(facility.id, "activityMinutes")}
                     onChange={(event) =>
                       handleFieldChange(
@@ -397,29 +489,41 @@ export function PersonalizedTimeControls({
                     aria-describedby={
                       fieldErrors[activityKey]
                         ? `${facility.id}-activity-error`
-                        : undefined
+                        : `${facility.id}-activity-hint`
                     }
-                    placeholder="No override"
+                    placeholder="—"
                   />
                   {fieldErrors[activityKey] ? (
                     <span
                       id={`${facility.id}-activity-error`}
-                      className="text-xs font-normal text-destructive"
+                      className="col-span-full text-xs font-normal text-destructive sm:col-span-4"
                       role="alert"
                     >
                       {fieldErrors[activityKey]}
                     </span>
                   ) : (
-                    <span className="text-xs font-normal text-muted-foreground">
-                      Blank = no override. 0 is allowed.
+                    <span
+                      id={`${facility.id}-activity-hint`}
+                      className="sr-only sm:not-sr-only sm:col-span-4 sm:text-[0.65rem] sm:font-normal"
+                    >
+                      Activity minutes
                     </span>
                   )}
                 </label>
-              </div>
-            </li>
-          );
-        })}
-      </ul>
-    </section>
+
+                <button
+                  type="button"
+                  className="gw-focus-ring min-h-11 self-end rounded-md px-2 text-sm font-medium text-primary underline-offset-2 hover:underline disabled:cursor-not-allowed disabled:opacity-60 sm:self-auto"
+                  onClick={() => handleClearFacility(facility.id)}
+                  disabled={disabled || !canClearFacility}
+                >
+                  Clear
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </details>
   );
 }

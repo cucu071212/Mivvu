@@ -250,7 +250,7 @@ export function BoardingCountdownControls({
 
   return (
     <div
-      className="flex flex-col gap-3 rounded-lg border border-border bg-card/40 p-3"
+      className="flex flex-col gap-3 rounded-lg border border-dashed border-primary/30 bg-gradient-to-b from-card/80 to-muted/30 p-3 sm:col-span-2"
       role="group"
       aria-labelledby="boarding-countdown-heading"
     >

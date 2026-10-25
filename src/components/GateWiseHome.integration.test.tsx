@@ -17,6 +17,22 @@ function enableDemo() {
   fireEvent.click(screen.getByRole("checkbox", { name: /Demo estimates/ }));
 }
 
+function focusDoloresQueue() {
+  const search = screen.getByPlaceholderText(/Search by name or category/);
+  fireEvent.change(search, { target: { value: "Dolores" } });
+  return screen.getByLabelText(/Queue \/ wait/, {
+    selector: `#${DOLORES_ID}-queue`,
+  });
+}
+
+function focusDoloresActivity() {
+  const search = screen.getByPlaceholderText(/Search by name or category/);
+  fireEvent.change(search, { target: { value: "Dolores" } });
+  return screen.getByLabelText(/Activity/, {
+    selector: `#${DOLORES_ID}-activity`,
+  });
+}
+
 function rankedList() {
   return screen.getByRole("region", { name: "Ranked recommendations" });
 }
@@ -43,9 +59,7 @@ describe("GateWiseHome personalization boundaries (mounted)", () => {
   it("keeps 1440 queue over budget and rejects 1441 visibly without a favorable fallback", () => {
     renderHome();
     enableDemo();
-    const queue = screen.getByLabelText(/Queue \/ wait/, {
-      selector: `#${DOLORES_ID}-queue`,
-    });
+    const queue = focusDoloresQueue();
 
     fireEvent.change(queue, { target: { value: "1440" } });
     const card1440 = rankedCard(DOLORES_NAME);
@@ -64,9 +78,7 @@ describe("GateWiseHome personalization boundaries (mounted)", () => {
   it("applies the same 1440 limit to activity minutes", () => {
     renderHome();
     enableDemo();
-    const activity = screen.getByLabelText(/Activity/, {
-      selector: `#${DOLORES_ID}-activity`,
-    });
+    const activity = focusDoloresActivity();
     fireEvent.change(activity, { target: { value: "1441" } });
     expect(activity.getAttribute("aria-invalid")).toBe("true");
     expect(rankedCard(DOLORES_NAME)).toBeNull();
@@ -76,9 +88,7 @@ describe("GateWiseHome personalization boundaries (mounted)", () => {
   it("accepts zero and restores recommendations after Reset all overrides", () => {
     renderHome();
     enableDemo();
-    const queue = screen.getByLabelText(/Queue \/ wait/, {
-      selector: `#${DOLORES_ID}-queue`,
-    });
+    const queue = focusDoloresQueue();
     fireEvent.change(queue, { target: { value: "0" } });
     expect(queue.getAttribute("aria-invalid")).not.toBe("true");
     expect(rankedCard(DOLORES_NAME)).not.toBeNull();
@@ -87,8 +97,9 @@ describe("GateWiseHome personalization boundaries (mounted)", () => {
     expect(rankedCard(DOLORES_NAME)).toBeNull();
 
     fireEvent.click(screen.getByRole("button", { name: "Reset all overrides" }));
-    expect((queue as HTMLInputElement).value).toBe("");
-    expect(queue.getAttribute("aria-invalid")).not.toBe("true");
+    const queueAfterReset = focusDoloresQueue();
+    expect((queueAfterReset as HTMLInputElement).value).toBe("");
+    expect(queueAfterReset.getAttribute("aria-invalid")).not.toBe("true");
     expect(rankedCard(DOLORES_NAME)).not.toBeNull();
     expect(whatIfSection()).not.toBeNull();
   });

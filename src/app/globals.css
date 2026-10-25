@@ -268,6 +268,189 @@
     border-color: var(--gw-badge-unknown-border);
   }
 
+  .gw-kpi-strip {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (min-width: 640px) {
+    .gw-kpi-strip {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .gw-kpi-tile {
+    border-radius: var(--gw-radius-md);
+    border: 1px solid var(--gw-border);
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--gw-card) 92%, var(--gw-primary) 8%) 0%,
+      var(--gw-card) 100%
+    );
+    padding: 0.75rem 0.875rem;
+  }
+
+  .gw-kpi-tile-wide {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 640px) {
+    .gw-kpi-tile-wide {
+      grid-column: span 2;
+    }
+  }
+
+  .gw-kpi-label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--gw-muted-foreground);
+  }
+
+  .gw-kpi-value {
+    margin-top: 0.25rem;
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+    color: var(--gw-card-foreground);
+  }
+
+  .gw-kpi-value-sm {
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  .gw-kpi-unit {
+    margin-left: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--gw-muted-foreground);
+  }
+
+  .gw-kpi-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.375rem;
+  }
+
+  .gw-pill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.75rem;
+    padding: 0.125rem 0.625rem;
+    border-radius: var(--gw-radius-full);
+    border: 1px solid var(--gw-border);
+    background-color: var(--gw-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--gw-card-foreground);
+  }
+
+  .gw-pill-demo {
+    background-color: var(--gw-badge-demo-bg);
+    color: var(--gw-badge-demo-fg);
+    border-color: var(--gw-badge-demo-border);
+  }
+
+  .gw-pill-muted {
+    background-color: var(--gw-card);
+  }
+
+  .gw-section-nav {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    margin: -0.25rem -0.25rem 0;
+    padding: 0.5rem 0.25rem;
+    background: color-mix(in srgb, var(--gw-background) 88%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--gw-border);
+  }
+
+  .gw-section-nav-list {
+    display: flex;
+    gap: 0.375rem;
+    overflow-x: auto;
+    padding-bottom: 0.125rem;
+    list-style: none;
+    margin: 0;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+
+  .gw-section-nav-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.375rem 0.875rem;
+    border-radius: var(--gw-radius-full);
+    border: 1px solid var(--gw-border);
+    background-color: var(--gw-card);
+    color: var(--gw-card-foreground);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition:
+      border-color var(--gw-transition),
+      background-color var(--gw-transition);
+  }
+
+  .gw-section-nav-link:hover {
+    border-color: var(--gw-primary);
+    color: var(--gw-primary);
+  }
+
+  .gw-card-accent-feasible {
+    border-left: 4px solid var(--gw-status-feasible);
+  }
+
+  .gw-card-accent-tight {
+    border-left: 4px solid var(--gw-status-tight);
+  }
+
+  .gw-card-accent-over {
+    border-left: 4px solid var(--gw-status-over);
+  }
+
+  .gw-card-accent-unknown {
+    border-left: 4px solid var(--gw-status-unknown);
+  }
+
+  .gw-card-accent-ineligible {
+    border-left: 4px solid var(--gw-status-ineligible);
+  }
+
+  .gw-planner-placeholder {
+    border-style: dashed;
+    background: color-mix(in srgb, var(--gw-muted) 40%, var(--gw-card));
+  }
+
+  .gw-personalization-toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .gw-personalization-row {
+    display: grid;
+    gap: 0.5rem 0.75rem;
+    align-items: start;
+    padding: 0.625rem 0;
+    border-bottom: 1px solid var(--gw-border);
+  }
+
+  @media (min-width: 640px) {
+    .gw-personalization-row {
+      grid-template-columns: minmax(0, 1.4fr) minmax(4.5rem, 5.5rem) minmax(4.5rem, 5.5rem) auto;
+      align-items: end;
+    }
+  }
+
   .gw-status-chip {
     display: inline-flex;
     align-items: center;

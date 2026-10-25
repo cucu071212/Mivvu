@@ -38,6 +38,9 @@ import {
   type FacilityDurationOverrideMap,
 } from "@/components/PersonalizedTimeControls";
 import { BoardingCountdownControls } from "@/components/BoardingCountdownControls";
+import { FlightTimeBudgetStrip } from "@/components/FlightTimeBudgetStrip";
+import { GateWiseSectionNav } from "@/components/GateWiseSectionNav";
+import { FuturePlannerPlaceholder } from "@/components/FuturePlannerPlaceholder";
 import type { BoardingCountdownState } from "@/lib/boarding-countdown";
 import {
   baselineRecoveryRequiredAfterExit,
@@ -103,6 +106,10 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
   >(null);
 
   const baselineUsesLiveCountdown = countdownState.mode === "countdown";
+  const countdownPaused =
+    countdownState.mode === "countdown" && countdownState.runState === "paused";
+  const boardingStartedForStrip =
+    baselineUsesLiveCountdown && minutesInput.trim() === "0";
 
   const syncPreservedManualFromDrafts = useCallback(
     (minutesDraft: string, bufferDraft: string) => {
@@ -247,21 +254,23 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
   );
 
   return (
-    <div className="mx-auto flex min-h-full max-w-2xl flex-col gap-6 px-4 py-8 pb-16 sm:px-6">
-      <header className="flex flex-col gap-2">
-        <p className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
+    <div className="mx-auto flex min-h-full w-full max-w-3xl flex-col gap-6 px-4 py-6 pb-20 sm:px-6 lg:max-w-4xl lg:py-8">
+      <header className="flex flex-col gap-3">
+        <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
           {SUPPORTED_AIRPORT_IATA} · {SUPPORTED_TERMINAL_LABEL} ·{" "}
           {SUPPORTED_BOARDING_AREA_LABEL}
         </p>
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground">
+        <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
           GateWise
         </h1>
-        <p className="text-base text-muted-foreground">
+        <p className="max-w-2xl text-base leading-relaxed text-muted-foreground">
           Boarding-start recommendations for verified Terminal 2 D Gates
           amenities. Status labels describe the in-app time model only — not a
           guarantee you will board on time.
         </p>
       </header>
+
+      <GateWiseSectionNav />
 
       {!datasetValid ? (
         <p
@@ -275,20 +284,40 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
       ) : null}
 
       <section
-        className="gw-surface-card flex flex-col gap-4 p-4"
+        id="gw-section-context"
+        className="gw-surface-card flex flex-col gap-4 p-4 sm:p-5 scroll-mt-24"
         aria-labelledby="flight-context-heading"
       >
-        <h2
-          id="flight-context-heading"
-          className="text-base font-semibold text-card-foreground"
-        >
-          Flight context
-        </h2>
-        <p className="text-sm text-muted-foreground">
-          Minutes until <strong className="font-semibold text-card-foreground">boarding begins</strong> — not gate closure.
-        </p>
+        <div className="flex flex-col gap-1">
+          <h2
+            id="flight-context-heading"
+            className="text-lg font-semibold text-card-foreground"
+          >
+            Flight context
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            Minutes until{" "}
+            <strong className="font-semibold text-card-foreground">
+              boarding begins
+            </strong>{" "}
+            — not gate closure.
+          </p>
+        </div>
 
-        <div className="grid gap-3 sm:grid-cols-2">
+        <FlightTimeBudgetStrip
+          minutesUntilBoarding={
+            contextResult.context?.minutesUntilBoarding ?? null
+          }
+          bufferMinutes={contextResult.context?.bufferMinutes ?? null}
+          gateLandmark={gateLandmark}
+          demoEstimatesEnabled={demoEstimatesEnabled}
+          baselineUsesLiveCountdown={baselineUsesLiveCountdown}
+          countdownPaused={countdownPaused}
+          boardingStarted={boardingStartedForStrip}
+          contextValid={contextValid}
+        />
+
+        <div className="grid gap-4 sm:grid-cols-2">
           <label className="flex flex-col gap-1.5 text-sm font-medium text-card-foreground sm:col-span-2">
             Boarding area
             <input
@@ -458,12 +487,14 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
         </div>
       </section>
 
-      <AmenityFilter
-        value={filter}
-        onChange={setFilter}
-        resultCount={datasetValid && contextValid ? recommendations.length : 0}
-        disabled={!datasetValid || !contextValid}
-      />
+      <div id="gw-section-find" className="scroll-mt-24">
+        <AmenityFilter
+          value={filter}
+          onChange={setFilter}
+          resultCount={datasetValid && contextValid ? recommendations.length : 0}
+          disabled={!datasetValid || !contextValid}
+        />
+      </div>
 
       {datasetValid ? (
         <PersonalizedTimeControls
@@ -476,12 +507,14 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
       ) : null}
 
       <section
+        id="gw-section-results"
+        aria-label="Ranked recommendations"
         aria-labelledby="recommendations-heading"
-        className="flex flex-col gap-3"
+        className="flex flex-col gap-3 scroll-mt-24"
       >
         <h2
           id="recommendations-heading"
-          className="text-base font-semibold text-foreground"
+          className="text-lg font-semibold text-foreground"
         >
           Ranked recommendations
         </h2>
@@ -546,7 +579,9 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
         </ul>
       </section>
 
-      <details className="gw-surface-card group">
+      <FuturePlannerPlaceholder />
+
+      <details id="gw-section-map" className="gw-surface-card group scroll-mt-24">
         <summary
           id="terminal-schematic-summary"
           className="gw-focus-ring cursor-pointer list-none px-4 py-4 text-base font-semibold text-card-foreground marker:content-none [&::-webkit-details-marker]:hidden"
@@ -600,6 +635,7 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
       </details>
 
       {contextResult.context ? (
+        <div id="gw-section-whatif" className="scroll-mt-24">
         <WhatIfSimulator
           enabled={
             datasetValid &&
@@ -619,6 +655,7 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
           onScenarioMinutesChange={setScenarioMinutesInput}
           onScenarioQueueChange={setScenarioQueueInput}
         />
+        </div>
       ) : null}
     </div>
   );
