@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import type { Facility } from "@/types/airport";
 import { ConfidenceBadge } from "@/components/ConfidenceBadge";
 import { FacilityInformation } from "@/components/FacilityInformation";
@@ -47,14 +47,14 @@ export function FacilityDetailDialog({
     }
   }, [open, facility]);
 
-  const requestClose = () => {
+  const requestClose = useCallback(() => {
     const dialog = dialogRef.current;
     if (dialog && typeof dialog.close === "function") {
       dialog.close();
       return;
     }
     onClose();
-  };
+  }, [onClose]);
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -65,7 +65,7 @@ export function FacilityDetailDialog({
     };
     dialog.addEventListener("cancel", handleCancel);
     return () => dialog.removeEventListener("cancel", handleCancel);
-  }, [facility?.id, open]);
+  }, [facility?.id, open, requestClose]);
 
   if (!facility) return null;
 

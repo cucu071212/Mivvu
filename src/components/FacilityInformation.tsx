@@ -4,8 +4,11 @@ import { facilityOfficialBadgeLabel } from "@/lib/facility-official-badge-label"
 import {
   facilityOfficialListingUrl,
   facilityVerificationDate,
-  presentFacilityHours,
 } from "@/lib/format-facility-hours";
+import {
+  facilityPublishedHoursPresentation,
+  PUBLISHED_HOURS_TIMEZONE_LABEL,
+} from "@/lib/facility-hours-label";
 import { facilityLocationSummary } from "@/lib/facility-present";
 
 export type FacilityInformationProps = {
@@ -21,7 +24,7 @@ export function FacilityInformation({
   idPrefix,
   variant = "default",
 }: FacilityInformationProps) {
-  const hours = presentFacilityHours(facility.hours, facility.hoursConfidence);
+  const hours = facilityPublishedHoursPresentation(facility);
   const listingUrl = facilityOfficialListingUrl(facility);
   const verifiedOn = facilityVerificationDate(facility);
   const tagline = facility.amenityDetails?.tagline ?? null;
@@ -57,7 +60,10 @@ export function FacilityInformation({
         </p>
       </section>
 
-      <section aria-labelledby={`${idPrefix}-when`}>
+      <section
+        aria-labelledby={`${idPrefix}-when`}
+        aria-describedby={`${idPrefix}-hours-policy`}
+      >
         <h4
           id={`${idPrefix}-when`}
           className={`font-semibold text-card-foreground ${textSize}`}
@@ -65,13 +71,28 @@ export function FacilityInformation({
           When (published)
         </h4>
         <p className={`${textSize} text-card-foreground`}>{hours.scheduleLine}</p>
-        {!hours.isUnknown && facility.hours?.kind === "weekly_same_all_days" ? (
+        {hours.kind === "weekly" && facility.hours?.rawText ? (
           <p className={`${textSize} text-muted-foreground`}>
             Source line:{" "}
             <span className="text-card-foreground">{facility.hours.rawText}</span>
           </p>
         ) : null}
-        <p className={`${textSize} text-muted-foreground`} role="note">
+        {hours.kind === "raw_text" ? (
+          <p className={`${textSize} text-muted-foreground`} role="note">
+            Unparsed listing text in the {PUBLISHED_HOURS_TIMEZONE_LABEL} airport
+            zone. GateWise does not show live open/closed status.
+          </p>
+        ) : null}
+        {hours.kind === "weekly" ? (
+          <p className={`${textSize} text-muted-foreground`}>
+            Airport-local zone: {PUBLISHED_HOURS_TIMEZONE_LABEL}
+          </p>
+        ) : null}
+        <p
+          id={`${idPrefix}-hours-policy`}
+          className={`${textSize} text-muted-foreground`}
+          role="note"
+        >
           {hours.disclaimer}
         </p>
       </section>

@@ -1,5 +1,6 @@
 import type { Facility } from "@/types/airport";
 import { ConfidenceBadge } from "@/components/ConfidenceBadge";
+import { facilityPublishedHoursPresentation } from "@/lib/facility-hours-label";
 import {
   facilityLocationSummary,
   facilityTaglineSummary,
@@ -29,6 +30,8 @@ export function FacilityBrowseCard({
   const securityUnverified =
     facility.securityZone === "unknown" || facility.securityZone === "pre";
   const tagline = facilityTaglineSummary(facility);
+  const publishedHours = facilityPublishedHoursPresentation(facility);
+  const hoursNoteId = `facility-${facility.id}-published-hours`;
 
   return (
     <article
@@ -62,6 +65,18 @@ export function FacilityBrowseCard({
         <p className="text-sm text-muted-foreground">
           {tagline ?? facilityLocationSummary(facility)}
         </p>
+        <p
+          id={hoursNoteId}
+          className="line-clamp-2 text-sm text-muted-foreground"
+          role="note"
+        >
+          <span className="font-medium text-card-foreground">Published hours: </span>
+          {publishedHours.scheduleLine}
+          <span className="sr-only">
+            {" "}
+            {publishedHours.disclaimer}
+          </span>
+        </p>
       </div>
 
       <div className="flex flex-wrap gap-2 border-t border-border pt-3">
@@ -84,7 +99,7 @@ export function FacilityBrowseCard({
         type="button"
         className="gw-focus-ring gw-btn-secondary min-h-11 w-full sm:w-auto"
         onClick={onOpenDetails}
-        aria-describedby={`facility-${facility.id}-title`}
+        aria-describedby={`facility-${facility.id}-title ${hoursNoteId}`}
       >
         View facility details
       </button>
