@@ -105,6 +105,7 @@ export function RecommendationsScreen() {
               <li key={recommendation.facilityId}>
                 <AmenityCard
                   recommendation={recommendation}
+                  facility={facility}
                   locationDescription={facility?.locationDescription}
                   nearestGateLandmark={facility?.nearestGateLandmark}
                   sourceUrl={facility?.sourceUrl}

@@ -1,9 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { useMemo } from "react";
 import { AmenityFilter } from "@/components/AmenityFilter";
+import { FacilityBrowseCard } from "@/components/FacilityBrowseCard";
 import { TerminalSchematic } from "@/components/TerminalSchematic";
 import { useGateWiseSession } from "@/context/gatewise-session";
+import { filterFacilities } from "@/lib/filter-facilities";
 
 export function ExploreScreen() {
   const session = useGateWiseSession();
@@ -12,6 +15,11 @@ export function ExploreScreen() {
     session.contextValid &&
     session.personalizationUsable &&
     !session.baselineRecoveryRequired;
+
+  const directoryFacilities = useMemo(
+    () => filterFacilities(session.facilities, session.filterQuery),
+    [session.facilities, session.filterQuery],
+  );
 
   return (
     <div className="flex flex-col gap-4">
@@ -44,6 +52,42 @@ export function ExploreScreen() {
           before ranking places by time budget.
         </p>
       ) : null}
+
+      <section
+        aria-labelledby="explore-directory-heading"
+        className="flex flex-col gap-3"
+      >
+        <div className="flex flex-col gap-1">
+          <h2
+            id="explore-directory-heading"
+            className="text-lg font-semibold text-foreground"
+          >
+            Facility details
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            Published hours and amenities from official SFO listings — not live
+            availability. Filter above updates this directory and ranked results.
+          </p>
+        </div>
+        {!session.datasetValid ? (
+          <p className="gw-surface-card p-4 text-sm text-destructive" role="alert">
+            Facility records failed validation; directory hidden.
+          </p>
+        ) : directoryFacilities.length === 0 ? (
+          <p className="gw-surface-card p-4 text-sm text-muted-foreground">
+            No facilities match your search. Clear filters to browse all twelve
+            verified places.
+          </p>
+        ) : (
+          <ul className="flex flex-col gap-4">
+            {directoryFacilities.map((facility) => (
+              <li key={facility.id}>
+                <FacilityBrowseCard facility={facility} />
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
 
       <details
         id="gw-section-map"

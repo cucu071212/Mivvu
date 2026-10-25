@@ -1,8 +1,10 @@
 import type {
+  Facility,
   GateLandmark,
   ProductionRecommendation,
   ResolvedFacilityDurations,
 } from "@/types/airport";
+import { FacilityInformation } from "@/components/FacilityInformation";
 import {
   durationModelBadgeClass,
   durationModelLabel,
@@ -16,6 +18,8 @@ import {
 
 export type AmenityCardProps = {
   recommendation: ProductionRecommendation;
+  /** Full facility record for published hours and amenities (GW-A-003). */
+  facility?: Facility;
   locationDescription?: string;
   nearestGateLandmark?: GateLandmark | null;
   sourceUrl?: string;
@@ -50,7 +54,7 @@ function securityLabel(
 }
 
 export function AmenityCard(props: AmenityCardProps) {
-  const { recommendation, sourceUrl, lastCheckedAt } = props;
+  const { recommendation, facility, sourceUrl, lastCheckedAt } = props;
   const titleId = `amenity-${recommendation.facilityId}-title`;
   const accent = recommendationCardAccentClass(recommendation);
 
@@ -82,6 +86,15 @@ export function AmenityCard(props: AmenityCardProps) {
           </span>
         </div>
       </header>
+
+      {facility ? (
+        <div className="rounded-lg border border-border/80 bg-muted/20 p-3 sm:p-4">
+          <FacilityInformation
+            facility={facility}
+            idPrefix={`amenity-${recommendation.facilityId}`}
+          />
+        </div>
+      ) : null}
 
       <AmenityDetail recommendation={recommendation} />
 
@@ -121,7 +134,7 @@ export function AmenityCard(props: AmenityCardProps) {
         </span>
       </div>
 
-      {sourceUrl ? (
+      {!facility && sourceUrl ? (
         <p className="text-sm">
           <a
             href={sourceUrl}

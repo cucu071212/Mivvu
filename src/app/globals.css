@@ -586,6 +586,21 @@
     border-color: var(--gw-badge-unknown-border);
   }
 
+  .gw-facility-amenity-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.75rem;
+    padding: 0.125rem 0.625rem;
+    border-radius: var(--gw-radius-full);
+    border: 1px solid var(--border);
+    background-color: color-mix(in srgb, var(--muted) 55%, transparent);
+    color: var(--card-foreground);
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.25rem;
+    white-space: nowrap;
+  }
+
   .gw-kpi-strip {
     display: grid;
     gap: 0.75rem;
