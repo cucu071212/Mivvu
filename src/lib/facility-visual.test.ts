@@ -28,7 +28,7 @@ describe("resolveFacilityVisual", () => {
       assert.equal(visual!.src, asset.imagePath);
       if (asset.imageRole === "venue" && asset.depictsSfoLocation) {
         assert.equal(visual!.kind, "venue_photo");
-        assert.match(visual!.alt, /verified venue photograph/i);
+        assert.match(visual!.alt, /venue photograph/i);
       } else {
         assert.equal(visual!.kind, "illustrative_photo");
         assert.match(visual!.alt, /not this SFO location/i);

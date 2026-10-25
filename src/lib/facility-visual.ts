@@ -28,7 +28,7 @@ function buildAlt(
   approved: FacilityVisualManifestEntry,
 ): string {
   if (approved.imageRole === "venue" && approved.depictsSfoLocation) {
-    return `${facility.name} at San Francisco International Airport — verified venue photograph`;
+    return `${facility.name} — SFO Terminal 2 venue photograph (subject and listing relationship in attribution)`;
   }
   const label = categoryLabel(facility.category);
   return `${facility.name} — illustrative ${label.toLowerCase()} photography (not this SFO location)`;
@@ -49,7 +49,7 @@ function categoryLabel(category: FacilityCategory): string {
 
 function buildCaption(approved: FacilityVisualManifestEntry): string | null {
   if (approved.imageRole === "venue" && approved.depictsSfoLocation) {
-    return "Venue photograph at SFO (documented reuse rights).";
+    return "Venue photograph at SFO Terminal 2 — see attribution for photographed subject vs. listing title.";
   }
   if (approved.imageRole === "illustrative") {
     return "Illustrative photo — does not depict this SFO location.";
