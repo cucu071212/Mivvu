@@ -12,6 +12,16 @@ describe("parsePersonalizedMinutesInput", () => {
     expect(parsePersonalizedMinutesInput("   ")).toEqual({ kind: "empty" });
   });
 
+  it("shares the 0–1440 range with validateDurationOverrides", () => {
+    expect(parsePersonalizedMinutesInput("1440")).toEqual({
+      kind: "value",
+      value: 1440,
+    });
+    expect(parsePersonalizedMinutesInput("1441")).toMatchObject({
+      kind: "error",
+    });
+  });
+
   it("accepts explicit zero", () => {
     expect(parsePersonalizedMinutesInput("0")).toEqual({
       kind: "value",

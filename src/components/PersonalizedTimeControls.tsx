@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { MAX_BOARDING_WINDOW_MINUTES } from "@/lib/strict-integer";
 import type {
   Facility,
   FacilityCategory,
@@ -38,9 +39,12 @@ export type ParsePersonalizedMinutesResult =
   | { kind: "value"; value: number }
   | { kind: "error"; message: string };
 
+const PERSONALIZED_MINUTES_MESSAGE = `Enter a whole number from 0 to ${MAX_BOARDING_WINDOW_MINUTES} minutes, or leave blank.`;
+
 /**
- * UI-only parsing for override text fields (not Codex `validateDurationOverrides`).
- * Blank → no override; explicit `0` is valid; rejects negative and fractional values.
+ * UI-only parsing for override text fields; the accepted range must match
+ * `validateDurationOverrides` so a value shown as valid is never dropped on commit.
+ * Blank → no override; explicit `0` is valid.
  */
 export function parsePersonalizedMinutesInput(
   raw: string,
@@ -50,17 +54,15 @@ export function parsePersonalizedMinutesInput(
     return { kind: "empty" };
   }
   if (!/^\d+$/.test(trimmed)) {
-    return {
-      kind: "error",
-      message: "Enter a whole number of minutes (0 or greater), or leave blank.",
-    };
+    return { kind: "error", message: PERSONALIZED_MINUTES_MESSAGE };
   }
   const value = Number.parseInt(trimmed, 10);
-  if (!Number.isSafeInteger(value) || value < 0) {
-    return {
-      kind: "error",
-      message: "Enter a whole number of minutes (0 or greater), or leave blank.",
-    };
+  if (
+    !Number.isSafeInteger(value) ||
+    value < 0 ||
+    value > MAX_BOARDING_WINDOW_MINUTES
+  ) {
+    return { kind: "error", message: PERSONALIZED_MINUTES_MESSAGE };
   }
   return { kind: "value", value };
 }

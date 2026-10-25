@@ -12,7 +12,12 @@ import {
   safePauseCountdown,
   safeResumeCountdown,
 } from "@/lib/boarding-countdown-ui";
-import { runRunningCountdownTick } from "@/lib/running-countdown-tick";
+import {
+  advanceTickMemory,
+  freshTickMemory,
+  runRunningCountdownTick,
+  type RunningTickOutcome,
+} from "@/lib/running-countdown-tick";
 
 export type BoardingCountdownControlsProps = {
   state: BoardingCountdownState;
@@ -42,6 +47,8 @@ function errorMessage(code: string): string {
     case "countdown_pause_failed":
     case "countdown_resume_failed":
       return "Countdown could not be updated safely and was stopped.";
+    case "clock_moved_backward":
+      return "Your device clock moved backward, so the countdown was stopped and can no longer be trusted.";
     default:
       return "Countdown stopped because the device clock or boarding time could not be trusted.";
   }
@@ -57,11 +64,10 @@ export function BoardingCountdownControls({
 }: BoardingCountdownControlsProps) {
   const [datetimeLocal, setDatetimeLocal] = useState("");
   const [startError, setStartError] = useState<string | null>(null);
-  const [runtimeError, setRuntimeError] = useState<string | null>(null);
   const [boardingStartedVisible, setBoardingStartedVisible] = useState(false);
 
   const stateRef = useRef(state);
-  const lastBaselineMinutesRef = useRef(preservedManualMinutes);
+  const tickMemoryRef = useRef(freshTickMemory(preservedManualMinutes));
   const onBaselineMinutesChangeRef = useRef(onBaselineMinutesChange);
   const onCountdownExitRef = useRef(onCountdownExit);
   const preservedManualMinutesRef = useRef(preservedManualMinutes);
@@ -75,7 +81,8 @@ export function BoardingCountdownControls({
 
   const failCountdown = useCallback(
     (message: string, lastBaselineMinutes: number) => {
-      setRuntimeError(message);
+      setBoardingStartedVisible(false);
+      tickMemoryRef.current = freshTickMemory(lastBaselineMinutes);
       const manual = clearCountdown(lastBaselineMinutes);
       onStateChange(manual);
       stateRef.current = manual;
@@ -89,30 +96,36 @@ export function BoardingCountdownControls({
     [onStateChange],
   );
 
-  const applyTickOutcome = useCallback((outcome: ReturnType<typeof runRunningCountdownTick>) => {
-    if (outcome.kind === "noop") {
-      return;
-    }
-    if (outcome.kind === "invalid") {
-      failCountdown(errorMessage(outcome.code), outcome.lastBaselineMinutes);
-      return;
-    }
-    lastBaselineMinutesRef.current = outcome.minutesUntilBoarding;
-    onBaselineMinutesChangeRef.current(outcome.minutesUntilBoarding);
-    if (outcome.boardingStarted) {
-      setBoardingStartedVisible(true);
-    }
-  }, [failCountdown]);
+  const applyTickOutcome = useCallback(
+    (outcome: RunningTickOutcome, now: Date) => {
+      if (outcome.kind === "noop") {
+        return;
+      }
+      if (outcome.kind === "invalid") {
+        failCountdown(errorMessage(outcome.code), outcome.lastBaselineMinutes);
+        return;
+      }
+      tickMemoryRef.current = advanceTickMemory(outcome, now);
+      onBaselineMinutesChangeRef.current(outcome.minutesUntilBoarding);
+      setBoardingStartedVisible(outcome.boardingStarted);
+    },
+    [failCountdown],
+  );
+
+  const tickWith = useCallback(
+    (running: BoardingCountdownState) => {
+      const now = new Date();
+      applyTickOutcome(
+        runRunningCountdownTick(running, now, tickMemoryRef.current),
+        now,
+      );
+    },
+    [applyTickOutcome],
+  );
 
   const tickNow = useCallback(() => {
-    applyTickOutcome(
-      runRunningCountdownTick(
-        stateRef.current,
-        new Date(),
-        lastBaselineMinutesRef.current,
-      ),
-    );
-  }, [applyTickOutcome]);
+    tickWith(stateRef.current);
+  }, [tickWith]);
 
   const runningBoardingStartAt =
     state.mode === "countdown" && state.runState === "running"
@@ -159,9 +172,8 @@ export function BoardingCountdownControls({
       return;
     }
     setStartError(null);
-    setRuntimeError(null);
     setBoardingStartedVisible(false);
-    lastBaselineMinutesRef.current = preservedManualMinutesRef.current;
+    tickMemoryRef.current = freshTickMemory(preservedManualMinutesRef.current);
     const next: BoardingCountdownState = {
       mode: "countdown",
       runState: "running",
@@ -169,22 +181,37 @@ export function BoardingCountdownControls({
     };
     onStateChange(next);
     stateRef.current = next;
-    applyTickOutcome(
-      runRunningCountdownTick(next, new Date(), lastBaselineMinutesRef.current),
-    );
+    tickWith(next);
   };
 
   const handlePause = () => {
     if (state.mode !== "countdown" || state.runState !== "running") return;
-    const result = safePauseCountdown(state, new Date());
-    if (!result.ok) {
-      failCountdown(errorMessage(result.code), lastBaselineMinutesRef.current);
+    const now = new Date();
+    const check = runRunningCountdownTick(state, now, tickMemoryRef.current);
+    if (check.kind === "invalid") {
+      failCountdown(errorMessage(check.code), check.lastBaselineMinutes);
       return;
     }
-    setRuntimeError(null);
-    onStateChange(result.state);
-    const minutes = Math.floor(result.state.pausedRemainingMs / 60_000);
-    lastBaselineMinutesRef.current = minutes;
+    const result = safePauseCountdown(state, now);
+    if (!result.ok) {
+      failCountdown(
+        errorMessage(result.code),
+        tickMemoryRef.current.lastBaselineMinutes,
+      );
+      return;
+    }
+    const memory = tickMemoryRef.current;
+    const paused = memory.expired
+      ? { ...result.state, pausedRemainingMs: 0 }
+      : result.state;
+    const pausedMinutes = Math.floor(paused.pausedRemainingMs / 60_000);
+    const minutes =
+      memory.lastTickAtMs === null
+        ? pausedMinutes
+        : Math.min(pausedMinutes, memory.lastBaselineMinutes);
+    onStateChange(paused);
+    stateRef.current = paused;
+    tickMemoryRef.current = { ...memory, lastBaselineMinutes: minutes };
     onBaselineMinutesChange(minutes);
   };
 
@@ -192,32 +219,32 @@ export function BoardingCountdownControls({
     if (state.mode !== "countdown" || state.runState !== "paused") return;
     const result = safeResumeCountdown(state, new Date());
     if (!result.ok) {
-      failCountdown(errorMessage(result.code), lastBaselineMinutesRef.current);
+      failCountdown(
+        errorMessage(result.code),
+        tickMemoryRef.current.lastBaselineMinutes,
+      );
       return;
     }
-    setRuntimeError(null);
+    tickMemoryRef.current = freshTickMemory(
+      tickMemoryRef.current.lastBaselineMinutes,
+    );
     onStateChange(result.state);
     stateRef.current = result.state;
-    applyTickOutcome(
-      runRunningCountdownTick(
-        result.state,
-        new Date(),
-        lastBaselineMinutesRef.current,
-      ),
-    );
+    tickWith(result.state);
   };
 
   const handleClear = () => {
     const minutes = manualMinutesAfterClear(preservedManualMinutes);
     const manual = clearCountdown(minutes);
+    const lastBaselineMinutes = tickMemoryRef.current.lastBaselineMinutes;
+    tickMemoryRef.current = freshTickMemory(minutes);
     onStateChange(manual);
     onCountdownExit({
       reason: "user_clear",
       preservedManualMinutes: minutes,
-      lastBaselineMinutes: lastBaselineMinutesRef.current,
+      lastBaselineMinutes,
     });
     setStartError(null);
-    setRuntimeError(null);
     setBoardingStartedVisible(false);
   };
 
@@ -297,10 +324,6 @@ export function BoardingCountdownControls({
       {startError ? (
         <p className="text-sm text-destructive" role="alert">{startError}</p>
       ) : null}
-      {runtimeError ? (
-        <p className="text-sm text-destructive" role="alert">{runtimeError}</p>
-      ) : null}
-
       <div className="flex flex-wrap gap-2">
         {state.mode === "manual" ? (
           <button

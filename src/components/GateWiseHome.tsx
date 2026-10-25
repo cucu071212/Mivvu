@@ -95,6 +95,7 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
   );
   const [personalizationDraftsValid, setPersonalizationDraftsValid] =
     useState(true);
+  const [overrideCommitRejected, setOverrideCommitRejected] = useState(false);
   const [baselineRecoveryRequired, setBaselineRecoveryRequired] =
     useState(false);
   const [baselineRecoveryMessage, setBaselineRecoveryMessage] = useState<
@@ -162,9 +163,17 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
   );
 
   const handleDurationOverridesChange = (next: FacilityDurationOverrideMap) => {
-    const { overrides } = validateDurationOverrides(next, facilityIds);
+    const { overrides, errors } = validateDurationOverrides(next, facilityIds);
+    if (errors.length > 0) {
+      setOverrideCommitRejected(true);
+      return;
+    }
+    setOverrideCommitRejected(false);
     setDurationOverrides(overrides);
   };
+
+  const personalizationUsable =
+    personalizationDraftsValid && !overrideCommitRejected;
 
   const datasetValid = datasetErrors.length === 0;
 
@@ -191,7 +200,7 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
       !datasetValid ||
       !contextValid ||
       !contextResult.context ||
-      !personalizationDraftsValid ||
+      !personalizationUsable ||
       baselineRecoveryRequired
     ) {
       return [];
@@ -212,7 +221,7 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
     filterQuery,
     demoEstimatesEnabled,
     durationOverrides,
-    personalizationDraftsValid,
+    personalizationUsable,
     baselineRecoveryRequired,
   ]);
 
@@ -497,7 +506,7 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
           </p>
         ) : null}
 
-        {datasetValid && contextValid && !personalizationDraftsValid ? (
+        {datasetValid && contextValid && !personalizationUsable ? (
           <p className="gw-surface-card border-destructive/40 p-4 text-sm text-destructive" role="alert">
             Recommendations are paused until personal estimate fields are valid
             or cleared. What-if uses the same rule so results stay consistent
@@ -507,7 +516,7 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
 
         {datasetValid &&
         contextValid &&
-        personalizationDraftsValid &&
+        personalizationUsable &&
         recommendations.length === 0 ? (
           <p className="gw-surface-card p-4 text-sm text-muted-foreground">
             No places match your filters. Search matches{" "}
@@ -595,7 +604,7 @@ export function GateWiseHome({ facilities, datasetErrors }: GateWiseHomeProps) {
           enabled={
             datasetValid &&
             contextValid &&
-            personalizationDraftsValid &&
+            personalizationUsable &&
             !baselineRecoveryRequired
           }
           baselineContext={contextResult.context}

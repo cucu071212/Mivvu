@@ -1,10 +1,16 @@
 import type { BoardingCountdownState } from "@/lib/boarding-countdown";
 import { evaluateRunningCountdownTick } from "@/lib/boarding-countdown-ui";
 
-type Running = Extract<
-  BoardingCountdownState,
-  { mode: "countdown"; runState: "running" }
->;
+/** Backward clock jumps larger than this stop the countdown as untrustworthy. */
+export const CLOCK_ROLLBACK_TOLERANCE_MS = 5_000;
+
+export type RunningTickMemory = {
+  lastBaselineMinutes: number;
+  /** Device time of the previous accepted tick; null right after start/resume. */
+  lastTickAtMs: number | null;
+  /** Latched once boarding start is reached; never un-expires for this countdown. */
+  expired: boolean;
+};
 
 export type RunningTickOutcome =
   | { kind: "noop" }
@@ -15,30 +21,61 @@ export type RunningTickOutcome =
     }
   | { kind: "invalid"; code: string; lastBaselineMinutes: number };
 
+export function freshTickMemory(lastBaselineMinutes: number): RunningTickMemory {
+  return { lastBaselineMinutes, lastTickAtMs: null, expired: false };
+}
+
 /**
  * Single device-clock tick for an active running countdown.
- * Used by the countdown UI interval (stable deps; reads latest state via ref).
+ * Minutes never increase between accepted ticks, expiry is latched, and a
+ * backward clock jump beyond tolerance is reported as `clock_moved_backward`.
  */
 export function runRunningCountdownTick(
   state: BoardingCountdownState,
   now: Date,
-  lastBaselineMinutes: number,
+  memory: RunningTickMemory,
 ): RunningTickOutcome {
   if (state.mode !== "countdown" || state.runState !== "running") {
     return { kind: "noop" };
   }
-  const running = state as Running;
-  const result = evaluateRunningCountdownTick(running.boardingStartAt, now);
+  const nowMs = now.getTime();
+  if (
+    memory.lastTickAtMs !== null &&
+    Number.isFinite(nowMs) &&
+    nowMs < memory.lastTickAtMs - CLOCK_ROLLBACK_TOLERANCE_MS
+  ) {
+    return {
+      kind: "invalid",
+      code: "clock_moved_backward",
+      lastBaselineMinutes: memory.lastBaselineMinutes,
+    };
+  }
+  const result = evaluateRunningCountdownTick(state.boardingStartAt, now);
   if (result.kind === "invalid") {
     return {
       kind: "invalid",
       code: result.code,
-      lastBaselineMinutes,
+      lastBaselineMinutes: memory.lastBaselineMinutes,
     };
   }
+  if (memory.expired || result.boardingStarted) {
+    return { kind: "ok", minutesUntilBoarding: 0, boardingStarted: true };
+  }
+  const minutesUntilBoarding =
+    memory.lastTickAtMs === null
+      ? result.minutesUntilBoarding
+      : Math.min(result.minutesUntilBoarding, memory.lastBaselineMinutes);
+  return { kind: "ok", minutesUntilBoarding, boardingStarted: false };
+}
+
+/** Memory after an accepted tick (callers keep it in a ref). */
+export function advanceTickMemory(
+  outcome: Extract<RunningTickOutcome, { kind: "ok" }>,
+  now: Date,
+): RunningTickMemory {
   return {
-    kind: "ok",
-    minutesUntilBoarding: result.minutesUntilBoarding,
-    boardingStarted: result.boardingStarted,
+    lastBaselineMinutes: outcome.minutesUntilBoarding,
+    lastTickAtMs: now.getTime(),
+    expired: outcome.boardingStarted,
   };
 }
