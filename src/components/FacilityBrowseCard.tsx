@@ -1,7 +1,8 @@
 import type { Facility } from "@/types/airport";
 import { ConfidenceBadge } from "@/components/ConfidenceBadge";
-import { FacilityInformation } from "@/components/FacilityInformation";
 import {
+  facilityLocationSummary,
+  facilityTaglineSummary,
   facilityTerminalBoardingLabel,
   recommendEligibilityLabel,
 } from "@/lib/facility-present";
@@ -16,9 +17,18 @@ function securityLabel(securityZone: Facility["securityZone"]): string {
   return "Security side unverified";
 }
 
-export function FacilityBrowseCard({ facility }: { facility: Facility }) {
+export type FacilityBrowseCardProps = {
+  facility: Facility;
+  onOpenDetails: () => void;
+};
+
+export function FacilityBrowseCard({
+  facility,
+  onOpenDetails,
+}: FacilityBrowseCardProps) {
   const securityUnverified =
     facility.securityZone === "unknown" || facility.securityZone === "pre";
+  const tagline = facilityTaglineSummary(facility);
 
   return (
     <article
@@ -49,9 +59,10 @@ export function FacilityBrowseCard({ facility }: { facility: Facility }) {
         >
           {recommendEligibilityLabel(facility)}
         </span>
+        <p className="text-sm text-muted-foreground">
+          {tagline ?? facilityLocationSummary(facility)}
+        </p>
       </div>
-
-      <FacilityInformation facility={facility} idPrefix={`facility-${facility.id}`} />
 
       <div className="flex flex-wrap gap-2 border-t border-border pt-3">
         <ConfidenceBadge confidence={facility.locationConfidence} />
@@ -68,6 +79,15 @@ export function FacilityBrowseCard({ facility }: { facility: Facility }) {
           </span>
         )}
       </div>
+
+      <button
+        type="button"
+        className="gw-focus-ring gw-btn-secondary min-h-11 w-full sm:w-auto"
+        onClick={onOpenDetails}
+        aria-describedby={`facility-${facility.id}-title`}
+      >
+        View facility details
+      </button>
     </article>
   );
 }

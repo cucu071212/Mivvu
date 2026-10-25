@@ -759,7 +759,7 @@ Decision needed from human Engineering Lead:
 **Status:** **COMPLETE** — merged and deployed @ `6a847b8` (2026-10-25). **644** Vitest + **9** Playwright E2E green at release.  
 **Scope delivered:** Per-edge metadata, `legacy-d-v1` manifest, unchanged **D→D=3** demo minutes.
 
-### Phase C — Real-world usability (**NEXT — planning @ [`GW-C-PHASE-C-READINESS.md`](./GW-C-PHASE-C-READINESS.md); implementation not authorized**)
+### Phase C — Real-world usability (**GW-C-001 on branch `feature/gw-c-001-facility-detail`; merge pending**)
 
 **Sequence (proposed):** GW-C-001 → GW-C-002 (coordinate Support published-hours) → GW-C-003.
 

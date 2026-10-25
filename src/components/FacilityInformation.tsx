@@ -6,6 +6,7 @@ import {
   facilityVerificationDate,
   presentFacilityHours,
 } from "@/lib/format-facility-hours";
+import { facilityLocationSummary } from "@/lib/facility-present";
 
 export type FacilityInformationProps = {
   facility: Facility;
@@ -14,16 +15,6 @@ export type FacilityInformationProps = {
   /** Tighter spacing inside schematic lists. */
   variant?: "default" | "compact";
 };
-
-function locationLine(facility: Facility): string {
-  if (facility.locationDescription) {
-    return facility.locationDescription;
-  }
-  if (facility.nearestGateLandmark) {
-    return `Near Gate ${facility.nearestGateLandmark}`;
-  }
-  return "Terminal 2 D Gates";
-}
 
 export function FacilityInformation({
   facility,
@@ -61,7 +52,9 @@ export function FacilityInformation({
         >
           Where
         </h4>
-        <p className={`${textSize} text-muted-foreground`}>{locationLine(facility)}</p>
+        <p className={`${textSize} text-muted-foreground`}>
+          {facilityLocationSummary(facility)}
+        </p>
       </section>
 
       <section aria-labelledby={`${idPrefix}-when`}>

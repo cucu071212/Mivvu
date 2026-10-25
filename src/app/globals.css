@@ -910,6 +910,22 @@
     }
   }
 
+  .gw-facility-detail-dialog {
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    width: min(32rem, calc(100vw - 2rem));
+    max-width: 100%;
+    border: 1px solid var(--gw-border);
+    border-radius: var(--gw-radius-lg, 0.75rem);
+    padding: 0;
+    box-shadow: 0 24px 48px rgb(0 0 0 / 0.18);
+  }
+
+  .gw-facility-detail-dialog::backdrop {
+    background: rgb(0 0 0 / 0.45);
+  }
+
   .gw-app-header {
     border-bottom: 1px solid var(--gw-border);
     /* Solid mix — avoid backdrop-filter here so descendants can use viewport-fixed positioning. */
