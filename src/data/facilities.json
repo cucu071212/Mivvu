@@ -734,5 +734,81 @@
       "officialBadges": ["open_past_10pm", "military_discount"],
       "aboutExcerpt": "Post-security classification per GW-X-T1-BC S5 directory filter (HM1 + Post-Security)."
     }
+  },
+  {
+    "id": "sfo-it-a-boudin-bakery",
+    "name": "Boudin Bakery",
+    "zone": "A",
+    "airportIata": "SFO",
+    "terminalCode": "international",
+    "boardingAreaCode": "A",
+    "browseEligible": true,
+    "recommendEligible": false,
+    "category": "food",
+    "securityZone": "post",
+    "waitMinutes": null,
+    "activityMinutes": null,
+    "sourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/boudin-bakery",
+    "lastCheckedAt": "2026-10-25",
+    "locationConfidence": "official_verified",
+    "timeConfidence": "unknown",
+    "locationDescription": "Near Gate A2, Dianne Feinstein International Terminal A",
+    "hours": {
+      "kind": "weekly_same_all_days",
+      "rawText": "Sunday- Saturday 5:00 am-11:00 pm",
+      "openLocal": "05:00",
+      "closeLocal": "23:00",
+      "timezone": "America/Los_Angeles"
+    },
+    "hoursConfidence": "official_verified",
+    "hoursLastCheckedAt": "2026-10-25",
+    "hoursSourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/boudin-bakery",
+    "contact": {
+      "phoneE164OrDisplay": "650-871-2517",
+      "phoneSource": "official_listing"
+    },
+    "amenityDetails": {
+      "tagline": "Fresh baked sourdough bread, sandwiches, salads, sourdough pizza and sweet treats",
+      "officialBadges": ["open_past_10pm"],
+      "aboutExcerpt": "Post-security classification per GW-X-IT-AG S6-A directory filter (International Terminal A + Post-Security). Online ordering badge on listing; not live availability."
+    }
+  },
+  {
+    "id": "sfo-it-g-1300-on-fillmore",
+    "name": "1300 on Fillmore",
+    "zone": "G",
+    "airportIata": "SFO",
+    "terminalCode": "international",
+    "boardingAreaCode": "G",
+    "browseEligible": true,
+    "recommendEligible": false,
+    "category": "food",
+    "securityZone": "post",
+    "waitMinutes": null,
+    "activityMinutes": null,
+    "sourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/1300-fillmore",
+    "lastCheckedAt": "2026-10-25",
+    "locationConfidence": "official_verified",
+    "timeConfidence": "unknown",
+    "locationDescription": "Near Gate G11, Dianne Feinstein International Terminal G",
+    "hours": {
+      "kind": "weekly_same_all_days",
+      "rawText": "Sunday- Saturday 7:00 am-11:00 pm",
+      "openLocal": "07:00",
+      "closeLocal": "23:00",
+      "timezone": "America/Los_Angeles"
+    },
+    "hoursConfidence": "official_verified",
+    "hoursLastCheckedAt": "2026-10-25",
+    "hoursSourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/1300-fillmore",
+    "contact": {
+      "phoneE164OrDisplay": "601-519-8121",
+      "phoneSource": "official_listing"
+    },
+    "amenityDetails": {
+      "tagline": "Cocktail lounge and restaurant serving modern takes on Southern classics for breakfast, lunch and dinner",
+      "officialBadges": ["open_past_10pm", "sit_down_restaurant"],
+      "aboutExcerpt": "Post-security classification per GW-X-IT-AG S6-G directory filter (International Terminal G + Post-Security)."
+    }
   }
 ]
