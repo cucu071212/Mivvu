@@ -77,6 +77,12 @@ describe("SFO timestamp presentation (not boarding calculations)", () => {
       expect(presentAirportLocalTime("2026-07-15T20:00:00Z")).toMatchObject({ kind: "unavailable" });
     } finally { spy.mockRestore(); }
   });
+
+  it("fails closed when offset conversion exceeds the supported calendar range", () => {
+    const result = presentAirportLocalTime("9999-12-31T23:59:59-23:59");
+    expect(result).toMatchObject({ kind: "unavailable" });
+    expect(JSON.stringify(result)).not.toContain("NaN");
+  });
 });
 
 describe("date-only provenance validation (never converted to a timezone)", () => {

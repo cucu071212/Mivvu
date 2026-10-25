@@ -56,6 +56,7 @@ export function presentAirportLocalTime(value: unknown): AirportLocalTimePresent
     const second = part("second");
     const date = `${year}-${month}-${day}`;
     const time = `${hour}:${minute}:${second}`;
+    if (!isCalendarDate(date)) throw new RangeError("Local date outside supported calendar range");
     // Date.parse avoids Date.UTC's special treatment of years 0–99.
     const localAsUTC = Date.parse(`${date}T${time}Z`);
     const offsetMinutes = (localAsUTC - Math.floor(milliseconds / 1000) * 1000) / 60_000;
