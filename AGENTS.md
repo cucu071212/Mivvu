@@ -107,4 +107,4 @@ Decision needed from human Engineering Lead:
 
 ## Verification
 - Never expose secrets or run unreviewed install scripts.
-- Production baseline: https://gate-wise-iota.vercel.app @ `665e5e8` unless lead announces a newer approved `main`.
+- Production baseline: https://gate-wise-iota.vercel.app @ `35ef72d` unless lead announces a newer approved `main`.

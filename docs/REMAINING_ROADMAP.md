@@ -1,6 +1,6 @@
 # GateWise — Remaining work roadmap
 
-Last updated: 2026-10-24 (GW-F planning).  
+Last updated: 2026-10-24 (GW-F3 security production release).  
 **Task IDs are not authorization to implement** unless the human Engineering Lead assigns them.
 
 ## Stable release baseline
@@ -8,15 +8,17 @@ Last updated: 2026-10-24 (GW-F planning).
 | Item | Value |
 | --- | --- |
 | **Production URL** | https://gate-wise-iota.vercel.app |
-| **`main` SHA** | `665e5e85a9b30b8114c678c7097a3b9ce5e9e805` (`665e5e8`) |
-| **Scope** | P0 B+C, GW-015 collapsible D Gates schematic, GW-020 deploy, GW-021 submission docs, GW-022 production regression (keyboard `<details>` concern triaged — real browser PASS) |
+| **`main` SHA** | `35ef72dcacadb0c79698e44a9f2ff5717cd5f016` (`35ef72d`) |
+| **Scope** | P0 + GW-F1/F2/F3 (personalization, boarding countdown, What-if wiring), post-audit security hardening (strict minutes, production CSP without `unsafe-eval`, countdown clock policy), GW-015 schematic |
+| **Prior rollback SHAs** | `e458fdc` (pre–block-fix GW-F3 on `main`); `665e5e8` (tag `mvp-p0-baseline-665e5e8`, MVP P0 only) |
 
 ## Completed (preserve — do not regress)
 
 | ID | Deliverable | Status |
 | --- | --- | --- |
 | GW-012–014 | Engine + ranked cards | On `main` |
-| GW-015 | Terminal schematic + collapse/a11y fix | On `main` @ `665e5e8` |
+| GW-015 | Terminal schematic + collapse/a11y fix | On `main` |
+| GW-F1–F3 | Personalization, countdown, integration + security RC | On `main` @ `35ef72d` (Codex APPROVE post–block-fixes) |
 | GW-017 | What-if simulator | On `main` |
 | GW-020 | Production deploy + smoke | Live URL above |
 | GW-021 | README/Devpost drafts | Docs on repo branches; lead may promote README |
@@ -56,7 +58,7 @@ Teammate Codex may execute these in parallel; **must not block** GW-F1/F2.
 
 1. **F features:** Revert GW-F3 integration commit; pure F1/F2 modules unused if UI wiring removed.
 2. **Schematic:** Remove `TerminalSchematic` block from `GateWiseHome.tsx` (GW-015 rollback) without touching engine.
-3. **Production:** Vercel promote prior deployment to last known good `main`.
+3. **Production:** Vercel promote prior deployment (e.g. build for `e458fdc` or `665e5e8`) without rewriting Git history.
 
 ## Minimum acceptance after GW-F3
 
