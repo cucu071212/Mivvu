@@ -185,3 +185,38 @@ These are three alternative single-facility recommendations, **not a two-stop it
 - The 12-entry shortlist and three-conflict exclusion policy are approved. SFO News Express, We are SFC and Vino Volo remain verified reserves. GW-001 still owns final zone/type definitions and provenance representation; no new categories or artificial subzones are proposed here.
 - All durations, exact paths, current opening and accessible routes remain unverified. Post-security classification alone is insufficient to produce a known time budget.
 - The lead authorized committing and pushing this document only. Full GW-004 implementation remains blocked until GW-001 passes review and is integrated and implementation is authorized. No merge is authorized. GW-006/GW-007/GW-008 and lead-owned files are untouched.
+
+---
+
+## APIs and automation limits (GW-A-R001)
+
+**Research checked:** **2026-10-25 (America/New_York)**. Full audit: [`docs/GW-A-R001-sfo-source-api-audit.md`](./GW-A-R001-sfo-source-api-audit.md).
+
+### Official web (preferred for Phase A facility facts)
+
+- **Shop/Dine/Relax** ([directory](https://www.flysfo.com/passengers/shop-dine-relax)) and each shipped facility `sourceUrl` are the authoritative source for **static** hours text, marketing descriptions, coarse location prose, terminal labels, phone numbers, and filter badges.
+- Site-wide disclaimer: hours are **subject to change without notice**; badges such as “Open Past 10PM” are **not** verified live availability signals.
+- **[robots.txt](https://www.flysfo.com/robots.txt)** does not block `/passengers/shop-dine-relax`, but robots rules are **not** a content license. Automated clients may receive HTTP errors (e.g. 403) for some URLs.
+
+### SFO Developer Portal (not authorized for static JSON ingestion without legal review)
+
+| Product | Purpose (catalog) | Facility hours / amenities? |
+| --- | --- | --- |
+| Flight and Reference Data | Flights + airport/terminal/boarding area reference | **No** concession hours |
+| Curb To Gate | Curb → gate time estimates | **No** |
+| Gate-To-Gate Connection | Gate → gate time/distance estimates | **No** shop-level POIs; possible **Phase B** gate walks only |
+
+- **New developer registration paused** on [developers.flysfo.com](https://developers.flysfo.com/) (2026-10-25); contact `sfo-apisupport@flysfo.com`; signed [Terms](https://developers-sandbox.flysfo.com/terms) required.
+- Terms prohibit **caching/exporting/aggregating** API Content for use outside the API — conflicts with committing API-derived fields into `facilities.json` unless Airport approves otherwise in writing.
+
+### Explicitly unavailable (do not claim in product or data)
+
+- Live **queue or wait-time** APIs for concessions or security.
+- **Real-time open/closed** per facility API (only static/marketing copy on flysfo.com).
+- **Official indoor routing** or published **walking minutes** from each gate to each shipped amenity.
+- **Live flight / boarding gate** integration (permanent out-of-scope for GateWise product direction).
+- Reuse of **flysfo.com photos** or airport IP without prior written consent (API Terms §7.7).
+
+### Update practice
+
+- Refreshes are **manual**: re-open official listing pages, update `lastCheckedAt`, and document conflicts in provenance (GW-A-R002 matrix next).
