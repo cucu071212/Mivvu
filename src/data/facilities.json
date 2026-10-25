@@ -402,5 +402,227 @@
       "officialBadges": ["sfo_green_business"],
       "aboutExcerpt": "Made-to-order cuisine-grade sushi, noodles, teriyaki and bento boxes."
     }
+  },
+  {
+    "id": "sfo-t2-d-vino-volo",
+    "name": "Vino Volo",
+    "zone": "D",
+    "airportIata": "SFO",
+    "terminalCode": "terminal_2",
+    "boardingAreaCode": "D",
+    "browseEligible": true,
+    "recommendEligible": false,
+    "category": "food",
+    "securityZone": "post",
+    "waitMinutes": null,
+    "activityMinutes": null,
+    "sourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/vino-volo",
+    "lastCheckedAt": "2026-10-25",
+    "locationConfidence": "official_verified",
+    "timeConfidence": "unknown",
+    "locationDescription": "D Gates, Retail Street",
+    "nearestGateLandmark": null,
+    "hours": {
+      "kind": "unknown",
+      "rawText": "Sunday- Friday 9:00 am-9:00 pm Saturday 9:00 am-7:00 pm"
+    },
+    "hoursLastCheckedAt": "2026-10-25",
+    "hoursSourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/vino-volo",
+    "contact": {
+      "phoneE164OrDisplay": "650-821-9292",
+      "phoneSource": "official_listing"
+    },
+    "amenityDetails": {
+      "tagline": "Wine bar with wine tasting, bottled wine and small food plates",
+      "officialBadges": [],
+      "aboutExcerpt": null
+    }
+  },
+  {
+    "id": "sfo-t2-d-plant-cafe-pinkberry",
+    "name": "The Plant Café and Pinkberry",
+    "zone": "D",
+    "airportIata": "SFO",
+    "terminalCode": "terminal_2",
+    "boardingAreaCode": "D",
+    "browseEligible": true,
+    "recommendEligible": false,
+    "category": "food",
+    "securityZone": "post",
+    "waitMinutes": null,
+    "activityMinutes": null,
+    "sourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/plant-cafe-and-pinkberry",
+    "lastCheckedAt": "2026-10-25",
+    "locationConfidence": "official_verified",
+    "timeConfidence": "unknown",
+    "locationDescription": "Near Gate D4",
+    "nearestGateLandmark": "D4",
+    "hours": {
+      "kind": "weekly_same_all_days",
+      "rawText": "Sunday- Saturday 4:30 am-9:00 pm",
+      "openLocal": "04:30",
+      "closeLocal": "21:00",
+      "timezone": "America/Los_Angeles"
+    },
+    "hoursConfidence": "official_verified",
+    "hoursLastCheckedAt": "2026-10-25",
+    "hoursSourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/plant-cafe-and-pinkberry",
+    "contact": {
+      "phoneE164OrDisplay": "650-821-9290",
+      "phoneSource": "official_listing"
+    },
+    "amenityDetails": {
+      "tagline": "Organic California cuisine and frozen yogurt",
+      "officialBadges": ["sfo_green_business"],
+      "aboutExcerpt": "Listing headline hours cover the combined outlet; About section also lists Plant Cafe 4:30am-9:00pm and Pinkberry 7:30am-9:30pm (MF per GW-X-R002)."
+    }
+  },
+  {
+    "id": "sfo-t2-d-peets-coffee-d15",
+    "name": "Peet's Coffee (D15)",
+    "zone": "D",
+    "airportIata": "SFO",
+    "terminalCode": "terminal_2",
+    "boardingAreaCode": "D",
+    "browseEligible": true,
+    "recommendEligible": false,
+    "category": "coffee",
+    "securityZone": "post",
+    "waitMinutes": null,
+    "activityMinutes": null,
+    "sourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/peets-coffee",
+    "lastCheckedAt": "2026-10-25",
+    "locationConfidence": "official_verified",
+    "timeConfidence": "unknown",
+    "locationDescription": "D Gates, near Gate D15",
+    "nearestGateLandmark": "D15",
+    "hours": {
+      "kind": "weekly_same_all_days",
+      "rawText": "Sunday- Saturday 6:00 am-1:00 pm",
+      "openLocal": "06:00",
+      "closeLocal": "13:00",
+      "timezone": "America/Los_Angeles"
+    },
+    "hoursConfidence": "official_verified",
+    "hoursLastCheckedAt": "2026-10-25",
+    "hoursSourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/peets-coffee",
+    "contact": {
+      "phoneE164OrDisplay": "650-821-9193",
+      "phoneSource": "official_listing"
+    },
+    "amenityDetails": {
+      "tagline": "Specialty coffee and tea",
+      "officialBadges": ["sfo_green_business"],
+      "aboutExcerpt": "Specialty coffee and tea, pastries, sandwiches and salads. D14/D15 gate conflict flagged in GW-003; prefer this dedicated D15 listing."
+    }
+  },
+  {
+    "id": "sfo-t2-d-books-inc",
+    "name": "Books Inc.",
+    "zone": "D",
+    "airportIata": "SFO",
+    "terminalCode": "terminal_2",
+    "boardingAreaCode": "D",
+    "browseEligible": true,
+    "recommendEligible": false,
+    "category": "shop",
+    "securityZone": "post",
+    "waitMinutes": null,
+    "activityMinutes": null,
+    "sourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/books-inc",
+    "lastCheckedAt": "2026-10-25",
+    "locationConfidence": "official_verified",
+    "timeConfidence": "unknown",
+    "locationDescription": "D Gates, Retail Street",
+    "nearestGateLandmark": null,
+    "hours": {
+      "kind": "weekly_same_all_days",
+      "rawText": "Sunday - Saturday 6:00 am-10:00 pm",
+      "openLocal": "06:00",
+      "closeLocal": "22:00",
+      "timezone": "America/Los_Angeles"
+    },
+    "hoursConfidence": "official_verified",
+    "hoursLastCheckedAt": "2026-10-25",
+    "hoursSourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/books-inc",
+    "contact": {
+      "phoneE164OrDisplay": "650-821-9299",
+      "phoneSource": "official_listing"
+    },
+    "amenityDetails": {
+      "tagline": "Books, magazines and gifts",
+      "officialBadges": ["sfo_green_business"],
+      "aboutExcerpt": "Compass Books naming ambiguity noted in GW-003; display name follows dedicated listing title."
+    }
+  },
+  {
+    "id": "sfo-t2-d-sfo-news-express",
+    "name": "SFO News Express",
+    "zone": "D",
+    "airportIata": "SFO",
+    "terminalCode": "terminal_2",
+    "boardingAreaCode": "D",
+    "browseEligible": true,
+    "recommendEligible": false,
+    "category": "shop",
+    "securityZone": "post",
+    "waitMinutes": null,
+    "activityMinutes": null,
+    "sourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/sfo-news-express",
+    "lastCheckedAt": "2026-10-25",
+    "locationConfidence": "official_verified",
+    "timeConfidence": "unknown",
+    "locationDescription": "Near Gate D4",
+    "nearestGateLandmark": "D4",
+    "hours": {
+      "kind": "weekly_same_all_days",
+      "rawText": "Sunday - Saturday 6:00 am-3:00 pm",
+      "openLocal": "06:00",
+      "closeLocal": "15:00",
+      "timezone": "America/Los_Angeles"
+    },
+    "hoursConfidence": "official_verified",
+    "hoursLastCheckedAt": "2026-10-25",
+    "hoursSourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/sfo-news-express",
+    "amenityDetails": {
+      "tagline": null,
+      "officialBadges": [],
+      "aboutExcerpt": null
+    }
+  },
+  {
+    "id": "sfo-t2-d-we-are-sfc",
+    "name": "We are SFC",
+    "zone": "D",
+    "airportIata": "SFO",
+    "terminalCode": "terminal_2",
+    "boardingAreaCode": "D",
+    "browseEligible": true,
+    "recommendEligible": false,
+    "category": "shop",
+    "securityZone": "post",
+    "waitMinutes": null,
+    "activityMinutes": null,
+    "sourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/we-are-sfc",
+    "lastCheckedAt": "2026-10-25",
+    "locationConfidence": "official_verified",
+    "timeConfidence": "unknown",
+    "locationDescription": "D Gates, T2 Retail Street",
+    "nearestGateLandmark": null,
+    "hours": {
+      "kind": "weekly_same_all_days",
+      "rawText": "Sunday - Saturday 6:00 am-10:00 pm",
+      "openLocal": "06:00",
+      "closeLocal": "22:00",
+      "timezone": "America/Los_Angeles"
+    },
+    "hoursConfidence": "official_verified",
+    "hoursLastCheckedAt": "2026-10-25",
+    "hoursSourceUrl": "https://www.flysfo.com/passengers/shop-dine-relax/we-are-sfc",
+    "amenityDetails": {
+      "tagline": "Gifts, cards, accessories, apparel, and souvenirs from local Bay Area artists",
+      "officialBadges": [],
+      "aboutExcerpt": null
+    }
   }
 ]
