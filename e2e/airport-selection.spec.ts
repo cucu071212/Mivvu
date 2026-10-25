@@ -10,7 +10,6 @@ firstVisit("First visit shows searchable welcome then reaches Flight with SFO", 
     window.localStorage.removeItem("gatewise.airport-selection.v1");
   });
   await page.goto("/");
-  const welcome = page.getByRole("main");
   await expect(page.getByRole("heading", { name: /Where are you flying from/i })).toBeVisible();
   await expect(page.getByRole("searchbox", { name: /Search airports/i })).toBeVisible();
   await expect(page.getByText(/Starting with San Francisco/i)).toBeVisible();
