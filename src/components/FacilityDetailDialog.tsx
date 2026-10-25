@@ -47,16 +47,14 @@ export function FacilityDetailDialog({
     }
   }, [open, facility]);
 
-  useEffect(() => {
+  const requestClose = () => {
     const dialog = dialogRef.current;
-    if (!dialog) return;
-    const handleCancel = (event: Event) => {
-      event.preventDefault();
-      onClose();
-    };
-    dialog.addEventListener("cancel", handleCancel);
-    return () => dialog.removeEventListener("cancel", handleCancel);
-  }, [onClose]);
+    if (dialog && typeof dialog.close === "function") {
+      dialog.close();
+      return;
+    }
+    onClose();
+  };
 
   if (!facility) return null;
 
@@ -68,6 +66,10 @@ export function FacilityDetailDialog({
       className="gw-facility-detail-dialog gw-surface-card backdrop:bg-black/50"
       aria-labelledby={titleId}
       onClose={onClose}
+      onCancel={(event) => {
+        event.preventDefault();
+        requestClose();
+      }}
     >
       <div className="flex max-h-[min(85vh,40rem)] flex-col gap-4 overflow-hidden p-4 sm:p-5">
         <header className="flex shrink-0 items-start justify-between gap-3 border-b border-border pb-3">
@@ -94,7 +96,7 @@ export function FacilityDetailDialog({
           <button
             type="button"
             className="gw-focus-ring gw-btn-secondary min-h-11 shrink-0 px-3"
-            onClick={onClose}
+            onClick={requestClose}
           >
             Close facility details
           </button>
