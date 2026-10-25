@@ -1,7 +1,18 @@
 import { test as base, expect } from "@playwright/test";
 
+const AIRPORT_SELECTION_INIT = {
+  airportIata: "SFO",
+  acknowledgedAt: "2026-10-25",
+};
+
 export const test = base.extend<{ browserHealth: void }>({
   browserHealth: [async ({ page, context, baseURL }, use, testInfo) => {
+    await page.addInitScript((record) => {
+      window.localStorage.setItem(
+        "gatewise.airport-selection.v1",
+        JSON.stringify(record),
+      );
+    }, AIRPORT_SELECTION_INIT);
     const errors: string[] = [];
     page.on("pageerror", (error) => errors.push(`Runtime: ${error.stack ?? error.message}`));
     page.on("console", (message) => {

@@ -3,6 +3,8 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { AppShell } from "@/components/AppShell";
 import { GateWiseSessionProvider } from "@/context/gatewise-session";
+import { AirportSelectionProvider } from "@/context/airport-selection";
+import { persistAirportSelection } from "@/lib/airport-selection-preference";
 import { BoardingCountdownControls } from "@/components/BoardingCountdownControls";
 import { RecommendationStatusBadge } from "@/components/RecommendationStatusBadge";
 import { prepareProductionFacilities } from "@/lib/browse-integration";
@@ -17,10 +19,13 @@ const { facilities, datasetErrors } = prepareProductionFacilities(facilitiesJson
 
 describe("targeted accessibility regressions", () => {
   it("offers a first keyboard link to a focusable main landmark", () => {
+    persistAirportSelection("2026-10-25");
     const { container } = render(
-      <GateWiseSessionProvider facilities={facilities} datasetErrors={datasetErrors}>
-        <AppShell><h1>Explore</h1></AppShell>
-      </GateWiseSessionProvider>,
+      <AirportSelectionProvider>
+        <GateWiseSessionProvider facilities={facilities} datasetErrors={datasetErrors}>
+          <AppShell><h1>Explore</h1></AppShell>
+        </GateWiseSessionProvider>
+      </AirportSelectionProvider>,
     );
     const skip = screen.getByRole("link", { name: "Skip to main content" });
     expect(container.querySelector("a, button, input, select, summary")).toBe(skip);
