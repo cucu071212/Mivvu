@@ -44,10 +44,14 @@ function renderPlanner() {
 }
 
 describe("TwoStopPlannerDemo", () => {
-  it("defaults travel policy to strict with explanatory note", () => {
+  it("shows complete demo setup with both toggles disabled by default", () => {
     renderPlanner();
+    expect(screen.getByRole("heading", { name: "Complete demo setup" })).toBeTruthy();
+    expect(screen.getByText("Flight demo queue/activity estimates")).toBeTruthy();
+    expect(screen.getAllByText("Disabled").length).toBeGreaterThanOrEqual(2);
+    expect(screen.getByRole("link", { name: "Enable on Flight" })).toBeTruthy();
     const travelCheckbox = screen.getByRole("checkbox", {
-      name: /Use illustrative D-Gates travel times \(demo only\)/i,
+      name: /^Use illustrative D-Gates travel times \(demo only\)$/i,
     }) as HTMLInputElement;
     expect(travelCheckbox.checked).toBe(false);
     expect(

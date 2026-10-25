@@ -8,9 +8,10 @@ test.describe("Two-stop planner demo", () => {
     await page.goto("/plan");
     await expect(page.getByRole("heading", { name: "Two-stop planner" })).toBeVisible();
     await expect(page.getByText("Demo — not in production release")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Complete demo setup" })).toBeVisible();
 
     const demoTravel = page.getByRole("checkbox", {
-      name: /Use illustrative D-Gates travel times \(demo only\)/i,
+      name: /^Use illustrative D-Gates travel times \(demo only\)$/i,
     });
     await expect(demoTravel).not.toBeChecked();
     await expect(
@@ -24,6 +25,7 @@ test.describe("Two-stop planner demo", () => {
       label: "Peet's Coffee",
     });
     await expect(page.getByLabel(/^Unknown timing data/)).toHaveCount(2);
+    await expect(page.getByRole("heading", { name: "Why timing is Unknown" })).toBeVisible();
 
     const nav = page.getByRole("navigation", { name: "Primary", exact: true });
     await nav.getByRole("link", { name: "Flight", exact: true }).click();
@@ -34,7 +36,7 @@ test.describe("Two-stop planner demo", () => {
     await expect(page).toHaveURL(/\/plan$/);
     await page
       .getByRole("checkbox", {
-        name: /Use illustrative D-Gates travel times \(demo only\)/i,
+        name: /^Use illustrative D-Gates travel times \(demo only\)$/i,
       })
       .check();
     await page.getByLabel("First facility (picker)").selectOption({
@@ -63,7 +65,7 @@ test.describe("Two-stop planner demo", () => {
       .getByRole("link", { name: "My Plan", exact: true })
       .click();
     await page.getByRole("checkbox", {
-      name: /Use illustrative D-Gates travel times \(demo only\)/i,
+      name: /^Use illustrative D-Gates travel times \(demo only\)$/i,
     }).check();
     await page.getByLabel("First facility (picker)").selectOption({
       label: "Burger Joint",

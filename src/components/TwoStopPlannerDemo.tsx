@@ -9,14 +9,19 @@ import {
   travelPolicyFromDemoOptIn,
 } from "@/lib/two-stop-planner-integration";
 import {
+  guidanceForUnknownPair,
+  pairHasUnknownItinerary,
+} from "@/lib/two-stop-unknown-guidance";
+import {
   TWO_STOP_DEMO_TRAVEL_DISCLAIMER,
   twoStopIneligibilityLabel,
 } from "@/lib/two-stop-present";
 import type { TwoStopIneligibilityReason } from "@/types/two-stop-plan";
+import { TwoStopDemoSetupPanel } from "@/components/TwoStopDemoSetupPanel";
+import { TwoStopUnknownGuidanceBanner } from "@/components/TwoStopUnknownGuidanceBanner";
 import { TwoStopOrderPanel } from "@/components/TwoStopOrderPanel";
 
-const DEMO_TRAVEL_CHECKBOX_LABEL =
-  "Use illustrative D-Gates travel times (demo only)";
+const DEMO_TRAVEL_CHECKBOX_ID = "two-stop-demo-travel";
 
 export function TwoStopPlannerDemo() {
   const session = useGateWiseSession();
@@ -53,6 +58,15 @@ export function TwoStopPlannerDemo() {
     travelPolicy,
   ]);
 
+  const unknownGuidance = useMemo(() => {
+    if (plannerState.phase !== "ready") return [];
+    if (!pairHasUnknownItinerary(plannerState.evaluation)) return [];
+    return guidanceForUnknownPair(
+      plannerState.evaluation,
+      session.demoEstimatesEnabled,
+    );
+  }, [plannerState, session.demoEstimatesEnabled]);
+
   const facilityName = (id: string) =>
     session.facilityById.get(id)?.name ?? id;
 
@@ -61,6 +75,11 @@ export function TwoStopPlannerDemo() {
 
   return (
     <div className="flex flex-col gap-4">
+      <TwoStopDemoSetupPanel
+        demoQueueActivityEnabled={session.demoEstimatesEnabled}
+        illustrativeTravelEnabled={demoLegacyTravelEnabled}
+      />
+
       <section
         className="gw-surface-card flex flex-col gap-3 p-4 sm:p-5"
         aria-labelledby="two-stop-context-heading"
@@ -73,8 +92,7 @@ export function TwoStopPlannerDemo() {
           <Link href="/" className="font-medium text-primary underline">
             Flight
           </Link>
-          . Queue and activity use the same demo-estimate toggle as Results unless
-          you personalize times there.
+          . Personal overrides on Results apply here too.
         </p>
         {session.contextValid && session.baselineContext ? (
           <dl className="grid gap-2 text-sm sm:grid-cols-2">
@@ -88,12 +106,6 @@ export function TwoStopPlannerDemo() {
               <dt className="text-muted-foreground">Safety buffer</dt>
               <dd className="font-medium">
                 {session.baselineContext.bufferMinutes} min (once per itinerary)
-              </dd>
-            </div>
-            <div className="sm:col-span-2">
-              <dt className="text-muted-foreground">Demo queue/activity</dt>
-              <dd className="font-medium">
-                {session.demoEstimatesEnabled ? "On (illustrative)" : "Off — may show Unknown"}
               </dd>
             </div>
           </dl>
@@ -151,24 +163,30 @@ export function TwoStopPlannerDemo() {
         </div>
 
         <div className="rounded-md border border-amber-500/40 bg-amber-500/10 p-3">
-          <label className="flex cursor-pointer items-start gap-3 text-sm">
+          <div className="flex items-start gap-3 text-sm">
             <input
+              id={DEMO_TRAVEL_CHECKBOX_ID}
               type="checkbox"
               className="mt-1 size-4 shrink-0 rounded border-input"
               checked={demoLegacyTravelEnabled}
               onChange={(event) => setDemoLegacyTravelEnabled(event.target.checked)}
               aria-describedby="two-stop-travel-disclaimer"
             />
-            <span>
-              <span className="font-medium">{DEMO_TRAVEL_CHECKBOX_LABEL}</span>
-              <span
+            <div className="flex flex-col gap-1">
+              <label
+                htmlFor={DEMO_TRAVEL_CHECKBOX_ID}
+                className="cursor-pointer font-medium text-card-foreground"
+              >
+                Use illustrative D-Gates travel times (demo only)
+              </label>
+              <p
                 id="two-stop-travel-disclaimer"
-                className="mt-1 block text-muted-foreground"
+                className="text-muted-foreground"
               >
                 {TWO_STOP_DEMO_TRAVEL_DISCLAIMER}
-              </span>
-            </span>
-          </label>
+              </p>
+            </div>
+          </div>
         </div>
 
         {!demoLegacyTravelEnabled ? (
@@ -199,12 +217,14 @@ export function TwoStopPlannerDemo() {
               )}
             </p>
           ) : null}
+          <TwoStopUnknownGuidanceBanner items={unknownGuidance} />
           <div className="grid gap-4 lg:grid-cols-2">
             <TwoStopOrderPanel
               orderLabel={`${stopAName} → ${stopBName}`}
               firstStopName={stopAName}
               secondStopName={stopBName}
               result={plannerState.evaluation.orderAB}
+              travelPolicy={plannerState.evaluation.travelPolicy}
               isBestOrder={plannerState.evaluation.bestModeledOrder === "AB"}
               idPrefix="two-stop-ab"
             />
@@ -213,6 +233,7 @@ export function TwoStopPlannerDemo() {
               firstStopName={stopBName}
               secondStopName={stopAName}
               result={plannerState.evaluation.orderBA}
+              travelPolicy={plannerState.evaluation.travelPolicy}
               isBestOrder={plannerState.evaluation.bestModeledOrder === "BA"}
               idPrefix="two-stop-ba"
             />

@@ -2,8 +2,8 @@ import {
   twoStopIneligibilityLabel,
   twoStopLedgerBreakdownRows,
 } from "@/lib/two-stop-present";
-import { unknownReasonLabel } from "@/lib/recommendation-present";
-import type { TwoStopOrderResult } from "@/types/two-stop-plan";
+import { guidanceForUnknownOrder } from "@/lib/two-stop-unknown-guidance";
+import type { TwoStopOrderResult, TwoStopTravelPolicy } from "@/types/two-stop-plan";
 import { TwoStopItineraryStrip } from "@/components/TwoStopItineraryStrip";
 import { TwoStopStatusBadge } from "@/components/TwoStopStatusBadge";
 
@@ -12,6 +12,7 @@ export type TwoStopOrderPanelProps = {
   firstStopName: string;
   secondStopName: string;
   result: TwoStopOrderResult;
+  travelPolicy: TwoStopTravelPolicy;
   isBestOrder: boolean;
   idPrefix: string;
 };
@@ -21,9 +22,14 @@ export function TwoStopOrderPanel({
   firstStopName,
   secondStopName,
   result,
+  travelPolicy,
   isBestOrder,
   idPrefix,
 }: TwoStopOrderPanelProps) {
+  const unknownHints =
+    result.kind === "unknown"
+      ? guidanceForUnknownOrder(result, travelPolicy)
+      : [];
   const accent =
     result.kind === "feasibility"
       ? result.status === "feasible_in_model"
@@ -75,10 +81,12 @@ export function TwoStopOrderPanel({
       ) : null}
 
       {result.kind === "unknown" ? (
-        <p className="text-sm text-muted-foreground" role="note">
-          {unknownReasonLabel(result.unknownReason)} Totals and margin stay unshown
-          until every required duration is known.
-        </p>
+        <ul className="list-disc space-y-1 pl-5 text-sm text-muted-foreground" role="note">
+          {unknownHints.map((hint) => (
+            <li key={hint.category}>{hint.message}</li>
+          ))}
+          <li>Totals and margin stay unshown until every required duration is known.</li>
+        </ul>
       ) : null}
 
       {result.kind === "feasibility" && result.status === "over_budget" ? (
