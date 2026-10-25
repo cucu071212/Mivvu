@@ -48,6 +48,10 @@ describe("FacilityInformation", () => {
       /not live/i,
     );
     assert.match(
+      screen.getByText(/America\/Los_Angeles \(Pacific Time\)/i).textContent ?? "",
+      /Pacific Time/i,
+    );
+    assert.match(
       screen.getByText(/Phone not published/i).textContent ?? "",
       /not published/i,
     );
