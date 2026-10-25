@@ -1,3 +1,4 @@
+import { parseStrictInteger } from "@/lib/strict-integer";
 import type {
   DataConfidence,
   Facility,
@@ -25,12 +26,8 @@ function member<T extends string>(value: unknown, allowed: readonly T[]): T | un
 /** undefined signals invalid input; null remains an explicitly unknown duration. */
 function minutes(value: unknown): number | null | undefined {
   if (value === null) return null;
-  if (typeof value !== "number" && typeof value !== "string") return undefined;
-  if (typeof value === "string" && value.trim() === "") return undefined;
-  const parsed = typeof value === "string" ? Number(value.trim()) : value;
-  return Number.isFinite(parsed) && Number.isInteger(parsed) && parsed >= 0
-    ? parsed
-    : undefined;
+  const parsed = parseStrictInteger(value, { allowNegative: false });
+  return parsed === undefined ? undefined : parsed;
 }
 
 function calendarDate(value: string): boolean {

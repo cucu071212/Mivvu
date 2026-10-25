@@ -1,3 +1,4 @@
+import { MAX_BOARDING_WINDOW_MINUTES } from "@/lib/strict-integer";
 import type {
   FacilityDurationOverride,
   FacilityDurationOverrideMap,
@@ -65,9 +66,9 @@ export function validateDurationOverrides(
       const value = entry[field];
       if (
         typeof value !== "number" ||
-        !Number.isFinite(value) ||
-        !Number.isInteger(value) ||
-        value < 0
+        !Number.isSafeInteger(value) ||
+        value < 0 ||
+        value > MAX_BOARDING_WINDOW_MINUTES
       ) {
         errors.push({ facilityId, field, code: "invalid_minutes" });
         valid = false;

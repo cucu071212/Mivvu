@@ -179,7 +179,8 @@ export type UnknownReason =
   | "missing_travel_outbound"
   | "missing_travel_return"
   | "missing_queue_estimate"
-  | "missing_activity_estimate";
+  | "missing_activity_estimate"
+  | "invalid_numeric_input";
 
 /**
  * Partial breakdown for `kind: 'unknown'` recommendations.

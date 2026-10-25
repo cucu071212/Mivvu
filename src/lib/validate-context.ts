@@ -2,6 +2,10 @@ import {
   DEFAULT_BUFFER_MINUTES,
   DEFAULT_QUEUE_ADJUSTMENT_MINUTES,
 } from "@/types/airport";
+import {
+  MAX_BOARDING_WINDOW_MINUTES,
+  parseStrictInteger,
+} from "@/lib/strict-integer";
 import type {
   ContextValidationError,
   ContextValidationErrorCode,
@@ -19,11 +23,11 @@ function absent(value: unknown): boolean {
 }
 
 function integer(value: unknown, allowNegative: boolean): number | undefined {
-  if (typeof value !== "number" && typeof value !== "string") return undefined;
-  if (typeof value === "string" && value.trim() === "") return undefined;
-  const parsed = typeof value === "string" ? Number(value.trim()) : value;
-  return Number.isFinite(parsed) && Number.isInteger(parsed) &&
-    (allowNegative || parsed >= 0) ? parsed : undefined;
+  return parseStrictInteger(value, {
+    allowNegative,
+    min: allowNegative ? -MAX_BOARDING_WINDOW_MINUTES : 0,
+    max: MAX_BOARDING_WINDOW_MINUTES,
+  });
 }
 
 /** Normalizes boarding-start context; any field error makes the whole context null. */

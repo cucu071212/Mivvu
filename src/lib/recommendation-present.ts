@@ -26,6 +26,8 @@ const UNKNOWN_LABELS: Record<UnknownReason, string> = {
   missing_travel_return: "Return walk time is not modeled.",
   missing_queue_estimate: "Queue or wait time is unknown.",
   missing_activity_estimate: "Activity time at the facility is unknown.",
+  invalid_numeric_input:
+    "A time value is out of the supported numeric range for this model.",
 };
 
 const FEASIBILITY_SHORT: Record<

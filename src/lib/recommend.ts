@@ -1,4 +1,10 @@
 import {
+  isModelSafeMinute,
+  MAX_BOARDING_WINDOW_MINUTES,
+  parseStrictInteger,
+  safeIntegerSum,
+} from "@/lib/strict-integer";
+import {
   POST_ELIGIBLE_SECURITY_ZONES,
   PRODUCTION_ZONES,
   type Facility,
@@ -81,11 +87,55 @@ function firstUnknownReason(parts: {
   returnMinutes: number | null;
   queueMinutes: number | null;
   activityMinutes: number | null;
+  numericInvalid?: boolean;
 }): UnknownReason {
+  if (parts.numericInvalid) return "invalid_numeric_input";
   if (parts.outboundMinutes === null) return "missing_travel_outbound";
   if (parts.returnMinutes === null) return "missing_travel_return";
   if (parts.queueMinutes === null) return "missing_queue_estimate";
   return "missing_activity_estimate";
+}
+
+function assertRecommendContext(context: RecommendContextLike): void {
+  const nonNegative = (value: number, field: string) => {
+    const parsed = parseStrictInteger(value, {
+      allowNegative: false,
+      min: 0,
+      max: MAX_BOARDING_WINDOW_MINUTES,
+    });
+    if (parsed === undefined) {
+      throw new RangeError(`invalid_${field}`);
+    }
+  };
+  const signed = (value: number, field: string) => {
+    const parsed = parseStrictInteger(value, {
+      allowNegative: true,
+      min: -MAX_BOARDING_WINDOW_MINUTES,
+      max: MAX_BOARDING_WINDOW_MINUTES,
+    });
+    if (parsed === undefined) {
+      throw new RangeError(`invalid_${field}`);
+    }
+  };
+  nonNegative(context.minutesUntilBoarding, "minutes_until_boarding");
+  nonNegative(context.bufferMinutes, "buffer_minutes");
+  signed(context.queueAdjustmentMinutes, "queue_adjustment");
+}
+
+function isUsableFacilityMinute(value: number | null): boolean {
+  if (value === null) return true;
+  return Number.isFinite(value) && isModelSafeMinute(value);
+}
+
+function resolveAdjustedQueueMinutes(
+  waitMinutes: number | null,
+  queueAdjustmentMinutes: number,
+): number | null {
+  if (waitMinutes === null) return null;
+  if (!isModelSafeMinute(waitMinutes)) return null;
+  const adjusted = safeIntegerSum([waitMinutes, queueAdjustmentMinutes]);
+  if (adjusted === null) return null;
+  return Math.max(0, adjusted);
 }
 
 /** Reject null, non-finite, and negative matrix edges without coercing to zero. */
@@ -98,7 +148,7 @@ function resolveDirectedTravelLeg(
   if (raw === null || raw === undefined) {
     return null;
   }
-  if (!Number.isFinite(raw) || raw < 0) {
+  if (!isModelSafeMinute(raw)) {
     return null;
   }
   return raw;
@@ -177,10 +227,31 @@ function evaluateFacilityCore(
     context.gateZone,
   );
 
-  const queueMinutes =
-    facility.waitMinutes === null
-      ? null
-      : Math.max(0, facility.waitMinutes + context.queueAdjustmentMinutes);
+  if (
+    !isUsableFacilityMinute(facility.waitMinutes) ||
+    !isUsableFacilityMinute(facility.activityMinutes)
+  ) {
+    const partial: RecommendationTimeBreakdownPartial = {
+      outboundMinutes,
+      returnMinutes,
+      queueMinutes: null,
+      activityMinutes: null,
+      bufferMinutes: context.bufferMinutes,
+      requiredMinutes: null,
+      marginMinutes: null,
+    };
+    return {
+      ...identity,
+      kind: "unknown",
+      unknownReason: firstUnknownReason({ ...partial, numericInvalid: true }),
+      breakdown: partial,
+    } as RecommendationLike;
+  }
+
+  const queueMinutes = resolveAdjustedQueueMinutes(
+    facility.waitMinutes,
+    context.queueAdjustmentMinutes,
+  );
   const activityMinutes = facility.activityMinutes;
 
   const partial: RecommendationTimeBreakdownPartial = {
@@ -193,6 +264,12 @@ function evaluateFacilityCore(
     marginMinutes: null,
   };
 
+  const queueSumUnsafe =
+    facility.waitMinutes !== null &&
+    queueMinutes === null &&
+    Number.isFinite(facility.waitMinutes) &&
+    isModelSafeMinute(facility.waitMinutes);
+
   if (
     outboundMinutes === null ||
     returnMinutes === null ||
@@ -202,18 +279,41 @@ function evaluateFacilityCore(
     return {
       ...identity,
       kind: "unknown",
-      unknownReason: firstUnknownReason(partial),
+      unknownReason: firstUnknownReason({
+        ...partial,
+        numericInvalid: queueSumUnsafe,
+      }),
       breakdown: partial,
     } as RecommendationLike;
   }
 
-  const requiredMinutes =
-    outboundMinutes +
-    returnMinutes +
-    queueMinutes +
-    activityMinutes +
-    context.bufferMinutes;
-  const marginMinutes = context.minutesUntilBoarding - requiredMinutes;
+  const requiredMinutes = safeIntegerSum([
+    outboundMinutes,
+    returnMinutes,
+    queueMinutes,
+    activityMinutes,
+    context.bufferMinutes,
+  ]);
+  if (requiredMinutes === null) {
+    return {
+      ...identity,
+      kind: "unknown",
+      unknownReason: "invalid_numeric_input",
+      breakdown: partial,
+    } as RecommendationLike;
+  }
+  const marginMinutes = safeIntegerSum([
+    context.minutesUntilBoarding,
+    -requiredMinutes,
+  ]);
+  if (marginMinutes === null) {
+    return {
+      ...identity,
+      kind: "unknown",
+      unknownReason: "invalid_numeric_input",
+      breakdown: partial,
+    } as RecommendationLike;
+  }
 
   const complete: RecommendationTimeBreakdownComplete = {
     outboundMinutes,
@@ -272,6 +372,7 @@ function recommendCore<T extends RecommendationLike>(
   travelTimes: TravelMatrixLike,
   zoneIneligibility: (gateZone: string, facilityZone: string) => IneligibilityReason | null,
 ): T[] {
+  assertRecommendContext(context);
   const recommendations: T[] = [];
 
   for (const facility of facilities) {
