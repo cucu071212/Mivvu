@@ -1,6 +1,6 @@
 # GateWise — HackPSU Fall 2026 Final Implementation Plan
 
-**Status:** Approved product baseline **v1.5 (Phase A complete; Phase X next)** — HackPSU P0/P1, **GW-F1–F3**, Level 2 multipage UX, security hardening, and **Phase A** verified facility data + UI **shipped** on production `main` @ `af5fe2109714dcad8b4f0cf7f72c2561d3656cbe` (`af5fe21`) (see §11–§13). **Active development** is **Phase X — SFO-wide expansion** (§13), then walking-time (Phase B), usability (Phase C), and **GW-E** (Phase D).  
+**Status:** Approved product baseline **v1.6 (Phase A + Phase X complete; Phase B metadata slice complete)** — HackPSU P0/P1, **GW-F1–F3**, Level 2 multipage UX, security hardening, **Phase A** data + UI, **Phase X** SFO-wide directory (**26** browse / **12** recommend), and **GW-B-002** legacy travel metadata **shipped** on production `main` @ `6a847b8e7170e553aeb2d996567e4931e0426c33` (see §11–§13). **Active development** is **Phase C — usability** (§13), with Phase B **physical routing HOLD** and **GW-E** (Phase D) **HOLD** until **G-Data** closes.  
 **Project:** GateWise — *Your airport. Your gate. Your time.*  
 **Event:** October 24–25, 2026 (Eastern Time)  
 **Team:** Engineering lead (Cursor + own Codex) and teammate (Codex, data/utility logic/QA)  
@@ -229,14 +229,14 @@ Event schedule in prior plan: **Sat Oct 24, 2:00 PM → Sun Oct 25, 1:45 PM**; *
 
 **Mission:** Expand GateWise from the hackathon **T2 D Gates** MVP toward **SFO-wide facility discovery** with honest limits — without inventing facilities, hours, walking times, or post-security connectivity.
 
-**Execution:** `docs/IMPLEMENTATION_PLAN.md` (Phase X–D). **Priority table:** `docs/REMAINING_ROADMAP.md`.
+**Execution:** `docs/IMPLEMENTATION_PLAN.md` (Phase X–D). **Priority table:** `docs/REMAINING_ROADMAP.md`. **Phase C plan:** `docs/GW-C-PHASE-C-READINESS.md`.
 
-| Phase | Goal | Outcome |
-| --- | --- | --- |
-| **X — SFO-wide expansion** | Research official coverage; extend data model; add verified facilities **incrementally**; airport-wide directory UI. | Travelers browse SFO concessions by terminal/boarding area; **recommendation eligibility** stays gated on verified travel model — browsing ≠ reachable before boarding. |
-| **B — Distance & walking time** | After Phase X data model exists: credible indoor distance policy; labeled directed edges. | Facility discovery separated from time-budget **recommendation**; no unlabeled matrix minutes. |
-| **C — Product usability** | Polish expanded-airport UX after X (+ B contracts where routing copy matters). | Clear scope, limitations, and actions on enriched coverage. |
-| **D — GW-E two-stop planner** | Two-stop module + **My Plan** after **G-Data** (revised: X + B + C gates). | §4 E semantics unchanged; not indoor navigation. |
+| Phase | Goal | Outcome | Status (2026-10-25) |
+| --- | --- | --- | --- |
+| **X — SFO-wide expansion** | Research official coverage; extend data model; add verified facilities **incrementally**; airport-wide directory UI. | Travelers browse SFO concessions by terminal/boarding area; **recommendation eligibility** stays gated on verified travel model — browsing ≠ reachable before boarding. | **COMPLETE** (G-X3) |
+| **B — Distance & walking time** | Credible indoor distance policy; labeled directed edges. | No unlabeled matrix minutes; metadata on legacy **D→D=3** demo model. | **Metadata slice COMPLETE** (GW-B-002 @ `6a847b8`); **verified graph / new minutes HOLD** |
+| **C — Product usability** | Polish expanded-airport UX after X (+ B copy where relevant). | Clear scope, limitations, and actions on enriched coverage. | **NEXT** (authorize GW-C-001+ individually) |
+| **D — GW-E two-stop planner** | Two-stop module + **My Plan** after **G-Data**. | §4 E semantics unchanged; not indoor navigation. | **HOLD** (**G-Data** / **G-E**) |
 
 ### Phase X tasks (summary — authorize individually)
 
@@ -258,9 +258,11 @@ Event schedule in prior plan: **Sat Oct 24, 2:00 PM → Sun Oct 25, 1:45 PM**; *
 | **G-X2** | Agreed dataset milestone + provenance for new rows; no invented fields | **GW-X-003** |
 | **G-X3** | GW-X-004 regression green on preview; browse vs recommend rules documented | **GW-B-R001**, further **GW-X-002** batches |
 | **G-B0** | GW-B-R001 + GW-B-001 policy approved | **GW-B-002** |
-| **G-B1** | Matrix changes labeled; regression tests pass | Phase C polish, production data releases |
+| **G-B1 (scoped legacy metadata)** | **APPROVED 2026-10-25** — GW-B-002 @ `6a847b8`: labeled legacy **D→D=3** demo, per-edge metadata, `legacy-d-v1` manifest; **12** recommend IDs unchanged | Phase C tasks (per-task authorization) |
+| **G-B1 (graph / new matrix minutes)** | **HOLD** | Physical routing pilot |
+| **G-Data** | **HOLD** — **G-X3** met; scoped legacy **G-B1** met; **G-C0** and full graph **G-B1** not met | **G-E** |
 | **G-C0** | Expanded-airport UX smoke + a11y on preview | **G-E** re-authorization |
-| **G-E** | **G-F3** shipped (done) + **G-Data** (**G-X3** + **G-B1** + **G-C0**) | **GW-E1** / **GW-E2** |
+| **G-E** | **G-F3** shipped (done) + **G-Data** | **GW-E1** / **GW-E2** |
 
 ### Backward compatibility & migration (Phase X)
 

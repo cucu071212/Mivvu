@@ -606,7 +606,7 @@ Decision needed from human Engineering Lead:
 ## Post-submission — Roadmap (Phase A → X → B → C → D)
 
 **Product spec:** `PLAN.md` §12–§13. **Priority table:** `docs/REMAINING_ROADMAP.md`.  
-**Production baseline:** `main` after stabilization merges (see § Phase B status). **Active priority:** Phase **B** (metadata-only travel policy); Phase **X** **COMPLETE**.  
+**Production baseline:** `6a847b8` (GW-B-002 deployed). **Active priority:** Phase **C** planning → implementation (authorize per task); Phase **X** **COMPLETE**; Phase **B** metadata slice **COMPLETE** (physical routing **HOLD**).  
 **Preserve:** `recommendFacilities` contract, countdown/personalization/What-if (GW-F), security headers, Phase A **12** D Gates records.
 
 ### Approval gates (post-submission)
@@ -618,8 +618,11 @@ Decision needed from human Engineering Lead:
 | **G-A1** | Enriched `facilities.json` + validators + tests green; provenance doc updated | GW-B-R001, GW-C-* (partial) |
 | **G-A1 status** | **APPROVED 2026-10-25** — GW-A-002 merged to `main` @ `7010c32` (includes `6e2827f`); GW-A-003 authorized | — |
 | **G-B0** | GW-B-R001 + GW-B-001 policy doc approved | GW-B-002 |
-| **G-B0 (scoped)** | **2026-10-25** — Human Engineering Lead approved **metadata-only** GW-B-002 (no graph routing, no new numeric legs, no GW-E). Requires merged R001 + integration architecture + lead review on `main`. Does **not** authorize physical graph routing or G-B1 matrix expansion. | GW-B-002 implementation branch only until separate merge authorization |
+| **G-B0 (scoped)** | **2026-10-25** — Human Engineering Lead approved **metadata-only** GW-B-002 (no graph routing, no new numeric legs, no GW-E). | GW-B-002 (shipped @ `6a847b8`) |
 | **G-B1** | Matrix changes labeled; regression tests pass | GW-C-* (full), production data release |
+| **G-B1 (scoped legacy metadata)** | **APPROVED 2026-10-25** — Covers `productionLegacyTravelMode`, existing **D→D=3** `demo_estimate`, per-edge provenance/confidence, directed/asymmetry docs, `legacy-d-v1` **12-ID** manifest @ `6a847b8`. **Does not** approve verified SFO graph, new matrix minutes, cross-terminal recommend, or **G-Data** closure. | Phase C UI tasks (individual authorization) |
+| **G-B1 (graph / expanded matrix)** | **HOLD** | Graph validator, new legs, pilot routing |
+| **G-Data** | **HOLD** — requires **G-X3** + scoped/full B policy + **G-C0** per `PLAN.md` §13; graph portion of B not approved | **G-E** |
 | **G-C0** | UX smoke + a11y on preview deploy | **G-E** re-authorization for GW-E |
 | **G-E** | G-F3 shipped + **G-Data** (G-X3 + G-B1 + G-C0) | GW-E1, GW-E2 |
 
@@ -732,9 +735,9 @@ Decision needed from human Engineering Lead:
 **Tests:** Full `npm test`, `tsc`, `lint`, `build`; production smoke checklist  
 **Acceptance:** **G-X3** — 602+ tests green; Flight countdown, What-if, personalization unchanged; security headers unchanged; D Gates smoke passes.
 
-### Phase B — Distance & walking time (**ACTIVE** — Phase X complete)
+### Phase B — Distance & walking time (**metadata slice COMPLETE** @ `6a847b8`; physical routing **HOLD**)
 
-**Architecture (adopted 2026-10-25):** Dual travel modes documented — `legacy_zone` (current 1×1 `D→D` demo matrix) and future `location_graph` (partial graph → Unknown, no invented connectivity). Decisions **C01–C18** accepted per [`GW-B-001-lead-architecture-review.md`](./GW-B-001-lead-architecture-review.md). **GW-E** and physical graph routing remain **unauthorized**.
+**Architecture (adopted 2026-10-25):** Dual travel modes documented — `legacy_zone` (current 1×1 `D→D` demo matrix) and future `location_graph` (partial graph → Unknown, no invented connectivity). Decisions **C01–C18** accepted per [`GW-B-001-lead-architecture-review.md`](./GW-B-001-lead-architecture-review.md). **GW-E** and physical graph routing remain **unauthorized**. Do not describe Phase B routing objectives as complete.
 
 | Artifact | Location | SHA (authoritative content) |
 | --- | --- | --- |
@@ -753,31 +756,30 @@ Decision needed from human Engineering Lead:
 
 #### GW-B-002: Implement labeled travel updates (implementation)
 
-**Owner:** Lead (`travel-times.ts`, types, tests)  
-**Depends on:** GW-B-001, **G-B0 (scoped metadata-only)**  
-**Scope:** Explicit per-edge provenance/confidence on existing **D→D = 3** demo minutes only; versioned **12** recommend ID manifest; stronger disclaimers/tests. **Out of scope:** graph search, new walking times, cross-terminal routing, GW-E, `facilities.json` edits.  
-**Tests:** `npm test`, recommend regressions, 12-ID guard  
-**Acceptance:** Numeric recommend outputs unchanged; branch merge/deploy requires separate authorization.
+**Status:** **COMPLETE** — merged and deployed @ `6a847b8` (2026-10-25). **644** Vitest + **9** Playwright E2E green at release.  
+**Scope delivered:** Per-edge metadata, `legacy-d-v1` manifest, unchanged **D→D=3** demo minutes.
 
-### Phase C — Real-world usability
+### Phase C — Real-world usability (**NEXT — planning @ [`GW-C-PHASE-C-READINESS.md`](./GW-C-PHASE-C-READINESS.md); implementation not authorized**)
+
+**Sequence (proposed):** GW-C-001 → GW-C-002 (coordinate Support published-hours) → GW-C-003.
 
 #### GW-C-001: Facility detail and discovery (implementation)
 
 **Owner:** Lead  
-**Depends on:** **G-X3** (GW-A-003 baseline shipped)  
-**Acceptance:** Expanded-airport discovery polish; official links; `.gw-rail` layout.
+**Depends on:** **G-X3**, scoped **G-B1** (shipped)  
+**Acceptance:** Expanded-airport discovery polish; official links; `.gw-rail` layout; detail surface for all browse rows. See readiness doc §3.
 
 #### GW-C-002: Opening-hours UX hardening (implementation)
 
-**Owner:** Lead  
-**Depends on:** GW-A-003  
-**Acceptance:** Timezone/local display policy documented; no hydration-unsafe locale formatting in SSR labels (follow `format-boarding-time` pattern where dates shown).
+**Owner:** Lead (UI); Support (pure hours lib in GW-C-SUPPORT-BUNDLE)  
+**Depends on:** GW-A-003, GW-X-003; Support handoff for DST/published-hours  
+**Acceptance:** Timezone/local display policy documented; no hydration-unsafe locale formatting in SSR labels (follow `format-boarding-time` pattern where dates shown). See readiness doc §4.
 
 #### GW-C-003: First-time user orientation (implementation)
 
 **Owner:** Lead  
 **Depends on:** GW-C-001  
-**Acceptance:** Short, honest scope copy; does not promise live data; **G-C0** smoke checklist passes.
+**Acceptance:** Short, honest scope copy; does not promise live data; **G-C0** smoke checklist passes. See readiness doc §5.
 
 ### Phase D — GW-E two-stop planner (unchanged engine rules)
 
@@ -803,14 +805,14 @@ Decision needed from human Engineering Lead:
 | GW-X-004 | Implement | Lead | G-X3 |
 | GW-B-R001 | Research | Lead + Teammate | G-B0 (after G-X3) |
 | GW-B-001 | Design | Lead | G-B0 |
-| GW-B-002 | Implement | Lead | G-B1 |
-| GW-C-001 | Implement | Lead | G-C0 |
+| GW-B-002 | Implement | Lead | **SHIPPED** @ `6a847b8` (scoped G-B1 approved) |
+| GW-C-001 | Implement | Lead | G-C0 (authorize task first) |
 | GW-C-002 | Implement | Lead | G-C0 |
 | GW-C-003 | Implement | Lead | G-C0 |
 | GW-E1 / GW-E2 | Implement | Support + Lead | G-E after G-Data |
 
 ---
 
-**Document version:** 1.5  
-**Aligned with:** `PLAN.md` v1.5 (Phase A + Phase X complete), `AGENTS.md`, `docs/GW-F-CONTRACT.md`, `docs/REMAINING_ROADMAP.md`  
-**Next step (human lead):** Review **GW-B-002** implementation branch; authorize merge + **G-B1** only when metadata slice accepted. Support **GW-C-SUPPORT-BUNDLE** proceeds independently. Optional **GW-X-002** batches require separate authorization.
+**Document version:** 1.6  
+**Aligned with:** `PLAN.md` v1.6 (Phase A + X complete; B metadata slice complete), `AGENTS.md`, `docs/GW-F-CONTRACT.md`, `docs/REMAINING_ROADMAP.md`  
+**Next step (human lead):** Authorize **GW-C-001** implementation when ready (`docs/GW-C-PHASE-C-READINESS.md`). Support **GW-C-SUPPORT-BUNDLE** proceeds independently — Lead does not edit Support-owned files.
