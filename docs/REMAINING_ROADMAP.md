@@ -8,7 +8,7 @@ Last updated: **2026-10-25** (post-Devpost submission; Level 2.7 on production).
 | Item | Value |
 | --- | --- |
 | **Production URL** | https://gate-wise-iota.vercel.app |
-| **`main` SHA** | `b0b58c698179eb8241765f3ac8a93233cfc20676` (`b0b58c6`) |
+| **`main` SHA** | `e2772d3` (GW-A-001 merged); GW-A-002 enrichment pending merge on feature branch |
 | **Scope** | SFO Terminal 2 **D Gates** only; 12 verified facilities in `facilities.json`; directed zone-time **demo model**; multipage App Router (`/`, `/explore`, `/recommendations`, `/plan`) |
 | **Shipped product** | P0 B+C, GW-015 schematic, GW-F1–F3, Level 2.0–2.7 UX, security headers (CSP, frame deny, etc.) |
 | **Prior production SHAs** | `35ef72d` (GW-F3 security RC); `665e5e8` (MVP P0 tag `mvp-p0-baseline-665e5e8`) |
