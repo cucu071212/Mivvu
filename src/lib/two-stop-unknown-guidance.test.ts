@@ -5,7 +5,7 @@ import {
   guidanceForUnknownPair,
   interFacilityLegIsMissing,
 } from "@/lib/two-stop-unknown-guidance";
-import type { TwoStopPairEvaluation } from "@/types/two-stop-plan";
+import type { TwoStopOrderResult, TwoStopPairEvaluation } from "@/types/two-stop-plan";
 
 function unknownPairStub(
   travelPolicy: "strict" | "demo_legacy_d",
@@ -43,7 +43,7 @@ function unknownPairStub(
           provenanceNote: "",
           isDemoTravelAssumption: true,
         },
-      ],
+      ] as const,
       stops: [
         {
           facilityId: "a",
@@ -66,7 +66,7 @@ function unknownPairStub(
       requiredMinutes: null,
       marginMinutes: null,
     },
-  };
+  } satisfies TwoStopOrderResult;
   return {
     facilityIds: ["a", "b"],
     orderAB: unknownOrder,
@@ -98,18 +98,20 @@ describe("two-stop-unknown-guidance", () => {
 
   it("suggests Flight link when queue/activity missing", () => {
     const evaluation = unknownPairStub("demo_legacy_d");
+    assert.equal(evaluation.orderAB.kind, "unknown");
+    const base = evaluation.orderAB;
     evaluation.orderAB = {
-      ...evaluation.orderAB,
+      kind: "unknown",
       unknownReason: "missing_queue_estimate",
       ledger: {
-        ...evaluation.orderAB.ledger,
+        ...base.ledger,
         stops: [
           {
-            ...evaluation.orderAB.ledger.stops[0],
+            ...base.ledger.stops[0],
             queueMinutes: null,
             queueSource: "unknown",
           },
-          evaluation.orderAB.ledger.stops[1],
+          base.ledger.stops[1],
         ],
       },
     };
