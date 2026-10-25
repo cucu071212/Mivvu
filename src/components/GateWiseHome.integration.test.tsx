@@ -10,14 +10,40 @@ const DOLORES_ID = "sfo-t2-d-16th-dolores-general-store";
 const DOLORES_NAME = "16th & Dolores General Store";
 
 function renderHome() {
-  return render(<GateWiseHome facilities={facilities} datasetErrors={datasetErrors} />);
+  return render(
+    <GateWiseHome facilities={facilities} datasetErrors={datasetErrors} />,
+  );
+}
+
+function goTo(label: "Flight" | "Explore" | "Results" | "My Plan") {
+  fireEvent.click(screen.getByRole("button", { name: label }));
 }
 
 function enableDemo() {
+  goTo("Flight");
   fireEvent.click(screen.getByRole("checkbox", { name: /Demo estimates/ }));
 }
 
+function focusDoloresQueue() {
+  goTo("Results");
+  const search = screen.getByPlaceholderText(/Search by name or category/);
+  fireEvent.change(search, { target: { value: "Dolores" } });
+  return screen.getByLabelText(/Queue \/ wait/, {
+    selector: `#${DOLORES_ID}-queue`,
+  });
+}
+
+function focusDoloresActivity() {
+  goTo("Results");
+  const search = screen.getByPlaceholderText(/Search by name or category/);
+  fireEvent.change(search, { target: { value: "Dolores" } });
+  return screen.getByLabelText(/Activity/, {
+    selector: `#${DOLORES_ID}-activity`,
+  });
+}
+
 function rankedList() {
+  goTo("Results");
   return screen.getByRole("region", { name: "Ranked recommendations" });
 }
 
@@ -26,6 +52,7 @@ function rankedCard(name: string) {
 }
 
 function whatIfSection() {
+  goTo("Results");
   return screen.queryByRole("region", { name: "What-if simulator" });
 }
 
@@ -43,9 +70,7 @@ describe("GateWiseHome personalization boundaries (mounted)", () => {
   it("keeps 1440 queue over budget and rejects 1441 visibly without a favorable fallback", () => {
     renderHome();
     enableDemo();
-    const queue = screen.getByLabelText(/Queue \/ wait/, {
-      selector: `#${DOLORES_ID}-queue`,
-    });
+    const queue = focusDoloresQueue();
 
     fireEvent.change(queue, { target: { value: "1440" } });
     const card1440 = rankedCard(DOLORES_NAME);
@@ -64,9 +89,7 @@ describe("GateWiseHome personalization boundaries (mounted)", () => {
   it("applies the same 1440 limit to activity minutes", () => {
     renderHome();
     enableDemo();
-    const activity = screen.getByLabelText(/Activity/, {
-      selector: `#${DOLORES_ID}-activity`,
-    });
+    const activity = focusDoloresActivity();
     fireEvent.change(activity, { target: { value: "1441" } });
     expect(activity.getAttribute("aria-invalid")).toBe("true");
     expect(rankedCard(DOLORES_NAME)).toBeNull();
@@ -76,9 +99,7 @@ describe("GateWiseHome personalization boundaries (mounted)", () => {
   it("accepts zero and restores recommendations after Reset all overrides", () => {
     renderHome();
     enableDemo();
-    const queue = screen.getByLabelText(/Queue \/ wait/, {
-      selector: `#${DOLORES_ID}-queue`,
-    });
+    const queue = focusDoloresQueue();
     fireEvent.change(queue, { target: { value: "0" } });
     expect(queue.getAttribute("aria-invalid")).not.toBe("true");
     expect(rankedCard(DOLORES_NAME)).not.toBeNull();
@@ -87,8 +108,9 @@ describe("GateWiseHome personalization boundaries (mounted)", () => {
     expect(rankedCard(DOLORES_NAME)).toBeNull();
 
     fireEvent.click(screen.getByRole("button", { name: "Reset all overrides" }));
-    expect((queue as HTMLInputElement).value).toBe("");
-    expect(queue.getAttribute("aria-invalid")).not.toBe("true");
+    const queueAfterReset = focusDoloresQueue();
+    expect((queueAfterReset as HTMLInputElement).value).toBe("");
+    expect(queueAfterReset.getAttribute("aria-invalid")).not.toBe("true");
     expect(rankedCard(DOLORES_NAME)).not.toBeNull();
     expect(whatIfSection()).not.toBeNull();
   });
@@ -96,19 +118,24 @@ describe("GateWiseHome personalization boundaries (mounted)", () => {
 
 describe("GateWiseHome countdown expiry and clock rollback (mounted)", () => {
   beforeEach(() => {
-    vi.useFakeTimers({ toFake: ["setInterval", "clearInterval", "setTimeout", "clearTimeout", "Date"] });
+    vi.useFakeTimers({
+      toFake: ["setInterval", "clearInterval", "setTimeout", "clearTimeout", "Date"],
+    });
     vi.setSystemTime(new Date(2026, 9, 24, 18, 0, 0));
   });
 
   function startCountdownInMinutes(minutes: number) {
+    goTo("Flight");
     const target = new Date(Date.now() + minutes * 60_000);
-    fireEvent.change(screen.getByLabelText(/Boarding starts \(local date & time\)/), {
-      target: { value: localDatetime(target) },
-    });
+    fireEvent.change(
+      screen.getByLabelText(/Boarding starts \(local date & time\)/),
+      { target: { value: localDatetime(target) } },
+    );
     fireEvent.click(screen.getByRole("button", { name: "Start countdown" }));
   }
 
   function baselineInput() {
+    goTo("Flight");
     return screen.getByLabelText(/Baseline: minutes until boarding starts/, {
       selector: "input",
     }) as HTMLInputElement;
@@ -122,7 +149,10 @@ describe("GateWiseHome countdown expiry and clock rollback (mounted)", () => {
       vi.advanceTimersByTime(2_000);
     });
     expect(baselineInput().value).toBe("29");
-    const scenario = screen.getByLabelText(/Scenario: minutes until boarding starts/) as HTMLInputElement;
+    goTo("Results");
+    const scenario = screen.getByLabelText(
+      /Scenario: minutes until boarding starts/,
+    ) as HTMLInputElement;
     expect(scenario.value).toBe("50");
     expect(whatIfSection()!.textContent).toMatch(/29 → 50/);
   });
@@ -135,21 +165,28 @@ describe("GateWiseHome countdown expiry and clock rollback (mounted)", () => {
       vi.advanceTimersByTime(2 * 60_000);
     });
     expect(baselineInput().value).toBe("0");
-    expect(screen.getByText(/Boarding has started per your device clock/)).toBeTruthy();
+    expect(
+      screen.getByText(/Boarding has started per your device clock/),
+    ).toBeTruthy();
 
     act(() => {
       vi.setSystemTime(new Date(Date.now() - 50 * 60_000));
       vi.advanceTimersByTime(1_000);
     });
 
-    expect(screen.queryByText(/Boarding has started per your device clock/)).toBeNull();
+    expect(
+      screen.queryByText(/Boarding has started per your device clock/),
+    ).toBeNull();
     expect(screen.getByText(/device clock moved backward/i)).toBeTruthy();
     expect(baselineInput().value).toBe("0");
     expect(baselineInput().readOnly).toBe(false);
     expect(within(rankedList()).queryByText(/Feasible in model/)).toBeNull();
     expect(within(rankedList()).queryAllByRole("article")).toHaveLength(0);
     expect(whatIfSection()).toBeNull();
-    expect(screen.getByRole("button", { name: /Restore last manual minutes \(50\)/ })).toBeTruthy();
+    goTo("Flight");
+    expect(
+      screen.getByRole("button", { name: /Restore last manual minutes \(50\)/ }),
+    ).toBeTruthy();
   });
 
   it("keeps baseline at 0 after expiry even if ticks continue without rollback", () => {
@@ -159,6 +196,8 @@ describe("GateWiseHome countdown expiry and clock rollback (mounted)", () => {
       vi.advanceTimersByTime(5 * 60_000);
     });
     expect(baselineInput().value).toBe("0");
-    expect(screen.getByText(/Boarding has started per your device clock/)).toBeTruthy();
+    expect(
+      screen.getByText(/Boarding has started per your device clock/),
+    ).toBeTruthy();
   });
 });

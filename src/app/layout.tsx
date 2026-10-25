@@ -18,7 +18,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "GateWise",
   description:
-    "Boarding-aware airport amenity recommendations (HackPSU MVP scaffold)",
+    "Boarding-aware amenity recommendations for SFO Terminal 2 D Gates (model only).",
 };
 
 export default function RootLayout({

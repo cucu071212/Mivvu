@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   applyOverrideField,
+  filterPersonalizationFacilities,
   formatPersonalizedMinutesValue,
   parsePersonalizedMinutesInput,
   personalizationDraftsAreValid,
@@ -10,6 +11,31 @@ describe("parsePersonalizedMinutesInput", () => {
   it("treats blank as empty override", () => {
     expect(parsePersonalizedMinutesInput("")).toEqual({ kind: "empty" });
     expect(parsePersonalizedMinutesInput("   ")).toEqual({ kind: "empty" });
+  });
+
+  it("filters personalization rows by search and overrides", () => {
+    const facilities = [
+      { id: "a", name: "Alpha Cafe", category: "coffee" as const },
+      { id: "b", name: "Beta Shop", category: "shop" as const },
+    ];
+    expect(
+      filterPersonalizationFacilities(facilities, {
+        search: "alpha",
+        overrides: {},
+        fieldErrors: {},
+        drafts: {},
+        showAll: false,
+      }).map((f) => f.id),
+    ).toEqual(["a"]);
+    expect(
+      filterPersonalizationFacilities(facilities, {
+        search: "",
+        overrides: { b: { facilityId: "b", queueMinutes: 5 } },
+        fieldErrors: {},
+        drafts: {},
+        showAll: false,
+      }).map((f) => f.id),
+    ).toEqual(["b"]);
   });
 
   it("shares the 0–1440 range with validateDurationOverrides", () => {

@@ -13,7 +13,8 @@ import {
   productionTravelMinutes,
 } from "@/data/travel-times";
 import { buildRankedRecommendations } from "@/lib/recommendation-page-integration";
-import { recommendationStatusPresentation } from "@/lib/recommendation-present";
+import { RecommendationStatusBadge } from "@/components/RecommendationStatusBadge";
+import { formatSignedMinutes } from "@/lib/recommendation-present";
 import {
   buildWhatIfInputSummary,
   compareRecommendationRuns,
@@ -44,12 +45,7 @@ export type WhatIfSimulatorProps = {
 };
 
 function OutcomeChip({ recommendation }: { recommendation: ProductionRecommendation }) {
-  const status = recommendationStatusPresentation(recommendation);
-  return (
-    <span className={status.chipClass} aria-label={status.accessibleLabel}>
-      <span aria-hidden="true">{status.shortLabel}</span>
-    </span>
-  );
+  return <RecommendationStatusBadge recommendation={recommendation} />;
 }
 
 function MarginLine({ recommendation }: { recommendation: ProductionRecommendation }) {
@@ -162,13 +158,17 @@ export function WhatIfSimulator({
     (error) => error.field === "queueAdjustmentMinutes",
   );
 
+  const baselineMinutes = baselineContext.minutesUntilBoarding;
+  const scenarioMinutes = scenarioContextResult.context?.minutesUntilBoarding;
+
   return (
     <section
-      className="gw-surface-card flex flex-col gap-4 p-4 sm:p-5"
+      className="gw-surface-card gw-premium-card flex flex-col gap-4 p-4 sm:p-5"
+      aria-label="What-if simulator"
       aria-labelledby="what-if-heading"
     >
       <header className="flex flex-col gap-2">
-        <h2 id="what-if-heading" className="text-base font-semibold text-card-foreground">
+        <h2 id="what-if-heading" className="text-lg font-semibold text-card-foreground">
           What-if simulator
         </h2>
         <p className="text-sm text-muted-foreground">
@@ -202,6 +202,50 @@ export function WhatIfSimulator({
           </p>
         )}
       </header>
+
+      {scenarioValid && scenarioMinutes !== undefined ? (
+        <div
+          className="gw-whatif-compare"
+          role="group"
+          aria-label="Baseline versus scenario time budget"
+        >
+          <div className="gw-whatif-pane gw-whatif-pane-baseline">
+            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+              Baseline
+            </p>
+            <p className="mt-1 text-3xl font-extrabold tabular-nums text-card-foreground">
+              {baselineMinutes}
+              <span className="ml-1 text-base font-semibold text-muted-foreground">
+                min
+              </span>
+            </p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              {baselineUsesLiveCountdown
+                ? "Live countdown (device clock)"
+                : "Manual entry"}
+            </p>
+          </div>
+          <div className="gw-whatif-pane gw-whatif-pane-scenario">
+            <p className="text-xs font-bold uppercase tracking-widest text-[var(--gw-cyan-muted)]">
+              Scenario
+            </p>
+            <p className="mt-1 text-3xl font-extrabold tabular-nums text-card-foreground">
+              {scenarioMinutes}
+              <span className="ml-1 text-base font-semibold text-muted-foreground">
+                min
+              </span>
+            </p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Fixed what-if field (not the clock)
+            </p>
+            {scenarioMinutes !== baselineMinutes ? (
+              <p className="mt-2 inline-flex rounded-full border border-[var(--gw-cyan-muted)] bg-[color-mix(in_srgb,var(--gw-cyan)_12%,var(--gw-card))] px-2.5 py-1 text-sm font-semibold text-card-foreground">
+                Δ {formatSignedMinutes(scenarioMinutes - baselineMinutes)}
+              </p>
+            ) : null}
+          </div>
+        </div>
+      ) : null}
 
       <div className="grid gap-3 sm:grid-cols-2">
         <label
@@ -268,7 +312,7 @@ export function WhatIfSimulator({
         {comparisons.map((comparison) => (
           <li
             key={comparison.facilityId}
-            className="rounded-lg border border-border bg-card/50 p-4"
+            className="gw-surface-card rounded-lg border border-border bg-card/50 p-4"
           >
             <h3 className="text-base font-semibold text-card-foreground">
               {comparison.facilityName}

@@ -9,7 +9,10 @@ import {
 } from "@/lib/duration-model-label";
 import { ConfidenceBadge } from "@/components/ConfidenceBadge";
 import { AmenityDetail } from "@/components/AmenityDetail";
-import { recommendationStatusPresentation } from "@/lib/recommendation-present";
+import {
+  RecommendationStatusBadge,
+  recommendationCardAccentClass,
+} from "@/components/RecommendationStatusBadge";
 
 export type AmenityCardProps = {
   recommendation: ProductionRecommendation;
@@ -48,12 +51,12 @@ function securityLabel(
 
 export function AmenityCard(props: AmenityCardProps) {
   const { recommendation, sourceUrl, lastCheckedAt } = props;
-  const status = recommendationStatusPresentation(recommendation);
   const titleId = `amenity-${recommendation.facilityId}-title`;
+  const accent = recommendationCardAccentClass(recommendation);
 
   return (
     <article
-      className="gw-surface-card flex flex-col gap-4 p-4 sm:p-5"
+      className={`gw-surface-card gw-premium-card flex flex-col gap-4 p-4 sm:p-5 ${accent}`}
       aria-labelledby={titleId}
     >
       <header className="flex flex-col gap-3">
@@ -73,9 +76,7 @@ export function AmenityCard(props: AmenityCardProps) {
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <span className={status.chipClass} aria-label={status.accessibleLabel}>
-            <span aria-hidden="true">{status.shortLabel}</span>
-          </span>
+          <RecommendationStatusBadge recommendation={recommendation} />
           <span className="text-xs text-muted-foreground" role="note">
             Model only — not a boarding guarantee
           </span>
