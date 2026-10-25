@@ -26,6 +26,8 @@ export type GateWiseHomeProps = {
 function HarnessShell({ initialPath }: { initialPath: AppRouteHref }) {
   const [path, setPath] = useState<AppRouteHref>(initialPath);
   const session = useGateWiseSession();
+  const onResults = path === "/recommendations";
+  const countdownVariant = path === "/" ? "full" : "dock";
 
   const screen = useMemo(() => {
     switch (path) {
@@ -42,7 +44,7 @@ function HarnessShell({ initialPath }: { initialPath: AppRouteHref }) {
 
   return (
     <div className="gw-app-shell">
-      <nav aria-label="Primary" className="px-4 pt-4">
+      <nav aria-label="Primary" className="gw-rail" style={{ paddingBlock: "1rem 0" }}>
         <ul className="flex flex-wrap gap-2">
           {APP_ROUTES.map((route) => {
             const active = isAppRouteActive(path, route.href);
@@ -69,39 +71,45 @@ function HarnessShell({ initialPath }: { initialPath: AppRouteHref }) {
             : "gw-countdown-host gw-countdown-host-dock"
         }
       >
-        <BoardingCountdownControls
-          state={session.countdownState}
-          onStateChange={session.setCountdownState}
-          onBaselineMinutesChange={session.handleBaselineMinutesFromCountdown}
-          preservedManualMinutes={session.preservedManualMinutes}
-          onCountdownExit={session.handleCountdownExit}
-          disabled={!session.datasetValid}
-        />
-        {path !== "/" && session.baselineUsesLiveCountdown ? (
-          <p className="gw-countdown-dock-note" role="status">
-            Live countdown continues while you browse. Open Flight to pause or
-            clear.
-          </p>
-        ) : null}
+        <div className="gw-rail gw-rail-tight">
+          <BoardingCountdownControls
+            state={session.countdownState}
+            onStateChange={session.setCountdownState}
+            onBaselineMinutesChange={session.handleBaselineMinutesFromCountdown}
+            preservedManualMinutes={session.preservedManualMinutes}
+            onCountdownExit={session.handleCountdownExit}
+            disabled={!session.datasetValid}
+            variant={countdownVariant}
+          />
+          {path !== "/" && session.baselineUsesLiveCountdown ? (
+            <p className="gw-countdown-dock-note" role="status">
+              Live countdown continues while you browse. Open Flight for the full
+              editor.
+            </p>
+          ) : null}
+        </div>
       </div>
 
       <main className="gw-app-main">
-        {session.datasetValid ? (
-          <div
-            className={path === "/recommendations" ? "mb-6" : undefined}
-            hidden={path !== "/recommendations"}
-            aria-hidden={path !== "/recommendations"}
-          >
-            <PersonalizedTimeControls
-              facilities={session.facilities}
-              overrides={session.durationOverrides}
-              onChange={session.handleDurationOverridesChange}
-              onDraftValidityChange={session.setPersonalizationDraftsValid}
-              disabled={!session.contextValid}
-            />
-          </div>
-        ) : null}
-        {screen}
+        <div className="gw-rail gw-rail-stack">
+          {session.datasetValid ? (
+            <div
+              className="gw-persist-host"
+              data-visible={onResults ? "true" : "false"}
+              hidden={!onResults}
+              aria-hidden={!onResults}
+            >
+              <PersonalizedTimeControls
+                facilities={session.facilities}
+                overrides={session.durationOverrides}
+                onChange={session.handleDurationOverridesChange}
+                onDraftValidityChange={session.setPersonalizationDraftsValid}
+                disabled={!session.contextValid}
+              />
+            </div>
+          ) : null}
+          {screen}
+        </div>
       </main>
     </div>
   );

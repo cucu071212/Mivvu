@@ -18,6 +18,8 @@ import {
   runRunningCountdownTick,
   type RunningTickOutcome,
 } from "@/lib/running-countdown-tick";
+import { formatBoardingStartLabel } from "@/lib/format-boarding-time";
+import Link from "next/link";
 
 export type BoardingCountdownControlsProps = {
   state: BoardingCountdownState;
@@ -28,6 +30,11 @@ export type BoardingCountdownControlsProps = {
   preservedManualMinutes: number;
   onCountdownExit: (payload: CountdownManualExitPayload) => void;
   disabled?: boolean;
+  /**
+   * `full` — Flight page editor.
+   * `dock` — compact cross-route strip; keeps the tick loop mounted.
+   */
+  variant?: "full" | "dock";
 };
 
 function defaultDatetimeLocal(now: Date, offsetMinutes: number): string {
@@ -61,6 +68,7 @@ export function BoardingCountdownControls({
   preservedManualMinutes,
   onCountdownExit,
   disabled = false,
+  variant = "full",
 }: BoardingCountdownControlsProps) {
   const [datetimeLocal, setDatetimeLocal] = useState("");
   const [startError, setStartError] = useState<string | null>(null);
@@ -248,9 +256,112 @@ export function BoardingCountdownControls({
     setBoardingStartedVisible(false);
   };
 
+  if (variant === "dock" && state.mode === "manual") {
+    return (
+      <div
+        className="gw-countdown-dock-card"
+        role="group"
+        aria-labelledby="boarding-countdown-heading"
+      >
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h3
+              id="boarding-countdown-heading"
+              className="text-sm font-semibold text-card-foreground"
+            >
+              Boarding countdown
+            </h3>
+            <p className="text-xs text-muted-foreground">{liveLabel}</p>
+          </div>
+          <Link
+            href="/"
+            className="gw-focus-ring inline-flex min-h-11 items-center rounded-md border border-border bg-card px-3 text-sm font-semibold text-card-foreground no-underline hover:border-primary"
+          >
+            Manage on Flight
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  if (variant === "dock" && state.mode === "countdown") {
+    return (
+      <div
+        className="gw-countdown-dock-card"
+        role="group"
+        aria-labelledby="boarding-countdown-heading"
+      >
+        <div className="flex flex-wrap items-start justify-between gap-2">
+          <div className="min-w-0 flex-1">
+            <h3
+              id="boarding-countdown-heading"
+              className="text-sm font-semibold text-card-foreground"
+            >
+              Live countdown
+            </h3>
+            <p className="text-xs text-muted-foreground">{liveLabel}</p>
+            <p className="mt-1 text-sm text-card-foreground">
+              Target:{" "}
+              <time dateTime={state.boardingStartAt}>
+                {formatBoardingStartLabel(state.boardingStartAt)}
+              </time>
+            </p>
+          </div>
+          <span className="gw-badge gw-badge-demo text-xs">Device clock</span>
+        </div>
+        {boardingStartedVisible ? (
+          <p
+            className="mt-2 rounded-md border border-[var(--gw-status-tight-border)] bg-[var(--gw-status-tight-bg)] p-2 text-sm font-semibold text-[var(--gw-status-tight-fg)]"
+            role="alert"
+            aria-live="assertive"
+          >
+            Boarding has started per your device clock. Baseline is at 0 in the
+            model.
+          </p>
+        ) : null}
+        <div className="mt-2 flex flex-wrap gap-2">
+          {state.runState === "running" ? (
+            <button
+              type="button"
+              className="gw-focus-ring min-h-11 rounded-md border border-border px-3 py-2 text-sm font-medium disabled:opacity-60"
+              onClick={handlePause}
+              disabled={disabled}
+            >
+              Pause
+            </button>
+          ) : null}
+          {state.runState === "paused" ? (
+            <button
+              type="button"
+              className="gw-focus-ring min-h-11 rounded-md border border-border px-3 py-2 text-sm font-medium disabled:opacity-60"
+              onClick={handleResume}
+              disabled={disabled}
+            >
+              Resume
+            </button>
+          ) : null}
+          <button
+            type="button"
+            className="gw-focus-ring min-h-11 rounded-md border border-border px-3 py-2 text-sm font-medium disabled:opacity-60"
+            onClick={handleClear}
+            disabled={disabled}
+          >
+            Clear
+          </button>
+          <Link
+            href="/"
+            className="gw-focus-ring inline-flex min-h-11 items-center rounded-md px-2 text-sm font-semibold text-primary no-underline hover:underline"
+          >
+            Open Flight
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
-      className="flex flex-col gap-3 rounded-lg border border-dashed border-primary/30 bg-gradient-to-b from-card/80 to-muted/30 p-3 sm:col-span-2"
+      className="gw-countdown-full-card"
       role="group"
       aria-labelledby="boarding-countdown-heading"
     >
@@ -316,7 +427,7 @@ export function BoardingCountdownControls({
         <p className="text-sm text-muted-foreground">
           Target:{" "}
           <time dateTime={state.boardingStartAt}>
-            {new Date(state.boardingStartAt).toLocaleString()}
+            {formatBoardingStartLabel(state.boardingStartAt)}
           </time>
         </p>
       )}

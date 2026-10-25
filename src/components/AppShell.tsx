@@ -11,18 +11,18 @@ import { AppNav } from "@/components/AppNav";
 import { BoardingCountdownControls } from "@/components/BoardingCountdownControls";
 import { PersonalizedTimeControls } from "@/components/PersonalizedTimeControls";
 import { useGateWiseSession } from "@/context/gatewise-session";
-import { productionTravelMatrixMetadata } from "@/data/travel-times";
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname() || "/";
   const session = useGateWiseSession();
   const onFlight = pathname === "/";
   const onResults = pathname === "/recommendations";
+  const countdownVariant = onFlight ? "full" : "dock";
 
   return (
     <div className="gw-app-shell">
       <header className="gw-app-header">
-        <div className="gw-app-header-inner">
+        <div className="gw-rail">
           <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
             {SUPPORTED_AIRPORT_IATA} · {SUPPORTED_TERMINAL_LABEL} ·{" "}
             {SUPPORTED_BOARDING_AREA_LABEL}
@@ -31,21 +31,23 @@ export function AppShell({ children }: { children: ReactNode }) {
             <span className="gw-brand-icon" aria-hidden="true">
               GW
             </span>
-            <div>
+            <div className="min-w-0">
               <p className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
                 GateWise
               </p>
-              <p className="max-w-xl text-sm text-muted-foreground">
+              <p className="gw-brand-tagline max-w-xl text-sm leading-relaxed text-muted-foreground">
                 Model-only boarding-start recommendations for verified Terminal 2
                 D Gates — not a guarantee you will board on time.
               </p>
             </div>
           </div>
-          <AppNav />
+          <AppNav variant="desktop" />
         </div>
       </header>
 
-      {/* Countdown stays mounted across routes so device-clock ticks never stop. */}
+      {/* Mobile bar must not live under header backdrop-filter (fixed containing block). */}
+      <AppNav variant="mobile" />
+
       <div
         className={
           onFlight
@@ -53,40 +55,45 @@ export function AppShell({ children }: { children: ReactNode }) {
             : "gw-countdown-host gw-countdown-host-dock"
         }
       >
-        <BoardingCountdownControls
-          state={session.countdownState}
-          onStateChange={session.setCountdownState}
-          onBaselineMinutesChange={session.handleBaselineMinutesFromCountdown}
-          preservedManualMinutes={session.preservedManualMinutes}
-          onCountdownExit={session.handleCountdownExit}
-          disabled={!session.datasetValid}
-        />
-        {!onFlight && session.baselineUsesLiveCountdown ? (
-          <p className="gw-countdown-dock-note" role="status">
-            Live countdown continues while you browse. Open Flight to pause or
-            clear. {productionTravelMatrixMetadata.sameZoneLegNote}
-          </p>
-        ) : null}
+        <div className="gw-rail gw-rail-tight">
+          <BoardingCountdownControls
+            state={session.countdownState}
+            onStateChange={session.setCountdownState}
+            onBaselineMinutesChange={session.handleBaselineMinutesFromCountdown}
+            preservedManualMinutes={session.preservedManualMinutes}
+            onCountdownExit={session.handleCountdownExit}
+            disabled={!session.datasetValid}
+            variant={countdownVariant}
+          />
+          {!onFlight && session.baselineUsesLiveCountdown ? (
+            <p className="gw-countdown-dock-note" role="status">
+              Live countdown continues while you browse. Open Flight for the full
+              editor.
+            </p>
+          ) : null}
+        </div>
       </div>
 
       <main className="gw-app-main">
-        {/* Personalization stays mounted so invalid drafts cannot remount as “valid”. */}
-        {session.datasetValid ? (
-          <div
-            className={onResults ? "mb-6" : undefined}
-            hidden={!onResults}
-            aria-hidden={!onResults}
-          >
-            <PersonalizedTimeControls
-              facilities={session.facilities}
-              overrides={session.durationOverrides}
-              onChange={session.handleDurationOverridesChange}
-              onDraftValidityChange={session.setPersonalizationDraftsValid}
-              disabled={!session.contextValid}
-            />
-          </div>
-        ) : null}
-        {children}
+        <div className="gw-rail gw-rail-stack">
+          {session.datasetValid ? (
+            <div
+              className="gw-persist-host"
+              data-visible={onResults ? "true" : "false"}
+              hidden={!onResults}
+              aria-hidden={!onResults}
+            >
+              <PersonalizedTimeControls
+                facilities={session.facilities}
+                overrides={session.durationOverrides}
+                onChange={session.handleDurationOverridesChange}
+                onDraftValidityChange={session.setPersonalizationDraftsValid}
+                disabled={!session.contextValid}
+              />
+            </div>
+          ) : null}
+          {children}
+        </div>
       </main>
     </div>
   );

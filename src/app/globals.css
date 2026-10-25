@@ -93,22 +93,29 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --gw-primary: #60a5fa;
-    --gw-primary-hover: #93c5fd;
-    --gw-on-primary: #0f172a;
-    --gw-secondary: #3b82f6;
-    --gw-on-secondary: #f8fafc;
+    --gw-primary: #38bdf8;
+    --gw-primary-hover: #7dd3fc;
+    --gw-on-primary: #0b1120;
+    --gw-secondary: #0ea5e9;
+    --gw-on-secondary: #f0f9ff;
+    --gw-cyan: #67e8f9;
+    --gw-cyan-muted: #22d3ee;
     --gw-accent: #fb923c;
-    --gw-on-accent: #0f172a;
+    --gw-on-accent: #0b1120;
 
-    --gw-background: #0b1120;
-    --gw-foreground: #f1f5f9;
-    --gw-card: #111827;
+    --gw-background: #07111f;
+    --gw-background-glow: radial-gradient(
+      ellipse 120% 80% at 50% -20%,
+      color-mix(in srgb, var(--gw-cyan) 14%, transparent),
+      transparent 55%
+    );
+    --gw-foreground: #e2e8f0;
+    --gw-card: #0f172a;
     --gw-card-foreground: #e2e8f0;
     --gw-muted: #1e293b;
     --gw-muted-foreground: #94a3b8;
     --gw-border: #334155;
-    --gw-ring: #93c5fd;
+    --gw-ring: #67e8f9;
     --gw-destructive: #f87171;
     --gw-on-destructive: #0f172a;
 
@@ -509,8 +516,19 @@
 
   .gw-brand-mark {
     display: inline-flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 0.5rem;
+    min-width: 0;
+  }
+
+  .gw-brand-mark > .min-w-0 {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .gw-brand-tagline {
+    overflow-wrap: anywhere;
+    text-wrap: pretty;
   }
 
   .gw-brand-icon {
@@ -838,47 +856,72 @@
     display: none;
   }
 
+  /* Shared horizontal rail — header, countdown, and page body share one axis */
+  :root {
+    --gw-rail-max: 56rem;
+    --gw-rail-pad: 1rem;
+    --gw-rail-pad-lg: 1.5rem;
+    --gw-section-gap: 1.25rem;
+  }
+
   .gw-app-shell {
     display: flex;
     min-height: 100%;
     flex-direction: column;
   }
 
-  .gw-app-header {
-    border-bottom: 1px solid var(--gw-border);
-    background: color-mix(in srgb, var(--gw-background) 92%, transparent);
-    backdrop-filter: blur(10px);
-  }
-
-  .gw-app-header-inner {
-    margin: 0 auto;
+  .gw-rail {
+    margin-inline: auto;
     display: flex;
     width: 100%;
-    max-width: 56rem;
+    max-width: var(--gw-rail-max);
     flex-direction: column;
     gap: 0.75rem;
-    padding: 1rem 1rem 0.75rem;
+    padding-inline: var(--gw-rail-pad);
+    box-sizing: border-box;
+  }
+
+  .gw-rail-tight {
+    gap: 0.5rem;
+  }
+
+  .gw-rail-stack {
+    gap: var(--gw-section-gap);
   }
 
   @media (min-width: 640px) {
-    .gw-app-header-inner {
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
+    .gw-rail {
+      padding-inline: var(--gw-rail-pad-lg);
     }
+  }
+
+  .gw-app-header {
+    border-bottom: 1px solid var(--gw-border);
+    /* Solid mix — avoid backdrop-filter here so descendants can use viewport-fixed positioning. */
+    background: color-mix(in srgb, var(--gw-background) 96%, var(--gw-card));
+  }
+
+  .gw-app-header .gw-rail {
+    padding-block: 1rem 0.75rem;
   }
 
   .gw-app-main {
-    margin: 0 auto;
-    width: 100%;
-    max-width: 56rem;
     flex: 1;
-    padding: 1rem 1rem 6.5rem;
+    width: 100%;
+    /* Keep clearance for mobile bottom nav until md (768), not sm (640). */
+    padding-block: 1rem 6.5rem;
   }
 
-  @media (min-width: 640px) {
+  @media (min-width: 768px) {
     .gw-app-main {
-      padding: 1.25rem 1.5rem 2.5rem;
+      padding-block: 1.25rem 2.5rem;
     }
+  }
+
+  /* Persist mounts must not steal layout or focus when inactive */
+  .gw-persist-host[hidden],
+  .gw-persist-host[data-visible="false"] {
+    display: none !important;
   }
 
   .gw-app-nav-desktop {
@@ -978,17 +1021,8 @@
   }
 
   .gw-countdown-host {
-    margin: 0 auto;
     width: 100%;
-    max-width: 56rem;
-    padding: 0.75rem 1rem 0;
-  }
-
-  @media (min-width: 640px) {
-    .gw-countdown-host {
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
-    }
+    padding-block: 0.75rem 0;
   }
 
   .gw-countdown-host-dock {
@@ -996,13 +1030,35 @@
     top: 0;
     z-index: 30;
     padding-bottom: 0.5rem;
-    background: color-mix(in srgb, var(--gw-background) 88%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--gw-border) 70%, transparent);
+    background: color-mix(in srgb, var(--gw-background) 90%, transparent);
     backdrop-filter: blur(8px);
   }
 
+  .gw-countdown-full-card,
+  .gw-countdown-dock-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    border-radius: var(--gw-radius-lg);
+    border: 1px dashed color-mix(in srgb, var(--gw-primary) 35%, var(--gw-border));
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--gw-card) 88%, var(--gw-muted)) 0%,
+      var(--gw-card) 100%
+    );
+    padding: 0.875rem 1rem;
+    box-shadow: var(--gw-shadow-card);
+  }
+
+  .gw-countdown-dock-card {
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+  }
+
   .gw-countdown-dock-note {
-    margin-top: 0.5rem;
     font-size: 0.75rem;
+    line-height: 1.4;
     color: var(--gw-muted-foreground);
   }
 }

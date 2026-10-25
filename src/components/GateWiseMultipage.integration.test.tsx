@@ -78,9 +78,16 @@ describe("GateWise multipage session (mounted)", () => {
     goTo("Explore");
     expect(screen.getByRole("button", { name: "Pause" })).toBeTruthy();
     expect(screen.getByText(/Live countdown continues/i)).toBeTruthy();
+    expect(screen.queryByLabelText(/Boarding starts \(local date/)).toBeNull();
 
     goTo("Results");
     expect(screen.getByRole("button", { name: "Pause" })).toBeTruthy();
+  });
+
+  it("shows a compact Manage on Flight dock when countdown is idle off Flight", () => {
+    renderApp("/explore");
+    expect(screen.getByRole("link", { name: "Manage on Flight" })).toBeTruthy();
+    expect(screen.queryByRole("button", { name: "Start countdown" })).toBeNull();
   });
 
   it("exposes My Plan as a GW-E coming-soon screen without planner logic", () => {
