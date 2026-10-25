@@ -141,6 +141,8 @@ export function GateWiseSessionProvider({
   const [filter, setFilter] = useState<AmenityFilterValue>({
     text: "",
     category: "",
+    terminalCode: "",
+    boardingArea: "",
   });
   const [durationOverrides, setDurationOverrides] =
     useState<FacilityDurationOverrideMap>({});
@@ -256,7 +258,13 @@ export function GateWiseSessionProvider({
   const bufferError = contextErrorMessage("bufferMinutes", contextResult.errors);
 
   const filterQuery = useMemo(
-    () => buildFacilityFilterQuery(filter.text, filter.category),
+    () =>
+      buildFacilityFilterQuery(
+        filter.text,
+        filter.category,
+        filter.terminalCode,
+        filter.boardingArea,
+      ),
     [filter],
   );
 

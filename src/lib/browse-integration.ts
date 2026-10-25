@@ -3,7 +3,9 @@ import type {
   FacilityCategory,
   FacilityFilterQuery,
   FacilityValidationError,
+  TerminalCode,
   UserContextInput,
+  Zone,
 } from "@/types/airport";
 import { validateFacilities } from "@/lib/validate-facilities";
 
@@ -32,10 +34,14 @@ export function buildFlightContextInput(
 export function buildFacilityFilterQuery(
   text: string,
   category: FacilityCategory | "",
+  terminalCode: TerminalCode | "" = "",
+  boardingArea: Zone | "" = "",
 ): FacilityFilterQuery {
   const trimmed = text.trim();
   return {
     ...(trimmed ? { text: trimmed } : {}),
     ...(category ? { category } : {}),
+    ...(terminalCode ? { terminalCode } : {}),
+    ...(boardingArea ? { zone: boardingArea } : {}),
   };
 }
