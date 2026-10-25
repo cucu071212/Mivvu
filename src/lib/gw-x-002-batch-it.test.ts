@@ -39,10 +39,10 @@ const recommendContext: UserContext = {
 };
 
 describe("GW-X-002 International Terminal pilot — browse-only A/G", () => {
-  it("validates 23 facilities with zero errors", () => {
+  it("validates production dataset with zero errors (includes later T3 pilot rows)", () => {
     const { facilities, errors } = validateFacilities(productionJson);
     assert.equal(errors.length, 0);
-    assert.equal(facilities.length, 23);
+    assert.ok(facilities.length >= 23);
   });
 
   it("keeps exactly 12 recommend-eligible facilities (legacy T2 D Gates)", () => {
