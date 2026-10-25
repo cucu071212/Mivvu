@@ -603,10 +603,11 @@ Decision needed from human Engineering Lead:
 
 ---
 
-## Post-submission — Data-first roadmap (Phase A → D)
+## Post-submission — Roadmap (Phase A → X → B → C → D)
 
-**Product spec:** `PLAN.md` §12. **Priority table:** `docs/REMAINING_ROADMAP.md`.  
-**Scope:** SFO Terminal 2 D Gates only; preserve recommendation, validation, countdown, security, and provenance contracts.
+**Product spec:** `PLAN.md` §12–§13. **Priority table:** `docs/REMAINING_ROADMAP.md`.  
+**Production baseline:** `af5fe21` (Phase A complete). **Active priority:** Phase **X** (SFO-wide expansion).  
+**Preserve:** `recommendFacilities` contract, countdown/personalization/What-if (GW-F), security headers, Phase A **12** D Gates records.
 
 ### Approval gates (post-submission)
 
@@ -619,9 +620,20 @@ Decision needed from human Engineering Lead:
 | **G-B0** | GW-B-R001 + GW-B-001 policy doc approved | GW-B-002 |
 | **G-B1** | Matrix changes labeled; regression tests pass | GW-C-* (full), production data release |
 | **G-C0** | UX smoke + a11y on preview deploy | **G-E** re-authorization for GW-E |
-| **G-E** | G-F3 shipped + **G-Data** (G-C0 + G-B1) | GW-E1, GW-E2 |
+| **G-E** | G-F3 shipped + **G-Data** (G-X3 + G-B1 + G-C0) | GW-E1, GW-E2 |
 
-### Phase A — Verified airport data
+### Phase X approval gates (SFO-wide expansion)
+
+| Gate | Entry criteria | Unlocks |
+| --- | --- | --- |
+| **G-X0** | GW-X-R001 + GW-X-R002 accepted; migration + browse vs recommend eligibility design reviewed | GW-X-001 |
+| **G-X1** | GW-X-001 merged; legacy **12** D facilities + recommend regression green; migration notes in provenance | GW-X-002 (batch 1+) |
+| **G-X2** | Agreed dataset milestone documented; each new row has provenance; no invented fields | GW-X-003 |
+| **G-X3** | GW-X-004 regression green on preview; limitation copy approved | GW-B-R001, further GW-X-002 batches |
+
+### Phase A — Verified airport data (**SHIPPED** @ `af5fe21`)
+
+**Status:** **COMPLETE** — G-A0/G-A1 approved 2026-10-25. Do not re-open unless regression or data refresh task assigned.
 
 #### GW-A-R001: Official SFO data source audit (research)
 
@@ -662,12 +674,60 @@ Decision needed from human Engineering Lead:
 **Tests:** Component/integration tests where applicable; manual mobile smoke  
 **Acceptance:** Copy states hours are **not** live availability; unknown hours visible as unknown.
 
-### Phase B — Distance & walking time
+### Phase X — SFO-wide expansion (**NEXT**)
+
+#### GW-X-R001: SFO coverage source research (research)
+
+**Owner:** Lead or Teammate (docs only)  
+**Depends on:** —  
+**Deliverable:** `docs/GW-X-R001-sfo-coverage-source-audit.md` (or equivalent) + update `docs/data-provenance.md` — terminals, boarding areas, gates, security-side evidence, Shop/Dine/Relax coverage, maps, API limits (extends GW-A-R001).  
+**Tests:** N/A  
+**Acceptance:** Explicit unavailable items; no claim of full SFO POI coverage; no invented connectivity between terminals.
+
+#### GW-X-R002: Location & facility matrix (research)
+
+**Owner:** Teammate or Lead  
+**Depends on:** GW-X-R001  
+**Deliverable:** Matrix template: stable IDs, terminal/boarding area/gate fields, security confidence, hours/contact feasibility, **staged batch** proposal (which terminals/areas first).  
+**Acceptance:** Each row cites URL + checked date; conflicts flagged; D Gates **12** rows unchanged as legacy baseline.
+
+#### GW-X-001: Data model migration (implementation)
+
+**Owner:** Lead (`src/types/airport.ts`) + Teammate (`validate-facilities` + tests)  
+**Depends on:** **G-X0**  
+**Files (expected):** `src/types/airport.ts`, `src/lib/validate-facilities.ts` + tests, `docs/data-provenance.md` migration appendix  
+**Tests:** `npm test -- validate-facilities recommend`  
+**Acceptance:** Backward compatible: existing **12** records validate unchanged; new optional/required fields documented; **recommend scope** enum or flag documented — default remains D Gates production matrix until separate task.
+
+#### GW-X-002: Dataset expansion — staged batches (implementation)
+
+**Owner:** Teammate (`facilities.json`) + provenance  
+**Depends on:** GW-X-001, **G-X1**  
+**Files:** `src/data/facilities.json`, `docs/data-provenance.md`  
+**Tests:** `npm test -- validate-facilities recommend`  
+**Acceptance:** Batch size and terminal scope defined in R002; every field sourced or `unknown`; queue/activity remain null unless official; lead review per batch merge.
+
+#### GW-X-003: Multi-terminal directory UI (implementation)
+
+**Owner:** Lead  
+**Depends on:** GW-X-002 milestone, **G-X2**  
+**Files:** Explore/directory components, filters, `globals.css` as needed  
+**Tests:** Component/integration tests; mobile smoke  
+**Acceptance:** Terminal/boarding-area labels; filters; **limitations** visible (browse ≠ recommend); no live hours claims; existing D recommend cards unchanged unless eligibility task authorized.
+
+#### GW-X-004: Integration & regression (implementation)
+
+**Owner:** Lead  
+**Depends on:** GW-X-003  
+**Tests:** Full `npm test`, `tsc`, `lint`, `build`; production smoke checklist  
+**Acceptance:** **G-X3** — 602+ tests green; Flight countdown, What-if, personalization unchanged; security headers unchanged; D Gates smoke passes.
+
+### Phase B — Distance & walking time (after Phase X)
 
 #### GW-B-R001: Indoor location and routing research (research)
 
 **Owner:** Lead + Teammate  
-**Depends on:** **G-A1** (recommended) or parallel with **G-A0** if read-only  
+**Depends on:** **G-X3** (recommended)  
 **Deliverable:** `docs/data-provenance.md` or `docs/walking-time-policy.md` — options evaluated (SFO PDF/tabloid map, third-party indoor maps), licensing, accuracy limits, **recommended: stay demo_estimate until verified edge list exists**.  
 **Acceptance:** Document states clearly if **no** acceptable automated source exists.
 
@@ -691,8 +751,8 @@ Decision needed from human Engineering Lead:
 #### GW-C-001: Facility detail and discovery (implementation)
 
 **Owner:** Lead  
-**Depends on:** GW-A-002 (**G-A1**)  
-**Acceptance:** Detail view on Explore/Results; links to official SFO listing retained; mobile layout uses shared `.gw-rail`.
+**Depends on:** **G-X3** (GW-A-003 baseline shipped)  
+**Acceptance:** Expanded-airport discovery polish; official links; `.gw-rail` layout.
 
 #### GW-C-002: Opening-hours UX hardening (implementation)
 
@@ -708,7 +768,7 @@ Decision needed from human Engineering Lead:
 
 ### Phase D — GW-E two-stop planner (unchanged engine rules)
 
-**Preconditions:** **G-E** + **G-Data** (`G-C0`, **G-B1**). See historical **GW-E1** / **GW-E2** in optional P1 section above and `docs/GW-F-CONTRACT.md` / `PLAN.md` §4 E.
+**Preconditions:** **G-E** + **G-Data** (**G-X3**, **G-B1**, **G-C0**). See **GW-E1** / **GW-E2** above and `docs/GW-F-CONTRACT.md` / `PLAN.md` §4 E.
 
 | ID | Owner | Depends on | Summary |
 | --- | --- | --- | --- |
@@ -721,12 +781,14 @@ Decision needed from human Engineering Lead:
 
 | ID | Type | Owner | Gate |
 | --- | --- | --- | --- |
-| GW-A-R001 | Research | Teammate / Lead | G-A0 |
-| GW-A-R002 | Research | Teammate / Lead | G-A0 |
-| GW-A-001 | Implement | Teammate + Lead types | G-A0 → G-A1 |
-| GW-A-002 | Implement | Teammate | G-A1 |
-| GW-A-003 | Implement | Lead | G-A1 |
-| GW-B-R001 | Research | Lead + Teammate | G-B0 |
+| GW-A-* | — | — | **SHIPPED** (Phase A @ `af5fe21`) |
+| GW-X-R001 | Research | Teammate / Lead | G-X0 |
+| GW-X-R002 | Research | Teammate / Lead | G-X0 |
+| GW-X-001 | Implement | Teammate + Lead types | G-X0 → G-X1 |
+| GW-X-002 | Implement | Teammate | G-X1 → G-X2 |
+| GW-X-003 | Implement | Lead | G-X2 → G-X3 |
+| GW-X-004 | Implement | Lead | G-X3 |
+| GW-B-R001 | Research | Lead + Teammate | G-B0 (after G-X3) |
 | GW-B-001 | Design | Lead | G-B0 |
 | GW-B-002 | Implement | Lead | G-B1 |
 | GW-C-001 | Implement | Lead | G-C0 |
@@ -736,6 +798,6 @@ Decision needed from human Engineering Lead:
 
 ---
 
-**Document version:** 1.3  
-**Aligned with:** `PLAN.md` v1.4 (post-submission), `AGENTS.md`, `docs/GW-F-CONTRACT.md`, `docs/REMAINING_ROADMAP.md`  
-**Next step (human lead):** Authorize **GW-A-R001** (research only) on branch `docs/data-readiness-roadmap-20261024` or successor; **G-A0** before any `facilities.json` schema merge to `main`.
+**Document version:** 1.4  
+**Aligned with:** `PLAN.md` v1.5 (Phase A complete; Phase X next), `AGENTS.md`, `docs/GW-F-CONTRACT.md`, `docs/REMAINING_ROADMAP.md`  
+**Next step (human lead):** Authorize **GW-X-R001** (research only) on a docs or research branch; **G-X0** before any schema or `facilities.json` expansion merge to `main`.
