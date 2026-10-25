@@ -6,7 +6,7 @@ export const APP_ROUTES = [
     label: "Results",
     description: "Ranked places and what-if",
   },
-  { href: "/plan", label: "My Plan", description: "Two-stop planner (soon)" },
+  { href: "/plan", label: "My Plan", description: "Two-stop planner (demo)" },
 ] as const;
 
 export type AppRouteHref = (typeof APP_ROUTES)[number]["href"];

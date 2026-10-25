@@ -90,10 +90,11 @@ describe("GateWise multipage session (mounted)", () => {
     expect(screen.queryByRole("button", { name: "Start countdown" })).toBeNull();
   });
 
-  it("exposes My Plan as a GW-E coming-soon screen without planner logic", () => {
+  it("exposes My Plan as an isolated GW-E2 demo without what-if on Plan", () => {
     renderApp("/plan");
-    expect(screen.getByRole("heading", { name: "My Plan" })).toBeTruthy();
-    expect(screen.getByText(/GW-E — not in this release/)).toBeTruthy();
+    expect(screen.getByRole("heading", { name: "Two-stop planner" })).toBeTruthy();
+    expect(screen.getByText(/Demo — not in production release/)).toBeTruthy();
+    expect(screen.getByLabelText("First facility (picker)")).toBeTruthy();
     expect(screen.queryByRole("region", { name: "What-if simulator" })).toBeNull();
   });
 });
