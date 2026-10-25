@@ -219,4 +219,5 @@ These are three alternative single-facility recommendations, **not a two-stop it
 
 ### Update practice
 
-- Refreshes are **manual**: re-open official listing pages, update `lastCheckedAt`, and document conflicts in provenance (GW-A-R002 matrix next).
+- Refreshes are **manual**: re-open official listing pages, update `lastCheckedAt`, and document conflicts in provenance.
+- **GW-A-R002** per-facility hours/amenity matrix (12/12 shipped IDs, **2026-10-25**): [`docs/GW-A-R002-facility-hours-amenity-matrix.md`](./GW-A-R002-facility-hours-amenity-matrix.md). Proposed `Facility` hours/amenity fields are documented there for **G-A0** schema review only — not implemented in types or JSON yet.
