@@ -11,6 +11,41 @@ const weekly: FacilityHours = {
 };
 
 describe("published hours presentation", () => {
+  it("matches independently transcribed expected labels for every structured production schedule", () => {
+    const expected: Record<string, string> = {
+      "sfo-t2-d-16th-dolores-general-store": "4 AM – 11:30 PM",
+      "sfo-t2-d-andale-mexican-kitchen-bar": "6 AM – 10 PM",
+      "sfo-t2-d-brookstone": "6 AM – 10 PM",
+      "sfo-t2-d-burger-joint": "5 AM – 11 PM",
+      "sfo-t2-d-cat-cora": "7:30 AM – 10 PM",
+      "sfo-t2-d-kiehls": "6 AM – 10 PM",
+      "sfo-t2-d-lark-creek-grill": "6 AM – 10 PM",
+      "sfo-t2-d-napa-farms-market": "4:30 AM – 11 PM",
+      "sfo-t2-d-peets-coffee-d7": "4:30 AM – 8:30 PM",
+      "sfo-t2-d-sunglass-hut": "7 AM – 8 PM",
+      "sfo-t2-d-the-chocolate-market": "7 AM – 9 PM",
+      "sfo-t2-d-wakaba": "6:30 AM – 10:30 PM",
+      "sfo-t2-d-plant-cafe-pinkberry": "4:30 AM – 9 PM",
+      "sfo-t2-d-peets-coffee-d15": "6 AM – 1 PM",
+      "sfo-t2-d-books-inc": "6 AM – 10 PM",
+      "sfo-t2-d-sfo-news-express": "6 AM – 3 PM",
+      "sfo-t2-d-we-are-sfc": "6 AM – 10 PM",
+      "sfo-hm1-b-bun-mee": "5:30 AM – 11 PM",
+      "sfo-hm1-b-bourbon-pub": "5:30 AM – 10 PM",
+      "sfo-hm1-c-49-mile-market": "3:30 AM – 10:30 PM",
+      "sfo-it-a-boudin-bakery": "5 AM – 11 PM",
+      "sfo-it-g-1300-on-fillmore": "7 AM – 11 PM",
+      "sfo-t3-f-aletitude": "6:30 AM – 11 PM",
+      "sfo-t3-f-amoura": "5 AM – 11 PM",
+    };
+    const structured = validateFacilities(rawFacilities).facilities.filter((row) => row.hours?.kind === "weekly_same_all_days");
+    expect(structured.map((row) => row.id).sort()).toEqual(Object.keys(expected).sort());
+    for (const row of structured) {
+      expect(presentPublishedHours(row.hours, row.hoursConfidence).scheduleLine)
+        .toBe(`${expected[row.id]} Pacific Time, daily`);
+    }
+  });
+
   it("preserves the existing public display fields for all 26 records", () => {
     const { facilities, errors } = validateFacilities(rawFacilities);
     expect(errors).toEqual([]);
