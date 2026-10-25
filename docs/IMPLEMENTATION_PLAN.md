@@ -1,8 +1,18 @@
-# GateWise P0 (B + C) Implementation Plan
+# GateWise Implementation Plan
 
 > **For agentic workers:** Execute **one task ID at a time** only after the human Engineering Lead authorizes it. Do not run `executing-plans` or `subagent-driven-development` unless the lead explicitly approves. After each task, post the GATEWISE STATUS report from `AGENTS.md` and stop.
 
-**Goal:** Ship a deployed HackPSU MVP where a judge can enter SFO gate context, see boarding-aware facility recommendations (B), and run a what-if comparison using the same pure engine (C), with verified vs demo-estimate labels and no false safety claims.
+## Current focus (2026-10-25)
+
+| Item | Status |
+| --- | --- |
+| **Production** | https://gate-wise-iota.vercel.app · `main` @ `b0b58c6` |
+| **Hackathon P0 (B+C)** | **Complete** — sections below are historical reference |
+| **GW-F1–F3 + Level 2 multipage** | **Complete** — see `docs/REMAINING_ROADMAP.md` |
+| **Active track** | **Phase A → B → C → D (GW-E)** — data-first; task IDs in § Post-submission |
+| **Priority order** | `docs/REMAINING_ROADMAP.md` |
+
+**Goal (historical P0):** Ship a deployed HackPSU MVP where a judge can enter SFO gate context, see boarding-aware facility recommendations (B), and run a what-if comparison using the same pure engine (C), with verified vs demo-estimate labels and no false safety claims.
 
 **Architecture:** Local Next.js App Router UI (lead) calls pure TypeScript utilities for filter/validate (teammate) and a single `recommendFacilities` engine (lead). Data splits into `travel-times.ts`, `facilities.json`, and runtime `UserContext`. What-if re-invokes the same function with baseline vs adjusted inputs.
 
@@ -503,11 +513,11 @@ Decision needed from human Engineering Lead:
 
 ---
 
-## Post-MVP — GW-F track (F1 → F2 → F3 → GW-E)
+## Post-MVP — GW-F track (F1 → F2 → F3) — **SHIPPED**
 
+**Status:** **Complete** on production `main` @ `b0b58c6` (merge includes Level 2.7 layout).  
 **Contract:** `docs/GW-F-CONTRACT.md` (APIs, precedence, countdown semantics, What-if rules).  
-**Baseline:** `main` @ `665e5e8`, https://gate-wise-iota.vercel.app  
-**Do not start GW-E** until **G-F3** passed and human lead issues **G-E** (replaces hackathon-only “after G4” timing for new work).
+**Do not start GW-E** until **G-F3** (done), **G-Data** (Phase A–C gates), and human lead **G-E** authorization.
 
 ### Approval gates (GW-F)
 
@@ -591,6 +601,139 @@ Decision needed from human Engineering Lead:
 
 ---
 
-**Document version:** 1.2  
-**Aligned with:** `PLAN.md` v1.3, `AGENTS.md`, `docs/GW-F-CONTRACT.md`  
-**Next step (human lead):** **G-F0** approved on `feature/gw-f-contracts` — authorize **GW-F1-001** / **GW-F2-001** from that branch; merge to `main` only when releasing integrated GW-F3 (separate authorization).
+---
+
+## Post-submission — Data-first roadmap (Phase A → D)
+
+**Product spec:** `PLAN.md` §12. **Priority table:** `docs/REMAINING_ROADMAP.md`.  
+**Scope:** SFO Terminal 2 D Gates only; preserve recommendation, validation, countdown, security, and provenance contracts.
+
+### Approval gates (post-submission)
+
+| Gate | Entry criteria | Unlocks |
+| --- | --- | --- |
+| **G-A0** | GW-A-R001 + GW-A-R002 accepted; schema proposal reviewed | GW-A-001 |
+| **G-A1** | Enriched dataset + validators + tests green; provenance doc updated | GW-B-R001, GW-C-* (partial) |
+| **G-B0** | GW-B-R001 + GW-B-001 policy doc approved | GW-B-002 |
+| **G-B1** | Matrix changes labeled; regression tests pass | GW-C-* (full), production data release |
+| **G-C0** | UX smoke + a11y on preview deploy | **G-E** re-authorization for GW-E |
+| **G-E** | G-F3 shipped + **G-Data** (G-C0 + G-B1) | GW-E1, GW-E2 |
+
+### Phase A — Verified airport data
+
+#### GW-A-R001: Official SFO data source audit (research)
+
+**Owner:** Lead or Teammate (docs only)  
+**Depends on:** —  
+**Deliverable:** Update `docs/data-provenance.md` § APIs and automation limits; short appendix listing checked URLs, robots/terms notes, and **explicit “unavailable”** items (live queues, indoor routing API, flight feeds).  
+**Tests:** N/A (research)  
+**Acceptance:** No implementation task authorized until human lead signs **G-A0**; no claim of real-time APIs without evidence.
+
+#### GW-A-R002: Hours and amenity extraction feasibility (research)
+
+**Owner:** Teammate or Lead  
+**Depends on:** GW-A-R001  
+**Deliverable:** Per-facility matrix for all **12** shipped IDs: which fields exist on official listing pages (hours text, services, accessibility mentions), conflicts, and recommended JSON shape.  
+**Acceptance:** Each row cites URL + checked date; conflicts (e.g. Peet's D14/D15) remain flagged, not silently resolved.
+
+#### GW-A-001: Facility schema and validation extension (implementation)
+
+**Owner:** Teammate (data + validate-facilities) with Lead type review  
+**Depends on:** **G-A0**  
+**Files (expected):** `src/types/airport.ts` (lead-mediated), `src/lib/validate-facilities.ts` + tests, schema notes in `docs/data-provenance.md`  
+**Tests:** `npm test -- validate-facilities`  
+**Acceptance:** Backward compatible with current 12 records OR migration script documented; unknown hours → `null`/unknown, never invented; **no** change to `recommendFacilities` thresholds without separate authorized task.
+
+#### GW-A-002: Enrich `facilities.json` from verified sources (implementation)
+
+**Owner:** Teammate  
+**Depends on:** GW-A-001, **G-A0**  
+**Files:** `src/data/facilities.json`, `docs/data-provenance.md`  
+**Tests:** `npm test -- validate-facilities recommend` (existing suites)  
+**Acceptance:** Every enriched field has `sourceUrl` + `lastCheckedAt`; queue/activity durations remain `null` unless officially published (expected: still unknown); lead review before merge.
+
+#### GW-A-003: Hours and amenity presentation (implementation)
+
+**Owner:** Lead  
+**Depends on:** GW-A-002  
+**Files:** Explore/Results facility UI (e.g. `AmenityCard`, detail surfaces), `globals.css` as needed  
+**Tests:** Component/integration tests where applicable; manual mobile smoke  
+**Acceptance:** Copy states hours are **not** live availability; unknown hours visible as unknown.
+
+### Phase B — Distance & walking time
+
+#### GW-B-R001: Indoor location and routing research (research)
+
+**Owner:** Lead + Teammate  
+**Depends on:** **G-A1** (recommended) or parallel with **G-A0** if read-only  
+**Deliverable:** `docs/data-provenance.md` or `docs/walking-time-policy.md` — options evaluated (SFO PDF/tabloid map, third-party indoor maps), licensing, accuracy limits, **recommended: stay demo_estimate until verified edge list exists**.  
+**Acceptance:** Document states clearly if **no** acceptable automated source exists.
+
+#### GW-B-001: Travel-time representation policy (design)
+
+**Owner:** Lead  
+**Depends on:** GW-B-R001  
+**Deliverable:** Directed edge list or matrix extension rules: per-edge `DataConfidence`, provenance fields, fallback to `unknown`.  
+**Acceptance:** Aligns with `PLAN.md` §3–§4; asymmetry preserved.
+
+#### GW-B-002: Implement labeled travel updates (implementation)
+
+**Owner:** Lead (`travel-times.ts`) + tests  
+**Depends on:** GW-B-001, **G-B0**  
+**Files:** `src/data/travel-times.ts`, `src/lib/recommend.test.ts` / teammate independent tests  
+**Tests:** `npm test -- recommend`  
+**Acceptance:** **G-B1** — no unlabeled minutes; P0 §5 cases pass or documented baseline change approved by lead.
+
+### Phase C — Real-world usability
+
+#### GW-C-001: Facility detail and discovery (implementation)
+
+**Owner:** Lead  
+**Depends on:** GW-A-002 (**G-A1**)  
+**Acceptance:** Detail view on Explore/Results; links to official SFO listing retained; mobile layout uses shared `.gw-rail`.
+
+#### GW-C-002: Opening-hours UX hardening (implementation)
+
+**Owner:** Lead  
+**Depends on:** GW-A-003  
+**Acceptance:** Timezone/local display policy documented; no hydration-unsafe locale formatting in SSR labels (follow `format-boarding-time` pattern where dates shown).
+
+#### GW-C-003: First-time user orientation (implementation)
+
+**Owner:** Lead  
+**Depends on:** GW-C-001  
+**Acceptance:** Short, honest scope copy; does not promise live data; **G-C0** smoke checklist passes.
+
+### Phase D — GW-E two-stop planner (unchanged engine rules)
+
+**Preconditions:** **G-E** + **G-Data** (`G-C0`, **G-B1**). See historical **GW-E1** / **GW-E2** in optional P1 section above and `docs/GW-F-CONTRACT.md` / `PLAN.md` §4 E.
+
+| ID | Owner | Depends on | Summary |
+| --- | --- | --- | --- |
+| GW-E1 | Support Codex | **G-E**, G-Data | Pure two-stop evaluation module(s) + tests |
+| GW-E2 | Lead | GW-E1 | `PlanScreen` / session integration |
+
+---
+
+## Task index supplement (post-submission)
+
+| ID | Type | Owner | Gate |
+| --- | --- | --- | --- |
+| GW-A-R001 | Research | Teammate / Lead | G-A0 |
+| GW-A-R002 | Research | Teammate / Lead | G-A0 |
+| GW-A-001 | Implement | Teammate + Lead types | G-A0 → G-A1 |
+| GW-A-002 | Implement | Teammate | G-A1 |
+| GW-A-003 | Implement | Lead | G-A1 |
+| GW-B-R001 | Research | Lead + Teammate | G-B0 |
+| GW-B-001 | Design | Lead | G-B0 |
+| GW-B-002 | Implement | Lead | G-B1 |
+| GW-C-001 | Implement | Lead | G-C0 |
+| GW-C-002 | Implement | Lead | G-C0 |
+| GW-C-003 | Implement | Lead | G-C0 |
+| GW-E1 / GW-E2 | Implement | Support + Lead | G-E after G-Data |
+
+---
+
+**Document version:** 1.3  
+**Aligned with:** `PLAN.md` v1.4 (post-submission), `AGENTS.md`, `docs/GW-F-CONTRACT.md`, `docs/REMAINING_ROADMAP.md`  
+**Next step (human lead):** Authorize **GW-A-R001** (research only) on branch `docs/data-readiness-roadmap-20261024` or successor; **G-A0** before any `facilities.json` schema merge to `main`.
