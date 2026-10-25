@@ -6,7 +6,11 @@ import {
   TEST_VERIFIED_AREA_EVIDENCE,
   TEST_VERIFIED_AREA_WITH_MAP_CELL,
 } from "@/data/fixtures/location-evidence-test-fixture";
-import { presentLocationGuidance } from "@/lib/location-guidance-present";
+import {
+  conceptualT2DAreaChips,
+  presentLocationGuidance,
+  shouldShowConceptualAreaGuide,
+} from "@/lib/location-guidance-present";
 
 describe("presentLocationGuidance", () => {
   it("renders verified area labels without inventing walking times", () => {
@@ -48,5 +52,62 @@ describe("presentLocationGuidance", () => {
     assert.equal(view.showSource, false);
     assert.equal(view.showMapSource, false);
     assert.match(view.explanation, /does not infer a location/i);
+  });
+});
+
+describe("conceptual T2 D guide visibility (P1)", () => {
+  const t2d = { terminalCode: "terminal_2" as const, boardingAreaCode: "D" as const };
+  const hm1 = { terminalCode: "harvey_milk_1" as const, boardingAreaCode: "B" as const };
+  const vinoListing = {
+    nearestGateLandmark: null,
+    locationDescription: "D Gates, Retail Street",
+  };
+
+  it("hides the conceptual guide when GW-B evidence is Unknown", () => {
+    assert.equal(
+      shouldShowConceptualAreaGuide(TEST_UNKNOWN_LOCATION_EVIDENCE, t2d),
+      false,
+    );
+    assert.equal(
+      shouldShowConceptualAreaGuide(TEST_UNKNOWN_LOCATION_EVIDENCE, hm1),
+      false,
+    );
+  });
+
+  it("shows the conceptual guide only for known T2 D evidence", () => {
+    assert.equal(
+      shouldShowConceptualAreaGuide(TEST_VERIFIED_AREA_EVIDENCE, t2d),
+      true,
+    );
+    assert.equal(
+      shouldShowConceptualAreaGuide(TEST_APPROXIMATE_AREA_EVIDENCE, t2d),
+      true,
+    );
+    assert.equal(
+      shouldShowConceptualAreaGuide(TEST_VERIFIED_AREA_EVIDENCE, hm1),
+      false,
+    );
+  });
+
+  it("does not mark Retail Street current from listing fields when evidence is Unknown", () => {
+    const chips = conceptualT2DAreaChips(vinoListing, TEST_UNKNOWN_LOCATION_EVIDENCE);
+    assert.equal(chips.some((chip) => chip.current), false);
+    assert.equal(
+      chips.some((chip) => /named on this listing/i.test(chip.label)),
+      false,
+    );
+  });
+
+  it("marks current chips from GW-B evidence, not leftover listing fields", () => {
+    const chips = conceptualT2DAreaChips(
+      { nearestGateLandmark: "D16", locationDescription: "D Gates, near Gate D16" },
+      TEST_VERIFIED_AREA_EVIDENCE,
+    );
+    const d7 = chips.find((chip) => chip.id === "D7");
+    const d16 = chips.find((chip) => chip.id === "D16");
+    assert.equal(d7?.current, true);
+    assert.equal(d7?.label, "Gate D7, named on this listing");
+    assert.equal(d16?.current, false);
+    assert.equal(d16?.label, "Gate D16");
   });
 });

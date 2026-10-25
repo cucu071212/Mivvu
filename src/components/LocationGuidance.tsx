@@ -4,6 +4,7 @@ import {
   conceptualT2DAreaChips,
   isTerminal2DGatesFacility,
   presentLocationGuidance,
+  shouldShowConceptualAreaGuide,
 } from "@/lib/location-guidance-present";
 
 export type LocationGuidanceProps = {
@@ -58,7 +59,8 @@ export function LocationGuidance({
   const view = presentLocationGuidance(evidence);
   const headingId = `location-guidance-${facility.id}-heading`;
   const t2d = isTerminal2DGatesFacility(facility);
-  const chips = t2d ? conceptualT2DAreaChips(facility) : [];
+  const showGuide = shouldShowConceptualAreaGuide(evidence, facility);
+  const chips = showGuide ? conceptualT2DAreaChips(facility, evidence) : [];
 
   return (
     <section
@@ -128,7 +130,7 @@ export function LocationGuidance({
         ) : null}
       </div>
 
-      {t2d ? (
+      {showGuide ? (
         <div
           className="rounded-md border border-border bg-muted/30 p-3"
           role="region"
@@ -162,11 +164,11 @@ export function LocationGuidance({
             ))}
           </ul>
         </div>
-      ) : (
+      ) : !t2d ? (
         <p className="text-sm text-muted-foreground" role="note">
           This conceptual area guide covers SFO Terminal 2 D Gates only.
         </p>
-      )}
+      ) : null}
     </section>
   );
 }

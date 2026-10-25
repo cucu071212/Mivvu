@@ -85,6 +85,31 @@ describe("LocationGuidance", () => {
     );
   });
 
+  it("does not treat Vino Volo listing Retail Street as a current GW-B area when evidence is Unknown", () => {
+    const vinoVolo: Facility = {
+      ...t2Facility,
+      id: "sfo-t2-d-vino-volo",
+      name: "Vino Volo",
+      recommendEligible: false,
+      locationDescription: "D Gates, Retail Street",
+      nearestGateLandmark: null,
+    };
+    render(
+      <LocationGuidance facility={vinoVolo} evidence={TEST_UNKNOWN_LOCATION_EVIDENCE} />,
+    );
+    const section = screen.getByRole("region", { name: /Location guidance/i });
+    assert.ok(within(section).getByText("Unknown"));
+    assert.ok(within(section).getByText(/does not infer a location/i));
+    assert.equal(
+      within(section).queryByRole("region", {
+        name: /T2 D Gates area guide \(conceptual\)/i,
+      }),
+      null,
+    );
+    assert.equal(within(section).queryByText(/named on this listing/i), null);
+    assert.equal(within(section).queryByText("Retail Street", { exact: true }), null);
+  });
+
   it("discloses official map cells as directory indexes and links the map PDF", () => {
     render(
       <LocationGuidance
@@ -101,9 +126,9 @@ describe("LocationGuidance", () => {
     );
   });
 
-  it("shows the conceptual T2 D area guide only as documented relationships", () => {
+  it("shows the conceptual T2 D area guide only when GW-B evidence supports it", () => {
     render(
-      <LocationGuidance facility={t2Facility} evidence={TEST_UNKNOWN_LOCATION_EVIDENCE} />,
+      <LocationGuidance facility={t2Facility} evidence={TEST_VERIFIED_AREA_EVIDENCE} />,
     );
     const guide = screen.getByRole("region", {
       name: /T2 D Gates area guide \(conceptual\)/i,

@@ -114,6 +114,46 @@ describe("FacilityDetailDialog (GW-C-001)", () => {
     );
   });
 
+  it("does not mark a current T2 D area for Vino Volo when GW-B evidence is Unknown", () => {
+    const vinoVolo: Facility = {
+      ...recommendEligible,
+      id: "sfo-t2-d-vino-volo",
+      name: "Vino Volo",
+      recommendEligible: false,
+      locationDescription: "D Gates, Retail Street",
+      nearestGateLandmark: null,
+    };
+    render(
+      <FacilityDetailDialog facility={vinoVolo} open onClose={() => {}} />,
+    );
+    const dialog = screen.getByRole("dialog", { name: /Vino Volo/i });
+    const guidance = within(dialog).getByRole("region", {
+      name: /Location guidance/i,
+    });
+    assert.ok(within(guidance).getByText("Unknown"));
+    assert.ok(within(guidance).getByText(/does not infer a location/i));
+    assert.equal(
+      within(guidance).queryByRole("region", {
+        name: /T2 D Gates area guide \(conceptual\)/i,
+      }),
+      null,
+    );
+    assert.equal(within(guidance).queryByText(/named on this listing/i), null);
+    assert.ok(within(dialog).getByText("D Gates, Retail Street"));
+  });
+
+  it("keeps the dialog out of sequential tab order so focus stays on visible controls", () => {
+    render(
+      <FacilityDetailDialog
+        facility={recommendEligible}
+        open
+        onClose={() => {}}
+      />,
+    );
+    const dialog = screen.getByRole("dialog", { name: /Brookstone/i });
+    assert.equal(dialog.getAttribute("tabindex"), "-1");
+  });
+
   it("shows Unknown location evidence for facilities outside the Codex package", () => {
     render(
       <FacilityDetailDialog facility={browseOnly} open onClose={() => {}} />,

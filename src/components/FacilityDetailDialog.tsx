@@ -28,6 +28,14 @@ function timingConfidenceNote(facility: Facility): string {
   return "Queue and activity times are unknown unless you enter overrides on Recommendations; GateWise does not ingest live waits.";
 }
 
+/** 모달 안에서 Tab이 순환할 실제 컨트롤만 고른다. tabindex=-1 은 제외. */
+function focusableControls(root: HTMLElement): HTMLElement[] {
+  const nodes = root.querySelectorAll<HTMLElement>(
+    'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+  );
+  return Array.from(nodes).filter((node) => node.tabIndex >= 0);
+}
+
 export function FacilityDetailDialog({
   facility,
   open,
@@ -74,6 +82,32 @@ export function FacilityDetailDialog({
     return () => dialog.removeEventListener("cancel", handleCancel);
   }, [facility?.id, open, requestClose]);
 
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog || !open) return;
+    const handleTabBoundary = (event: KeyboardEvent) => {
+      if (event.key !== "Tab") return;
+      const controls = focusableControls(dialog);
+      if (controls.length === 0) return;
+      const first = controls[0];
+      const last = controls[controls.length - 1];
+      const active = document.activeElement;
+      const atStart = active === first || active === dialog;
+      const atEnd = active === last || active === dialog;
+      if (event.shiftKey && atStart) {
+        event.preventDefault();
+        last.focus();
+        return;
+      }
+      if (!event.shiftKey && atEnd) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    dialog.addEventListener("keydown", handleTabBoundary);
+    return () => dialog.removeEventListener("keydown", handleTabBoundary);
+  }, [facility?.id, open]);
+
   if (!facility) return null;
 
   const titleId = `facility-detail-${facility.id}-title`;
@@ -81,6 +115,7 @@ export function FacilityDetailDialog({
   return (
     <dialog
       ref={dialogRef}
+      tabIndex={-1}
       className="gw-facility-detail-dialog gw-surface-card backdrop:bg-black/50"
       aria-labelledby={titleId}
       onClose={onClose}

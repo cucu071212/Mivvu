@@ -125,35 +125,56 @@ export function isTerminal2DGatesFacility(
   );
 }
 
-/** 공식 리스팅이 Retail Street만 말하는지. 게이트를 추론하지 않는다. */
-function listingNamesRetailStreet(
-  facility: Pick<Facility, "nearestGateLandmark" | "locationDescription">,
+/** GW-B 증거가 구역을 지지할 때만 개념 안내를 연다. Unknown이면 숨긴다. */
+export function shouldShowConceptualAreaGuide(
+  evidence: FacilityLocationEvidence,
+  facility: Pick<Facility, "terminalCode" | "boardingAreaCode">,
 ): boolean {
-  if (facility.nearestGateLandmark) {
+  if (evidence.locationConfidence === "unknown") {
     return false;
   }
-  return /retail street/i.test(facility.locationDescription ?? "");
+  return isTerminal2DGatesFacility(facility);
+}
+
+/** 현재 칩은 Codex 증거만 사용한다. facilities.json 필드로 추론하지 않는다. */
+function currentGateFromEvidence(
+  evidence: FacilityLocationEvidence,
+): string | null {
+  return asKnown(evidence)?.nearGate ?? null;
+}
+
+/** Retail Street 현재 표시도 증거 areaLabel에서만 온다. */
+function evidenceNamesRetailStreet(
+  evidence: FacilityLocationEvidence,
+): boolean {
+  const known = asKnown(evidence);
+  if (!known || known.nearGate) {
+    return false;
+  }
+  return /retail street/i.test(known.areaLabel);
 }
 
 /**
  * 문서화된 T2 D 구역 칩.
- * 좌표·경로가 아니라 리스팅 랜드마크와 Retail Street 관계만 보여 준다.
+ * 두 번째 인자가 없으면 현재 마커를 만들지 않는다 — 레거시 필드로 채우지 않는다.
  */
 export function conceptualT2DAreaChips(
-  facility: Pick<Facility, "nearestGateLandmark" | "locationDescription">,
+  _listing: Pick<Facility, "nearestGateLandmark" | "locationDescription">,
+  evidence?: FacilityLocationEvidence,
 ): readonly ConceptualAreaChip[] {
+  const currentGate = evidence ? currentGateFromEvidence(evidence) : null;
+  const retailCurrent = evidence ? evidenceNamesRetailStreet(evidence) : false;
   const chips: ConceptualAreaChip[] = [
     { id: "d-gates", label: "D Gates", current: false },
   ];
   for (const landmark of T2_D_DOCUMENTED_GATE_LANDMARKS) {
-    const current = facility.nearestGateLandmark === landmark;
+    const current = currentGate === landmark;
     chips.push({
       id: landmark,
       label: current ? `Gate ${landmark}, named on this listing` : `Gate ${landmark}`,
       current,
     });
   }
-  const retailCurrent = listingNamesRetailStreet(facility);
   chips.push({
     id: "retail-street",
     label: retailCurrent
