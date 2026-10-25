@@ -82,7 +82,8 @@ export function FlightHeroPass({
 
   let modeLabel = "Manual baseline";
   if (boardingStarted) {
-    modeLabel = "Boarding started (baseline 0)";
+    // Whole-minute budgets round down before the actual boarding-start instant.
+    modeLabel = "Baseline at 0 whole minutes";
   } else if (baselineUsesLiveCountdown) {
     modeLabel = countdownPaused ? "Countdown paused" : "Live countdown";
   }
