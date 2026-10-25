@@ -5,6 +5,7 @@ import {
 import { isFacilityRecommendEligibleForEngine } from "@/lib/facility-location";
 import {
   isModelSafeMinute,
+  MAX_BOARDING_WINDOW_MINUTES,
   parseStrictInteger,
   safeIntegerSum,
 } from "@/lib/strict-integer";
@@ -52,6 +53,35 @@ function classifyMargin(
   if (marginMinutes >= 10) return "feasible_in_model";
   if (marginMinutes >= 0) return "tight_in_model";
   return "over_budget";
+}
+
+/** Primitive context fields use the 24-hour window; 0 boarding minutes is valid. */
+function isValidTwoStopContext(context: UserContext): boolean {
+  return (
+    parseStrictInteger(context.minutesUntilBoarding, {
+      allowNegative: false,
+      min: 0,
+      max: MAX_BOARDING_WINDOW_MINUTES,
+    }) !== undefined &&
+    parseStrictInteger(context.bufferMinutes, {
+      allowNegative: false,
+      min: 0,
+      max: MAX_BOARDING_WINDOW_MINUTES,
+    }) !== undefined &&
+    parseStrictInteger(context.queueAdjustmentMinutes, {
+      allowNegative: true,
+      min: -MAX_BOARDING_WINDOW_MINUTES,
+      max: MAX_BOARDING_WINDOW_MINUTES,
+    }) !== undefined
+  );
+}
+
+/**
+ * Adjusted queues are derived (raw queue + signed adjustment, floored at 0).
+ * They may exceed the 1,440 primitive cap; do not recap them as model-unsafe.
+ */
+function isValidDerivedQueueMinute(value: number): boolean {
+  return Number.isSafeInteger(value) && value >= 0;
 }
 
 function resolveLegacyDDemoLeg(
@@ -241,14 +271,10 @@ function evaluateOneOrder(
   };
 
   const hasInvalidNumeric =
+    !isValidTwoStopContext(context) ||
     legMinutes.some((m) => m !== null && !isModelSafeMinute(m)) ||
-    queueMinutes.some((m) => m !== null && !isModelSafeMinute(m)) ||
-    activityMinutes.some((m) => m !== null && !isModelSafeMinute(m)) ||
-    !isModelSafeMinute(bufferMinutes) ||
-    !parseStrictInteger(context.minutesUntilBoarding, {
-      allowNegative: false,
-      min: 0,
-    });
+    queueMinutes.some((m) => m !== null && !isValidDerivedQueueMinute(m)) ||
+    activityMinutes.some((m) => m !== null && !isModelSafeMinute(m));
 
   if (hasInvalidNumeric) {
     return {
