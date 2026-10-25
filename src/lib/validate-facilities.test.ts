@@ -242,6 +242,92 @@ describe("validateFacilities", () => {
     assert.ok(result.errors.some((error) => error.code === "invalid_minutes_field"));
   });
 
+  const enrichedHours: Facility = {
+    ...valid,
+    id: "enriched-hours",
+    hours: {
+      kind: "weekly_same_all_days",
+      rawText: "Sunday- Saturday 4:30 am-8:30 pm",
+      openLocal: "04:30",
+      closeLocal: "20:30",
+      timezone: "America/Los_Angeles",
+    },
+    hoursConfidence: "official_verified",
+    hoursLastCheckedAt: "2026-10-25",
+    hoursSourceUrl: "https://www.flysfo.com/passengers/shop-dine-relax/peets-coffee-0",
+    contact: { phoneE164OrDisplay: "650-821-9196", phoneSource: "official_listing" },
+    amenityDetails: {
+      tagline: "Specialty coffee and tea",
+      officialBadges: ["sfo_green_business"],
+      aboutExcerpt: "Pastries and salads",
+    },
+  };
+
+  it("accepts optional GW-A-001 hours, contact, and amenity fields on a valid row", () => {
+    assert.deepEqual(validate([enrichedHours]), { facilities: [enrichedHours], errors: [] });
+  });
+
+  it("accepts weekly hours with null open and close when raw text is preserved", () => {
+    const row = {
+      ...enrichedHours,
+      id: "partial-parse",
+      hours: {
+        kind: "weekly_same_all_days",
+        rawText: "Sunday - Saturday 6:00 am-10:00 pm",
+        openLocal: null,
+        closeLocal: null,
+        timezone: "America/Los_Angeles",
+      },
+    };
+    assert.deepEqual(validate([row]), { facilities: [row], errors: [] });
+  });
+
+  it("rejects weekly hours without provenance fields", () => {
+    const row: Record<string, unknown> = { ...enrichedHours, id: "no-prov" };
+    delete row.hoursLastCheckedAt;
+    rejected(row, "hoursLastCheckedAt", "missing_required_field");
+  });
+
+  it("rejects unknown hours with official_verified confidence", () => {
+    rejected({
+      ...enrichedHours,
+      id: "bad-hours-confidence",
+      hours: { kind: "unknown" },
+      hoursConfidence: "official_verified",
+    }, "hoursConfidence", "confidence_field_mismatch");
+  });
+
+  it("rejects asymmetric open and close local times", () => {
+    rejected({
+      ...enrichedHours,
+      id: "partial-times",
+      hours: {
+        kind: "weekly_same_all_days",
+        rawText: "Sunday - Saturday 6:00 am-10:00 pm",
+        openLocal: "06:00",
+        closeLocal: null,
+        timezone: "America/Los_Angeles",
+      },
+    }, "hours", "hours_parse_partial");
+  });
+
+  it("rejects invalid official badges and oversized about excerpts", () => {
+    rejected({
+      ...enrichedHours,
+      id: "bad-badge",
+      amenityDetails: { tagline: "x", officialBadges: ["priority_pass"], aboutExcerpt: null },
+    }, "amenityDetails.officialBadges[0]", "invalid_amenity_details");
+    rejected({
+      ...enrichedHours,
+      id: "long-about",
+      amenityDetails: {
+        tagline: null,
+        officialBadges: [],
+        aboutExcerpt: "x".repeat(2001),
+      },
+    }, "amenityDetails.aboutExcerpt", "invalid_amenity_details");
+  });
+
   it("does not mutate inputs, returns fresh records, and is deterministic", () => {
     const row = Object.freeze({ ...valid, id: " sample ", extra: "not a Facility field" });
     const input = Object.freeze([row]);

@@ -1,19 +1,29 @@
 import { parseStrictInteger } from "@/lib/strict-integer";
-import type {
-  DataConfidence,
-  Facility,
-  FacilityCategory,
-  FacilityValidationError,
-  FacilityValidationErrorCode,
-  GateLandmark,
-  SecurityZone,
-  ValidateFacilities,
+import {
+  FACILITY_ABOUT_EXCERPT_MAX_LENGTH,
+  FACILITY_HOURS_TIMEZONE,
+  FACILITY_OFFICIAL_BADGES,
+  type DataConfidence,
+  type Facility,
+  type FacilityAmenityDetails,
+  type FacilityCategory,
+  type FacilityContact,
+  type FacilityHours,
+  type FacilityOfficialBadge,
+  type FacilityPhoneSource,
+  type FacilityValidationError,
+  type FacilityValidationErrorCode,
+  type GateLandmark,
+  type SecurityZone,
+  type ValidateFacilities,
 } from "@/types/airport";
 
 const categories = ["food", "coffee", "restroom", "charging", "shop"] as const satisfies readonly FacilityCategory[];
 const securityZones = ["pre", "post", "both", "unknown"] as const satisfies readonly SecurityZone[];
 const confidences = ["official_verified", "third_party", "demo_estimate", "unknown"] as const satisfies readonly DataConfidence[];
 const landmarks = ["D1", "D4", "D7", "D9", "D15", "D16"] as const satisfies readonly GateLandmark[];
+const phoneSources = ["official_listing", "unknown"] as const satisfies readonly FacilityPhoneSource[];
+const hoursTimezones = [FACILITY_HOURS_TIMEZONE] as const;
 const requiredFields = [
   "id", "name", "zone", "category", "securityZone", "locationConfidence",
   "timeConfidence", "waitMinutes", "activityMinutes",
@@ -34,6 +44,267 @@ function calendarDate(value: string): boolean {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
   const parsed = new Date(`${value}T00:00:00.000Z`);
   return Number.isFinite(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
+}
+
+function httpUrl(value: string): boolean {
+  try {
+    const parsed = new URL(value);
+    return parsed.protocol === "http:" || parsed.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+function localTimeHHmm(value: unknown): string | null | undefined {
+  if (value === null) return null;
+  if (typeof value !== "string") return undefined;
+  const trimmed = value.trim();
+  if (!/^\d{2}:\d{2}$/.test(trimmed)) return undefined;
+  const [hourPart, minutePart] = trimmed.split(":");
+  const hour = Number(hourPart);
+  const minute = Number(minutePart);
+  if (!Number.isInteger(hour) || !Number.isInteger(minute)) return undefined;
+  if (hour < 0 || hour > 23 || minute < 0 || minute > 59) return undefined;
+  return trimmed;
+}
+
+type HoursParseResult = { hours?: FacilityHours; hoursConfidence?: DataConfidence };
+
+function parseHoursBlock(
+  row: Record<string, unknown>,
+  error: (field: string, code: FacilityValidationErrorCode, message: string) => void,
+): HoursParseResult {
+  const result: HoursParseResult = {};
+  const hasHours = Object.prototype.hasOwnProperty.call(row, "hours");
+  const hasHoursConfidence = Object.prototype.hasOwnProperty.call(row, "hoursConfidence");
+
+  if (!hasHours && !hasHoursConfidence) return result;
+
+  if (hasHoursConfidence) {
+    const hoursConfidence = member(row.hoursConfidence, confidences);
+    if (hoursConfidence === undefined) {
+      error("hoursConfidence", "invalid_confidence", "Unsupported hours confidence.");
+      return result;
+    }
+    result.hoursConfidence = hoursConfidence;
+  }
+
+  if (!hasHours) {
+    if (result.hoursConfidence === "official_verified") {
+      error("hours", "missing_required_field", "Officially verified hours require an hours object.");
+    }
+    return result;
+  }
+
+  if (row.hours === null || typeof row.hours !== "object" || Array.isArray(row.hours)) {
+    error("hours", "invalid_hours", "Hours must be an object.");
+    return result;
+  }
+  const hoursRow = row.hours as Record<string, unknown>;
+  const kind = hoursRow.kind;
+
+  if (kind === "unknown") {
+    let rawText: string | undefined;
+    if (hoursRow.rawText !== undefined) {
+      if (typeof hoursRow.rawText !== "string" || hoursRow.rawText.trim().length === 0) {
+        error("hours.rawText", "invalid_hours", "Hours raw text must be a non-empty string when provided.");
+      } else {
+        rawText = hoursRow.rawText;
+      }
+    }
+    result.hours = rawText !== undefined ? { kind: "unknown", rawText } : { kind: "unknown" };
+    if (result.hoursConfidence === "official_verified") {
+      error("hoursConfidence", "confidence_field_mismatch", "Unknown hours cannot use official_verified confidence.");
+    }
+    return result;
+  }
+
+  if (kind !== "weekly_same_all_days") {
+    error("hours.kind", "invalid_hours", "Hours kind must be weekly_same_all_days or unknown.");
+    return result;
+  }
+
+  const rawText = typeof hoursRow.rawText === "string" ? hoursRow.rawText.trim() : "";
+  if (!rawText) {
+    error("hours.rawText", "missing_required_field", "Weekly hours require verbatim rawText from the listing.");
+  }
+  const timezone = member(hoursRow.timezone, hoursTimezones);
+  if (timezone === undefined) {
+    error("hours.timezone", "invalid_hours", `Hours timezone must be ${FACILITY_HOURS_TIMEZONE}.`);
+  }
+  const openParsed = localTimeHHmm(hoursRow.openLocal);
+  const closeParsed = localTimeHHmm(hoursRow.closeLocal);
+  if (hoursRow.openLocal !== undefined && hoursRow.openLocal !== null && openParsed === undefined) {
+    error("hours.openLocal", "invalid_hours", "openLocal must be null or HH:mm (00:00–23:59).");
+  }
+  if (hoursRow.closeLocal !== undefined && hoursRow.closeLocal !== null && closeParsed === undefined) {
+    error("hours.closeLocal", "invalid_hours", "closeLocal must be null or HH:mm (00:00–23:59).");
+  }
+  const openLocal = hoursRow.openLocal === undefined ? null : openParsed;
+  const closeLocal = hoursRow.closeLocal === undefined ? null : closeParsed;
+  if (openLocal !== null && closeLocal === null) {
+    error("hours", "hours_parse_partial", "closeLocal is required when openLocal is set.");
+  }
+  if (closeLocal !== null && openLocal === null) {
+    error("hours", "hours_parse_partial", "openLocal is required when closeLocal is set.");
+  }
+
+  if (!rawText || !timezone) {
+    return result;
+  }
+
+  result.hours = {
+    kind: "weekly_same_all_days",
+    rawText,
+    openLocal: openLocal ?? null,
+    closeLocal: closeLocal ?? null,
+    timezone,
+  };
+
+  if (result.hoursConfidence === undefined) {
+    result.hoursConfidence = "official_verified";
+  } else if (result.hoursConfidence !== "official_verified") {
+    error("hoursConfidence", "confidence_field_mismatch", "Weekly published hours must use official_verified confidence.");
+  }
+
+  return result;
+}
+
+function parseHoursProvenance(
+  row: Record<string, unknown>,
+  error: (field: string, code: FacilityValidationErrorCode, message: string) => void,
+  hours?: FacilityHours,
+  hoursConfidence?: DataConfidence,
+): { hoursLastCheckedAt?: string; hoursSourceUrl?: string } {
+  const provenance: { hoursLastCheckedAt?: string; hoursSourceUrl?: string } = {};
+  const weeklyVerified =
+    hours?.kind === "weekly_same_all_days" && hoursConfidence === "official_verified";
+
+  if (row.hoursLastCheckedAt !== undefined) {
+    if (typeof row.hoursLastCheckedAt !== "string" || !calendarDate(row.hoursLastCheckedAt.trim())) {
+      error("hoursLastCheckedAt", "invalid_date", "Hours verification date must be a real YYYY-MM-DD calendar date.");
+    } else {
+      provenance.hoursLastCheckedAt = row.hoursLastCheckedAt.trim();
+    }
+  } else if (weeklyVerified) {
+    error("hoursLastCheckedAt", "missing_required_field", "Officially verified hours require hoursLastCheckedAt.");
+  }
+
+  if (row.hoursSourceUrl !== undefined) {
+    if (typeof row.hoursSourceUrl !== "string") {
+      error("hoursSourceUrl", "invalid_url", "Hours source URL must be an HTTP or HTTPS URL.");
+    } else {
+      const trimmed = row.hoursSourceUrl.trim();
+      if (!httpUrl(trimmed)) {
+        error("hoursSourceUrl", "invalid_url", "Hours source URL must be a valid HTTP or HTTPS URL.");
+      } else {
+        provenance.hoursSourceUrl = trimmed;
+      }
+    }
+  } else if (weeklyVerified) {
+    error("hoursSourceUrl", "missing_required_field", "Officially verified hours require hoursSourceUrl.");
+  }
+
+  return provenance;
+}
+
+function parseContact(
+  row: Record<string, unknown>,
+  error: (field: string, code: FacilityValidationErrorCode, message: string) => void,
+): FacilityContact | undefined {
+  if (row.contact === undefined) return undefined;
+  if (row.contact === null || typeof row.contact !== "object" || Array.isArray(row.contact)) {
+    error("contact", "invalid_contact", "Contact must be an object.");
+    return undefined;
+  }
+  const contactRow = row.contact as Record<string, unknown>;
+  let phoneE164OrDisplay: string | null | undefined;
+  if (contactRow.phoneE164OrDisplay === null) {
+    phoneE164OrDisplay = null;
+  } else if (typeof contactRow.phoneE164OrDisplay === "string") {
+    const trimmed = contactRow.phoneE164OrDisplay.trim();
+    phoneE164OrDisplay = trimmed.length === 0 ? undefined : trimmed;
+  } else if (contactRow.phoneE164OrDisplay !== undefined) {
+    error("contact.phoneE164OrDisplay", "invalid_contact", "Phone must be a string or null.");
+    return undefined;
+  }
+  const phoneSource = member(contactRow.phoneSource, phoneSources);
+  if (phoneSource === undefined) {
+    error("contact.phoneSource", "invalid_contact", "Phone source must be official_listing or unknown.");
+    return undefined;
+  }
+  if (phoneE164OrDisplay === undefined) {
+    error("contact.phoneE164OrDisplay", "missing_required_field", "Contact requires phoneE164OrDisplay (string or null).");
+    return undefined;
+  }
+  if (phoneSource === "official_listing" && phoneE164OrDisplay === null) {
+    error("contact.phoneE164OrDisplay", "confidence_field_mismatch", "official_listing contact requires a phone string.");
+  }
+  return { phoneE164OrDisplay, phoneSource };
+}
+
+function parseAmenityDetails(
+  row: Record<string, unknown>,
+  error: (field: string, code: FacilityValidationErrorCode, message: string) => void,
+): FacilityAmenityDetails | undefined {
+  if (row.amenityDetails === undefined) return undefined;
+  if (row.amenityDetails === null || typeof row.amenityDetails !== "object" || Array.isArray(row.amenityDetails)) {
+    error("amenityDetails", "invalid_amenity_details", "Amenity details must be an object.");
+    return undefined;
+  }
+  const detailsRow = row.amenityDetails as Record<string, unknown>;
+  let tagline: string | null | undefined;
+  if (detailsRow.tagline === null) {
+    tagline = null;
+  } else if (typeof detailsRow.tagline === "string") {
+    tagline = detailsRow.tagline;
+  } else if (detailsRow.tagline !== undefined) {
+    error("amenityDetails.tagline", "invalid_amenity_details", "Tagline must be a string or null.");
+    return undefined;
+  } else {
+    error("amenityDetails.tagline", "missing_required_field", "Amenity details require tagline (string or null).");
+    return undefined;
+  }
+
+  if (!Array.isArray(detailsRow.officialBadges)) {
+    error("amenityDetails.officialBadges", "invalid_amenity_details", "officialBadges must be an array.");
+    return undefined;
+  }
+  const officialBadges: FacilityOfficialBadge[] = [];
+  for (let badgeIndex = 0; badgeIndex < detailsRow.officialBadges.length; badgeIndex += 1) {
+    const badge = member(detailsRow.officialBadges[badgeIndex], FACILITY_OFFICIAL_BADGES);
+    if (badge === undefined) {
+      error(
+        `amenityDetails.officialBadges[${badgeIndex}]`,
+        "invalid_amenity_details",
+        "Unsupported official badge value.",
+      );
+      return undefined;
+    }
+    officialBadges.push(badge);
+  }
+
+  let aboutExcerpt: string | null | undefined;
+  if (detailsRow.aboutExcerpt === null) {
+    aboutExcerpt = null;
+  } else if (typeof detailsRow.aboutExcerpt === "string") {
+    if (detailsRow.aboutExcerpt.length > FACILITY_ABOUT_EXCERPT_MAX_LENGTH) {
+      error(
+        "amenityDetails.aboutExcerpt",
+        "invalid_amenity_details",
+        `aboutExcerpt must be at most ${FACILITY_ABOUT_EXCERPT_MAX_LENGTH} characters.`,
+      );
+      return undefined;
+    }
+    aboutExcerpt = detailsRow.aboutExcerpt;
+  } else if (detailsRow.aboutExcerpt !== undefined) {
+    error("amenityDetails.aboutExcerpt", "invalid_amenity_details", "aboutExcerpt must be a string or null.");
+    return undefined;
+  } else {
+    aboutExcerpt = null;
+  }
+
+  return { tagline, officialBadges, aboutExcerpt };
 }
 
 /** Validates rows independently, preserving input order and the first valid ID. */
@@ -137,6 +408,12 @@ export const validateFacilities: ValidateFacilities = (raw) => {
     if (row.nearestGateLandmark !== undefined && nearestGateLandmark === undefined) {
       error("nearestGateLandmark", "invalid_shape", "Gate landmark must be a supported D gate or null.");
     }
+
+    const { hours, hoursConfidence } = parseHoursBlock(row, error);
+    const { hoursLastCheckedAt, hoursSourceUrl } = parseHoursProvenance(row, error, hours, hoursConfidence);
+    const contact = parseContact(row, error);
+    const amenityDetails = parseAmenityDetails(row, error);
+
     if (id && seen.has(id)) error("id", "duplicate_id", `Duplicate facility ID: ${id}.`);
 
     // The guards also narrow unknown input to the frozen Facility contract.
@@ -152,6 +429,12 @@ export const validateFacilities: ValidateFacilities = (raw) => {
       ...(lastCheckedAt !== undefined ? { lastCheckedAt } : {}),
       ...(locationDescription !== undefined ? { locationDescription } : {}),
       ...(nearestGateLandmark !== undefined ? { nearestGateLandmark } : {}),
+      ...(hours !== undefined ? { hours } : {}),
+      ...(hoursConfidence !== undefined ? { hoursConfidence } : {}),
+      ...(hoursLastCheckedAt !== undefined ? { hoursLastCheckedAt } : {}),
+      ...(hoursSourceUrl !== undefined ? { hoursSourceUrl } : {}),
+      ...(contact !== undefined ? { contact } : {}),
+      ...(amenityDetails !== undefined ? { amenityDetails } : {}),
     });
     seen.add(id);
   }
