@@ -200,4 +200,49 @@ describe("GateWiseHome countdown expiry and clock rollback (mounted)", () => {
       screen.getByText(/Boarding has started per your device clock/),
     ).toBeTruthy();
   });
+
+  it("does not regain a budget minute through pause/resume after tolerated clock jitter", () => {
+    renderHome();
+    enableDemo();
+    // Demo required = 3 + 3 + 8 + 10 + 10 = 34. A 43-minute
+    // baseline is tight (+9); incorrectly restoring 44 makes it feasible (+10).
+    startCountdownInMinutes(44);
+    act(() => vi.advanceTimersByTime(1_000));
+    expect(baselineInput().value).toBe("43");
+    act(() => vi.setSystemTime(new Date(Date.now() - 1_000)));
+    fireEvent.click(screen.getByRole("button", { name: "Pause" }));
+    expect(baselineInput().value).toBe("43");
+    fireEvent.click(screen.getByRole("button", { name: "Resume" }));
+    expect(baselineInput().value).toBe("43");
+    expect(rankedCard(DOLORES_NAME)!.textContent).toMatch(/Tight in model/);
+  });
+
+  it("does not announce boarding started just because fewer than 60 seconds remain", () => {
+    renderHome();
+    startCountdownInMinutes(1);
+    act(() => vi.advanceTimersByTime(1_000));
+    expect(baselineInput().value).toBe("0");
+    expect(screen.queryByText("Boarding started (baseline 0)")).toBeNull();
+    expect(screen.queryByText(/Boarding has started per your device clock/)).toBeNull();
+    act(() => vi.advanceTimersByTime(59_000));
+    expect(screen.getByText(/Boarding has started per your device clock/)).toBeTruthy();
+  });
+
+  it("stops results after cumulative small rollbacks exceed the clock tolerance", () => {
+    renderHome();
+    enableDemo();
+    startCountdownInMinutes(44);
+    act(() => vi.advanceTimersByTime(1_000));
+    // Each observed rollback is only 3 seconds; together they exceed 5 seconds.
+    for (let index = 0; index < 2; index++) {
+      act(() => {
+        vi.setSystemTime(new Date(Date.now() - 4_000));
+        vi.advanceTimersByTime(1_000);
+      });
+    }
+    expect(baselineInput().readOnly).toBe(false);
+    expect(screen.getByText(/device clock moved backward/i)).toBeTruthy();
+    expect(within(rankedList()).queryAllByRole("article")).toHaveLength(0);
+    expect(whatIfSection()).toBeNull();
+  });
 });

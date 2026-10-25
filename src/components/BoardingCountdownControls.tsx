@@ -113,7 +113,7 @@ export function BoardingCountdownControls({
         failCountdown(errorMessage(outcome.code), outcome.lastBaselineMinutes);
         return;
       }
-      tickMemoryRef.current = advanceTickMemory(outcome, now);
+      tickMemoryRef.current = advanceTickMemory(outcome, now, tickMemoryRef.current);
       onBaselineMinutesChangeRef.current(outcome.minutesUntilBoarding);
       setBoardingStartedVisible(outcome.boardingStarted);
     },
@@ -200,7 +200,11 @@ export function BoardingCountdownControls({
       failCountdown(errorMessage(check.code), check.lastBaselineMinutes);
       return;
     }
-    const result = safePauseCountdown(state, now);
+    const memory = tickMemoryRef.current;
+    // Tolerated clock jitter must not add time to the frozen remainder:
+    // resume uses those exact milliseconds to construct a new target.
+    const pauseAt = new Date(Math.max(now.getTime(), memory.lastTickAtMs ?? now.getTime()));
+    const result = safePauseCountdown(state, pauseAt);
     if (!result.ok) {
       failCountdown(
         errorMessage(result.code),
@@ -208,7 +212,6 @@ export function BoardingCountdownControls({
       );
       return;
     }
-    const memory = tickMemoryRef.current;
     const paused = memory.expired
       ? { ...result.state, pausedRemainingMs: 0 }
       : result.state;

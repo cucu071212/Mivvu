@@ -15,6 +15,20 @@ function running(start: Date): BoardingCountdownState {
 }
 
 describe("runRunningCountdownTick", () => {
+  it("rejects cumulative backward jitter beyond five seconds from the latest clock reading", () => {
+    const state = running(new Date("2026-10-24T18:44:00Z"));
+    let memory = freshTickMemory(44);
+    for (const timestamp of ["2026-10-24T18:00:01Z", "2026-10-24T17:59:58Z"]) {
+      const now = new Date(timestamp);
+      const outcome = runRunningCountdownTick(state, now, memory);
+      expect(outcome.kind).toBe("ok");
+      if (outcome.kind !== "ok") throw new Error("expected tolerated tick");
+      memory = advanceTickMemory(outcome, now, memory);
+    }
+    expect(runRunningCountdownTick(state, new Date("2026-10-24T17:59:55Z"), memory))
+      .toEqual({ kind: "invalid", code: "clock_moved_backward", lastBaselineMinutes: 43 });
+  });
+
   it("returns noop when not in running countdown mode", () => {
     expect(
       runRunningCountdownTick(
@@ -75,7 +89,7 @@ describe("runRunningCountdownTick", () => {
     );
     expect(expiredOutcome).toMatchObject({ kind: "ok", boardingStarted: true });
     if (expiredOutcome.kind !== "ok") throw new Error("expected ok");
-    const memory = advanceTickMemory(expiredOutcome, expiredAt);
+    const memory = advanceTickMemory(expiredOutcome, expiredAt, freshTickMemory(1));
 
     const rolledBack = new Date("2026-10-24T17:12:00");
     expect(runRunningCountdownTick(running(start), rolledBack, memory)).toEqual({

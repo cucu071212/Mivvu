@@ -6,7 +6,7 @@ export const CLOCK_ROLLBACK_TOLERANCE_MS = 5_000;
 
 export type RunningTickMemory = {
   lastBaselineMinutes: number;
-  /** Device time of the previous accepted tick; null right after start/resume. */
+  /** Latest device time observed by accepted ticks; null right after start/resume. */
   lastTickAtMs: number | null;
   /** Latched once boarding start is reached; never un-expires for this countdown. */
   expired: boolean;
@@ -72,10 +72,13 @@ export function runRunningCountdownTick(
 export function advanceTickMemory(
   outcome: Extract<RunningTickOutcome, { kind: "ok" }>,
   now: Date,
+  previous: RunningTickMemory,
 ): RunningTickMemory {
   return {
     lastBaselineMinutes: outcome.minutesUntilBoarding,
-    lastTickAtMs: now.getTime(),
+    // Retain the high-water time so repeated small rollbacks cannot reset
+    // the tolerance window and keep a stale recommendation budget alive.
+    lastTickAtMs: Math.max(now.getTime(), previous.lastTickAtMs ?? now.getTime()),
     expired: outcome.boardingStarted,
   };
 }
