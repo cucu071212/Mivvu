@@ -48,6 +48,14 @@ export function FlightScreen() {
         airportLabel={SUPPORTED_AIRPORT_IATA}
         terminalLabel={SUPPORTED_TERMINAL_LABEL}
         zoneLabel={SUPPORTED_BOARDING_AREA_LABEL}
+        actions={[
+          { href: "/explore", label: "Explore amenities", variant: "secondary" },
+          {
+            href: "/recommendations",
+            label: "View recommendations",
+            variant: "primary",
+          },
+        ]}
       />
 
       <div className="gw-surface-card grid gap-4 p-4 sm:grid-cols-2 sm:p-5">

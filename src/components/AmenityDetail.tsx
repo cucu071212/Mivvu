@@ -1,4 +1,5 @@
 import type { ProductionRecommendation } from "@/types/airport";
+import { TimeBudgetTimeline } from "@/components/TimeBudgetTimeline";
 import {
   formatMinuteValue,
   formatSignedMinutes,
@@ -73,32 +74,48 @@ export function AmenityDetail({ recommendation }: AmenityDetailProps) {
           {unknownReasonLabel(recommendation.unknownReason)} Totals and margin stay
           unshown until every required duration is known.
         </p>
-        <dl className="grid gap-2 font-mono text-sm">
-          {unknownRows(recommendation).map((row) => (
-            <div
-              key={row.label}
-              className="flex items-start justify-between gap-3 border-b border-border/60 pb-2 last:border-0"
-            >
-              <dt className="text-muted-foreground">{row.label}</dt>
-              <dd className="text-right text-card-foreground">{row.value}</dd>
-            </div>
-          ))}
-        </dl>
+        <TimeBudgetTimeline recommendation={recommendation} />
+        <details className="text-sm">
+          <summary className="gw-focus-ring cursor-pointer font-medium text-card-foreground">
+            Numeric breakdown table
+          </summary>
+          <dl className="mt-2 grid gap-2 font-mono text-sm">
+            {unknownRows(recommendation).map((row) => (
+              <div
+                key={row.label}
+                className="flex items-start justify-between gap-3 border-b border-border/60 pb-2 last:border-0"
+              >
+                <dt className="text-muted-foreground">{row.label}</dt>
+                <dd className="text-right text-card-foreground">{row.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </details>
       </div>
     );
   }
 
   return (
-    <dl className="grid gap-2 font-mono text-sm">
-      {feasibilityRows(recommendation).map((row) => (
-        <div
-          key={row.label}
-          className="flex items-start justify-between gap-3 border-b border-border/60 pb-2 last:border-0"
-        >
-          <dt className="text-muted-foreground">{row.label}</dt>
-          <dd className="text-right font-medium text-card-foreground">{row.value}</dd>
-        </div>
-      ))}
-    </dl>
+    <div className="flex flex-col gap-3">
+      <TimeBudgetTimeline recommendation={recommendation} />
+      <details className="text-sm">
+        <summary className="gw-focus-ring cursor-pointer font-medium text-card-foreground">
+          Numeric breakdown table
+        </summary>
+        <dl className="mt-2 grid gap-2 font-mono text-sm">
+          {feasibilityRows(recommendation).map((row) => (
+            <div
+              key={row.label}
+              className="flex items-start justify-between gap-3 border-b border-border/60 pb-2 last:border-0"
+            >
+              <dt className="text-muted-foreground">{row.label}</dt>
+              <dd className="text-right font-medium text-card-foreground">
+                {row.value}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </details>
+    </div>
   );
 }
