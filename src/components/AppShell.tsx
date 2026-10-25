@@ -11,10 +11,12 @@ import { AppNav } from "@/components/AppNav";
 import { BoardingCountdownControls } from "@/components/BoardingCountdownControls";
 import { PersonalizedTimeControls } from "@/components/PersonalizedTimeControls";
 import { useGateWiseSession } from "@/context/gatewise-session";
+import { useAirportSelection } from "@/context/airport-selection";
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname() || "/";
   const session = useGateWiseSession();
+  const { reopenSelection } = useAirportSelection();
   const onFlight = pathname === "/";
   const onResults = pathname === "/recommendations";
   const countdownVariant = onFlight ? "full" : "dock";
@@ -26,10 +28,19 @@ export function AppShell({ children }: { children: ReactNode }) {
       </a>
       <header className="gw-app-header">
         <div className="gw-rail">
-          <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-            {SUPPORTED_AIRPORT_IATA} · {SUPPORTED_TERMINAL_LABEL} ·{" "}
-            {SUPPORTED_BOARDING_AREA_LABEL}
-          </p>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+              {SUPPORTED_AIRPORT_IATA} · {SUPPORTED_TERMINAL_LABEL} ·{" "}
+              {SUPPORTED_BOARDING_AREA_LABEL}
+            </p>
+            <button
+              type="button"
+              className="gw-focus-ring text-xs font-medium text-primary underline-offset-2 hover:underline"
+              onClick={reopenSelection}
+            >
+              Change airport
+            </button>
+          </div>
           <div className="gw-brand-mark">
             <span className="gw-brand-icon" aria-hidden="true">
               GW
