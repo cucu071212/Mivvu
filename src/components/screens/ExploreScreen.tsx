@@ -6,19 +6,28 @@ import { AmenityFilter } from "@/components/AmenityFilter";
 import { FacilityBrowseCard } from "@/components/FacilityBrowseCard";
 import { TerminalSchematic } from "@/components/TerminalSchematic";
 import { useGateWiseSession } from "@/context/gatewise-session";
-import { filterFacilities } from "@/lib/filter-facilities";
+import {
+  countBrowseEligible,
+  filterBrowseDirectory,
+} from "@/lib/filter-browse-directory";
 
 export function ExploreScreen() {
   const session = useGateWiseSession();
-  const canRank =
-    session.datasetValid &&
-    session.contextValid &&
-    session.personalizationUsable &&
-    !session.baselineRecoveryRequired;
+
+  const browseTotal = useMemo(
+    () => countBrowseEligible(session.facilities),
+    [session.facilities],
+  );
 
   const directoryFacilities = useMemo(
-    () => filterFacilities(session.facilities, session.filterQuery),
+    () => filterBrowseDirectory(session.facilities, session.filterQuery),
     [session.facilities, session.filterQuery],
+  );
+
+  const recommendEligibleCount = useMemo(
+    () =>
+      session.facilities.filter((facility) => facility.recommendEligible).length,
+    [session.facilities],
   );
 
   return (
@@ -28,28 +37,62 @@ export function ExploreScreen() {
           Explore
         </h1>
         <p className="text-sm text-muted-foreground">
-          Search and filter verified Terminal 2 D Gates amenities. The schematic
-          is orientation only — ranked timing lives on Results.
+          SFO-wide facility directory from verified official listings. Browse
+          any terminal here; time-based recommendations remain limited to your
+          Terminal 2 D Gates flight context.
         </p>
       </header>
+
+      <section
+        className="gw-surface-card border-[var(--gw-cyan-muted)] bg-[color-mix(in_srgb,var(--gw-cyan)_8%,var(--gw-card))] p-4"
+        aria-labelledby="explore-scope-heading"
+        role="note"
+      >
+        <h2
+          id="explore-scope-heading"
+          className="text-sm font-semibold text-card-foreground"
+        >
+          Browse vs recommend
+        </h2>
+        <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-muted-foreground">
+          <li>
+            <strong className="font-medium text-card-foreground">
+              {browseTotal} facilities
+            </strong>{" "}
+            are available to browse across terminals in this dataset.
+          </li>
+          <li>
+            Only{" "}
+            <strong className="font-medium text-card-foreground">
+              {recommendEligibleCount} Terminal 2 D Gates
+            </strong>{" "}
+            facilities participate in ranked time-based recommendations today.
+          </li>
+          <li>
+            Browsing a facility in another terminal does{" "}
+            <strong className="font-medium text-card-foreground">not</strong>{" "}
+            mean you can reach it from your gate before boarding — no
+            cross-terminal walking times are modeled.
+          </li>
+        </ul>
+      </section>
 
       <AmenityFilter
         value={session.filter}
         onChange={session.setFilter}
-        resultCount={canRank ? session.recommendations.length : 0}
-        disabled={!session.datasetValid || !session.contextValid}
+        directoryCount={directoryFacilities.length}
+        browseTotal={browseTotal}
+        disabled={!session.datasetValid}
       />
 
       {!session.contextValid ? (
-        <p
-          className="gw-surface-card border-destructive/40 p-4 text-sm text-destructive"
-          role="alert"
-        >
-          Fix flight context on{" "}
+        <p className="text-sm text-muted-foreground" role="status">
+          Flight context is incomplete — you can still browse facilities. Fix
+          minutes and buffer on{" "}
           <Link href="/" className="font-semibold underline">
             Flight
           </Link>{" "}
-          before ranking places by time budget.
+          to open ranked recommendations.
         </p>
       ) : null}
 
@@ -62,11 +105,12 @@ export function ExploreScreen() {
             id="explore-directory-heading"
             className="text-lg font-semibold text-foreground"
           >
-            Facility details
+            Facility directory
           </h2>
           <p className="text-sm text-muted-foreground">
             Published hours and amenities from official SFO listings — not live
-            availability. Filter above updates this directory and ranked results.
+            open/closed status. Filters apply here and to ranked results on
+            Recommendations when your flight context is valid.
           </p>
         </div>
         {!session.datasetValid ? (
@@ -75,8 +119,9 @@ export function ExploreScreen() {
           </p>
         ) : directoryFacilities.length === 0 ? (
           <p className="gw-surface-card p-4 text-sm text-muted-foreground">
-            No facilities match your search. Clear filters to browse all twelve
-            verified places.
+            No facilities match your filters. Clear terminal, boarding area,
+            category, or search text to see all {browseTotal} browse-eligible
+            places.
           </p>
         ) : (
           <ul className="flex flex-col gap-4">
@@ -92,14 +137,13 @@ export function ExploreScreen() {
       <details
         id="gw-section-map"
         className="gw-surface-card gw-premium-card group"
-        open
       >
         <summary
           id="terminal-schematic-summary"
           className="gw-focus-ring cursor-pointer list-none px-4 py-4 text-base font-semibold text-card-foreground marker:content-none [&::-webkit-details-marker]:hidden"
         >
           <span className="flex min-h-11 items-center justify-between gap-2">
-            <span>D Gates schematic (full directory)</span>
+            <span>Terminal 2 D Gates schematic (orientation)</span>
             <span
               className="text-sm font-normal text-muted-foreground group-open:hidden"
               aria-hidden="true"
@@ -117,26 +161,12 @@ export function ExploreScreen() {
         <div className="border-t border-border px-4 pb-4 pt-3">
           <div className="flex flex-col gap-3">
             <p className="text-sm text-muted-foreground" role="note">
-              Orientation only — lists all verified facilities from source
-              records. This directory is{" "}
-              <strong className="font-medium text-card-foreground">
-                not filtered
-              </strong>{" "}
-              by search or category above and is{" "}
-              <strong className="font-medium text-card-foreground">not</strong>{" "}
-              the ranked recommendation list.
+              T2 D Gates only — not filtered by search above and not a map of
+              other terminals. Ranked timing lives on Recommendations.
             </p>
             {session.demoEstimatesEnabled ? (
               <p className="text-sm text-muted-foreground" role="note">
                 Demo wait/activity estimates affect recommendation cards only.
-                Schematic timing badges still reflect official dataset confidence.
-              </p>
-            ) : null}
-            {!session.datasetValid ? (
-              <p className="text-sm text-destructive" role="alert">
-                Recommendations are disabled because facility validation failed.
-                The schematic may still show valid rows alongside its own
-                validation notice.
               </p>
             ) : null}
             <TerminalSchematic className="border-0 bg-transparent p-0 shadow-none sm:p-0" />
@@ -148,7 +178,7 @@ export function ExploreScreen() {
         href="/recommendations"
         className="gw-btn-primary self-start no-underline"
       >
-        Open ranked results
+        Open ranked results (T2 D Gates scope)
       </Link>
     </div>
   );

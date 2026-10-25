@@ -10,7 +10,9 @@ export const filterFacilities: FilterFacilities = (facilities, query) => {
       (facility) =>
         facility.name.toLowerCase().includes(text) &&
         (query.category === undefined || facility.category === query.category) &&
-        (query.zone === undefined || facility.zone === query.zone),
+        (query.zone === undefined || facility.zone === query.zone) &&
+        (query.terminalCode === undefined ||
+          facility.terminalCode === query.terminalCode),
     )
     .sort((left, right) =>
       left.name.localeCompare(right.name, "en-US", { sensitivity: "base" }),

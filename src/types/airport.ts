@@ -389,7 +389,9 @@ export type FacilityFilterQuery = {
   /** Case-insensitive substring match on `facility.name` (trimmed query; empty/omitted = no text filter). */
   text?: string;
   category?: FacilityCategory;
+  /** Boarding area code (B–G). */
   zone?: Zone;
+  terminalCode?: TerminalCode;
 };
 
 // ---------------------------------------------------------------------------

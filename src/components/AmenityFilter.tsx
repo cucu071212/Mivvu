@@ -1,16 +1,25 @@
 "use client";
 
-import type { FacilityCategory } from "@/types/airport";
+import type { FacilityCategory, TerminalCode, Zone } from "@/types/airport";
+import {
+  BOARDING_AREA_CODES,
+  TERMINAL_DISPLAY_LABELS,
+} from "@/lib/facility-present";
 
 export type AmenityFilterValue = {
   text: string;
   category: FacilityCategory | "";
+  terminalCode: TerminalCode | "";
+  boardingArea: Zone | "";
 };
 
 export type AmenityFilterProps = {
   value: AmenityFilterValue;
   onChange: (next: AmenityFilterValue) => void;
-  resultCount: number;
+  /** Browse directory match count (Explore). */
+  directoryCount: number;
+  /** Total browse-eligible facilities in dataset (for “X of Y” copy). */
+  browseTotal: number;
   disabled?: boolean;
 };
 
@@ -23,10 +32,18 @@ const CATEGORIES: { value: FacilityCategory | ""; label: string }[] = [
   { value: "charging", label: "Charging" },
 ];
 
+const TERMINAL_OPTIONS: { value: TerminalCode | ""; label: string }[] = [
+  { value: "", label: "All terminals" },
+  ...(
+    Object.entries(TERMINAL_DISPLAY_LABELS) as [TerminalCode, string][]
+  ).map(([code, label]) => ({ value: code, label })),
+];
+
 export function AmenityFilter({
   value,
   onChange,
-  resultCount,
+  directoryCount,
+  browseTotal,
   disabled = false,
 }: AmenityFilterProps) {
   return (
@@ -39,10 +56,11 @@ export function AmenityFilter({
           id="filter-heading"
           className="text-lg font-semibold text-card-foreground"
         >
-          Find amenities
+          Find facilities
         </h2>
         <p className="text-sm text-muted-foreground" aria-live="polite">
-          {resultCount} {resultCount === 1 ? "place" : "places"}
+          {directoryCount} of {browseTotal}{" "}
+          {browseTotal === 1 ? "facility" : "facilities"}
         </p>
       </div>
 
@@ -52,7 +70,7 @@ export function AmenityFilter({
           <input
             type="search"
             className="gw-input gw-focus-ring disabled:cursor-not-allowed disabled:opacity-60"
-            placeholder="Name only — e.g. Peet's, Napa, Brookstone"
+            placeholder="Name only — e.g. Peet's, Bun Mee, Napa"
             value={value.text}
             onChange={(event) =>
               onChange({ ...value, text: event.target.value })
@@ -65,6 +83,51 @@ export function AmenityFilter({
             Does not search location descriptions or gate landmarks.
           </span>
         </label>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          <label className="flex flex-col gap-1.5 text-sm font-medium text-card-foreground">
+            Terminal
+            <select
+              className="gw-input gw-focus-ring min-h-11 disabled:cursor-not-allowed disabled:opacity-60"
+              value={value.terminalCode}
+              disabled={disabled}
+              onChange={(event) =>
+                onChange({
+                  ...value,
+                  terminalCode: event.target.value as TerminalCode | "",
+                })
+              }
+            >
+              {TERMINAL_OPTIONS.map((option) => (
+                <option key={option.label} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="flex flex-col gap-1.5 text-sm font-medium text-card-foreground">
+            Boarding area
+            <select
+              className="gw-input gw-focus-ring min-h-11 disabled:cursor-not-allowed disabled:opacity-60"
+              value={value.boardingArea}
+              disabled={disabled}
+              onChange={(event) =>
+                onChange({
+                  ...value,
+                  boardingArea: event.target.value as Zone | "",
+                })
+              }
+            >
+              <option value="">All areas</option>
+              {BOARDING_AREA_CODES.map((code) => (
+                <option key={code} value={code}>
+                  {code} Gates
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
 
         <div className="flex flex-col gap-2">
           <span

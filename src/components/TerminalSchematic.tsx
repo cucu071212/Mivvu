@@ -9,8 +9,14 @@ export type TerminalSchematicProps = {
 
 const dataset = validateFacilities(facilityData);
 
+/** T2 D Gates only — not airport-wide geography (GW-X-003). */
+const t2DGatesFacilities = dataset.facilities.filter(
+  (facility) =>
+    facility.terminalCode === "terminal_2" && facility.zone === "D",
+);
+
 const landmarkGroups = Array.from(
-  new Set(dataset.facilities.flatMap((facility) =>
+  new Set(t2DGatesFacilities.flatMap((facility) =>
     facility.nearestGateLandmark ? [facility.nearestGateLandmark] : [],
   )),
 ).sort((left, right) => Number(left.slice(1)) - Number(right.slice(1)));
@@ -41,13 +47,13 @@ function FacilityList({ facilities }: { facilities: readonly Facility[] }) {
  * Standalone: importing this component does not integrate it into the home page.
  */
 export function TerminalSchematic({ className = "" }: TerminalSchematicProps) {
-  const withoutLandmark = dataset.facilities.filter(
+  const withoutLandmark = t2DGatesFacilities.filter(
     (facility) => !facility.nearestGateLandmark,
   );
 
   return (
     <section
-      aria-label="SFO Terminal 2 D Gates schematic"
+      aria-label="SFO Terminal 2 D Gates schematic (T2 only)"
       className={`gw-surface-card min-w-0 p-4 sm:p-6 ${className}`}
     >
       <header className="flex flex-col gap-3">
@@ -58,9 +64,13 @@ export function TerminalSchematic({ className = "" }: TerminalSchematicProps) {
           D Gates at a glance
         </h2>
         <p className="text-sm text-muted-foreground" role="note">
-          Schematic only — not an official floor plan or indoor navigation.
-          Boxes group facilities by published location; their positions and spacing
-          do not represent real geography, walking distances, or routes.
+          Schematic only — covers{" "}
+          <strong className="font-medium text-card-foreground">
+            Terminal 2 D Gates
+          </strong>{" "}
+          facilities in this dataset. It does not map Harvey Milk Terminal 1,
+          Terminal 3, or International terminals and is not an official floor plan,
+          walking guide, or proof that terminals are connected.
         </p>
       </header>
 
@@ -74,7 +84,7 @@ export function TerminalSchematic({ className = "" }: TerminalSchematicProps) {
         <figcaption className="mb-4 flex flex-wrap items-center justify-between gap-2">
           <span className="font-semibold text-card-foreground">D Gates</span>
           <span className="text-sm text-muted-foreground">
-            {dataset.facilities.length} facilities · grouped by source location
+            {t2DGatesFacilities.length} T2 D facilities · grouped by source location
           </span>
         </figcaption>
 
@@ -94,7 +104,7 @@ export function TerminalSchematic({ className = "" }: TerminalSchematicProps) {
                 <span className="font-mono text-lg font-semibold text-primary">{landmark}</span>
                 <span className="text-sm font-medium text-muted-foreground">Published gate landmark</span>
               </h3>
-              <FacilityList facilities={dataset.facilities.filter(
+              <FacilityList facilities={t2DGatesFacilities.filter(
                 (facility) => facility.nearestGateLandmark === landmark,
               )} />
             </section>
