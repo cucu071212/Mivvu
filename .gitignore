@@ -148,3 +148,8 @@ vite.config.ts.timestamp-*
 # Turbo Repo
 .turbo
 .vercel
+
+# Playwright browser diagnostics
+/playwright-report/
+/test-results/
+/blob-report/
