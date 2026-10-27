@@ -42,13 +42,14 @@ Use **four orthogonal dimensions** in GATEWISE STATUS and task tables:
 | **Owner** | Cursor |
 | **Reviewer** | Human owner |
 | **Depends on** | — |
-| **Task permissions** | Markdown only; no commit/push/merge/deploy |
-| **Execution permission** | `authorized` (markdown edits on branch) |
-| **Work progress** | `complete` (correction pass) |
-| **Review / acceptance** | `pending` |
-| **Integration / release** | `n/a` |
-| **Deliverable** | `AGENTS.md`, `PLAN.md`, this file, `README.md`, archives, `docs/plan-revisions.md`, `docs/GW-F-CONTRACT.md` banner |
-| **Evidence** | Branch `docs/gw-next-001-instruction-reset`; archive @ `docs/archive/hackathon-sfo-through-phase-c/` |
+| **Permission history** | (1) Initial pass: Markdown on branch only — **no** commit/push/merge/deploy. (2) Human authorized commit + push of documentation branch (`78fd4ff…`). (3) This pass: Markdown commit + push on `docs/gw-next-001-instruction-reset` only. **`main` merge and production promotion remain unauthorized.** |
+| **Execution permission** | `authorized` (markdown on branch; commit/push to `docs/gw-next-001-instruction-reset` when human assigns — not `main`) |
+| **Work progress** | `complete` |
+| **Coordinator technical review** | `accepted` (structure/docs reviewed on GitHub @ `78fd4ff`) — does not replace human acceptance |
+| **Review / acceptance (human owner)** | `pending` |
+| **Integration / release** | `n/a` (branch published; not merged to `main`; not production) |
+| **Deliverable** | `AGENTS.md`, `PLAN.md`, this file, `README.md`, archives, `docs/plan-revisions.md`, `docs/GW-F-CONTRACT.md` banner, consistency fixes |
+| **Evidence** | `origin/docs/gw-next-001-instruction-reset` @ `78fd4ff` (prior); archive @ `docs/archive/hackathon-sfo-through-phase-c/` |
 
 ---
 

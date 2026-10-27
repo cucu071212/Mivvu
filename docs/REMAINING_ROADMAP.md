@@ -3,7 +3,7 @@
 **Plan revision:** `GW-PLAN-REV-2026-10-26`
 **Active queue:** [`docs/IMPLEMENTATION_PLAN.md`](./IMPLEMENTATION_PLAN.md) (tasks **GW-ICN-001** – **GW-ICN-006**).
 
-This file is a **short pointer** to avoid duplicating task detail. Task IDs are **not** authorization until the implementation plan marks them authorized.
+This file is a **short pointer** to avoid duplicating task detail. A **task ID alone is not authorization.** Execution may be authorized by an **implementation-plan row** (execution permission `authorized`) **or** a **clear direct human assignment** — record direct authorization in GATEWISE STATUS and update the queue when practical (see [`AGENTS.md`](../AGENTS.md)).
 
 ## Shipped (SFO demo — preserve)
 
