@@ -1,5 +1,7 @@
 # GW-F — Technical contract (F1, F2, F3 integration)
 
+> **Ownership / workflow:** Module ownership in §2 reflects the GW-F era. For current agent roles and edit permissions, use [`AGENTS.md`](../AGENTS.md). **Technical types, APIs, and invariants below remain binding** for the shipped F-track unless a human-approved redesign supersedes them.
+
 **Status:** **Approved** (lead decisions D-F1–D-F4 recorded below).  
 **Contract branch:** `feature/gw-f-contracts` — **G-F0** = lead approval of this branch as the shared contract reference; **not** a mandatory merge to `main` (preserve production MVP @ `665e5e8` until a separate release merge).  
 **Baseline MVP:** `main` @ `665e5e85a9b30b8114c678c7097a3b9ce5e9e805`, https://gate-wise-iota.vercel.app  

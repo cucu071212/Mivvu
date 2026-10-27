@@ -4,9 +4,14 @@
 
 Airport maps show where a café or shop is. GateWise helps a traveler see whether a visit still fits **before boarding starts** — with every modeled minute labeled, and missing data left unknown.
 
-**Live demo:** [https://gate-wise-iota.vercel.app](https://gate-wise-iota.vercel.app)  
-**Source:** [github.com/cucu071212/GateWise](https://github.com/cucu071212/GateWise)  
-**Approved release:** `c9c163cd7ee51d270e1a079daf84ffaf37b5952a`
+**Live demo (SFO — shipped):** [https://gate-wise-iota.vercel.app](https://gate-wise-iota.vercel.app)
+**Source:** [github.com/cucu071212/GateWise](https://github.com/cucu071212/GateWise)
+**Documentation revision:** `GW-PLAN-REV-2026-10-26` — see [`docs/plan-revisions.md`](docs/plan-revisions.md)
+
+| Track | Status |
+| --- | --- |
+| **SFO demo** | Shipped — behavior below reflects the hackathon closeout release |
+| **ICN mobile** | **Planned** — not in production; tasks in [`docs/IMPLEMENTATION_PLAN.md`](docs/IMPLEMENTATION_PLAN.md) |
 
 ## The problem
 
@@ -14,7 +19,7 @@ Knowing that Peet’s is near Gate D7 does not answer the only question that mat
 
 ## What it does
 
-GateWise is a **model-only** boarding-start planner for **San Francisco International Airport (SFO)**.
+GateWise is a **model-only** boarding-start planner. The **last recorded release** documents **San Francisco International Airport (SFO)** demo behavior (see [`docs/submission/RELEASE_FACTS.md`](docs/submission/RELEASE_FACTS.md)). **Primary development** is moving toward **ICN (Incheon)** with a mobile-first browse experience (see [`PLAN.md`](PLAN.md)).
 
 | Surface | What you can do |
 | --- | --- |
@@ -99,10 +104,13 @@ Open [http://localhost:3000](http://localhost:3000). No environment variables ar
 | Item | Value |
 | --- | --- |
 | Alias | https://gate-wise-iota.vercel.app |
-| Git SHA (this repo) | `c9c163cd7ee51d270e1a079daf84ffaf37b5952a` |
+| SFO release SHA (submission record) | `c9c163cd7ee51d270e1a079daf84ffaf37b5952a` — see [`docs/submission/RELEASE_FACTS.md`](docs/submission/RELEASE_FACTS.md) |
+| `origin/main` (doc baseline) | Check `git rev-parse origin/main` — closeout docs @ `c8b278f` as of GW-NEXT-001 |
 | Vercel deployment | `dpl_AVbZEGA48z5evM1GRRssLPfAgQLF` (READY, production) |
 
 Vercel inspect metadata does **not** currently expose a Git SHA. Treat the repo SHA plus the lead-recorded deployment ID as the release pair. Preview deployments may require Vercel Authentication.
+
+**Deployment caution:** Pushing or merging to `main` may trigger an automatic Vercel **production** deployment (typical GitHub integration). Neither `c9c163c` (SFO product record) nor `c8b278f` (doc closeout on `main`) is proof of what is currently serving without fresh deploy evidence.
 
 ## Limitations
 
@@ -113,9 +121,13 @@ Vercel inspect metadata does **not** currently expose a Git SHA. Treat the repo 
 - Two-stop planner is an in-app demo, not a certified itinerary tool.
 - Most facility photos are category illustrations. See [`docs/FACILITY-IMAGE-RIGHTS-AUDIT.md`](docs/FACILITY-IMAGE-RIGHTS-AUDIT.md).
 
-## What’s next (not in this freeze)
+## What’s next
 
-Verified indoor walking times (**G-Data HOLD**), additional airports, and live operations are out of scope until separately authorized. Product rules: [`PLAN.md`](./PLAN.md). Agent rules: [`AGENTS.md`](./AGENTS.md).
+**ICN mobile** (splash → airport select → facility browse without mandatory flight setup), public API integration after verification, and redesigned navigation — task queue: [`docs/IMPLEMENTATION_PLAN.md`](docs/IMPLEMENTATION_PLAN.md). **Not** deployed until **GW-ICN-006** is human-approved.
+
+SFO demo scope (26 browse / 12 recommend, legacy travel model) stays available for regression. Archived SFO Phase C/E roadmap: [`docs/archive/hackathon-sfo-through-phase-c/`](docs/archive/hackathon-sfo-through-phase-c/).
+
+Product rules: [`PLAN.md`](./PLAN.md). Agent rules: [`AGENTS.md`](./AGENTS.md).
 
 ## Attribution
 

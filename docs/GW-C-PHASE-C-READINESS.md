@@ -1,5 +1,7 @@
 # GW-C — Phase C implementation readiness (planning only)
 
+> **Superseded as active queue:** `GW-PLAN-REV-2026-10-26` — primary work is **ICN mobile** ([`docs/IMPLEMENTATION_PLAN.md`](./IMPLEMENTATION_PLAN.md)). This document remains **historical planning input** for SFO usability; do not treat it as execution permission.
+
 **Date:** 2026-10-25 (America/New_York)  
 **Author:** Engineering Lead Cursor  
 **Baseline:** `origin/main` @ `6a847b8e7170e553aeb2d996567e4931e0426c33` (production)  
