@@ -1,6 +1,6 @@
 # GateWise Implementation Plan (ARCHIVED)
 
-> **Superseded:** `GW-PLAN-REV-2026-10-26` — see [`docs/IMPLEMENTATION_PLAN.md`](../../IMPLEMENTATION_PLAN.md).  
+> **Superseded:** `GW-PLAN-REV-2026-10-26` — see [`docs/IMPLEMENTATION_PLAN.md`](../../IMPLEMENTATION_PLAN.md).
 > **Snapshot:** HackPSU P0 through SFO Phase X/B/C planning (last aligned ~2026-10-25).  
 > **Do not execute** tasks from this file without a fresh assignment in the active implementation plan.
 
