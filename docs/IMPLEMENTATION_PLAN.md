@@ -63,11 +63,12 @@ Use **four orthogonal dimensions** in GATEWISE STATUS and task tables:
 | **Reviewer** | Human owner |
 | **Depends on** | Reviewed canon docs; explicit assignment |
 | **Task permissions** | When authorized: docs/design artifacts; commit if task allows |
-| **Execution permission** | `not_authorized` |
-| **Work progress** | `not_started` |
-| **Review / acceptance** | `pending` |
+| **Execution permission** | `authorized` (source: direct human assign — narrowed first-entry slice, 2026-10-26) |
+| **Work progress** | `complete` (narrowed slice: intro + airport selection mockup only; full audit deferred) |
+| **Review / acceptance** | `pending` (design acceptance) |
 | **Integration / release** | `n/a` |
 | **Acceptance** | 360/390/430, safe areas, touch, reduced motion; maps Flight/Results/What-if/Plan proposals; open decisions tied to `PLAN.md`; no app code required |
+| **Narrowed slice (2026-10-26)** | Branch `design/gw-icn-001-mobile`: `docs/design/gw-icn-001/` — logo intro + airport selection HTML prototype @ 390px; ICN labeled proposed primary; does not establish live ICN support. Broader GW-ICN-001 audit remains **pending** until separately assigned. |
 
 ---
 

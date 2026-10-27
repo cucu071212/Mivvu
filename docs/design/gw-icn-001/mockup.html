@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GW-ICN-001 — First-entry mobile design prototype</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --gw-primary: #0c4a6e;
+        --gw-secondary: #0284c7;
+        --gw-cyan: #22d3ee;
+        --gw-cyan-muted: #0891b2;
+        --gw-accent: #f97316;
+        --gw-on-accent: #0f172a;
+        --gw-background: #e8f4fc;
+        --gw-foreground: #0c1929;
+        --gw-card: #ffffff;
+        --gw-card-foreground: #0f172a;
+        --gw-muted: #e2eef8;
+        --gw-muted-foreground: #475569;
+        --gw-border: #b8d4eb;
+        --gw-ring: #0284c7;
+        --gw-radius-md: 0.5rem;
+        --gw-radius-lg: 0.875rem;
+        --gw-radius-xl: 1.125rem;
+        --gw-shadow-elevated: 0 4px 6px rgb(12 74 110 / 0.06),
+          0 16px 40px rgb(8 145 178 / 0.12);
+        --safe-top: env(safe-area-inset-top, 0px);
+        --safe-bottom: env(safe-area-inset-bottom, 0px);
+        --phone-w: 390px;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Inter, system-ui, -apple-system, sans-serif;
+        background: #cbd5e1;
+        color: var(--gw-foreground);
+        line-height: 1.5;
+      }
+
+      .doc-header {
+        max-width: 52rem;
+        margin: 0 auto;
+        padding: 1.25rem 1rem 0.5rem;
+      }
+
+      .doc-header h1 {
+        margin: 0 0 0.35rem;
+        font-size: 1.125rem;
+        font-weight: 700;
+      }
+
+      .doc-header p {
+        margin: 0;
+        font-size: 0.875rem;
+        color: #334155;
+      }
+
+      .prototype-strip {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 0.75rem;
+      }
+
+      .badge-prototype {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.2rem 0.55rem;
+        border-radius: 9999px;
+        border: 1px solid #f59e0b;
+        background: #fffbeb;
+        color: #92400e;
+        font-size: 0.6875rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .badge-prototype span {
+        font-weight: 500;
+        text-transform: none;
+        letter-spacing: 0;
+        margin-left: 0.35rem;
+      }
+
+      .gallery {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1.5rem;
+        padding: 1rem 1rem 2.5rem;
+      }
+
+      .frame-label {
+        text-align: center;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #475569;
+        margin-bottom: 0.5rem;
+      }
+
+      .phone {
+        width: var(--phone-w);
+        max-width: 100%;
+        border-radius: 2rem;
+        overflow: hidden;
+        box-shadow: 0 24px 48px rgb(15 23 42 / 0.22);
+        border: 3px solid #0f172a;
+        background: var(--gw-background);
+      }
+
+      .screen {
+        position: relative;
+        min-height: 844px;
+        display: flex;
+        flex-direction: column;
+        background: var(--gw-background);
+        background-image: radial-gradient(
+          ellipse 120% 80% at 50% -20%,
+          color-mix(in srgb, var(--gw-cyan) 18%, transparent),
+          transparent 55%
+        );
+      }
+
+      .screen-intro {
+        align-items: center;
+        justify-content: center;
+        padding: calc(1.5rem + var(--safe-top)) 1.25rem
+          calc(2rem + var(--safe-bottom));
+        text-align: center;
+      }
+
+      .intro-stack {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        max-width: 18rem;
+      }
+
+      .brand-icon {
+        display: grid;
+        place-items: center;
+        width: 4.5rem;
+        height: 4.5rem;
+        border-radius: 1.125rem;
+        background: linear-gradient(135deg, var(--gw-secondary), var(--gw-cyan-muted));
+        color: #f0f9ff;
+        font-size: 1.35rem;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        box-shadow: 0 8px 28px color-mix(in srgb, var(--gw-cyan) 40%, transparent);
+      }
+
+      .brand-wordmark {
+        margin: 0;
+        font-size: 1.75rem;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        color: var(--gw-card-foreground);
+      }
+
+      .brand-tagline {
+        margin: 0;
+        font-size: 0.9375rem;
+        color: var(--gw-muted-foreground);
+        max-width: 16rem;
+      }
+
+      .runway-line {
+        width: 5rem;
+        height: 3px;
+        border-radius: 9999px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--gw-cyan-muted) 20%,
+          var(--gw-cyan) 50%,
+          var(--gw-cyan-muted) 80%,
+          transparent
+        );
+        opacity: 0.85;
+      }
+
+      .intro-hint {
+        margin-top: 2.5rem;
+        font-size: 0.8125rem;
+        color: var(--gw-muted-foreground);
+      }
+
+      .screen-airport {
+        padding: calc(0.75rem + var(--safe-top)) 1rem
+          calc(1.25rem + var(--safe-bottom));
+      }
+
+      .airport-inner {
+        display: flex;
+        flex-direction: column;
+        gap: 1.125rem;
+        width: 100%;
+        margin: 0 auto;
+      }
+
+      .eyebrow {
+        margin: 0;
+        font-size: 0.6875rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--gw-muted-foreground);
+      }
+
+      .header-row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .brand-icon-sm {
+        width: 2.25rem;
+        height: 2.25rem;
+        font-size: 0.75rem;
+        border-radius: var(--gw-radius-md);
+      }
+
+      .header-title {
+        margin: 0;
+        font-size: 1.25rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      .page-title {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--gw-card-foreground);
+        line-height: 1.2;
+      }
+
+      .page-lead {
+        margin: 0;
+        font-size: 0.875rem;
+        color: var(--gw-muted-foreground);
+      }
+
+      .notice {
+        padding: 0.75rem 1rem;
+        border-radius: var(--gw-radius-md);
+        border: 1px solid var(--gw-border);
+        background: color-mix(in srgb, var(--gw-muted) 45%, var(--gw-card));
+        font-size: 0.8125rem;
+        color: var(--gw-muted-foreground);
+      }
+
+      .notice strong {
+        display: block;
+        color: var(--gw-card-foreground);
+        font-size: 0.875rem;
+        margin-bottom: 0.25rem;
+      }
+
+      .search-label {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--gw-card-foreground);
+      }
+
+      .search-input {
+        width: 100%;
+        min-height: 2.75rem;
+        padding: 0.625rem 0.875rem;
+        border: 1px solid var(--gw-border);
+        border-radius: var(--gw-radius-md);
+        font: inherit;
+        font-size: 1rem;
+        background: var(--gw-card);
+        color: var(--gw-card-foreground);
+      }
+
+      .search-input:focus {
+        outline: 2px solid var(--gw-ring);
+        outline-offset: 2px;
+      }
+
+      .airport-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .airport-option {
+        display: flex;
+        gap: 0.75rem;
+        align-items: flex-start;
+        padding: 0.875rem 1rem;
+        border: 1px solid var(--gw-border);
+        border-radius: var(--gw-radius-md);
+        background: var(--gw-card);
+        min-height: 2.75rem;
+      }
+
+      .airport-option--selected {
+        border-color: var(--gw-ring);
+        background: color-mix(in srgb, var(--gw-cyan) 8%, var(--gw-card));
+        box-shadow: 0 0 0 1px color-mix(in srgb, var(--gw-ring) 35%, transparent);
+      }
+
+      .airport-option--muted {
+        opacity: 0.72;
+      }
+
+      .radio {
+        flex-shrink: 0;
+        width: 1.25rem;
+        height: 1.25rem;
+        margin-top: 0.125rem;
+        border-radius: 50%;
+        border: 2px solid var(--gw-border);
+        display: grid;
+        place-items: center;
+      }
+
+      .airport-option--selected .radio {
+        border-color: var(--gw-ring);
+      }
+
+      .radio-dot {
+        width: 0.55rem;
+        height: 0.55rem;
+        border-radius: 50%;
+        background: var(--gw-ring);
+      }
+
+      .airport-option--muted .radio-dot {
+        display: none;
+      }
+
+      .airport-meta {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .airport-name {
+        margin: 0;
+        font-size: 0.9375rem;
+        font-weight: 600;
+        color: var(--gw-card-foreground);
+      }
+
+      .airport-sub {
+        margin: 0.15rem 0 0;
+        font-size: 0.8125rem;
+        color: var(--gw-muted-foreground);
+      }
+
+      .chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+        margin-top: 0.4rem;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.125rem 0.5rem;
+        border-radius: 9999px;
+        font-size: 0.6875rem;
+        font-weight: 600;
+        border: 1px solid transparent;
+      }
+
+      .chip-focus {
+        background: #dbeafe;
+        color: #1e3a8a;
+        border-color: #93c5fd;
+      }
+
+      .chip-demo {
+        background: #ffedd5;
+        color: #9a3412;
+        border-color: #fdba74;
+      }
+
+      .chip-soon {
+        background: #f1f5f9;
+        color: #475569;
+        border-color: #cbd5e1;
+      }
+
+      .cta {
+        margin-top: 0.25rem;
+        width: 100%;
+        min-height: 2.75rem;
+        padding: 0.75rem 1rem;
+        border: none;
+        border-radius: var(--gw-radius-md);
+        background: var(--gw-accent);
+        color: var(--gw-on-accent);
+        font: inherit;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: var(--gw-shadow-elevated);
+      }
+
+      .cta:focus-visible {
+        outline: 2px solid var(--gw-primary);
+        outline-offset: 2px;
+      }
+
+      .footnote {
+        font-size: 0.75rem;
+        color: var(--gw-muted-foreground);
+        text-align: center;
+        margin: 0;
+      }
+
+      @media (max-width: 400px) {
+        :root {
+          --phone-w: min(100vw - 2rem, 390px);
+        }
+
+        .screen {
+          min-height: 780px;
+        }
+
+        .screen-airport {
+          padding-left: 0.75rem;
+          padding-right: 0.75rem;
+        }
+
+        .page-title {
+          font-size: 1.375rem;
+        }
+      }
+
+      @media (min-width: 431px) {
+        .phone {
+          margin: 0 auto;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .runway-line {
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="doc-header">
+      <h1>GW-ICN-001 — First-entry mobile design prototype</h1>
+      <p>
+        Visual proposal only. ICN as primary airport does not imply live ICN data or
+        production support.
+      </p>
+      <div class="prototype-strip" role="status">
+        <span class="badge-prototype">Design prototype<span>Not shipped</span></span>
+      </div>
+    </header>
+
+    <div class="gallery">
+      <div>
+        <p class="frame-label">Screen 1 — Logo intro (390×844 artboard)</p>
+        <article class="phone" aria-label="Intro screen mockup">
+          <div class="screen screen-intro">
+            <div class="intro-stack">
+              <div class="brand-icon" aria-hidden="true">GW</div>
+              <p class="brand-wordmark">GateWise</p>
+              <p class="brand-tagline">Know your time before boarding</p>
+              <div class="runway-line" aria-hidden="true"></div>
+            </div>
+            <p class="intro-hint">Tap anywhere to continue · ~2s auto-advance (proposal)</p>
+          </div>
+        </article>
+      </div>
+
+      <div>
+        <p class="frame-label">Screen 2 — Airport selection (390×844 artboard)</p>
+        <article class="phone" aria-label="Airport selection mockup">
+          <div class="screen screen-airport">
+            <div class="airport-inner">
+              <p class="eyebrow">GateWise · Welcome</p>
+              <div class="header-row">
+                <div class="brand-icon brand-icon-sm" aria-hidden="true">GW</div>
+                <p class="header-title">GateWise</p>
+              </div>
+
+              <div>
+                <h2 class="page-title">Where are you flying from?</h2>
+                <p class="page-lead">
+                  Choose your airport. Walking times stay demo estimates until verified
+                  for that hub.
+                </p>
+              </div>
+
+              <aside class="notice">
+                <strong>Proposed next focus: Incheon (ICN)</strong>
+                Mobile ICN is the approved development target. This screen previews
+                selection UX only — not live API integration.
+              </aside>
+
+              <div>
+                <label class="search-label" for="airport-search">Search airports</label>
+                <input
+                  id="airport-search"
+                  class="search-input"
+                  type="search"
+                  placeholder="Code, name, or city — e.g. ICN, Seoul"
+                  value=""
+                  readonly
+                  aria-readonly="true"
+                />
+              </div>
+
+              <ul class="airport-list" aria-label="Airports">
+                <li class="airport-option airport-option--selected">
+                  <span class="radio" aria-hidden="true"><span class="radio-dot"></span></span>
+                  <div class="airport-meta">
+                    <p class="airport-name">Incheon International (ICN)</p>
+                    <p class="airport-sub">Seoul · Republic of Korea</p>
+                    <div class="chip-row">
+                      <span class="chip chip-focus">Next focus</span>
+                      <span class="chip chip-demo">Demo estimates</span>
+                    </div>
+                  </div>
+                </li>
+                <li class="airport-option">
+                  <span class="radio" aria-hidden="true"></span>
+                  <div class="airport-meta">
+                    <p class="airport-name">San Francisco International (SFO)</p>
+                    <p class="airport-sub">California · United States</p>
+                    <div class="chip-row">
+                      <span class="chip chip-demo">Shipped demo</span>
+                    </div>
+                  </div>
+                </li>
+                <li class="airport-option airport-option--muted">
+                  <span class="radio" aria-hidden="true"></span>
+                  <div class="airport-meta">
+                    <p class="airport-name">Narita International (NRT)</p>
+                    <p class="airport-sub">Tokyo · Japan</p>
+                    <div class="chip-row">
+                      <span class="chip chip-soon">Coming soon</span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+
+              <button type="button" class="cta">Continue with ICN</button>
+              <p class="footnote">
+                Design prototype · GW-ICN-001 · Safe-area padding applied
+              </p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </body>
+</html>
