@@ -11,7 +11,7 @@ Airport maps show where a café or shop is. GateWise helps a traveler see whethe
 | Track | Status |
 | --- | --- |
 | **SFO demo** | Shipped — behavior below reflects the hackathon closeout release |
-| **Mivvu / ICN mobile** | Implemented on the feature branch for draft PR review: `/` → airport selection → `/icn`, with KO/EN saved snapshots; not production. See [`docs/qa/mivvu-pr-packaging.md`](docs/qa/mivvu-pr-packaging.md). |
+| **Mivvu / ICN mobile** | **Production** (GW-ICN-006, 2026-10-28): `/` → airport selection → `/icn`, KO/EN saved snapshots; SFO demo preserved. See [`docs/submission/MIVVU_RELEASE_2026-10-28.md`](docs/submission/MIVVU_RELEASE_2026-10-28.md). |
 
 ## The problem
 
@@ -107,8 +107,9 @@ The feature branch opens Mivvu at `/`, browses ICN at `/icn`, and preserves SFO 
 | --- | --- |
 | Alias | https://gate-wise-iota.vercel.app |
 | SFO release SHA (submission record) | `c9c163cd7ee51d270e1a079daf84ffaf37b5952a` — see [`docs/submission/RELEASE_FACTS.md`](docs/submission/RELEASE_FACTS.md) |
-| `origin/main` (doc baseline) | Check `git rev-parse origin/main` — closeout docs @ `c8b278f` as of GW-NEXT-001 |
-| Vercel deployment | `dpl_AVbZEGA48z5evM1GRRssLPfAgQLF` (READY, production) |
+| Mivvu / ICN release SHA (`main`) | `556943b020749405f34f4b21622fbd1f5993bce0` — see [`docs/submission/MIVVU_RELEASE_2026-10-28.md`](docs/submission/MIVVU_RELEASE_2026-10-28.md) |
+| Prior SFO-only Vercel deployment (historical) | `dpl_AVbZEGA48z5evM1GRRssLPfAgQLF` (READY) — superseded on alias by automatic deploy after merge |
+| Current production deploy (2026-10-28) | [Vercel deployment](https://vercel.com/gate-wise/gate-wise/5jA6L2Fo3MffGQ2AjrwcputsQNgW) — commit status **success** on `556943b` |
 
 Vercel inspect metadata does **not** currently expose a Git SHA. Treat the repo SHA plus the lead-recorded deployment ID as the release pair. Preview deployments may require Vercel Authentication.
 
@@ -125,7 +126,7 @@ Vercel inspect metadata does **not** currently expose a Git SHA. Treat the repo 
 
 ## What’s next
 
-**ICN mobile** (splash → airport select → facility browse without mandatory flight setup), public API integration after verification, and redesigned navigation — task queue: [`docs/IMPLEMENTATION_PLAN.md`](docs/IMPLEMENTATION_PLAN.md). **Not** deployed until **GW-ICN-006** is human-approved.
+**ICN mobile** first entry and static browse shipped in production (GW-ICN-006). Live API sync, full shell redesign, and broader coverage remain in the task queue: [`docs/IMPLEMENTATION_PLAN.md`](docs/IMPLEMENTATION_PLAN.md).
 
 SFO demo scope (26 browse / 12 recommend, legacy travel model) stays available for regression. Archived SFO Phase C/E roadmap: [`docs/archive/hackathon-sfo-through-phase-c/`](docs/archive/hackathon-sfo-through-phase-c/).
 

@@ -102,7 +102,7 @@ Use **four orthogonal dimensions** in GATEWISE STATUS and task tables:
 | **Execution permission** | `authorized` (source: direct human assign — bounded Mivvu first-entry slice, 2026-10-27) |
 | **Work progress** | `complete` (bounded slice + main-entry integration on feature branch; `/` + `/icn`; SFO Flight at `/flight`; preview redirects; packaging evidence under GW-ICN-005) |
 | **Review / acceptance** | `pending` |
-| **Integration / release** | `preview` (automatic Vercel preview observed for draft PR #2 under GW-ICN-005; no production promotion) |
+| **Integration / release** | `production` (merged with GW-ICN-006 @ `556943b` on `main`) |
 | **Acceptance** | `lint`, `tsc`, `npm test`, `build`; viewport checklist; labeled fixtures if needed |
 | **Bounded slice (2026-10-27)** | Stitch-based **Mivvu** intro + airport selection; Plus Jakarta on entry routes; SFO CTA → `/explore`; ICN → `/icn`. Handoff: `docs/design/mivvu-first-entry-handoff.md`. Full GW-ICN-003 shell redesign remains **pending**. |
 | **Main-entry integration (2026-10-28)** | Human-authorized local integration after GW-ICN-005 QA; checkpoint `518534a`; canonical routing via `src/lib/mivvu-entry-routes.ts`; legacy preview URLs redirect. |
@@ -139,11 +139,11 @@ Use **four orthogonal dimensions** in GATEWISE STATUS and task tables:
 | **Task permissions** | Original local QA and bounded SEC-01/02/03 follow-ups; direct human assignment on 2026-10-28 additionally authorizes local packaging review/focused corrections, explicit-file commits, normal push to `feat/mivvu-first-entry-slice`, and draft PR against `main`. No force-push, merge, production deploy, infrastructure changes, active scanning, new features, or dependency upgrades. |
 | **Execution permission** | `authorized` (source: human owner, direct Codex chat assignments, 2026-10-27/28; PR packaging 2026-10-28 America/New_York) |
 | **Work progress** | `complete` (bounded preview QA, SEC-01 sanitized errors, SEC-03 enforced server-only boundary, SEC-02 attribute restriction with inline allowances retained; combined PR packaging evidence below) |
-| **Review / acceptance** | `pending` |
-| **Integration / release** | `preview` (draft [PR #2](https://github.com/cucu071212/GateWise/pull/2); Vercel reports Ready for the feature-branch preview; no merge/manual deployment/production promotion) |
+| **Review / acceptance** | `accepted` (human owner, 2026-10-28 — verified preview, P2 fixes, CI/E2E on `556943b`) |
+| **Integration / release** | `production` (PR [#2](https://github.com/cucu071212/Mivvu/pull/2) merged to `main` @ `556943b`; Vercel production [deployment](https://vercel.com/gate-wise/gate-wise/5jA6L2Fo3MffGQ2AjrwcputsQNgW)) |
 | **Acceptance** | Independent expectations; SFO regression; commands cited in report |
-| **Evidence** | [Preview QA + P2 corrections](qa/mivvu-preview-qa.md) (published on feature branch for PR #2; review **pending**); [security review/remediation evidence](security/mivvu-preflight-review.md); [combined PR packaging handoff](qa/mivvu-pr-packaging.md); `scripts/qa-mivvu-preview.mjs` |
-| **Owner decision (2026-10-28)** | Proceed with the implemented entry, ICN browsing, KO/EN, and SEC-01/02/03 fixes as the basis for PR review. Skip Strix/Shannon and isolation setup for this release. Active penetration testing **not performed**; this decision is neither an independent code audit nor a guarantee of security. Review stays pending; human owner is integration reviewer. |
+| **Evidence** | [Preview QA + P2 corrections](qa/mivvu-preview-qa.md); [production smoke](qa/mivvu-production-smoke-2026-10-28.md); [Mivvu release record](submission/MIVVU_RELEASE_2026-10-28.md); [security review/remediation evidence](security/mivvu-preflight-review.md); [combined PR packaging handoff](qa/mivvu-pr-packaging.md); `scripts/qa-mivvu-preview.mjs` |
+| **Owner decision (2026-10-28)** | Proceed with the implemented entry, ICN browsing, KO/EN, and SEC-01/02/03 fixes as the basis for PR review. Skip Strix/Shannon and isolation setup for this release. Active penetration testing **not performed**; this decision is neither an independent code audit nor a guarantee of security. Human owner accepted corrections and authorized GW-ICN-006 production release same day. |
 
 ---
 
@@ -155,11 +155,12 @@ Use **four orthogonal dimensions** in GATEWISE STATUS and task tables:
 | **Reviewer** | Human owner |
 | **Depends on** | GW-ICN-005 review `accepted`; human production authorization |
 | **Task permissions** | When authorized: merge `main`, Vercel production |
-| **Execution permission** | `not_authorized` |
-| **Work progress** | `not_started` |
-| **Review / acceptance** | `pending` |
-| **Integration / release** | `n/a` until human approves `production` |
+| **Execution permission** | `authorized` (human owner, 2026-10-28 — merge PR #2 and production deploy) |
+| **Work progress** | `complete` |
+| **Review / acceptance** | `accepted` (human owner, 2026-10-28) |
+| **Integration / release** | `production` — `main` @ `556943b`; https://gate-wise-iota.vercel.app |
 | **Acceptance** | Release notes; ICN record without altering SFO historical facts; smoke evidence |
+| **Evidence** | [`docs/submission/MIVVU_RELEASE_2026-10-28.md`](submission/MIVVU_RELEASE_2026-10-28.md); [`docs/qa/mivvu-production-smoke-2026-10-28.md`](qa/mivvu-production-smoke-2026-10-28.md) |
 
 GW-ICN-001 and GW-ICN-002 may run in parallel when **separately authorized**.
 
