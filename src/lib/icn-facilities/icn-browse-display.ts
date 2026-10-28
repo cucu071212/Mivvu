@@ -1,6 +1,8 @@
 import type { MivvuPreviewLocale } from "@/lib/mivvu-preview-locale";
 import type { IcnBrowseListItem } from "./icn-browse-view-model";
 
+import { matchUnambiguousIcnRecords } from "./icn-snapshot-matching";
+
 export type IcnBrowseDisplayItem = IcnBrowseListItem & {
   displayName: string;
   displayLocation: string | null;
@@ -12,16 +14,13 @@ function isBlank(text: string | null | undefined): boolean {
   return !text || text.trim().length === 0;
 }
 
+/** Both inputs must be full catalogs after identical-row collapse, before filtering. */
 export function buildKoreanFallbackIndex(
   koreanItems: IcnBrowseListItem[],
+  englishItems: IcnBrowseListItem[],
 ): Map<string, IcnBrowseListItem> {
-  const map = new Map<string, IcnBrowseListItem>();
-  for (const item of koreanItems) {
-    if (!map.has(item.sourceId)) {
-      map.set(item.sourceId, item);
-    }
-  }
-  return map;
+  const pairs = matchUnambiguousIcnRecords(koreanItems, englishItems);
+  return new Map([...pairs].map(([id, pair]) => [id, pair.left]));
 }
 
 export function toBrowseDisplayItems(

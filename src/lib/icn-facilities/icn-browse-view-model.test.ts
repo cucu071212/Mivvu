@@ -101,4 +101,10 @@ describe("icn-browse-view-model", () => {
     const b = row({ listingIndex: 99, sourceId: "9", name: "X" });
     assert.equal(icnFacilityContentFingerprint(a), icnFacilityContentFingerprint(b));
   });
+
+  it("content fingerprint ignores category object key order", () => {
+    const a = row({ listingIndex: 0, sourceId: "9", name: "X" });
+    const b = { ...a, categories: { small: null, medium: null, large: "식・음료" } };
+    assert.equal(icnFacilityContentFingerprint(a), icnFacilityContentFingerprint(b));
+  });
 });

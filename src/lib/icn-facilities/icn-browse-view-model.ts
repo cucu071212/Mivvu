@@ -1,8 +1,12 @@
+import { getIcnSearchIndex, searchIcnIndex } from "./icn-facility-search";
 import type {
   IcnFacilitiesFixture,
   IcnFacilityBrowseRecord,
 } from "@/types/icn-facility-browse";
 import type { MivvuPreviewLocale } from "@/lib/mivvu-preview-locale";
+
+import { collapseDuplicateListings } from "./icn-snapshot-matching";
+export { icnFacilityContentFingerprint } from "./icn-snapshot-matching";
 
 export type IcnBrowseListItem = {
   /** Stable key for React lists (`browse-{listingIndex}` of kept row). */
@@ -65,22 +69,6 @@ const TERMINAL_CHIP_LABELS: Record<string, { ko: string; en: string }> = {
   G02: { ko: "교통1", en: "TC1" },
   G03: { ko: "교통2", en: "TC2" },
 };
-
-export function icnFacilityContentFingerprint(
-  record: Omit<IcnFacilityBrowseRecord, "listingIndex">,
-): string {
-  return JSON.stringify({
-    sourceId: record.sourceId,
-    name: record.name,
-    categories: record.categories,
-    terminalId: record.terminalId,
-    floor: record.floor,
-    locationDescription: record.locationDescription,
-    hoursText: record.hoursText,
-    arrivalOrDeparture: record.arrivalOrDeparture,
-    dutyFreeFlag: record.dutyFreeFlag,
-  });
-}
 
 export function formatIcnTerminalLabel(
   terminalId: string | null,
@@ -152,20 +140,6 @@ function formatCategoryLabel(record: IcnFacilityBrowseRecord): string | null {
     if (!unique.includes(part)) unique.push(part);
   }
   return unique.join(" · ");
-}
-
-function collapseDuplicateListings(records: IcnFacilityBrowseRecord[]): IcnFacilityBrowseRecord[] {
-  const kept = new Map<string, IcnFacilityBrowseRecord>();
-  const sorted = [...records].sort((a, b) => a.listingIndex - b.listingIndex);
-
-  for (const record of sorted) {
-    const key = `${record.sourceId}::${icnFacilityContentFingerprint(record)}`;
-    if (!kept.has(key)) {
-      kept.set(key, record);
-    }
-  }
-
-  return [...kept.values()].sort((a, b) => a.listingIndex - b.listingIndex);
 }
 
 function toListItem(
@@ -247,32 +221,12 @@ export function buildIcnBrowseCatalog(
   };
 }
 
-function normalizeSearchText(value: string, locale: MivvuPreviewLocale): string {
-  const tag = locale === "ko" ? "ko-KR" : "en-US";
-  return value.trim().toLocaleLowerCase(tag);
-}
-
-function itemSearchBlob(item: IcnBrowseListItem, locale: MivvuPreviewLocale): string {
-  return normalizeSearchText(
-    [item.name, item.locationDescription, item.categoryLabel, item.terminalLabel]
-      .filter(Boolean)
-      .join(" "),
-    locale,
-  );
-}
-
+/** Search only this locale's catalog, before any display-language fallback. */
 export function filterIcnBrowseItems(
   items: IcnBrowseListItem[],
   query: string,
   terminalFilter: string,
   locale: MivvuPreviewLocale = "ko",
 ): IcnBrowseListItem[] {
-  const normalizedQuery = normalizeSearchText(query, locale);
-  const terminal = terminalFilter === "all" ? null : terminalFilter;
-
-  return items.filter((item) => {
-    if (terminal && item.terminalId !== terminal) return false;
-    if (!normalizedQuery) return true;
-    return itemSearchBlob(item, locale).includes(normalizedQuery);
-  });
+  return searchIcnIndex(getIcnSearchIndex(items, locale), query, terminalFilter);
 }

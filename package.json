@@ -11,7 +11,8 @@
     "test:e2e": "npm run build && playwright test",
     "test:e2e:run": "playwright test",
     "test:e2e:report": "playwright show-report",
-    "sync:icn-facilities": "node scripts/sync-icn-facilities.mjs"
+    "sync:icn-facilities": "node scripts/sync-icn-facilities.mjs",
+    "quality:icn-snapshots": "node scripts/check-icn-snapshots.mjs"
   },
   "dependencies": {
     "next": "16.4.3",
