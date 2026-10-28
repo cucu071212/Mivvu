@@ -80,12 +80,14 @@ Use **four orthogonal dimensions** in GATEWISE STATUS and task tables:
 | **Reviewer** | Human owner |
 | **Depends on** | Reviewed canon docs; explicit assignment; API key outside repo |
 | **Task permissions** | When authorized: local `.env` (not committed), `docs/icn/` reports |
-| **Execution permission** | `not_authorized` |
-| **Work progress** | `not_started` |
+| **Execution permission** | `authorized` (source: direct human assign, 2026-10-27) |
+| **Work progress** | `complete` (documentation + unauthenticated + **live** verification 2026-10-27) |
 | **Review / acceptance** | `pending` |
 | **Integration / release** | `n/a` |
 | **Acceptance** | Redacted samples, field catalog, gaps, adapter sketch; no SFO zone matrix assumption |
-| **Blocks** | GW-ICN-004 live integration |
+| **Evidence** | [`docs/data/icn-api-verification.md`](data/icn-api-verification.md) — live appendix; `scripts/icn-facilities-probe.mjs` |
+| **Verdict (live)** | **Sufficient with gaps** for initial static ICN browse (1175 facilities; no coords/queues/live open) |
+| **Blocks** | GW-ICN-004 may start adapter work; charging/water coverage still uncertain |
 
 ---
 
@@ -97,27 +99,32 @@ Use **four orthogonal dimensions** in GATEWISE STATUS and task tables:
 | **Reviewer** | Human owner |
 | **Depends on** | GW-ICN-001 review `accepted`; explicit assignment |
 | **Task permissions** | When authorized: feature branch, commit/push, preview deploy |
-| **Execution permission** | `not_authorized` |
-| **Work progress** | `not_started` |
+| **Execution permission** | `authorized` (source: direct human assign — bounded Mivvu first-entry slice, 2026-10-27) |
+| **Work progress** | `in_progress` (bounded slice: `/preview/mivvu-entry` intro + airport only; not wired to main shell) |
 | **Review / acceptance** | `pending` |
-| **Integration / release** | `n/a` |
+| **Integration / release** | `n/a` (local preview only; no deploy in this slice) |
 | **Acceptance** | `lint`, `tsc`, `npm test`, `build`; viewport checklist; labeled fixtures if needed |
+| **Bounded slice (2026-10-27)** | Branch `feat/mivvu-first-entry-slice`: Stitch-based **Mivvu** intro + airport selection; Plus Jakarta on preview route; SFO CTA → `/explore`; ICN CTA honest unavailable feedback. Handoff: `docs/design/mivvu-first-entry-handoff.md`. Full GW-ICN-003 shell redesign remains **pending**. |
 
 ---
 
-### GW-ICN-004: Real-data integration and refresh/error handling
+### GW-ICN-004: ICN facility data adapter + preview browse slice
 
 | Field | Value |
 | --- | --- |
-| **Owner** | Cursor + Codex (split by sub-assignment) |
+| **Owner** | Cursor |
 | **Reviewer** | Human owner |
-| **Depends on** | GW-ICN-002 progress `complete` + review `accepted`; GW-ICN-003 shell |
-| **Task permissions** | When authorized: fetch patterns, env documented, no paid providers without approval |
-| **Execution permission** | `not_authorized` |
-| **Work progress** | `not_started` |
+| **Depends on** | GW-ICN-002 progress `complete` (live verification) |
+| **Task permissions** | Local implementation + verification only (no commit/push/deploy in this assign) |
+| **Execution permission** | `authorized` (source: direct human assign — adapter + browse UI slice, 2026-10-27/28) |
+| **Work progress** | `complete` (adapter, KO+EN fixtures, ICN browse, KO/EN locale toggle + persistence on Mivvu preview only) |
 | **Review / acceptance** | `pending` |
-| **Integration / release** | `n/a` |
-| **Acceptance** | Fixtures + live smoke; no invented hours/waits; SFO engine unchanged unless tasked |
+| **Integration / release** | `n/a` (local preview) |
+| **Acceptance** | Adapter + static browse (search, terminal filter, honest snapshot copy); KO/EN fixture by locale; SFO `/explore` unchanged; intro timing unchanged |
+| **Evidence** | [`docs/data/icn-facility-adapter-handoff.md`](data/icn-facility-adapter-handoff.md); [`docs/design/mivvu-icn-browse-handoff.md`](design/mivvu-icn-browse-handoff.md); screenshots `03-icn-browse-390-ko.png`, `03-icn-browse-390-en.png` |
+| **Browse display count** | **1011** listings (collapsed from 1028 fixture rows) |
+| **Live sync note (2026-10-28)** | `totalCount` 1175 vs **1028** rows fetched; `syncIntegrity: api_total_mismatch`; 17 duplicate `sn` in fetched set |
+| **English fixture (2026-10-28)** | `icn-facilities-en.json` — 1028 raw / **1011** deduped; **1011** shared `sourceId` with KO; strict `lang=E` sync fails same mismatch |
 
 ---
 
@@ -128,12 +135,13 @@ Use **four orthogonal dimensions** in GATEWISE STATUS and task tables:
 | **Owner** | Codex |
 | **Reviewer** | Human owner |
 | **Depends on** | Preview from GW-ICN-003 or GW-ICN-004; explicit assignment |
-| **Task permissions** | When authorized: QA branch, tests, `docs/qa/` report |
-| **Execution permission** | `not_authorized` |
-| **Work progress** | `not_started` |
+| **Task permissions** | Direct human assign: independent local QA and small confirmed-defect fixes on the existing branch; no commit/push/merge/deploy |
+| **Execution permission** | `authorized` (source: direct human assign in Codex chat, 2026-10-27) |
+| **Work progress** | `complete` (bounded Mivvu preview QA and report) |
 | **Review / acceptance** | `pending` |
 | **Integration / release** | `n/a` |
 | **Acceptance** | Independent expectations; SFO regression; commands cited in report |
+| **Evidence** | [`docs/qa/mivvu-preview-qa.md`](qa/mivvu-preview-qa.md); local browser probe `scripts/qa-mivvu-preview.mjs` |
 
 ---
 
