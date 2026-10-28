@@ -1,5 +1,5 @@
 export const APP_ROUTES = [
-  { href: "/", label: "Flight", description: "Time budget and countdown" },
+  { href: "/flight", label: "Flight", description: "Time budget and countdown" },
   { href: "/explore", label: "Explore", description: "Find amenities and map" },
   {
     href: "/recommendations",
@@ -12,8 +12,8 @@ export const APP_ROUTES = [
 export type AppRouteHref = (typeof APP_ROUTES)[number]["href"];
 
 export function isAppRouteActive(pathname: string, href: AppRouteHref): boolean {
-  if (href === "/") {
-    return pathname === "/";
+  if (href === "/flight") {
+    return pathname === "/flight";
   }
   return pathname === href || pathname.startsWith(`${href}/`);
 }

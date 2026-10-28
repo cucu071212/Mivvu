@@ -1,13 +1,6 @@
-import { MivvuIcnBrowsePageClient } from "@/components/mivvu/MivvuIcnBrowsePageClient";
-import { buildIcnBrowseCatalog } from "@/lib/icn-facilities/icn-browse-view-model";
-import {
-  loadIcnFacilitiesEnFixture,
-  loadIcnFacilitiesKoFixture,
-} from "@/lib/icn-facilities/load-icn-facilities-fixture";
+import { redirect } from "next/navigation";
+import { MIVVU_ICN_BROWSE_PATH } from "@/lib/mivvu-entry-routes";
 
-export default function MivvuIcnBrowsePreviewPage() {
-  const catalogKo = buildIcnBrowseCatalog(loadIcnFacilitiesKoFixture(), "ko");
-  const catalogEn = buildIcnBrowseCatalog(loadIcnFacilitiesEnFixture(), "en");
-
-  return <MivvuIcnBrowsePageClient catalogKo={catalogKo} catalogEn={catalogEn} />;
+export default function MivvuIcnBrowsePreviewRedirectPage() {
+  redirect(MIVVU_ICN_BROWSE_PATH);
 }

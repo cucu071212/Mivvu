@@ -277,7 +277,7 @@ export function BoardingCountdownControls({
             <p className="text-xs text-muted-foreground">{liveLabel}</p>
           </div>
           <Link
-            href="/"
+            href="/flight"
             className="gw-focus-ring inline-flex min-h-11 items-center rounded-md border border-border bg-card px-3 text-sm font-semibold text-card-foreground no-underline hover:border-primary"
           >
             Manage on Flight
@@ -352,7 +352,7 @@ export function BoardingCountdownControls({
             Clear
           </button>
           <Link
-            href="/"
+            href="/flight"
             className="gw-focus-ring inline-flex min-h-11 items-center rounded-md px-2 text-sm font-semibold text-primary no-underline hover:underline"
           >
             Open Flight

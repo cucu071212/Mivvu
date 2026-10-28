@@ -56,7 +56,7 @@ test.describe("Two-stop planner demo", () => {
   });
 
   test("desktop and mobile screenshots for review", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/flight");
     await page
       .getByRole("checkbox", { name: /Demo estimates for wait/i })
       .check();
@@ -90,7 +90,7 @@ test.describe("Two-stop planner demo", () => {
 
   test("mobile nav reaches planner with focusable controls", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/");
+    await page.goto("/flight");
     await page.getByRole("navigation", { name: "Primary mobile" }).getByRole("link", {
       name: "My Plan",
     }).click();

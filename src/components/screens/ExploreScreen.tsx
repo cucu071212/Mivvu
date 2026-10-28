@@ -129,7 +129,7 @@ export function ExploreScreen() {
         <p className="text-sm text-muted-foreground" role="status">
           Flight context is incomplete — you can still browse facilities. Fix
           minutes and buffer on{" "}
-          <Link href="/" className="font-semibold underline">
+          <Link href="/flight" className="font-semibold underline">
             Flight
           </Link>{" "}
           to open ranked recommendations.

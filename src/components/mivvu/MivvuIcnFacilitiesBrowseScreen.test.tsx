@@ -117,7 +117,7 @@ describe("MivvuIcnFacilitiesBrowseScreen", () => {
     assert.ok(screen.getByText("라운지 A"));
 
     fireEvent.click(screen.getByRole("button", { name: /공항 선택/i }));
-    assert.equal(pushMock.mock.calls[0]?.[0], "/preview/mivvu-entry");
+    assert.equal(pushMock.mock.calls[0]?.[0], "/");
   });
 
   it("switches to English catalog while preserving terminal filter", async () => {

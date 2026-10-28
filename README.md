@@ -11,7 +11,7 @@ Airport maps show where a café or shop is. GateWise helps a traveler see whethe
 | Track | Status |
 | --- | --- |
 | **SFO demo** | Shipped — behavior below reflects the hackathon closeout release |
-| **ICN mobile** | **Planned** — not in production; tasks in [`docs/IMPLEMENTATION_PLAN.md`](docs/IMPLEMENTATION_PLAN.md) |
+| **Mivvu / ICN mobile** | Implemented on the feature branch for draft PR review: `/` → airport selection → `/icn`, with KO/EN saved snapshots; not production. See [`docs/qa/mivvu-pr-packaging.md`](docs/qa/mivvu-pr-packaging.md). |
 
 ## The problem
 
@@ -88,6 +88,8 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000). No environment variables are required for the local demo. Do not commit secrets.
+
+The feature branch opens Mivvu at `/`, browses ICN at `/icn`, and preserves SFO at `/flight`, `/explore`, `/recommendations`, and `/plan`. The old `/preview/mivvu-entry` and `/preview/mivvu-entry/icn` URLs redirect to `/` and `/icn`. KO/EN covers Mivvu entry and ICN snapshot browsing; the SFO demo remains in English.
 
 | Command | Purpose |
 | --- | --- |

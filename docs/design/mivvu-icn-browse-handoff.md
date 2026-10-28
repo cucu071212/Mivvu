@@ -1,18 +1,18 @@
 # Mivvu ICN browse UI — GW-ICN-004 bounded slice handoff
 
 **Plan revision:** GW-PLAN-REV-2026-10-26  
-**Branch:** `feat/mivvu-first-entry-slice` (local, uncommitted)
+**Branch:** `feat/mivvu-first-entry-slice` (feature-branch integration for draft PR review; not production)
 
 ---
 
-## Preview URLs
+## Canonical routes and legacy preview redirects
 
 | Screen | URL |
 | --- | --- |
-| Entry (intro + airport) | `/preview/mivvu-entry` |
-| ICN facility browse | `/preview/mivvu-entry/icn` |
+| Entry (intro + airport) | `/` (canonical); `/preview/mivvu-entry` redirects |
+| ICN facility browse | `/icn` (canonical); `/preview/mivvu-entry/icn` redirects |
 
-Local (production build): `http://127.0.0.1:3003/preview/mivvu-entry` and `http://127.0.0.1:3003/preview/mivvu-entry/icn` after `npm run build && npx next start -p 3003`.
+Local (production build): `http://127.0.0.1:3113/` and `http://127.0.0.1:3113/icn` after `npm run build && npm run start -- --hostname 127.0.0.1 --port 3113`.
 
 ---
 
@@ -30,8 +30,9 @@ Local (production build): `http://127.0.0.1:3003/preview/mivvu-entry` and `http:
 | `src/components/mivvu/MivvuIcnFacilitiesBrowseScreen.tsx` | Dual catalogs; preserves search + terminal on language change |
 | `src/components/mivvu/MivvuIcnBrowsePageClient.tsx` | Client wrapper for browse route |
 | `src/components/mivvu/MivvuAirportSelectionScreen.tsx` | Messages + language toggle |
-| `src/app/preview/mivvu-entry/layout.tsx` | Wraps preview routes in locale provider |
-| `src/app/preview/mivvu-entry/icn/page.tsx` | Builds KO + EN catalogs server-side |
+| `src/components/mivvu/MivvuEntryLayoutShell.tsx` | Shared entry layout with locale provider |
+| `src/app/(mivvu-entry)/icn/page.tsx`, `src/components/mivvu/MivvuIcnBrowsePage.tsx` | Canonical `/icn`; builds KO + EN catalogs server-side |
+| `src/app/preview/mivvu-entry/` | Redirects legacy preview paths to `/` and `/icn` |
 | `src/app/mivvu-entry.css` | Language toggle + browse layout |
 | `scripts/capture-mivvu-entry-screens.mjs` | 390px captures including KO/EN browse |
 
@@ -67,7 +68,7 @@ Adapter/sync unchanged in this slice; fixture files unchanged.
 
 ---
 
-## Verification run (2026-10-28)
+## Historical browse-slice verification (2026-10-28, before canonical-route integration)
 
 | Command | Result |
 | --- | --- |
@@ -92,4 +93,7 @@ Manual: language toggle on airport + browse; terminal + query preserved on switc
 - No facility detail, maps, category chips filter, live API refresh, or recommendation engine.
 - No automatic query translation between KO/EN fixtures.
 - API `totalCount` (1175) vs fetched rows (1028) not shown in UI; honest copy in footer only.
-- Production main entry (`/`) and SFO `/explore` unchanged.
+- Feature-branch entry (`/`) uses Mivvu; SFO Flight is at `/flight`; `/explore`, `/recommendations`, and `/plan` preserve the SFO demo behavior. This is not evidence of production integration or deployment.
+- No physical-device, safe-area hardware, manual assistive-technology, or non-Chromium testing; active penetration testing was not performed.
+
+Human owner authorized packaging the implemented entry, ICN browse, KO/EN, and SEC-01/02/03 changes for draft PR review on 2026-10-28. Final verification: [PR packaging handoff](../qa/mivvu-pr-packaging.md). Security scope and residual inline allowances: [security report](../security/mivvu-preflight-review.md). Acceptance remains pending.

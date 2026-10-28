@@ -12,7 +12,10 @@ import { recommendFacilities } from "@/lib/recommend";
 import { productionTravelMinutes } from "@/data/travel-times";
 import facilitiesJson from "@/data/facilities.json";
 
-vi.mock("next/navigation", () => ({ usePathname: () => "/explore" }));
+vi.mock("next/navigation", () => ({
+  usePathname: () => "/explore",
+  useRouter: () => ({ push: vi.fn(), replace: vi.fn() }),
+}));
 afterEach(cleanup);
 
 const { facilities, datasetErrors } = prepareProductionFacilities(facilitiesJson);

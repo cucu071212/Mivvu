@@ -100,11 +100,12 @@ Use **four orthogonal dimensions** in GATEWISE STATUS and task tables:
 | **Depends on** | GW-ICN-001 review `accepted`; explicit assignment |
 | **Task permissions** | When authorized: feature branch, commit/push, preview deploy |
 | **Execution permission** | `authorized` (source: direct human assign — bounded Mivvu first-entry slice, 2026-10-27) |
-| **Work progress** | `in_progress` (bounded slice: `/preview/mivvu-entry` intro + airport only; not wired to main shell) |
+| **Work progress** | `complete` (bounded slice + main-entry integration on feature branch; `/` + `/icn`; SFO Flight at `/flight`; preview redirects; packaging evidence under GW-ICN-005) |
 | **Review / acceptance** | `pending` |
-| **Integration / release** | `n/a` (local preview only; no deploy in this slice) |
+| **Integration / release** | `n/a` (feature-branch draft PR packaging authorized under GW-ICN-005; no production promotion) |
 | **Acceptance** | `lint`, `tsc`, `npm test`, `build`; viewport checklist; labeled fixtures if needed |
-| **Bounded slice (2026-10-27)** | Branch `feat/mivvu-first-entry-slice`: Stitch-based **Mivvu** intro + airport selection; Plus Jakarta on preview route; SFO CTA → `/explore`; ICN CTA honest unavailable feedback. Handoff: `docs/design/mivvu-first-entry-handoff.md`. Full GW-ICN-003 shell redesign remains **pending**. |
+| **Bounded slice (2026-10-27)** | Stitch-based **Mivvu** intro + airport selection; Plus Jakarta on entry routes; SFO CTA → `/explore`; ICN → `/icn`. Handoff: `docs/design/mivvu-first-entry-handoff.md`. Full GW-ICN-003 shell redesign remains **pending**. |
+| **Main-entry integration (2026-10-28)** | Human-authorized local integration after GW-ICN-005 QA; checkpoint `518534a`; canonical routing via `src/lib/mivvu-entry-routes.ts`; legacy preview URLs redirect. |
 
 ---
 
@@ -117,9 +118,9 @@ Use **four orthogonal dimensions** in GATEWISE STATUS and task tables:
 | **Depends on** | GW-ICN-002 progress `complete` (live verification) |
 | **Task permissions** | Local implementation + verification only (no commit/push/deploy in this assign) |
 | **Execution permission** | `authorized` (source: direct human assign — adapter + browse UI slice, 2026-10-27/28) |
-| **Work progress** | `complete` (adapter, KO+EN fixtures, ICN browse, KO/EN locale toggle + persistence on Mivvu preview only) |
+| **Work progress** | `complete` (adapter, KO+EN fixtures, ICN browse, KO/EN locale toggle + persistence on Mivvu `/` and `/icn`; legacy preview URLs redirect) |
 | **Review / acceptance** | `pending` |
-| **Integration / release** | `n/a` (local preview) |
+| **Integration / release** | `n/a` (feature-branch integration for PR review; no production deployment) |
 | **Acceptance** | Adapter + static browse (search, terminal filter, honest snapshot copy); KO/EN fixture by locale; SFO `/explore` unchanged; intro timing unchanged |
 | **Evidence** | [`docs/data/icn-facility-adapter-handoff.md`](data/icn-facility-adapter-handoff.md); [`docs/design/mivvu-icn-browse-handoff.md`](design/mivvu-icn-browse-handoff.md); screenshots `03-icn-browse-390-ko.png`, `03-icn-browse-390-en.png` |
 | **Browse display count** | **1011** listings (collapsed from 1028 fixture rows) |
@@ -135,13 +136,14 @@ Use **four orthogonal dimensions** in GATEWISE STATUS and task tables:
 | **Owner** | Codex |
 | **Reviewer** | Human owner |
 | **Depends on** | Preview from GW-ICN-003 or GW-ICN-004; explicit assignment |
-| **Task permissions** | Direct human assign: independent local QA and small confirmed-defect fixes on the existing branch; no commit/push/merge/deploy |
-| **Execution permission** | `authorized` (source: direct human assign in Codex chat, 2026-10-27) |
-| **Work progress** | `complete` (bounded Mivvu preview QA and report) |
+| **Task permissions** | Original local QA and bounded SEC-01/02/03 follow-ups; direct human assignment on 2026-10-28 additionally authorizes local packaging review/focused corrections, explicit-file commits, normal push to `feat/mivvu-first-entry-slice`, and draft PR against `main`. No force-push, merge, production deploy, infrastructure changes, active scanning, new features, or dependency upgrades. |
+| **Execution permission** | `authorized` (source: human owner, direct Codex chat assignments, 2026-10-27/28; PR packaging 2026-10-28 America/New_York) |
+| **Work progress** | `complete` (bounded preview QA, SEC-01 sanitized errors, SEC-03 enforced server-only boundary, SEC-02 attribute restriction with inline allowances retained; combined PR packaging evidence below) |
 | **Review / acceptance** | `pending` |
 | **Integration / release** | `n/a` |
 | **Acceptance** | Independent expectations; SFO regression; commands cited in report |
-| **Evidence** | [`docs/qa/mivvu-preview-qa.md`](qa/mivvu-preview-qa.md); local browser probe `scripts/qa-mivvu-preview.mjs` |
+| **Evidence** | [Historical preview QA](qa/mivvu-preview-qa.md); [security review/remediation evidence](security/mivvu-preflight-review.md); [combined PR packaging handoff](qa/mivvu-pr-packaging.md); local browser probe `scripts/qa-mivvu-preview.mjs` |
+| **Owner decision (2026-10-28)** | Proceed with the implemented entry, ICN browsing, KO/EN, and SEC-01/02/03 fixes as the basis for PR review. Skip Strix/Shannon and isolation setup for this release. Active penetration testing **not performed**; this decision is neither an independent code audit nor a guarantee of security. Review stays pending; human owner is integration reviewer. |
 
 ---
 

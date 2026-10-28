@@ -1,5 +1,6 @@
-import { MivvuFirstEntryFlow } from "@/components/mivvu/MivvuFirstEntryFlow";
+import { redirect } from "next/navigation";
+import { MIVVU_ENTRY_PATH } from "@/lib/mivvu-entry-routes";
 
-export default function MivvuEntryPreviewPage() {
-  return <MivvuFirstEntryFlow />;
+export default function MivvuEntryPreviewRedirectPage() {
+  redirect(MIVVU_ENTRY_PATH);
 }

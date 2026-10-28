@@ -32,7 +32,7 @@ export function TwoStopDemoSetupPanel({
           {!demoQueueActivityEnabled ? (
             <dd className="mt-2">
               <Link
-                href="/"
+                href="/flight"
                 className="gw-focus-ring text-sm font-medium text-primary underline"
               >
                 Enable on Flight

@@ -14,6 +14,7 @@ import {
   formatIcnTerminalFloorLine,
   type IcnBrowseCatalog,
 } from "@/lib/icn-facilities/icn-browse-view-model";
+import { MIVVU_ENTRY_PATH } from "@/lib/mivvu-entry-routes";
 
 function BackIcon() {
   return (
@@ -114,7 +115,7 @@ export function MivvuIcnFacilitiesBrowseScreen({
             <button
               type="button"
               className="mivvu-icn-back mivvu-icn-back-compact gw-focus-ring"
-              onClick={() => router.push("/preview/mivvu-entry")}
+              onClick={() => router.push(MIVVU_ENTRY_PATH)}
             >
               <BackIcon />
               <span className="mivvu-icn-back-text">{messages.icnBack}</span>

@@ -81,7 +81,7 @@ describe("MivvuFirstEntryFlow", () => {
 
     fireEvent.click(screen.getByRole("button", { name: /Explore ICN/i }));
     await waitFor(() =>
-      assert.equal(pushMock.mock.calls[0]?.[0], "/preview/mivvu-entry/icn"),
+      assert.equal(pushMock.mock.calls[0]?.[0], "/icn"),
     );
 
     pushMock.mockReset();

@@ -8,7 +8,9 @@ import facilitiesJson from "@/data/facilities.json";
 const { facilities, datasetErrors } = prepareProductionFacilities(facilitiesJson);
 const DOLORES_ID = "sfo-t2-d-16th-dolores-general-store";
 
-function renderApp(initialPath: "/" | "/explore" | "/recommendations" | "/plan" = "/") {
+function renderApp(
+  initialPath: "/flight" | "/explore" | "/recommendations" | "/plan" = "/flight",
+) {
   return render(
     <GateWiseHome
       facilities={facilities}
@@ -28,7 +30,7 @@ afterEach(() => {
 
 describe("GateWise multipage session (mounted)", () => {
   it("keeps demo mode and invalid personalization across Flight → Results", () => {
-    renderApp("/");
+    renderApp("/flight");
     fireEvent.click(screen.getByRole("checkbox", { name: /Demo estimates/ }));
 
     goTo("Results");
@@ -65,7 +67,7 @@ describe("GateWise multipage session (mounted)", () => {
   });
 
   it("keeps countdown baseline ticking host mounted when leaving Flight", () => {
-    renderApp("/");
+    renderApp("/flight");
     const suggest = screen.getByRole("button", {
       name: /Suggest from manual budget/,
     });

@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   SUPPORTED_AIRPORT_IATA,
   SUPPORTED_BOARDING_AREA_LABEL,
@@ -11,13 +11,13 @@ import { AppNav } from "@/components/AppNav";
 import { BoardingCountdownControls } from "@/components/BoardingCountdownControls";
 import { PersonalizedTimeControls } from "@/components/PersonalizedTimeControls";
 import { useGateWiseSession } from "@/context/gatewise-session";
-import { useAirportSelection } from "@/context/airport-selection";
+import { MIVVU_ENTRY_PATH } from "@/lib/mivvu-entry-routes";
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname() || "/";
+  const router = useRouter();
   const session = useGateWiseSession();
-  const { reopenSelection } = useAirportSelection();
-  const onFlight = pathname === "/";
+  const onFlight = pathname === "/flight";
   const onResults = pathname === "/recommendations";
   const countdownVariant = onFlight ? "full" : "dock";
 
@@ -36,7 +36,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             <button
               type="button"
               className="gw-focus-ring text-xs font-medium text-primary underline-offset-2 hover:underline"
-              onClick={reopenSelection}
+              onClick={() => router.push(MIVVU_ENTRY_PATH)}
             >
               Change airport
             </button>

@@ -14,6 +14,9 @@ import { persistAirportSelection } from "@/lib/airport-selection-preference";
 import { MivvuWordmark } from "@/components/mivvu/MivvuWordmark";
 import { MivvuLanguageToggle } from "@/components/mivvu/MivvuLanguageToggle";
 import { useMivvuPreviewLocale } from "@/components/mivvu/MivvuPreviewLocaleProvider";
+import {
+  MIVVU_ICN_BROWSE_PATH,
+} from "@/lib/mivvu-entry-routes";
 
 function splitAirportName(name: string): { line1: string; line2: string | null } {
   const international = name.replace(
@@ -95,7 +98,7 @@ export function MivvuAirportSelectionScreen() {
 
   function handleExplore() {
     if (selectedIata === "ICN") {
-      router.push("/preview/mivvu-entry/icn");
+      router.push(MIVVU_ICN_BROWSE_PATH);
       return;
     }
 

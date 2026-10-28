@@ -13,6 +13,7 @@ import {
   isLocalStorageAvailable,
   persistAirportSelection,
   readStoredAirportSelection,
+  subscribeAirportSelectionPreference,
 } from "@/lib/airport-selection-preference";
 
 type AirportSelectionContextValue = {
@@ -35,10 +36,15 @@ export function useAirportSelection(): AirportSelectionContextValue {
   return value;
 }
 
+function readInitialAcknowledged(): boolean {
+  if (typeof window === "undefined") return true;
+  return readStoredAirportSelection() !== null;
+}
+
 export function AirportSelectionProvider({ children }: { children: ReactNode }) {
   const [forcedOpen, setForcedOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
-  const [acknowledged, setAcknowledged] = useState(true);
+  const [acknowledged, setAcknowledged] = useState(readInitialAcknowledged);
   const [storageAvailable, setStorageAvailable] = useState(true);
 
   useEffect(() => {
@@ -52,7 +58,17 @@ export function AirportSelectionProvider({ children }: { children: ReactNode }) 
     });
   }, []);
 
-  const gateOpen = forcedOpen || (hydrated && !acknowledged);
+  useEffect(() => {
+    return subscribeAirportSelectionPreference(() => {
+      const stored = readStoredAirportSelection() !== null;
+      setAcknowledged(stored);
+      setForcedOpen(false);
+    });
+  }, []);
+
+  const gateOpen =
+    forcedOpen ||
+    !(hydrated ? acknowledged : readInitialAcknowledged());
 
   const completeSelection = useCallback(() => {
     const today = new Date().toISOString().slice(0, 10);

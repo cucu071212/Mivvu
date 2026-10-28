@@ -89,7 +89,7 @@ export function TwoStopPlannerDemo() {
         </h2>
         <p className="text-sm text-muted-foreground">
           Minutes until boarding starts and safety buffer come from{" "}
-          <Link href="/" className="font-medium text-primary underline">
+          <Link href="/flight" className="font-medium text-primary underline">
             Flight
           </Link>
           . Personal overrides on Results apply here too.

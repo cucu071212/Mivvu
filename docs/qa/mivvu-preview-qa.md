@@ -1,5 +1,7 @@
 # GW-ICN-005 — bounded independent Mivvu preview QA
 
+**Historical preview QA:** The evidence below predates canonical-route integration and remains scoped to that tested state. The human owner subsequently authorized packaging the implemented integration and SEC-01/02/03 changes for draft PR review on 2026-10-28. Current feature-branch routes are `/` (Mivvu), `/icn` (KO/EN snapshot browsing), `/flight` (SFO Flight), and the existing SFO `/explore`, `/recommendations`, `/plan`; both old preview URLs redirect. See the [final PR packaging handoff](mivvu-pr-packaging.md) for combined verification. Strix/Shannon and isolation setup are skipped by owner decision; active penetration testing was not performed. That decision is not an independent code audit or a security guarantee. Production promotion remains unauthorized.
+
 **Plan revision:** `GW-PLAN-REV-2026-10-26`  
 **Execution permission:** direct human assignment in this chat, 2026-10-27 (America/New_York); local QA and small confirmed-defect fixes only.  
 **Tested state:** `feat/mivvu-first-entry-slice` at HEAD `103524337e1ca0e8edf007a0a3c32c4b76985fea`, with the existing uncommitted GW-ICN-003/004 work and the local GW-ICN-005 changes below. The initial working tree was already dirty; no reset, stash, branch switch, commit, push, merge, or deployment was performed.  

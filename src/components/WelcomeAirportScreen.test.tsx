@@ -3,22 +3,13 @@ import assert from "node:assert/strict";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, it } from "vitest";
 import { AirportSelectionProvider } from "@/context/airport-selection";
-import { GateWiseSessionProvider } from "@/context/gatewise-session";
-import { AirportSelectionLayout } from "@/components/AirportSelectionLayout";
-import { clearStoredAirportSelection } from "@/lib/airport-selection-preference";
-import { prepareProductionFacilities } from "@/lib/browse-integration";
-import facilitiesJson from "@/data/facilities.json";
+import { WelcomeAirportScreen } from "@/components/WelcomeAirportScreen";
+import { clearStoredAirportSelection, readStoredAirportSelection } from "@/lib/airport-selection-preference";
 
-const { facilities, datasetErrors } = prepareProductionFacilities(facilitiesJson);
-
-function LayoutFixture() {
+function WelcomeFixture() {
   return (
     <AirportSelectionProvider>
-      <GateWiseSessionProvider facilities={facilities} datasetErrors={datasetErrors}>
-        <AirportSelectionLayout>
-          <h1>Flight context</h1>
-        </AirportSelectionLayout>
-      </GateWiseSessionProvider>
+      <WelcomeAirportScreen />
     </AirportSelectionProvider>
   );
 }
@@ -30,16 +21,16 @@ describe("WelcomeAirportScreen (searchable directory)", () => {
   });
 
   it("shows searchable directory and enters app only with SFO", async () => {
-    render(<LayoutFixture />);
+    render(<WelcomeFixture />);
     await screen.findByRole("heading", { name: /Where are you flying from/i });
     assert.ok(screen.getByLabelText(/Search airports/i));
     assert.ok(screen.getByText(/Starting with San Francisco/i));
     fireEvent.click(screen.getByRole("button", { name: /Continue to Flight dashboard/i }));
-    assert.ok(screen.getByRole("heading", { name: "Flight context" }));
+    assert.ok(readStoredAirportSelection() !== null);
   });
 
   it("filters airports by city and blocks continue for coming-soon selection", async () => {
-    render(<LayoutFixture />);
+    render(<WelcomeFixture />);
     await screen.findByRole("heading", { name: /Where are you flying from/i });
     fireEvent.change(screen.getByLabelText(/Search airports/i), {
       target: { value: "chicago" },
@@ -55,7 +46,7 @@ describe("WelcomeAirportScreen (searchable directory)", () => {
   });
 
   it("shows empty state when search has no matches", async () => {
-    render(<LayoutFixture />);
+    render(<WelcomeFixture />);
     await screen.findByRole("heading", { name: /Where are you flying from/i });
     fireEvent.change(screen.getByLabelText(/Search airports/i), {
       target: { value: "zzz-no-match" },

@@ -27,7 +27,7 @@ function HarnessShell({ initialPath }: { initialPath: AppRouteHref }) {
   const [path, setPath] = useState<AppRouteHref>(initialPath);
   const session = useGateWiseSession();
   const onResults = path === "/recommendations";
-  const countdownVariant = path === "/" ? "full" : "dock";
+  const countdownVariant = path === "/flight" ? "full" : "dock";
 
   const screen = useMemo(() => {
     switch (path) {
@@ -37,6 +37,8 @@ function HarnessShell({ initialPath }: { initialPath: AppRouteHref }) {
         return <RecommendationsScreen />;
       case "/plan":
         return <PlanScreen />;
+      case "/flight":
+        return <FlightScreen />;
       default:
         return <FlightScreen />;
     }
@@ -66,7 +68,7 @@ function HarnessShell({ initialPath }: { initialPath: AppRouteHref }) {
 
       <div
         className={
-          path === "/"
+          path === "/flight"
             ? "gw-countdown-host gw-countdown-host-flight"
             : "gw-countdown-host gw-countdown-host-dock"
         }
@@ -81,7 +83,7 @@ function HarnessShell({ initialPath }: { initialPath: AppRouteHref }) {
             disabled={!session.datasetValid}
             variant={countdownVariant}
           />
-          {path !== "/" && session.baselineUsesLiveCountdown ? (
+          {path !== "/flight" && session.baselineUsesLiveCountdown ? (
             <p className="gw-countdown-dock-note" role="status">
               Live countdown continues while you browse. Open Flight for the full
               editor.
@@ -118,7 +120,7 @@ function HarnessShell({ initialPath }: { initialPath: AppRouteHref }) {
 export function GateWiseHome({
   facilities,
   datasetErrors,
-  initialPath = "/",
+  initialPath = "/flight",
 }: GateWiseHomeProps) {
   return (
     <GateWiseSessionProvider

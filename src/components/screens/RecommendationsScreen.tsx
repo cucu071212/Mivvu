@@ -26,7 +26,7 @@ export function RecommendationsScreen() {
         <p className="text-xs text-muted-foreground">
           Baseline: {session.minutesInput} min · Buffer: {session.bufferInput}{" "}
           min · Demo: {session.demoEstimatesEnabled ? "on" : "off"}.{" "}
-          <Link href="/" className="font-medium underline">
+          <Link href="/flight" className="font-medium underline">
             Edit on Flight
           </Link>
         </p>
@@ -54,7 +54,7 @@ export function RecommendationsScreen() {
             role="alert"
           >
             Fix flight context on{" "}
-            <Link href="/" className="font-semibold underline">
+            <Link href="/flight" className="font-semibold underline">
               Flight
             </Link>{" "}
             to see recommendations.
@@ -70,7 +70,7 @@ export function RecommendationsScreen() {
           >
             Recommendations are paused until you restore your last manual minutes
             after the countdown stopped unexpectedly.{" "}
-            <Link href="/" className="font-semibold underline">
+            <Link href="/flight" className="font-semibold underline">
               Restore on Flight
             </Link>
           </p>

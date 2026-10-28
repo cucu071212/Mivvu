@@ -1,13 +1,13 @@
 import { test, expect } from "./fixtures";
 
 test("390px mobile navigation is usable and preserves flight inputs", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/flight");
   await page.getByLabel("Baseline: minutes until boarding starts").fill("40");
   const nav = page.getByRole("navigation", { name: "Primary mobile", exact: true });
   for (const [link, path, heading] of [
     ["Explore", "/explore", "Explore"],
     ["Results", "/recommendations", "Recommendations"],
-    ["Flight", "/", "Flight context"],
+    ["Flight", "/flight", "Flight context"],
   ]) {
     const target = nav.getByRole("link", { name: link, exact: true });
     await expect(target).toBeInViewport();

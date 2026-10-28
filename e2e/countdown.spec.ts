@@ -5,7 +5,7 @@ const now = new Date("2026-10-25T16:00:00Z");
 test.beforeEach(async ({ page }) => {
   await page.clock.install({ time: now });
   await page.clock.pauseAt(now);
-  await page.goto("/");
+  await page.goto("/flight");
 });
 
 test("Countdown rejects empty and more-than-24-hour targets without replacing manual budget", async ({ page }) => {
