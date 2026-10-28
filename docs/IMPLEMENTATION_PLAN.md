@@ -173,9 +173,9 @@ Use **four orthogonal dimensions** in GATEWISE STATUS and task tables:
 | **Execution permission** | `authorized` (source: direct human assignment in Codex chat, 2026-10-28 America/New_York) |
 | **Task permissions** | Local code, tests, docs, verification on `codex/gw-icn-007-snapshot-quality`. No commit, push, GitHub mutations, merge, deploy, live API, fixture replacement, dependency upgrades, active scanning, or subagents. Prior release permissions do not apply. |
 | **Scope** | Offline untrusted snapshot validation, deterministic KO/EN analysis and baseline comparison CLI; shared unambiguous matching rule and P3 fallback correction; documentation and adversarial tests |
-| **Work progress** | `complete` (integrated in GW-ICN-009; packaged on feature branch) |
-| **Review / acceptance** | `accepted` (Cursor integration review; human owner accepted integrated packaging, 2026-10-28) |
-| **Integration / release** | `preview` (via GW-ICN-009 PR; no merge/production) |
+| **Work progress** | `complete` (shipped via GW-ICN-009 / PR #3) |
+| **Review / acceptance** | `accepted` (Cursor integration review; human owner accepted integrated packaging and production release, 2026-10-28) |
+| **Integration / release** | `production` — `main` @ `bb4735d` via [PR #3](https://github.com/cucu071212/Mivvu/pull/3); https://gate-wise-iota.vercel.app |
 | **Acceptance / verification** | Current counts and totalCount mismatch retained; self/reordered comparisons have no content changes; synthetic invalid/incomplete/conflicting/asymmetric inputs; safe fallback; unchanged shipped fixture bytes and browse output; focused data/display tests, CLI smoke, lint, production build, whitespace review |
 | **Handoff** | [Usage, results, limitations](data/icn-snapshot-quality-gate.md) |
 
@@ -189,9 +189,9 @@ Use **four orthogonal dimensions** in GATEWISE STATUS and task tables:
 | **Task permissions** | Isolated local source, tests, docs, checkpoints and verification only. No commit, push, PR, GitHub mutations, merge, deploy, live airport API, scanning, fixture replacement, dependency changes or subagents. |
 | **Scope** | Locale-local Unicode/token/initial-consonant search, conservative name typo recovery, deterministic ranking, reusable indexes; existing layout and state preserved |
 | **Base / dependency** | Local `main` @ `5bd3121f6aac992ac1b5d59e33c1e68d65c40170`; shipped browse contracts. GW-ICN-007 remains separate until GW-ICN-009 integration. |
-| **Work progress** | `complete` (integrated in GW-ICN-009; packaged on feature branch) |
-| **Review / acceptance** | `accepted` (Cursor integration review; human owner accepted integrated packaging, 2026-10-28) |
-| **Integration / release** | `preview` (via GW-ICN-009 PR; no merge/production) |
+| **Work progress** | `complete` (shipped via GW-ICN-009 / PR #3) |
+| **Review / acceptance** | `accepted` (Cursor integration review; human owner accepted integrated packaging and production release, 2026-10-28) |
+| **Integration / release** | `production` — `main` @ `bb4735d` via [PR #3](https://github.com/cucu071212/Mivvu/pull/3); https://gate-wise-iota.vercel.app |
 | **Acceptance / verification** | Independent adversarial tests, unchanged fixtures/empty ordering, relevance and performance evidence, browser composition/state/count/focus/mobile checks, lint/typecheck/tests/build/whitespace |
 | **Checkpoint / handoff** | [Durable progress and Cursor handoff](handoffs/GW-ICN-008-checkpoint.md) |
 
@@ -202,13 +202,13 @@ Use **four orthogonal dimensions** in GATEWISE STATUS and task tables:
 | **Plan revision** | `GW-PLAN-REV-2026-10-26` |
 | **Owner** | Cursor |
 | **Follow-up reviewer / final acceptance** | Codex (integration delta only) / human owner |
-| **Execution permission** | `authorized` (human owner dispatch 2026-10-28; packaging commit/push/PR authorized 2026-10-28) |
-| **Task permissions** | Integration branch commit, normal push, draft/open PR against `main`, ordinary Vercel preview. **No** merge to `main`, production deploy, dependency changes, live API, or fixture refresh. |
-| **Work progress** | `complete` (integrated tree + packaging) |
-| **Review / acceptance** | `accepted` (Cursor integration review; Codex integration delta — no blockers; human owner accepted packaging, 2026-10-28) |
-| **Integration / release** | `preview` (feature-branch PR; merge/production unauthorized) |
-| **Evidence** | [Integration checkpoint](handoffs/GW-ICN-009-integration.md) |
-| **Branch** | `codex/gw-icn-009-integration` from `main` @ `5bd3121` |
+| **Execution permission** | `authorized` (human owner dispatch 2026-10-28; packaging commit/push/PR 2026-10-28; **production release** merge PR #3 + deploy 2026-10-28) |
+| **Task permissions** | Integration branch commit, push, PR #3 merge to `main`, automatic Vercel production deploy, documentation-only follow-up PR/commits as needed. No unrelated merges, dependency changes, live API, or fixture refresh. |
+| **Work progress** | `complete` (integrated, merged, production smoke recorded) |
+| **Review / acceptance** | `accepted` (Cursor integration review; Codex integration delta — no blockers; human owner accepted packaging and production release, 2026-10-28) |
+| **Integration / release** | `production` — `main` @ `bb4735d07f9b5cb68c6b44944ee76e994df801a8`; https://gate-wise-iota.vercel.app |
+| **Evidence** | [Integration checkpoint](handoffs/GW-ICN-009-integration.md); [Release record](submission/MIVVU_RELEASE_2026-10-28-icn-search.md); [Production smoke](../qa/mivvu-production-smoke-2026-10-28-icn-search.md) |
+| **Branch** | `codex/gw-icn-009-integration` merged via [PR #3](https://github.com/cucu071212/Mivvu/pull/3) |
 
 GW-ICN-001 and GW-ICN-002 may run in parallel when **separately authorized**.
 

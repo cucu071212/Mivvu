@@ -43,3 +43,4 @@ Historical **SFO hackathon closeout** facts remain in [`RELEASE_FACTS.md`](./REL
 - [Production smoke (2026-10-28)](../qa/mivvu-production-smoke-2026-10-28.md)
 - [Preview QA + P2 corrections](../qa/mivvu-preview-qa.md)
 - [Security preflight](../security/mivvu-preflight-review.md)
+- **Follow-on (same alias):** [GW-ICN-009 ICN search + snapshot integration](./MIVVU_RELEASE_2026-10-28-icn-search.md) — `bb4735d` via PR #3
