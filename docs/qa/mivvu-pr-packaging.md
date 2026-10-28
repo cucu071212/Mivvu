@@ -51,4 +51,32 @@ This bounded local check is not a full entropy scanner or a guarantee against un
 
 The inspected `.github/workflows/e2e.yml` runs tests on PRs targeting `main`; its push filter is `main` or `codex/browser-e2e-reliability`. It has read-only repository permissions and no deploy/promotion command. No in-tree `vercel.json`, Vercel deploy hook, or feature-branch production trigger was found; the ignored local Vercel link does not specify a production branch. Remote Vercel project settings were not independently verified, so this review does not certify external automation configuration. Existing documentation identifies `main` promotion as the consequential production path. The authorized feature-branch push may create an ordinary Vercel preview; a preview is claimed only if its URL/status is actually observed.
 
-This PR does not itself authorize production promotion. No merge or manual deployment is permitted or performed. Publication details are recorded after the normal push/draft PR operation and in the final GATEWISE STATUS.
+This PR does not itself authorize production promotion. No merge or manual deployment is permitted or performed.
+
+## Publication evidence
+
+- Integration/security packaging commit: **`d07807a82f39fe41e97ceaf6cd7b591ffd805ff1`**, normally pushed to **`feat/mivvu-first-entry-slice`** with upstream tracking. The following documentation-only commit records publication; no application input changed after the final build/browser checks.
+- Draft [PR #2 — Mivvu entry → ICN browsing with KO/EN and security hardening](https://github.com/cucu071212/GateWise/pull/2) targets `main`. A fresh search found no existing PR before creation. GitHub confirms draft/open/unmerged and mergeable; no merge was performed.
+- [Observed preview](https://gate-wise-git-feat-mivvu-first-entry-slice-gate-wise.vercel.app): Vercel's [PR bot comment](https://github.com/cucu071212/GateWise/pull/2#issuecomment-6468462875) reported **Ready** on 2026-10-28, and the commit's Vercel status was **success**. [Deployment record](https://vercel.com/gate-wise/gate-wise/9gGNEfcHf9JqRJfVDokiZEXrv5Uw). This confirms ordinary preview automation occurred; no remote preview browser smoke or production deployment verification is claimed. The branch alias may advance with subsequent commits.
+- GitHub Browser E2E was observed **in progress**, run **40684615406**, after PR creation. Local results above are complete; a pending remote workflow is not reported as passed. Later CI state is available on the PR.
+- Before the implementation commit, the final bounded credential check covered **346** current files, **45** staged paths, **168** reachable commits, **708** blobs, one tag, and **449** fresh non-cache build files. No known environment-value match or unexplained credential-pattern finding remained; deliberately synthetic test URLs were reviewed separately. Secret values and authenticated URLs were not printed.
+- Intentionally uncommitted: `.DS_Store`, `docs/.DS_Store`. Ignored `.env.local`, repository-local build/test caches, and temporary verification evidence remain excluded. Historical `docs/submission/` is unchanged against `origin/main`.
+
+```text
+GATEWISE STATUS — Codex
+Task ID / objective: GW-ICN-005 / package Mivvu integration and SEC-01/02/03 for draft PR review
+Plan revision: GW-PLAN-REV-2026-10-26
+Execution permission: authorized (human owner, direct Codex chat assignment, 2026-10-28 America/New_York)
+Work progress: complete
+Review / acceptance: pending (human owner)
+Integration / release: preview (automatic Vercel preview observed; production unauthorized)
+Files changed: reviewed 45-path integration/security/documentation commit; publication update only in this handoff and docs/IMPLEMENTATION_PLAN.md
+Behavior delivered / verified data sources: Mivvu / and /icn, KO/EN saved fixtures, SFO /flight and existing demo paths, preview redirects, controlled client errors, server-only boundary, CSP attribute restriction
+Tests and commands actually run: npm test PASS 1017 / 2 skipped; lint PASS; build including TypeScript PASS; Playwright PASS 24; Mivvu browser probe PASS 22 checkpoints; route/header/source-copy checks PASS; staged/checkpoint whitespace PASS; full-PR whitespace FAIL 216 inherited documentation findings; bounded credential/preservation/link checks PASS
+Git branch / commit / push state: feat/mivvu-first-entry-slice; d07807a82f39fe41e97ceaf6cd7b591ffd805ff1 pushed normally; documentation-only publication record follows; draft PR https://github.com/cucu071212/GateWise/pull/2
+Dependencies needed from other owner: human owner integration review; remote CI result on PR
+Blockers, known limitations, integration risks: incomplete snapshots; inline script/style allowances; no active penetration testing, real-device/non-Chromium/assistive-technology testing; inherited documentation whitespace; external production settings unverified
+Handoff / report location: docs/qa/mivvu-pr-packaging.md; docs/security/mivvu-preflight-review.md
+Recommended next task (proposal only): human owner review of draft PR and CI evidence
+Decision needed from human owner: accept/revise PR; any main merge/production promotion requires separate authorization
+```
