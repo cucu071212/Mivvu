@@ -42,3 +42,21 @@
 ## Local GW-ICN-005 files
 
 `src/components/mivvu/MivvuIcnFacilitiesBrowseScreen.tsx`, `src/lib/mivvu-preview-messages.ts`, `src/app/mivvu-entry.css`, focused component tests under `src/components/mivvu/`, `scripts/qa-mivvu-preview.mjs`, this report, and the GW-ICN-005 task row in `docs/IMPLEMENTATION_PLAN.md`.
+
+---
+
+## PR #2 final-review P2 corrections (2026-10-28)
+
+**Authorization:** Human owner dispatch to Cursor (local corrections); **accepted** by human owner with authorization to commit and normally push to `feat/mivvu-first-entry-slice` (2026-10-28). **Merge to `main` and production promotion remain unauthorized.**
+
+| Finding | Fix |
+| --- | --- |
+| **P2-1** SFO `/ → /explore → /` when persistence fails or provider reactivates with stale React state | Session + storage sync via `acknowledgeAirportSelection()` / `isAirportSelectionAcknowledged()`; gate and redirect use synchronous ack; `preferenceRevision`; safe `localStorage` property access. |
+| **P2-2** Mivvu KO/EN content inherited root `lang="en"` | Resolved locale on `.mivvu-entry-locale-root` inside `MivvuPreviewLocaleProvider`. |
+| **P3 (Finding 3)** Ambiguous KO fallback matching | **Nonblocking; unchanged** in this work. |
+
+**Codex re-verification (pre-push):** P2-1 resolved; P2-2 preserved. Focused unit/component tests **18** PASS; `e2e/mivvu-sfo-deep-link-entry.spec.ts` **3** PASS; fresh `npm run build` and `git diff --check` PASS.
+
+**Publish:** Corrections committed and pushed on `feat/mivvu-first-entry-slice` for draft [PR #2](https://github.com/cucu071212/GateWise/pull/2) integration review only — not production release.
+
+**Not tested:** Screen-reader pronunciation; active penetration testing.

@@ -10,7 +10,7 @@ import {
   type MivvuEntryAirportIata,
 } from "@/data/mivvu-entry-airport-catalog";
 import { filterAirportSelectionCatalog } from "@/lib/filter-airport-selection-catalog";
-import { persistAirportSelection } from "@/lib/airport-selection-preference";
+import { acknowledgeAirportSelection } from "@/lib/airport-selection-preference";
 import { MivvuWordmark } from "@/components/mivvu/MivvuWordmark";
 import { MivvuLanguageToggle } from "@/components/mivvu/MivvuLanguageToggle";
 import { useMivvuPreviewLocale } from "@/components/mivvu/MivvuPreviewLocaleProvider";
@@ -109,7 +109,7 @@ export function MivvuAirportSelectionScreen() {
     }
 
     const today = new Date().toISOString().slice(0, 10);
-    persistAirportSelection(today);
+    acknowledgeAirportSelection(today);
     router.push("/explore");
   }
 

@@ -66,7 +66,11 @@ export function MivvuPreviewLocaleProvider({ children }: { children: ReactNode }
   }
 
   return (
-    <MivvuPreviewLocaleContext.Provider value={value}>{children}</MivvuPreviewLocaleContext.Provider>
+    <MivvuPreviewLocaleContext.Provider value={value}>
+      <div lang={value.locale} className="mivvu-entry-locale-root">
+        {children}
+      </div>
+    </MivvuPreviewLocaleContext.Provider>
   );
 }
 

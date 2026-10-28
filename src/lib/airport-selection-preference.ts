@@ -25,15 +25,47 @@ export function parseStoredAirportSelection(
   }
 }
 
-export function readStoredAirportSelection(): StoredAirportSelection | null {
+function getLocalStorage(): Storage | null {
   if (typeof window === "undefined") return null;
   try {
+    return window.localStorage;
+  } catch {
+    return null;
+  }
+}
+
+export function readStoredAirportSelection(): StoredAirportSelection | null {
+  const storage = getLocalStorage();
+  if (!storage) return null;
+  try {
     return parseStoredAirportSelection(
-      window.localStorage.getItem(AIRPORT_SELECTION_STORAGE_KEY),
+      storage.getItem(AIRPORT_SELECTION_STORAGE_KEY),
     );
   } catch {
     return null;
   }
+}
+
+/** Tab-session acknowledgment when localStorage read/write fails or is unavailable. */
+let sessionAirportSelectionAcknowledged = false;
+
+export function isAirportSelectionAcknowledged(): boolean {
+  return readStoredAirportSelection() !== null || sessionAirportSelectionAcknowledged;
+}
+
+/**
+ * Records explicit SFO entry acknowledgment for the current tab session and attempts persistence.
+ * Always notifies listeners so route guards see acknowledgment even when persistence fails.
+ */
+export function acknowledgeAirportSelection(acknowledgedAt: string): void {
+  if (!isCalendarDate(acknowledgedAt)) return;
+  sessionAirportSelectionAcknowledged = true;
+  persistAirportSelection(acknowledgedAt);
+  notifyAirportSelectionPreferenceChange();
+}
+
+export function clearSessionAirportSelectionAcknowledgmentForTests(): void {
+  sessionAirportSelectionAcknowledged = false;
 }
 
 export function persistAirportSelection(
@@ -45,8 +77,10 @@ export function persistAirportSelection(
     acknowledgedAt,
   };
   if (typeof window === "undefined") return record;
+  const storage = getLocalStorage();
+  if (!storage) return null;
   try {
-    window.localStorage.setItem(
+    storage.setItem(
       AIRPORT_SELECTION_STORAGE_KEY,
       JSON.stringify(record),
     );
@@ -58,9 +92,11 @@ export function persistAirportSelection(
 }
 
 export function clearStoredAirportSelection(): void {
-  if (typeof window === "undefined") return;
+  sessionAirportSelectionAcknowledged = false;
+  const storage = getLocalStorage();
+  if (!storage) return;
   try {
-    window.localStorage.removeItem(AIRPORT_SELECTION_STORAGE_KEY);
+    storage.removeItem(AIRPORT_SELECTION_STORAGE_KEY);
   } catch {
     // Storage unavailable — no-op.
   }
@@ -80,11 +116,12 @@ export function notifyAirportSelectionPreferenceChange(): void {
 }
 
 export function isLocalStorageAvailable(): boolean {
-  if (typeof window === "undefined") return false;
+  const storage = getLocalStorage();
+  if (!storage) return false;
   try {
     const probe = "__gw_airport_selection_probe__";
-    window.localStorage.setItem(probe, "1");
-    window.localStorage.removeItem(probe);
+    storage.setItem(probe, "1");
+    storage.removeItem(probe);
     return true;
   } catch {
     return false;

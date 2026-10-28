@@ -10,9 +10,9 @@ import {
   type ReactNode,
 } from "react";
 import {
+  acknowledgeAirportSelection,
+  isAirportSelectionAcknowledged,
   isLocalStorageAvailable,
-  persistAirportSelection,
-  readStoredAirportSelection,
   subscribeAirportSelectionPreference,
 } from "@/lib/airport-selection-preference";
 
@@ -20,6 +20,7 @@ type AirportSelectionContextValue = {
   gateOpen: boolean;
   hydrated: boolean;
   storageAvailable: boolean;
+  preferenceRevision: number;
   completeSelection: () => void;
   reopenSelection: () => void;
 };
@@ -36,45 +37,40 @@ export function useAirportSelection(): AirportSelectionContextValue {
   return value;
 }
 
-function readInitialAcknowledged(): boolean {
-  if (typeof window === "undefined") return true;
-  return readStoredAirportSelection() !== null;
-}
-
 export function AirportSelectionProvider({ children }: { children: ReactNode }) {
   const [forcedOpen, setForcedOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
-  const [acknowledged, setAcknowledged] = useState(readInitialAcknowledged);
   const [storageAvailable, setStorageAvailable] = useState(true);
+  const [preferenceRevision, setPreferenceRevision] = useState(0);
 
   useEffect(() => {
     // Client-only preference read — avoids SSR/localStorage hydration mismatch.
     const available = isLocalStorageAvailable();
-    const stored = readStoredAirportSelection() !== null;
     queueMicrotask(() => {
       setStorageAvailable(available);
-      setAcknowledged(stored);
       setHydrated(true);
+      if (isAirportSelectionAcknowledged()) {
+        setPreferenceRevision((revision) => revision + 1);
+      }
     });
   }, []);
 
   useEffect(() => {
     return subscribeAirportSelectionPreference(() => {
-      const stored = readStoredAirportSelection() !== null;
-      setAcknowledged(stored);
       setForcedOpen(false);
+      setPreferenceRevision((revision) => revision + 1);
     });
   }, []);
 
   const gateOpen =
     forcedOpen ||
-    !(hydrated ? acknowledged : readInitialAcknowledged());
+    (typeof window === "undefined" ? false : !isAirportSelectionAcknowledged());
 
   const completeSelection = useCallback(() => {
     const today = new Date().toISOString().slice(0, 10);
-    persistAirportSelection(today);
-    setAcknowledged(true);
+    acknowledgeAirportSelection(today);
     setForcedOpen(false);
+    setPreferenceRevision((revision) => revision + 1);
   }, []);
 
   const reopenSelection = useCallback(() => {
@@ -86,10 +82,18 @@ export function AirportSelectionProvider({ children }: { children: ReactNode }) 
       gateOpen,
       hydrated,
       storageAvailable,
+      preferenceRevision,
       completeSelection,
       reopenSelection,
     }),
-    [gateOpen, hydrated, storageAvailable, completeSelection, reopenSelection],
+    [
+      gateOpen,
+      hydrated,
+      storageAvailable,
+      preferenceRevision,
+      completeSelection,
+      reopenSelection,
+    ],
   );
 
   return (

@@ -142,7 +142,7 @@ Use **four orthogonal dimensions** in GATEWISE STATUS and task tables:
 | **Review / acceptance** | `pending` |
 | **Integration / release** | `preview` (draft [PR #2](https://github.com/cucu071212/GateWise/pull/2); Vercel reports Ready for the feature-branch preview; no merge/manual deployment/production promotion) |
 | **Acceptance** | Independent expectations; SFO regression; commands cited in report |
-| **Evidence** | [Historical preview QA](qa/mivvu-preview-qa.md); [security review/remediation evidence](security/mivvu-preflight-review.md); [combined PR packaging handoff](qa/mivvu-pr-packaging.md); local browser probe `scripts/qa-mivvu-preview.mjs` |
+| **Evidence** | [Preview QA + P2 corrections](qa/mivvu-preview-qa.md) (published on feature branch for PR #2; review **pending**); [security review/remediation evidence](security/mivvu-preflight-review.md); [combined PR packaging handoff](qa/mivvu-pr-packaging.md); `scripts/qa-mivvu-preview.mjs` |
 | **Owner decision (2026-10-28)** | Proceed with the implemented entry, ICN browsing, KO/EN, and SEC-01/02/03 fixes as the basis for PR review. Skip Strix/Shannon and isolation setup for this release. Active penetration testing **not performed**; this decision is neither an independent code audit nor a guarantee of security. Review stays pending; human owner is integration reviewer. |
 
 ---
