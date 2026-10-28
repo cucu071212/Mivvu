@@ -162,6 +162,54 @@ Use **four orthogonal dimensions** in GATEWISE STATUS and task tables:
 | **Acceptance** | Release notes; ICN record without altering SFO historical facts; smoke evidence |
 | **Evidence** | [`docs/submission/MIVVU_RELEASE_2026-10-28.md`](submission/MIVVU_RELEASE_2026-10-28.md); [`docs/qa/mivvu-production-smoke-2026-10-28.md`](qa/mivvu-production-smoke-2026-10-28.md) |
 
+### GW-ICN-007: Offline ICN snapshot quality gate
+
+| Field | Value |
+| --- | --- |
+| **Plan revision** | `GW-PLAN-REV-2026-10-26` |
+| **Owner** | Codex |
+| **Integration reviewer / final acceptance** | Cursor / human owner |
+| **Depends on** | Shipped KO/EN fixtures and ICN adapter/browse contracts; local `main` @ `5bd3121f6aac992ac1b5d59e33c1e68d65c40170` verified before edits |
+| **Execution permission** | `authorized` (source: direct human assignment in Codex chat, 2026-10-28 America/New_York) |
+| **Task permissions** | Local code, tests, docs, verification on `codex/gw-icn-007-snapshot-quality`. No commit, push, GitHub mutations, merge, deploy, live API, fixture replacement, dependency upgrades, active scanning, or subagents. Prior release permissions do not apply. |
+| **Scope** | Offline untrusted snapshot validation, deterministic KO/EN analysis and baseline comparison CLI; shared unambiguous matching rule and P3 fallback correction; documentation and adversarial tests |
+| **Work progress** | `complete` (integrated in GW-ICN-009; packaged on feature branch) |
+| **Review / acceptance** | `accepted` (Cursor integration review; human owner accepted integrated packaging, 2026-10-28) |
+| **Integration / release** | `preview` (via GW-ICN-009 PR; no merge/production) |
+| **Acceptance / verification** | Current counts and totalCount mismatch retained; self/reordered comparisons have no content changes; synthetic invalid/incomplete/conflicting/asymmetric inputs; safe fallback; unchanged shipped fixture bytes and browse output; focused data/display tests, CLI smoke, lint, production build, whitespace review |
+| **Handoff** | [Usage, results, limitations](data/icn-snapshot-quality-gate.md) |
+
+### GW-ICN-008: Robust local ICN facility search
+
+| Field | Value |
+| --- | --- |
+| **Plan revision** | `GW-PLAN-REV-2026-10-26` |
+| **Owner / integration reviewer / final acceptance** | Codex / Cursor / human owner |
+| **Execution permission** | `authorized` (direct human assignment, Codex chat attachment, 2026-10-28 America/New_York) |
+| **Task permissions** | Isolated local source, tests, docs, checkpoints and verification only. No commit, push, PR, GitHub mutations, merge, deploy, live airport API, scanning, fixture replacement, dependency changes or subagents. |
+| **Scope** | Locale-local Unicode/token/initial-consonant search, conservative name typo recovery, deterministic ranking, reusable indexes; existing layout and state preserved |
+| **Base / dependency** | Local `main` @ `5bd3121f6aac992ac1b5d59e33c1e68d65c40170`; shipped browse contracts. GW-ICN-007 remains separate until GW-ICN-009 integration. |
+| **Work progress** | `complete` (integrated in GW-ICN-009; packaged on feature branch) |
+| **Review / acceptance** | `accepted` (Cursor integration review; human owner accepted integrated packaging, 2026-10-28) |
+| **Integration / release** | `preview` (via GW-ICN-009 PR; no merge/production) |
+| **Acceptance / verification** | Independent adversarial tests, unchanged fixtures/empty ordering, relevance and performance evidence, browser composition/state/count/focus/mobile checks, lint/typecheck/tests/build/whitespace |
+| **Checkpoint / handoff** | [Durable progress and Cursor handoff](handoffs/GW-ICN-008-checkpoint.md) |
+
+### GW-ICN-009: Local integration of GW-ICN-007 and GW-ICN-008
+
+| Field | Value |
+| --- | --- |
+| **Plan revision** | `GW-PLAN-REV-2026-10-26` |
+| **Owner** | Cursor |
+| **Follow-up reviewer / final acceptance** | Codex (integration delta only) / human owner |
+| **Execution permission** | `authorized` (human owner dispatch 2026-10-28; packaging commit/push/PR authorized 2026-10-28) |
+| **Task permissions** | Integration branch commit, normal push, draft/open PR against `main`, ordinary Vercel preview. **No** merge to `main`, production deploy, dependency changes, live API, or fixture refresh. |
+| **Work progress** | `complete` (integrated tree + packaging) |
+| **Review / acceptance** | `accepted` (Cursor integration review; Codex integration delta — no blockers; human owner accepted packaging, 2026-10-28) |
+| **Integration / release** | `preview` (feature-branch PR; merge/production unauthorized) |
+| **Evidence** | [Integration checkpoint](handoffs/GW-ICN-009-integration.md) |
+| **Branch** | `codex/gw-icn-009-integration` from `main` @ `5bd3121` |
+
 GW-ICN-001 and GW-ICN-002 may run in parallel when **separately authorized**.
 
 ---

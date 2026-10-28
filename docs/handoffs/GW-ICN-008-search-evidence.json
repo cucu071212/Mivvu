@@ -1,0 +1,503 @@
+{
+  "task": "GW-ICN-008",
+  "base": "5bd3121f6aac992ac1b5d59e33c1e68d65c40170",
+  "environment": {
+    "node": "v24.17.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "os": "25.6.0",
+    "cpu": "Apple M5 Pro"
+  },
+  "method": "Offline Vitest/Node, serial per locale/scenario, performance.now milliseconds. 25 build warmups then 150 index builds; one reusable index, 50 query warmups then 300 individual query timings per scenario. Includes filtering/ranking, excludes catalog creation, React/DOM, network, UI latency; no mobile-speed claims or timing assertions. GC/scheduler outliers retained.",
+  "sourceSha256": {
+    "src/lib/icn-facilities/icn-facility-search.ts": "9e8151a9bf762f392e680bfa06ad89f549f7862de219aaffc2b86009bc539993",
+    "src/lib/icn-facilities/icn-browse-view-model.ts": "9e16d05985675b898afb86ed34052dff67adcdb9f8cf1f8787a72c88f6b53b0e",
+    "src/lib/icn-facilities/icn-search-evidence.test.ts": "246efbf27e2e004b6d109d0fda6cd86c4e62c07b56011f3e1b1d420a007ac320",
+    "src/data/fixtures/icn-facilities-ko.json": "0bcde726d1800a1896cba3b73277689f2ab303c6f33aef15cee8ad74f4dfd2f4",
+    "src/data/fixtures/icn-facilities-en.json": "31e9ddbe9d47ebd86b9a4692f7d2cbebacf043d21d6fef0f40a4729fca69614a"
+  },
+  "catalogs": {
+    "ko": {
+      "listings": 1011,
+      "buildMs": {
+        "samples": 150,
+        "min": 2.6664579999999773,
+        "p50": 2.811207999999965,
+        "p95": 3.2040419999999585,
+        "max": 3.7835830000000215
+      },
+      "queries": [
+        {
+          "query": "",
+          "terminal": "all",
+          "expected": "All 1011 in saved catalog order",
+          "reject": [],
+          "count": 1011,
+          "top": [
+            {
+              "sourceId": "3289",
+              "name": "% 아라비카",
+              "terminalId": "P03",
+              "locationDescription": "제2여객터미널 3층 면세지역 209번 게이트 부근"
+            },
+            {
+              "sourceId": "2030",
+              "name": "15 Benches (김소산)",
+              "terminalId": "P01",
+              "locationDescription": "제1여객터미널 한국문화거리 4F 중앙부"
+            },
+            {
+              "sourceId": "2150",
+              "name": "AED(CA B1)",
+              "terminalId": "P02",
+              "locationDescription": "탑승동 지하 1층 IAT승강장 셔틀트레인 중앙 탑승장"
+            }
+          ],
+          "rejectedNearMatches": [],
+          "warmMs": {
+            "samples": 300,
+            "min": 0.010291999999935797,
+            "p50": 0.011541999999963082,
+            "p95": 0.012583000000063294,
+            "max": 0.018332999999984168
+          }
+        },
+        {
+          "query": "ㅎㅈㅅ",
+          "terminal": "P03",
+          "expected": "Contiguous initials in T2; full-name 화장실 precedes longer matching names; 환전소 can also match",
+          "reject": [
+            "ㅅㅈㅎ",
+            "ㅎㅈㅅzz"
+          ],
+          "count": 76,
+          "top": [
+            {
+              "sourceId": "559",
+              "name": "화장실",
+              "terminalId": "P03",
+              "locationDescription": "제2여객터미널 3층 면세구역"
+            },
+            {
+              "sourceId": "1040",
+              "name": "화장실",
+              "terminalId": "P03",
+              "locationDescription": "제2여객터미널 2층 면세구역"
+            },
+            {
+              "sourceId": "338",
+              "name": "화장실",
+              "terminalId": "P03",
+              "locationDescription": "제2여객터미널 지하 1층"
+            }
+          ],
+          "rejectedNearMatches": [
+            {
+              "query": "ㅅㅈㅎ",
+              "count": 0
+            },
+            {
+              "query": "ㅎㅈㅅzz",
+              "count": 0
+            }
+          ],
+          "warmMs": {
+            "samples": 300,
+            "min": 0.203708000000006,
+            "p50": 0.2125419999999849,
+            "p95": 0.23862499999995634,
+            "max": 0.4403340000000071
+          }
+        },
+        {
+          "query": "ᄒᄌᄉ",
+          "terminal": "P03",
+          "expected": "Same results as compatibility initials",
+          "reject": [],
+          "count": 76,
+          "top": [
+            {
+              "sourceId": "559",
+              "name": "화장실",
+              "terminalId": "P03",
+              "locationDescription": "제2여객터미널 3층 면세구역"
+            },
+            {
+              "sourceId": "1040",
+              "name": "화장실",
+              "terminalId": "P03",
+              "locationDescription": "제2여객터미널 2층 면세구역"
+            },
+            {
+              "sourceId": "338",
+              "name": "화장실",
+              "terminalId": "P03",
+              "locationDescription": "제2여객터미널 지하 1층"
+            }
+          ],
+          "rejectedNearMatches": [],
+          "warmMs": {
+            "samples": 300,
+            "min": 0.20041599999990467,
+            "p50": 0.20879100000001927,
+            "p95": 0.2271250000000009,
+            "max": 0.2980409999998983
+          }
+        },
+        {
+          "query": "248 스타벅스",
+          "terminal": "P03",
+          "expected": "Name plus numeric location, any token order",
+          "reject": [
+            "249 스타벅스"
+          ],
+          "count": 1,
+          "top": [
+            {
+              "sourceId": "657",
+              "name": "스타벅스",
+              "terminalId": "P03",
+              "locationDescription": "제2여객터미널 3층 면세지역 248번 게이트 부근"
+            }
+          ],
+          "rejectedNearMatches": [
+            {
+              "query": "249 스타벅스",
+              "count": 0
+            }
+          ],
+          "warmMs": {
+            "samples": 300,
+            "min": 0.030624999999986358,
+            "p50": 0.03125,
+            "p95": 0.032624999999939064,
+            "max": 0.06495800000004692
+          }
+        },
+        {
+          "query": "스타벅스",
+          "terminal": "all",
+          "expected": "Exact names before book-cafe name inclusion",
+          "reject": [
+            "스타벅스zzz"
+          ],
+          "count": 6,
+          "top": [
+            {
+              "sourceId": "2117",
+              "name": "스타벅스",
+              "terminalId": "P01",
+              "locationDescription": "제1여객터미널 일반구역 지하1층 중앙"
+            },
+            {
+              "sourceId": "760",
+              "name": "스타벅스",
+              "terminalId": "P03",
+              "locationDescription": "제2여객터미널 교통센터 지하 1층 중앙"
+            },
+            {
+              "sourceId": "657",
+              "name": "스타벅스",
+              "terminalId": "P03",
+              "locationDescription": "제2여객터미널 3층 면세지역 248번 게이트 부근"
+            }
+          ],
+          "rejectedNearMatches": [
+            {
+              "query": "스타벅스zzz",
+              "count": 0
+            }
+          ],
+          "warmMs": {
+            "samples": 300,
+            "min": 0.05116699999996399,
+            "p50": 0.05237499999998363,
+            "p95": 0.056500000000028194,
+            "max": 0.1388329999999769
+          }
+        },
+        {
+          "query": "^.*$",
+          "terminal": "all",
+          "expected": "Regex-shaped literal has no results",
+          "reject": [],
+          "count": 0,
+          "top": [],
+          "rejectedNearMatches": [],
+          "warmMs": {
+            "samples": 300,
+            "min": 0.091083000000026,
+            "p50": 0.09283399999992525,
+            "p95": 0.10054200000001856,
+            "max": 0.16066699999998946
+          }
+        },
+        {
+          "query": "Starbucks",
+          "terminal": "all",
+          "expected": "No hidden English-catalog lookup",
+          "reject": [],
+          "count": 0,
+          "top": [],
+          "rejectedNearMatches": [],
+          "warmMs": {
+            "samples": 300,
+            "min": 0.0861250000000382,
+            "p50": 0.08741599999996197,
+            "p95": 0.09808400000008533,
+            "max": 0.15058299999998326
+          }
+        }
+      ]
+    },
+    "en": {
+      "listings": 1011,
+      "buildMs": {
+        "samples": 150,
+        "min": 1.3980420000000322,
+        "p50": 1.4323750000000928,
+        "p95": 1.557790999999952,
+        "max": 1.6458749999999327
+      },
+      "queries": [
+        {
+          "query": "",
+          "terminal": "all",
+          "expected": "All 1011 in saved catalog order",
+          "reject": [],
+          "count": 1011,
+          "top": [
+            {
+              "sourceId": "3289",
+              "name": "% ARABICA",
+              "terminalId": "P03",
+              "locationDescription": "Near Gate 209 on 3F, Terminal 2"
+            },
+            {
+              "sourceId": "758",
+              "name": "(Cleanup Air) laundry",
+              "terminalId": "P03",
+              "locationDescription": "Nearby the Bus Ticket Counter, Terminal 2"
+            },
+            {
+              "sourceId": "855",
+              "name": "(Cleanup Air) laundry",
+              "terminalId": "P01",
+              "locationDescription": "West of Public Area 1BF, Terminal 1"
+            }
+          ],
+          "rejectedNearMatches": [],
+          "warmMs": {
+            "samples": 300,
+            "min": 0.009790999999950145,
+            "p50": 0.010541999999986729,
+            "p95": 0.01120800000012423,
+            "max": 0.1694999999999709
+          }
+        },
+        {
+          "query": "ＳＴＡＲＢＵＣＫＳ",
+          "terminal": "all",
+          "expected": "Same normalized name matches as Starbucks",
+          "reject": [],
+          "count": 6,
+          "top": [
+            {
+              "sourceId": "2471",
+              "name": "STARBUCKS",
+              "terminalId": "P03",
+              "locationDescription": "Near Gate 7 on 1F, Terminal 2"
+            },
+            {
+              "sourceId": "2117",
+              "name": "Starbucks",
+              "terminalId": "P01",
+              "locationDescription": "Center of B1, Terminal 1"
+            },
+            {
+              "sourceId": "760",
+              "name": "Starbucks",
+              "terminalId": "P03",
+              "locationDescription": "Center of Transportation Center B1, Terminal 2"
+            }
+          ],
+          "rejectedNearMatches": [],
+          "warmMs": {
+            "samples": 300,
+            "min": 0.06274999999982356,
+            "p50": 0.06549999999992906,
+            "p95": 0.07649999999989632,
+            "max": 0.2693329999999605
+          }
+        },
+        {
+          "query": "248 starbucks",
+          "terminal": "P03",
+          "expected": "Name plus numeric location, T2 only",
+          "reject": [
+            "249 starbucks"
+          ],
+          "count": 1,
+          "top": [
+            {
+              "sourceId": "657",
+              "name": "Starbucks",
+              "terminalId": "P03",
+              "locationDescription": "Near Gate 248 on 3F, Terminal 2"
+            }
+          ],
+          "rejectedNearMatches": [
+            {
+              "query": "249 starbucks",
+              "count": 0
+            }
+          ],
+          "warmMs": {
+            "samples": 300,
+            "min": 0.026749999999992724,
+            "p50": 0.028207999999949607,
+            "p95": 0.02991699999984121,
+            "max": 0.08362499999998363
+          }
+        },
+        {
+          "query": "starbcks",
+          "terminal": "P03",
+          "expected": "Single deletion in name, zero strong hits, T2 only",
+          "reject": [
+            "stabrucsk"
+          ],
+          "count": 3,
+          "top": [
+            {
+              "sourceId": "2471",
+              "name": "STARBUCKS",
+              "terminalId": "P03",
+              "locationDescription": "Near Gate 7 on 1F, Terminal 2"
+            },
+            {
+              "sourceId": "760",
+              "name": "Starbucks",
+              "terminalId": "P03",
+              "locationDescription": "Center of Transportation Center B1, Terminal 2"
+            },
+            {
+              "sourceId": "657",
+              "name": "Starbucks",
+              "terminalId": "P03",
+              "locationDescription": "Near Gate 248 on 3F, Terminal 2"
+            }
+          ],
+          "rejectedNearMatches": [
+            {
+              "query": "stabrucsk",
+              "count": 0
+            }
+          ],
+          "warmMs": {
+            "samples": 300,
+            "min": 0.09491699999989578,
+            "p50": 0.09987499999988358,
+            "p95": 0.11041700000009769,
+            "max": 0.16612499999996544
+          }
+        },
+        {
+          "query": "loune",
+          "terminal": "P01",
+          "expected": "Five-letter deletion recovery in name, T1 only",
+          "reject": [
+            "lounx",
+            "loune 99999"
+          ],
+          "count": 12,
+          "top": [
+            {
+              "sourceId": "640",
+              "name": "Asiana Business Lounge(Central)",
+              "terminalId": "P01",
+              "locationDescription": "Near Gate 26 on 4F, Terminal 1"
+            },
+            {
+              "sourceId": "744",
+              "name": "Asiana Business Lounge(East)",
+              "terminalId": "P01",
+              "locationDescription": "Near Gate 11 on 4F, Terminal 1"
+            },
+            {
+              "sourceId": "924",
+              "name": "Asiana Business Lounge(West)",
+              "terminalId": "P01",
+              "locationDescription": "Near Gate 42 on 4F, Terminal 1"
+            }
+          ],
+          "rejectedNearMatches": [
+            {
+              "query": "lounx",
+              "count": 0
+            },
+            {
+              "query": "loune 99999",
+              "count": 0
+            }
+          ],
+          "warmMs": {
+            "samples": 300,
+            "min": 0.094333000000006,
+            "p50": 0.09895800000003874,
+            "p95": 0.11220800000000963,
+            "max": 0.1542500000000473
+          }
+        },
+        {
+          "query": "termnal",
+          "terminal": "all",
+          "expected": "No typo recovery of terminal location paragraphs",
+          "reject": [],
+          "count": 0,
+          "top": [],
+          "rejectedNearMatches": [],
+          "warmMs": {
+            "samples": 300,
+            "min": 0.22812500000009095,
+            "p50": 0.24087499999995998,
+            "p95": 0.2744589999999789,
+            "max": 0.3320420000000013
+          }
+        },
+        {
+          "query": "화장실",
+          "terminal": "all",
+          "expected": "No hidden Korean-catalog lookup",
+          "reject": [],
+          "count": 0,
+          "top": [],
+          "rejectedNearMatches": [],
+          "warmMs": {
+            "samples": 300,
+            "min": 0.08591599999999744,
+            "p50": 0.08775000000014188,
+            "p95": 0.09704200000010132,
+            "max": 0.14070799999990413
+          }
+        },
+        {
+          "query": "<img src=x onerror=alert(1)>",
+          "terminal": "all",
+          "expected": "Literal syntax, no results or executable HTML",
+          "reject": [],
+          "count": 0,
+          "top": [],
+          "rejectedNearMatches": [],
+          "warmMs": {
+            "samples": 300,
+            "min": 0.10149999999998727,
+            "p50": 0.10308299999996962,
+            "p95": 0.11341700000002675,
+            "max": 0.15458300000000236
+          }
+        }
+      ]
+    }
+  }
+}

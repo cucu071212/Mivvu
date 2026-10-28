@@ -70,7 +70,10 @@ export function MivvuIcnFacilitiesBrowseScreen({
   const [terminalFilter, setTerminalFilter] = useState("all");
 
   const catalog = locale === "ko" ? catalogKo : catalogEn;
-  const koFallback = useMemo(() => buildKoreanFallbackIndex(catalogKo.items), [catalogKo.items]);
+  const koFallback = useMemo(
+    () => buildKoreanFallbackIndex(catalogKo.items, catalogEn.items),
+    [catalogKo.items, catalogEn.items],
+  );
 
   const filtered = useMemo(
     () => filterIcnBrowseItems(catalog.items, query, terminalFilter, locale),

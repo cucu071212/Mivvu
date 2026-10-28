@@ -171,4 +171,49 @@ describe("MivvuIcnFacilitiesBrowseScreen", () => {
     assert.ok(screen.getByText("00:00 ~ 24:00"));
     assert.equal(screen.queryByText("00:00 ~ 00:00"), null);
   });
+
+  it("keeps raw IME composition text, focus and query/filter state across locale changes", async () => {
+    writeStoredMivvuPreviewLocale("ko");
+    renderBrowse();
+    const input = await screen.findByRole("searchbox") as HTMLInputElement;
+    input.focus();
+    fireEvent.compositionStart(input);
+    for (const value of ["ㄹ", "라", "라운", "라운지"]) {
+      fireEvent.change(input, { target: { value } });
+      assert.equal(input.value, value);
+      assert.equal(document.activeElement, input);
+    }
+    fireEvent.compositionEnd(input, { data: "라운지" });
+    assert.ok(screen.getByRole("heading", { name: "라운지 A" }));
+    fireEvent.click(screen.getByRole("button", { name: "제2여객터미널" }));
+    fireEvent.change(input, { target: { value: "  ㄹㅇㅈ A  " } });
+    assert.ok(screen.getByRole("heading", { name: "라운지 A" }));
+    fireEvent.click(screen.getByRole("button", { name: "English" }));
+    assert.equal(screen.getByRole("searchbox"), input);
+    assert.equal(input.value, "  ㄹㅇㅈ A  ");
+    assert.equal(screen.getByRole("button", { name: "Terminal 2" }).getAttribute("aria-pressed"), "true");
+    assert.ok(screen.getByRole("status").textContent?.includes("No facilities match"));
+    fireEvent.change(input, { target: { value: "loune" } });
+    assert.ok(screen.getByRole("heading", { name: "Lounge A" }));
+    assert.equal(document.querySelector(".mivvu-icn-count-number")?.textContent, "1");
+    assert.ok(input.getAttribute("aria-describedby"));
+    assert.equal(document.querySelector(".mivvu-icn-result-count")?.getAttribute("aria-live"), "polite");
+  });
+
+  it("renders HTML-shaped source/query text as data and excludes Korean fallback from English search", async () => {
+    writeStoredMivvuPreviewLocale("en");
+    const literal = '<img src=x onerror="alert(1)">';
+    const en = { ...catalogEn, items: [{ ...catalogEn.items[0], name: literal }, { ...catalogEn.items[1], name: "" }] };
+    renderBrowse(catalogKo, en);
+    const input = await screen.findByRole("searchbox");
+    assert.ok(screen.getByRole("heading", { name: literal }));
+    assert.ok(screen.getByRole("heading", { name: "라운지 A" })); // Labeled display fallback only.
+    fireEvent.change(input, { target: { value: literal } });
+    assert.ok(screen.getByRole("heading", { name: literal }));
+    assert.equal(document.querySelector(".mivvu-icn-facility-list img"), null);
+    fireEvent.change(input, { target: { value: "라운지" } });
+    assert.equal(screen.queryByRole("heading", { name: "라운지 A" }), null);
+    assert.ok(screen.getByRole("status"));
+  });
+
 });
