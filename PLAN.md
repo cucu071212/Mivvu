@@ -1,6 +1,6 @@
 # GateWise — Product Plan
 
-**Plan revision:** `GW-PLAN-REV-2026-10-26` ([`docs/plan-revisions.md`](docs/plan-revisions.md))
+**Plan revision:** `GW-PLAN-REV-2026-10-29` ([`docs/plan-revisions.md`](docs/plan-revisions.md))
 **Project:** GateWise — *Your airport. Your gate. Your time.*
 
 > Airport maps show where amenities are. GateWise helps travelers decide whether they have time to visit them before boarding — with honest labels and unknowns where data is missing.
@@ -32,8 +32,29 @@ Assigned tasks may override default **ownership** but cannot silently change pro
 | Discovery | Facility browse **must not require flight setup** |
 | Legacy | Preserve **SFO** shipped demo, code paths, and **historical** submission/QA evidence (do not rewrite to describe ICN) |
 | Future | SFO maintenance and other airports remain possible without committing to nationwide coverage |
+| Outreach use | Improve ICN into a **credible demonstration** when requesting official data/API access from SFO or other US airports — ICN must be **useful on its own**, not merely an outreach mockup |
+| Official API terms | Availability, access terms, and approval for SFO or other airports remain **unverified** unless a task records verification |
 
 **ICN data:** Public API reference — [공항서비스 API (data.go.kr 15095064)](https://www.data.go.kr/data/15095064/openapi.do). Documentation is not proof of access, coverage, or accuracy (verify in task **GW-ICN-002**). Use a **small airport-specific adapter**; do not copy SFO `legacy_zone` or D→D demo walks to ICN.
+
+### Human-approved core user actions (ICN product)
+
+These six actions define the **approved product direction** for ICN. They are **not** blanket authorization to implement; task rows in [`docs/IMPLEMENTATION_PLAN.md`](docs/IMPLEMENTATION_PLAN.md) govern execution.
+
+| # | Action | Requirement (high level) |
+| --- | --- | --- |
+| 1 | Choose or change an airport | Mivvu entry preserves intro → airport selection; user can return to change airport without breaking SFO demo paths |
+| 2 | Search for a facility | Locale-local search over trustworthy ICN listings; **no search rewrite** without a documented unmet need |
+| 3 | Browse facilities without knowing names | Discovery beyond name search (e.g. terminal and **existing API category fields**) without requiring flight setup |
+| 4 | Inspect facility information | Dedicated inspection surface with source labels; distinguish published hours text from live open/closed status |
+| 5 | Judge suitability within verified data | Honest “what we know / what we do not know” for the traveler’s situation — **no** gate proximity, security access, or accessibility claims without evidence |
+| 6 | Save and revisit facilities | User can retain choices locally and return later; identity must survive snapshot refresh rules where possible |
+
+Detailed gaps, completion criteria, screen flow, and implementation ordering: [`docs/design/GW-ICN-011-product-flow.md`](docs/design/GW-ICN-011-product-flow.md) (**GW-ICN-011**, planning only).
+
+### ICN milestone (product, not release gate)
+
+**ICN Core Journey (proposed milestone):** From airport selection, a traveler can discover or search ICN facilities, open a detail view with labeled snapshot data, understand unknowns, save at least one facility, and revisit saved items — in KO or EN on mobile viewports — **without** mandatory flight setup. Reaching this milestone is the minimum credible demo for outreach; it does not require SFO recommendation, What-if, or two-stop features on ICN.
 
 ---
 
@@ -87,11 +108,17 @@ Not requirements until recorded here or via direct human decision:
 
 | Topic | Notes |
 | --- | --- |
-| Splash animation | Duration; repeat-visit behavior |
-| Bottom navigation | Labels and iconography |
-| Filters | Interaction pattern |
-| Visual identity | Brand polish beyond current GateWise |
-| Planning features | How Flight / Results / What-if / Plan map into redesigned mobile IA |
+| Splash animation | Duration; repeat-visit behavior (**settled:** 3.2s intro timing and session skip — do not reopen without concrete conflict) |
+| Bottom navigation | Labels and iconography (**proposal:** stack navigation + one hub screen; see GW-ICN-011 flow doc) |
+| Filters | Category/terminal interaction pattern (use **existing** `large` / `medium` / `small` taxonomy only) |
+| Visual identity | Brand polish beyond current GateWise (**settled:** Mivvu entry shell and wordmark variants for this track) |
+| ICN entry catalog copy | `coming_soon` vs live `/icn` browse — align messaging without implying unverified coverage |
+| Persisted airport preference | Universal last-selected airport vs session-only selection state |
+| Facility reference key | Candidate ref schema and resolver outcomes (**GW-ICN-012**); cross-snapshot auto-reconciliation **not specified** |
+| Saved storage | Local-only vs future account sync (**accounts not approved**) |
+| Exploration state | URL query vs session storage when returning from detail |
+| ICN screen IA (GW-ICN-019) | Human-reviewed design for browse/detail/saved flows before GW-ICN-013–017 screen coding — **not** six tabs or brand redesign |
+| Planning features | How Flight / Results / What-if / Plan connect to ICN later (SFO-first; defer forced ICN parity) |
 
 ChatGPT coordinator suggestions do not become requirements until captured above or in the implementation plan with human approval.
 
@@ -116,3 +143,5 @@ ChatGPT coordinator suggestions do not become requirements until captured above 
 | [`docs/archive/hackathon-sfo-through-phase-c/PLAN.md`](docs/archive/hackathon-sfo-through-phase-c/PLAN.md) | Full HackPSU / SFO expansion plan (historical) |
 | [`docs/submission/RELEASE_FACTS.md`](docs/submission/RELEASE_FACTS.md) | SFO release evidence |
 | [`docs/GW-F-CONTRACT.md`](docs/GW-F-CONTRACT.md) | GW-F technical contract (shipped) |
+| [`docs/design/GW-ICN-011-product-flow.md`](docs/design/GW-ICN-011-product-flow.md) | ICN six-action scope, user flow, SFO connection matrix, planned tasks |
+| [GW-ICN-010 code map @ PR #5](https://github.com/cucu071212/Mivvu/blob/1c3f7215f44e48e8fc89736b0829fd2e5f667aea/docs/analysis/GW-ICN-010-code-map.md) | Code map @ analyzed SHA `2e56a28` ([PR #5](https://github.com/cucu071212/Mivvu/pull/5); merges to `docs/analysis/GW-ICN-010-code-map.md`) |

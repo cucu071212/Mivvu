@@ -2,7 +2,7 @@
 
 > **For agentic workers:** One task ID at a time unless the human authorizes parallel work with clear boundaries. Post GATEWISE STATUS and stop unless the task says otherwise.
 
-**Plan revision:** `GW-PLAN-REV-2026-10-26` ([`docs/plan-revisions.md`](./plan-revisions.md))
+**Plan revision:** `GW-PLAN-REV-2026-10-29` ([`docs/plan-revisions.md`](./plan-revisions.md))
 **Goal:** Post-hackathon ICN mobile product with trustworthy facility discovery and preserved SFO shipped demo.
 **Architecture:** Mobile-first App Router UI; airport-specific **adapter boundary** for ICN; existing SFO paths unchanged until integration tasks say otherwise.
 **Tech stack:** Next.js App Router, React, TypeScript, Tailwind CSS, Vitest, Playwright, Vercel.
@@ -209,6 +209,74 @@ Use **four orthogonal dimensions** in GATEWISE STATUS and task tables:
 | **Integration / release** | `production` — `main` @ `bb4735d07f9b5cb68c6b44944ee76e994df801a8`; https://gate-wise-iota.vercel.app |
 | **Evidence** | [Integration checkpoint](handoffs/GW-ICN-009-integration.md); [Release record](submission/MIVVU_RELEASE_2026-10-28-icn-search.md); [Production smoke](../qa/mivvu-production-smoke-2026-10-28-icn-search.md) |
 | **Branch** | `codex/gw-icn-009-integration` merged via [PR #3](https://github.com/cucu071212/Mivvu/pull/3) |
+
+### GW-ICN-010: Mivvu code map and change-impact analysis
+
+| Field | Value |
+| --- | --- |
+| **Plan revision** | `GW-PLAN-REV-2026-10-26` (analysis); publication on `docs/gw-icn-010-code-map` |
+| **Owner** | Codex |
+| **Reviewer / final acceptance** | ChatGPT coordinator / human owner (**accepted**) |
+| **Execution permission** | `authorized` (analysis + publication follow-up) |
+| **Work progress** | `complete` |
+| **Review / acceptance** | `accepted` |
+| **Integration / release** | `n/a` (documentation PR [#5](https://github.com/cucu071212/Mivvu/pull/5); analyzed code @ `2e56a28c16ebd71eb202db7aa428db7ba9b50b78`) |
+| **Deliverable** | [Code map @ PR #5 `1c3f721`](https://github.com/cucu071212/Mivvu/blob/1c3f7215f44e48e8fc89736b0829fd2e5f667aea/docs/analysis/GW-ICN-010-code-map.md), [checkpoint @ PR #5](https://github.com/cucu071212/Mivvu/blob/1c3f7215f44e48e8fc89736b0829fd2e5f667aea/docs/handoffs/GW-ICN-010-checkpoint.md) (after merge: [`./analysis/GW-ICN-010-code-map.md`](./analysis/GW-ICN-010-code-map.md), [`./handoffs/GW-ICN-010-checkpoint.md`](./handoffs/GW-ICN-010-checkpoint.md)) |
+| **Use** | Impact boundaries for ICN search, snapshots/locale, and SFO separation — input to **GW-ICN-011** |
+
+### GW-ICN-011: ICN product scope, user flows, and implementation plan
+
+| Field | Value |
+| --- | --- |
+| **Plan revision** | `GW-PLAN-REV-2026-10-28` |
+| **Owner** | Cursor |
+| **Reviewer / final acceptance** | ChatGPT coordinator / human owner |
+| **Depends on** | Reviewed canon; shipped ICN browse/search @ `2e56a28`; GW-ICN-010 analysis (PR #5 or same SHA) |
+| **Execution permission** | `authorized` (source: direct human dispatch — **local planning Markdown only**, 2026-10-28) |
+| **Task permissions** | Edit only: `PLAN.md`, this file, `docs/plan-revisions.md`, `docs/design/GW-ICN-011-product-flow.md`, `docs/handoffs/GW-ICN-011-checkpoint.md` on branch `docs/gw-icn-011-product-plan`. **No** commit, push, PR, merge, deploy, application edits, or subagents. |
+| **Work progress** | `complete` |
+| **Review / acceptance** | `accepted` (ChatGPT coordinator assessment; human owner **2026-10-29** — corrected plan) |
+| **Integration / release** | `n/a` (accepted deliverable; **publication** via PR `chore/gw-icn-011-012-package` — **not** `main` merge or production) |
+| **Deliverable** | Updated product/implementation plans; flow/design doc; checkpoint; registered future tasks GW-ICN-013–019 |
+| **Evidence base** | `origin/main` @ `2e56a28c16ebd71eb202db7aa428db7ba9b50b78`; source inspection + GW-ICN-010 map |
+
+### GW-ICN-012: ICN facility reference identity (candidate contract)
+
+| Field | Value |
+| --- | --- |
+| **Plan revision** | `GW-PLAN-REV-2026-10-28` (implementation); acceptance recorded under **`GW-PLAN-REV-2026-10-29`** |
+| **Owner** | Codex |
+| **Integration reviewer** | Cursor (**accepted** — independent integration review 2026-10-29) |
+| **Final acceptance** | Human owner **accepted** (2026-10-29), following Cursor review |
+| **Depends on** | GW-ICN-011 accepted |
+| **Execution permission** | `authorized` (direct human assignment to Codex, 2026-10-29) |
+| **Work progress** | `complete` |
+| **Review / acceptance** | `accepted` |
+| **Integration / release** | `n/a` (pure module; **publication** via PR `chore/gw-icn-011-012-package` — **not** wired to routes/UI; **not** `main`/production) |
+| **Deliverable** | [`icn-facility-reference.ts`](../src/lib/icn-facilities/icn-facility-reference.ts), tests, [`icn-facility-reference-contract.md`](data/icn-facility-reference-contract.md), [checkpoint](handoffs/GW-ICN-012-checkpoint.md) |
+| **Integration requirements (not defects)** | Callers must pass **complete** normalized KO/EN catalogs; plan verbose ref transport for future routes; UI must not infer changed vs removed snapshot rows |
+
+---
+
+## ICN product completion — planned tasks (not authorized)
+
+Registered by **GW-ICN-011** / updated **`GW-PLAN-REV-2026-10-29`**. **Execution permission `not_authorized`** and **work progress `not_started`** until explicitly assigned. Cite applicable **`GW-PLAN-REV-*`** when dispatching.
+
+| Task ID | Objective | Owner (default) | Depends on | Integration reviewer | Excludes |
+| --- | --- | --- | --- | --- | --- |
+| **GW-ICN-019** | **ICN UI/UX design and human owner review** — Browse/search/category layout; detail hierarchy and interactions; saved-list entry and stale/missing states; back navigation and exploration-state expectations; KO/EN with real fixture records, long content, and missing data at 360/390/430; reuse settled Mivvu identity/intro. Deliver design artifacts and explicit human review **before** screen coding. | Cursor (+ UI/design skill when authorized) | GW-ICN-011 accepted; GW-ICN-012 accepted | Human owner | Six-tab IA, brand redesign, live open/access claims, automatic SFO feature migration, immediate implementation in this task |
+| **GW-ICN-013** | **ICN facility detail route** — Traveler-relevant primary content; snapshot/source transparency; unknown handling; wire `resolveIcnFacilityRef` with full catalogs | Cursor | GW-ICN-012 accepted; **GW-ICN-019 accepted** (screen/UI portions) | Codex (data contract) | Live open/closed, maps, walking times, gate suitability |
+| **GW-ICN-014** | **ICN category discovery** — browse/filter by existing API taxonomy (no invented groups). **Data/filter logic** may be scoped independently; **browse UI layout** requires **GW-ICN-019**. | Cursor | **GW-ICN-019 accepted** (UI); GW-ICN-013 optional for card→detail | Human owner (IA) | Search algorithm rewrite |
+| **GW-ICN-015** | **Situation suitability panel** — structured known/unknown/not claimed; no security-access inference from raw flags | Cursor + Codex review | GW-ICN-013; **GW-ICN-019 accepted** (presentation) | Human owner | SFO `recommendFacilities`, synthetic walks |
+| **GW-ICN-016** | **Saved facilities (local)** — save, list, reopen detail; stale/missing/ambiguous handling | Cursor | GW-ICN-012, GW-ICN-013; **GW-ICN-019 accepted** (saved UX) | Codex (identity edge cases) | Auth, database, cross-device sync |
+| **GW-ICN-017** | **Exploration state preservation** — return from detail without losing search/terminal/category context | Cursor | GW-ICN-013; **GW-ICN-019 accepted** (navigation model) | Codex optional | Forced global state merge with SFO session |
+| **GW-ICN-018** | **ICN Core Journey verification** — Playwright + viewport checklist for milestone in `PLAN.md` (discover/search, **GW-ICN-014**, detail, **GW-ICN-015**, save/revisit, exploration state) | Cursor | GW-ICN-013, GW-ICN-014, GW-ICN-015, GW-ICN-016, GW-ICN-017 (each **accepted** when implemented) | Human owner | Production promotion (separate release task) |
+
+**Recommended next bounded task (proposal):** **GW-ICN-019** — human-reviewed ICN screen IA before GW-ICN-013–017 implementation. **GW-ICN-012** reference module is **accepted** and available for integration tasks.
+
+**012 integration notes (carry forward):** (1) Full normalized catalogs at create/resolve — not browse projections. (2) Serialized refs are verbose (~1 KB+ on shipped fixtures); plan URL/storage in route tasks. (3) Changed vs removed content both surface as `reference_content_not_found`; UI copy must stay honest.
+
+**SFO connection work:** No row above migrates SFO engines to ICN. Optional **later** tasks may expose SFO demo entry from ICN hub for outreach; defer until ICN Core Journey milestone unless human directs otherwise.
 
 GW-ICN-001 and GW-ICN-002 may run in parallel when **separately authorized**.
 
