@@ -260,7 +260,9 @@ Use **four orthogonal dimensions** in GATEWISE STATUS and task tables:
 
 ## ICN product completion — planned tasks (not authorized)
 
-Registered by **GW-ICN-011** / updated **`GW-PLAN-REV-2026-10-29`**. **Execution permission `not_authorized`** and **work progress `not_started`** until explicitly assigned. Cite applicable **`GW-PLAN-REV-*`** when dispatching.
+Registered by **GW-ICN-011** / updated **`GW-PLAN-REV-2026-10-29`**. Cite applicable **`GW-PLAN-REV-*`** when dispatching.
+
+**GW-ICN-019 (2026-10-29):** Direct human dispatch on branch `design/gw-icn-019-icn-ux` (base `chore/gw-icn-011-012-package` @ `460be126cddebc8b9df4a00b5fe9d5ea645a775b`). **Execution permission:** `authorized`. **Work progress:** `complete`. **Review / acceptance:** **`accepted`** (human owner 2026-10-29 — header inset in `11-header-browse-ko-390px.png`). **Integration / release:** `n/a` (design-only PR). **Evidence:** [`docs/design/gw-icn-019/`](design/gw-icn-019/) (prototype + EN `07`–`10` + header `11`–`16`), [`docs/design/gw-icn-019/screenshots/README.md`](design/gw-icn-019/screenshots/README.md), [`docs/handoffs/GW-ICN-019-checkpoint.md`](handoffs/GW-ICN-019-checkpoint.md). Playwright: capture scripts PASS (reuse; no full recapture at publication).
 
 | Task ID | Objective | Owner (default) | Depends on | Integration reviewer | Excludes |
 | --- | --- | --- | --- | --- | --- |
@@ -272,7 +274,7 @@ Registered by **GW-ICN-011** / updated **`GW-PLAN-REV-2026-10-29`**. **Execution
 | **GW-ICN-017** | **Exploration state preservation** — return from detail without losing search/terminal/category context | Cursor | GW-ICN-013; **GW-ICN-019 accepted** (navigation model) | Codex optional | Forced global state merge with SFO session |
 | **GW-ICN-018** | **ICN Core Journey verification** — Playwright + viewport checklist for milestone in `PLAN.md` (discover/search, **GW-ICN-014**, detail, **GW-ICN-015**, save/revisit, exploration state) | Cursor | GW-ICN-013, GW-ICN-014, GW-ICN-015, GW-ICN-016, GW-ICN-017 (each **accepted** when implemented) | Human owner | Production promotion (separate release task) |
 
-**Recommended next bounded task (proposal):** **GW-ICN-019** — human-reviewed ICN screen IA before GW-ICN-013–017 implementation. **GW-ICN-012** reference module is **accepted** and available for integration tasks.
+**Recommended next bounded task (proposal):** **GW-ICN-013** (detail route) after **GW-ICN-019** design PR merges into `chore/gw-icn-011-012-package`. **GW-ICN-012** reference module is **accepted** and available for integration tasks.
 
 **012 integration notes (carry forward):** (1) Full normalized catalogs at create/resolve — not browse projections. (2) Serialized refs are verbose (~1 KB+ on shipped fixtures); plan URL/storage in route tasks. (3) Changed vs removed content both surface as `reference_content_not_found`; UI copy must stay honest.
 
