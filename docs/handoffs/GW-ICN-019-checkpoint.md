@@ -45,7 +45,11 @@ Three-surface structure (**browse / detail / saved**), Mivvu identity, data cont
 | --- | --- |
 | `GW_ICN_019_PORT=8766 node docs/design/gw-icn-019/capture-screenshots.mjs` | **PASS** (historical full suite — 10 scenarios × 3 widths) |
 | `GW_ICN_019_EN_ONLY=1 GW_ICN_019_PORT=8767 node docs/design/gw-icn-019/capture-screenshots.mjs` | **PASS** — EN `07`–`10`; visible `% ARABICA` / `Near Gate 209`; fallback disclosure |
-| `GW_ICN_019_PORT=8768 node docs/design/gw-icn-019/capture-header-screenshots.mjs` | **PASS** — content-rail alignment (browse/detail/saved × KO/EN × 360/390/430); header PNGs `11`–`16` @ 390px |
+| `GW_ICN_019_PORT=8768 node docs/design/gw-icn-019/capture-header-screenshots.mjs` | **PASS** (dev, pre–content-rail script) — 18 checks with **wordmark vs language outer-edge** (≤1.5px). **Not** the content-rail rule set shipped in `2d9826b`. |
+| Committed `2d9826b` `capture-header-screenshots.mjs` | Content-rail geometry asserts (`wmRight ≤ railRight`, `wmRight < langRight`, `langRight ≤ railRight`) but rail = **union selector `.first()`** with **no `rail.waitFor()`** — flaky `boundingBox()` null during detail transition. |
+| `GW_ICN_019_PORT=8772 node …/capture-header-screenshots.mjs` (publication refresh) | **FAIL** at **`360px detail ko`** — aggregate error **`Missing header boxes`** (null `boundingBox` on wordmark and/or **union rail element**). Root cause: **checker** used a scrolled-off detail block and/or stale union `.first()` without `waitFor`; **not** a layout defect. Stable measure @ 360 detail: content rail right **343px**, wordmark **329px**, lang **343px**. |
+| `GW_ICN_019_PORT=8774 node …/capture-header-screenshots.mjs` (interim screen-specific element rail) | **Intermittent FAIL** (e.g. **`390px detail ko`**, `Missing content rail box`) when `#scroll-root` **scrollTop** left detail primary off-screen — still a **checker** issue. |
+| Current `capture-header-screenshots.mjs` (content rail = `#scroll-root` **padding box**; explicit null errors) | **PASS** — `GW_ICN_019_PORT=8779` — 18/18 (browse/detail/saved × KO/EN × 360/390/430). Matches accepted inset rule; no prototype layout change. |
 | Production / `src/` | **NOT RUN** (design-only) |
 
 **Limitations:** Not a physical device; not screen-reader certified; prototype filter simplified vs shipped search.

@@ -26,18 +26,33 @@ async function setHarnessWidth(page, width) {
   await page.waitForTimeout(80);
 }
 
+async function measureContentRailBox(page) {
+  const box = await page.evaluate(() => {
+    const root = document.getElementById("scroll-root");
+    if (!root) return null;
+    const rect = root.getBoundingClientRect();
+    const cs = getComputedStyle(root);
+    const padL = parseFloat(cs.paddingLeft) || 0;
+    const padR = parseFloat(cs.paddingRight) || 0;
+    const left = rect.left + padL;
+    const width = rect.width - padL - padR;
+    if (width <= 0) return null;
+    return { x: left, y: rect.top, width, height: rect.height };
+  });
+  return box;
+}
+
 async function assertHeaderAlignment(page, context) {
   const wordmark = page.locator(".mivvu-icn-header-row1 .mivvu-wordmark-header-compact");
   const lang = page.locator(".mivvu-icn-header-row2 .mivvu-lang-toggle");
-  const rail = page.locator(
-    ".mivvu-entry-search, .mivvu-icn-facility-link, .mivvu-icn-detail-primary, .mivvu-icn-browse-title",
-  ).first();
   await wordmark.waitFor({ state: "visible" });
   await lang.waitFor({ state: "visible" });
-  const railBox = await rail.boundingBox();
+  const railBox = await measureContentRailBox(page);
   const wBox = await wordmark.boundingBox();
   const lBox = await lang.boundingBox();
-  if (!railBox || !wBox || !lBox) throw new Error(`Missing header boxes (${context})`);
+  if (!railBox) throw new Error(`Missing content rail box (${context})`);
+  if (!wBox) throw new Error(`Missing wordmark box (${context})`);
+  if (!lBox) throw new Error(`Missing language toggle box (${context})`);
   const railRight = railBox.x + railBox.width;
   const wmRight = wBox.x + wBox.width;
   const langRight = lBox.x + lBox.width;
