@@ -94,7 +94,7 @@ Review source: `/private/tmp/GW-ICN-013-ownership-reverify/GW-ICN-013-ownership-
 
 **Final verification (closeout):** Focused vitest suite **26/26 PASS** (current-contract, commit-guard, lifecycle, session, hub, silent-mirror, publish-order). Browser evidence reused from ABC verification (production BFCache direct-entry vs browse-origin, list restore, Strict Mode dev, storage SecurityError). Full browser campaign not re-run.
 
-**Publication commit:** see GATEWISE STATUS (branch `feat/gw-icn-013-detail`).
+**Publication commit:** `f0116aff71ede917b3706706307b2f358dd98ff3` on `feat/gw-icn-013-detail` (pushed to `origin`).
 
 ### Browser (production — independent ABC review, reused for closeout)
 
