@@ -1,28 +1,34 @@
 "use client";
 
-import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
-import { MivvuWordmark } from "@/components/mivvu/MivvuWordmark";
-import { MivvuLanguageToggle } from "@/components/mivvu/MivvuLanguageToggle";
+import { MivvuIcnHeader } from "@/components/mivvu/MivvuIcnHeader";
 import { useMivvuPreviewLocale } from "@/components/mivvu/MivvuPreviewLocaleProvider";
 import {
   buildKoreanFallbackIndex,
   toBrowseDisplayItems,
 } from "@/lib/icn-facilities/icn-browse-display";
 import {
+  getIcnBrowseHubFiltersServerSnapshot,
+  getIcnBrowseHubFiltersSnapshot,
+  resetIcnBrowseHubFilters,
+  setIcnBrowseHubQuery,
+  setIcnBrowseHubTerminalFilter,
+  subscribeIcnBrowseHubFilters,
+} from "@/lib/icn-facilities/icn-browse-hub-filters";
+import {
   filterIcnBrowseItems,
   formatIcnTerminalFloorLine,
   type IcnBrowseCatalog,
 } from "@/lib/icn-facilities/icn-browse-view-model";
-import { MIVVU_ENTRY_PATH } from "@/lib/mivvu-entry-routes";
-
-function BackIcon() {
-  return (
-    <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true">
-      <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
+import {
+  MIVVU_ICN_FACILITY_DETAIL_PATH_PREFIX,
+  MIVVU_ENTRY_PATH,
+} from "@/lib/mivvu-entry-routes";
+import {
+  clearIcnBrowseSessionContext,
+  saveIcnBrowseDetailNavigation,
+} from "@/lib/icn-facilities/icn-browse-session";
 
 function SearchIcon() {
   return (
@@ -45,8 +51,24 @@ function SearchIcon() {
   );
 }
 
+function ChevronIcon() {
+  return (
+    <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+      <path d="M9 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 function isAmbiguousEqualHours(hours: string): boolean {
   return /^\s*(\d{1,2}:\d{2})\s*~\s*\1\s*$/.test(hours);
+}
+
+function markIcnBrowseDetailNavigation(
+  query: string,
+  terminalFilter: string,
+  refPathSegment: string,
+) {
+  saveIcnBrowseDetailNavigation({ query, terminalFilter, refPathSegment });
 }
 
 export type MivvuIcnFacilitiesBrowseScreenProps = {
@@ -66,8 +88,11 @@ export function MivvuIcnFacilitiesBrowseScreen({
   const terminalGroupId = useId();
   const chipRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
 
-  const [query, setQuery] = useState("");
-  const [terminalFilter, setTerminalFilter] = useState("all");
+  const { query, terminalFilter } = useSyncExternalStore(
+    subscribeIcnBrowseHubFilters,
+    getIcnBrowseHubFiltersSnapshot,
+    getIcnBrowseHubFiltersServerSnapshot,
+  );
 
   const catalog = locale === "ko" ? catalogKo : catalogEn;
   const koFallback = useMemo(
@@ -113,20 +138,14 @@ export function MivvuIcnFacilitiesBrowseScreen({
   return (
     <div className="mivvu-entry-airport mivvu-icn-browse">
       <div className="mivvu-entry-airport-scroll">
-        <header className="mivvu-icn-browse-top">
-          <div className="mivvu-icn-browse-toolbar">
-            <button
-              type="button"
-              className="mivvu-icn-back mivvu-icn-back-compact gw-focus-ring"
-              onClick={() => router.push(MIVVU_ENTRY_PATH)}
-            >
-              <BackIcon />
-              <span className="mivvu-icn-back-text">{messages.icnBack}</span>
-            </button>
-            <MivvuWordmark variant="headerCompact" className="mivvu-icn-toolbar-wordmark" />
-            <MivvuLanguageToggle />
-          </div>
-        </header>
+        <MivvuIcnHeader
+          backLabel={messages.icnBack}
+          onBack={() => {
+            clearIcnBrowseSessionContext();
+            resetIcnBrowseHubFilters();
+            router.push(MIVVU_ENTRY_PATH);
+          }}
+        />
 
         <div className="mivvu-icn-browse-hero">
           <h1 className="mivvu-icn-browse-title">{messages.icnTitle}</h1>
@@ -144,7 +163,7 @@ export function MivvuIcnFacilitiesBrowseScreen({
               className="mivvu-entry-search-input gw-focus-ring"
               placeholder={messages.icnSearchPlaceholder}
               value={query}
-              onChange={(event) => setQuery(event.target.value)}
+              onChange={(event) => setIcnBrowseHubQuery(event.target.value)}
               autoComplete="off"
               aria-controls={listId}
               aria-describedby={searchHintId}
@@ -166,7 +185,7 @@ export function MivvuIcnFacilitiesBrowseScreen({
               className={`mivvu-icn-chip gw-focus-ring ${terminalFilter === "all" ? "mivvu-icn-chip-active" : ""}`}
               aria-pressed={terminalFilter === "all"}
               aria-label={messages.icnTerminalAll}
-              onClick={() => setTerminalFilter("all")}
+              onClick={() => setIcnBrowseHubTerminalFilter("all")}
             >
               {messages.icnTerminalAll}
             </button>
@@ -180,7 +199,7 @@ export function MivvuIcnFacilitiesBrowseScreen({
                 }`}
                 aria-pressed={terminalFilter === terminal.value}
                 aria-label={terminal.label}
-                onClick={() => setTerminalFilter(terminal.value)}
+                onClick={() => setIcnBrowseHubTerminalFilter(terminal.value)}
               >
                 {terminal.chipLabel}
               </button>
@@ -207,9 +226,13 @@ export function MivvuIcnFacilitiesBrowseScreen({
                 item.floor,
                 locale,
               );
-              return (
-                <li key={item.id}>
-                  <article className="mivvu-icn-facility-card">
+              const detailHref =
+                item.detailRefTransport && item.detailRefTransport.length > 0
+                  ? `${MIVVU_ICN_FACILITY_DETAIL_PATH_PREFIX}${item.detailRefTransport}`
+                  : null;
+              const cardBody = (
+                <>
+                  <div className="mivvu-icn-facility-card-main">
                     <h2 className="mivvu-icn-facility-name">{item.displayName}</h2>
                     {item.nameFromKoreanFallback ? (
                       <p className="mivvu-icn-ko-fallback">{messages.icnKoOnlyName}</p>
@@ -236,7 +259,34 @@ export function MivvuIcnFacilitiesBrowseScreen({
                         </span>
                       </p>
                     ) : null}
-                  </article>
+                  </div>
+                  {detailHref ? (
+                    <span className="mivvu-icn-facility-chevron" aria-hidden="true">
+                      <ChevronIcon />
+                    </span>
+                  ) : null}
+                </>
+              );
+
+              return (
+                <li key={item.id}>
+                  {detailHref ? (
+                    <a
+                      href={detailHref}
+                      className="mivvu-icn-facility-card mivvu-icn-facility-card-link gw-focus-ring"
+                      onClick={() =>
+                        markIcnBrowseDetailNavigation(
+                          query,
+                          terminalFilter,
+                          item.detailRefTransport!,
+                        )
+                      }
+                    >
+                      {cardBody}
+                    </a>
+                  ) : (
+                    <article className="mivvu-icn-facility-card">{cardBody}</article>
+                  )}
                 </li>
               );
             })}

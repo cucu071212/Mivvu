@@ -11,6 +11,8 @@ export { icnFacilityContentFingerprint } from "./icn-snapshot-matching";
 export type IcnBrowseListItem = {
   /** Stable key for React lists (`browse-{listingIndex}` of kept row). */
   id: string;
+  /** URI-encoded `[ref]` segment; present when catalog built with GW-ICN-012 refs. */
+  detailRefTransport?: string;
   sourceId: string;
   name: string;
   terminalId: string | null;

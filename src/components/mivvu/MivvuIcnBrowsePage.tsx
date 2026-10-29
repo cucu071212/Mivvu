@@ -1,13 +1,19 @@
 import { MivvuIcnBrowsePageClient } from "@/components/mivvu/MivvuIcnBrowsePageClient";
-import { buildIcnBrowseCatalog } from "@/lib/icn-facilities/icn-browse-view-model";
+import {
+  buildIcnBrowseCatalogWithDetailRefs,
+  buildIcnFacilityReferenceCatalogs,
+} from "@/lib/icn-facilities/icn-browse-detail-refs";
 import {
   loadIcnFacilitiesEnFixture,
   loadIcnFacilitiesKoFixture,
 } from "@/lib/icn-facilities/load-icn-facilities-fixture";
 
 export function MivvuIcnBrowsePage() {
-  const catalogKo = buildIcnBrowseCatalog(loadIcnFacilitiesKoFixture(), "ko");
-  const catalogEn = buildIcnBrowseCatalog(loadIcnFacilitiesEnFixture(), "en");
+  const koFixture = loadIcnFacilitiesKoFixture();
+  const enFixture = loadIcnFacilitiesEnFixture();
+  const referenceCatalogs = buildIcnFacilityReferenceCatalogs(koFixture, enFixture);
+  const catalogKo = buildIcnBrowseCatalogWithDetailRefs(koFixture, "ko", referenceCatalogs);
+  const catalogEn = buildIcnBrowseCatalogWithDetailRefs(enFixture, "en", referenceCatalogs);
 
   return <MivvuIcnBrowsePageClient catalogKo={catalogKo} catalogEn={catalogEn} />;
 }

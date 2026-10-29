@@ -31,6 +31,24 @@ export type MivvuPreviewMessages = {
   icnCountFiltered: (shown: string, total: string) => string;
   icnKoOnlyName: string;
   icnKoOnlyLocation: string;
+  icnDetailBackBrowse: string;
+  icnDetailBackList: string;
+  icnDetailHoursDisclaimer: string;
+  icnDetailFlagDisclaimer: string;
+  icnDetailListingNotes: string;
+  icnDetailCollectedOn: string;
+  icnDetailDirectoryLabel: string;
+  icnDetailDirectEntry: string;
+  icnDetailMissingListing: string;
+  icnDetailMissingLocale: string;
+  icnDetailMissingLocaleNotCaptured: string;
+  icnDetailAmbiguous: string;
+  icnDetailInvalidRef: string;
+  icnDetailUnsupportedVersion: (version: string) => string;
+  icnDetailArrivalLabel: string;
+  icnDetailDepartureLabel: string;
+  icnDetailDutyFreeYes: string;
+  icnDetailDutyFreeNo: string;
 };
 
 const KO: MivvuPreviewMessages = {
@@ -65,6 +83,27 @@ const KO: MivvuPreviewMessages = {
   icnCountFiltered: (shown, total) => `개 표시 (${total}개 중)`,
   icnKoOnlyName: "한국어 목록에만 이름이 있습니다",
   icnKoOnlyLocation: "한국어 목록에만 위치가 있습니다",
+  icnDetailBackBrowse: "시설 목록",
+  icnDetailBackList: "목록으로",
+  icnDetailHoursDisclaimer:
+    "스냅샷에 기록된 시간입니다. 지금 영업 중인지는 알 수 없습니다.",
+  icnDetailFlagDisclaimer:
+    "위 구분은 공항 목록에 적힌 정보뿐입니다. 출입 제한이나 보안 구역 여부를 의미하지 않습니다.",
+  icnDetailListingNotes: "목록 메모 및 한계",
+  icnDetailCollectedOn: "수집일",
+  icnDetailDirectoryLabel: "목록 구분",
+  icnDetailDirectEntry: "목록에서 들어오지 않았습니다. 아래에서 시설 목록으로 돌아갈 수 있습니다.",
+  icnDetailMissingListing: "현재 스냅샷에서 이 시설을 찾을 수 없습니다. 목록에서 다시 선택해 주세요.",
+  icnDetailMissingLocale: "선택한 언어의 목록에서 이 시설을 찾을 수 없습니다.",
+  icnDetailMissingLocaleNotCaptured:
+    "이 링크에는 다른 언어 짝이 저장되어 있지 않습니다. 원래 언어로 다시 열어 주세요.",
+  icnDetailAmbiguous: "같은 번호에 여러 목록이 있어 자동으로 고를 수 없습니다.",
+  icnDetailInvalidRef: "시설 링크 형식이 올바르지 않습니다.",
+  icnDetailUnsupportedVersion: (version) => `지원하지 않는 링크 버전(${version})입니다.`,
+  icnDetailArrivalLabel: "입국",
+  icnDetailDepartureLabel: "출국",
+  icnDetailDutyFreeYes: "면세 구역 표시(목록)",
+  icnDetailDutyFreeNo: "일반 구역 표시(목록)",
 };
 
 const EN: MivvuPreviewMessages = {
@@ -99,6 +138,28 @@ const EN: MivvuPreviewMessages = {
   icnCountFiltered: (shown, total) => ` shown (of ${total})`,
   icnKoOnlyName: "Name available in Korean listing only",
   icnKoOnlyLocation: "Location available in Korean listing only",
+  icnDetailBackBrowse: "Facility list",
+  icnDetailBackList: "Back to list",
+  icnDetailHoursDisclaimer:
+    "Hours come from the snapshot text only. We cannot tell if it is open now.",
+  icnDetailFlagDisclaimer:
+    "These labels are directory metadata only. They do not describe security access or restrictions.",
+  icnDetailListingNotes: "Listing notes and limits",
+  icnDetailCollectedOn: "Information collected on",
+  icnDetailDirectoryLabel: "Directory labels",
+  icnDetailDirectEntry: "You did not arrive from the browse list. Use the control below to return to facilities.",
+  icnDetailMissingListing:
+    "This facility is not in the current snapshot. Please choose again from the list.",
+  icnDetailMissingLocale: "This facility is not available in the listing for the selected language.",
+  icnDetailMissingLocaleNotCaptured:
+    "This link does not include a stored translation pair. Open it in the original language.",
+  icnDetailAmbiguous: "Multiple listings share this ID, so we cannot choose one automatically.",
+  icnDetailInvalidRef: "This facility link is not valid.",
+  icnDetailUnsupportedVersion: (version) => `Unsupported link version (${version}).`,
+  icnDetailArrivalLabel: "Arrivals (directory)",
+  icnDetailDepartureLabel: "Departures (directory)",
+  icnDetailDutyFreeYes: "Duty-free area flag (listing)",
+  icnDetailDutyFreeNo: "Non-duty-free flag (listing)",
 };
 
 export function mivvuPreviewMessages(locale: MivvuPreviewLocale): MivvuPreviewMessages {

@@ -383,6 +383,61 @@
 .mivvu-icn-browse .mivvu-entry-airport-scroll {
   padding-bottom: 2rem;
   overflow-x: hidden;
+  --mivvu-surface-inline-pad: 0.875rem;
+}
+
+.mivvu-icn-detail .mivvu-entry-airport-scroll {
+  padding-bottom: 2rem;
+  overflow-x: hidden;
+  --mivvu-surface-inline-pad: 0.875rem;
+}
+
+.mivvu-icn-header {
+  margin-bottom: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.mivvu-icn-header-row1 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, max-content);
+  align-items: center;
+  column-gap: 0.5rem;
+  min-height: 2.75rem;
+}
+
+.mivvu-icn-header-row1 .mivvu-wordmark-header-compact {
+  justify-self: end;
+  text-align: right;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin-inline-end: var(--mivvu-surface-inline-pad, 0.875rem);
+}
+
+.mivvu-icn-header-row2 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, max-content);
+  align-items: center;
+  column-gap: 0.5rem;
+  min-height: 2.75rem;
+}
+
+.mivvu-icn-header-row2 .mivvu-lang-toggle {
+  justify-self: end;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.mivvu-icn-header-row2-spacer {
+  min-width: 0;
+}
+
+.mivvu-icn-back-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .mivvu-icn-browse-top {
@@ -587,6 +642,33 @@
   box-shadow: 0 1px 2px rgb(0 0 0 / 0.03);
 }
 
+.mivvu-icn-facility-card-link {
+  display: flex;
+  align-items: stretch;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.mivvu-icn-facility-card-link:focus-visible {
+  outline: 2px solid var(--mivvu-cobalt);
+  outline-offset: 2px;
+}
+
+.mivvu-icn-facility-card-main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.mivvu-icn-facility-chevron {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  color: var(--mivvu-muted);
+  padding-inline-start: 0.25rem;
+}
+
 .mivvu-icn-facility-name {
   margin: 0 0 0.25rem;
   font-size: 1rem;
@@ -676,6 +758,112 @@
 
 .mivvu-icn-snapshot-note {
   margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--mivvu-muted);
+}
+
+.mivvu-icn-detail-banner {
+  margin: 0 0 1rem;
+  padding: 0.625rem 0.75rem;
+  border-radius: 0.5rem;
+  background: var(--mivvu-selected-tint);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--mivvu-text);
+}
+
+.mivvu-icn-detail-error {
+  padding: 1rem 0;
+}
+
+.mivvu-icn-detail-error p {
+  margin: 0 0 1rem;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.mivvu-icn-detail-list-cta {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--mivvu-border);
+  background: #fff;
+  font: inherit;
+  font-weight: 700;
+  color: var(--mivvu-cobalt);
+  cursor: pointer;
+}
+
+.mivvu-icn-detail-primary {
+  margin-bottom: 1.25rem;
+}
+
+.mivvu-icn-detail-name {
+  margin: 0 0 0.35rem;
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.mivvu-icn-detail-hours-note {
+  margin: 0.35rem 0 0;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--mivvu-muted);
+}
+
+.mivvu-icn-detail-category {
+  margin-top: 0.75rem;
+}
+
+.mivvu-icn-detail-staged-note {
+  margin: 1rem 0 0;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--mivvu-muted);
+}
+
+.mivvu-icn-detail-notes {
+  border: 1px solid var(--mivvu-border);
+  border-radius: 0.75rem;
+  background: #fff;
+  padding: 0.625rem var(--mivvu-surface-inline-pad, 0.875rem);
+}
+
+.mivvu-icn-detail-notes summary {
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--mivvu-cobalt);
+}
+
+.mivvu-icn-detail-notes-list {
+  margin: 0.75rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.mivvu-icn-detail-notes-list dt {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--mivvu-muted);
+}
+
+.mivvu-icn-detail-notes-list dd {
+  margin: 0.125rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+.mivvu-icn-detail-flag-note {
+  margin: 0.75rem 0 0;
   font-size: 0.75rem;
   line-height: 1.5;
   color: var(--mivvu-muted);

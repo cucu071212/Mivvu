@@ -4,6 +4,18 @@ export const MIVVU_ENTRY_PATH = "/" as const;
 /** ICN facility browse directory (static fixtures). */
 export const MIVVU_ICN_BROWSE_PATH = "/icn" as const;
 
+/** ICN facility detail (GW-ICN-013). `[ref]` is a URI-encoded serialized GW-ICN-012 reference. */
+export const MIVVU_ICN_FACILITY_DETAIL_PATH_PREFIX = "/icn/f/" as const;
+
+/** Minimal browse filters for return-from-detail (not GW-ICN-017 URL sync). */
+export const MIVVU_ICN_BROWSE_CONTEXT_SESSION_KEY = "mivvu.icn.browseContext.v1" as const;
+
+/** Active detail visit token; must match session payload for browse-origin UI. */
+export const MIVVU_ICN_ACTIVE_DETAIL_VISIT_KEY = "mivvu.icn.activeDetailVisit.v1" as const;
+
+/** One-shot browse-card → detail intent (consumed on detail mount). */
+export const MIVVU_ICN_BROWSE_ORIGIN_INTENT_KEY = "mivvu.icn.browseOriginIntent.v1" as const;
+
 /** Legacy preview URLs — kept for bookmarks; pages redirect to canonical routes. */
 export const MIVVU_PREVIEW_ENTRY_PATH = "/preview/mivvu-entry" as const;
 export const MIVVU_PREVIEW_ICN_BROWSE_PATH = "/preview/mivvu-entry/icn" as const;
