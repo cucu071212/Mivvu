@@ -21,6 +21,12 @@ export type MivvuPreviewMessages = {
   icnSearchHint: string;
   icnTerminalLabel: string;
   icnTerminalAll: string;
+  icnCategoryLabel: string;
+  icnCategoryAll: string;
+  icnSubcategoryLabel: string;
+  icnCategorySheetClose: string;
+  icnCategorySheetTopTitle: string;
+  icnCategorySheetSubTitle: string;
   icnEmpty: string;
   icnHoursLabel: string;
   icnHoursUnavailable: string;
@@ -31,6 +37,7 @@ export type MivvuPreviewMessages = {
   icnCountFiltered: (shown: string, total: string) => string;
   icnKoOnlyName: string;
   icnKoOnlyLocation: string;
+  icnKoOnlyCategory: string;
   icnDetailBackBrowse: string;
   icnDetailBackList: string;
   icnDetailHoursDisclaimer: string;
@@ -73,7 +80,13 @@ const KO: MivvuPreviewMessages = {
   icnSearchHint: "한국어로 검색",
   icnTerminalLabel: "터미널",
   icnTerminalAll: "전체",
-  icnEmpty: "조건에 맞는 시설이 없습니다. 검색어 또는 터미널 필터를 바꿔 보세요.",
+  icnCategoryLabel: "유형",
+  icnCategoryAll: "전체",
+  icnSubcategoryLabel: "세부 유형",
+  icnCategorySheetClose: "닫기",
+  icnCategorySheetTopTitle: "유형 선택",
+  icnCategorySheetSubTitle: "세부 유형 선택",
+  icnEmpty: "조건에 맞는 시설이 없습니다. 검색어, 터미널, 유형을 바꾸거나 ‘전체’로 초기화해 보세요.",
   icnHoursLabel: "운영 시간",
   icnHoursUnavailable: "운영시간 확인 필요",
   icnSnapshotTitle: "목록 정보",
@@ -83,6 +96,7 @@ const KO: MivvuPreviewMessages = {
   icnCountFiltered: (shown, total) => `개 표시 (${total}개 중)`,
   icnKoOnlyName: "한국어 목록에만 이름이 있습니다",
   icnKoOnlyLocation: "한국어 목록에만 위치가 있습니다",
+  icnKoOnlyCategory: "영어 목록에 이 분류명이 없어 한국어 분류명을 표시합니다",
   icnDetailBackBrowse: "시설 목록",
   icnDetailBackList: "목록으로",
   icnDetailHoursDisclaimer:
@@ -128,7 +142,13 @@ const EN: MivvuPreviewMessages = {
   icnSearchHint: "Search in English",
   icnTerminalLabel: "Terminal",
   icnTerminalAll: "All",
-  icnEmpty: "No facilities match. Try a different search or terminal filter.",
+  icnCategoryLabel: "Type",
+  icnCategoryAll: "All",
+  icnSubcategoryLabel: "Subtype",
+  icnCategorySheetClose: "Close",
+  icnCategorySheetTopTitle: "Choose type",
+  icnCategorySheetSubTitle: "Choose subtype",
+  icnEmpty: "No facilities match. Try changing search, terminal, or type—or reset type to All.",
   icnHoursLabel: "Hours",
   icnHoursUnavailable: "Hours unavailable",
   icnSnapshotTitle: "About this listing",
@@ -138,6 +158,8 @@ const EN: MivvuPreviewMessages = {
   icnCountFiltered: (shown, total) => ` shown (of ${total})`,
   icnKoOnlyName: "Name available in Korean listing only",
   icnKoOnlyLocation: "Location available in Korean listing only",
+  icnKoOnlyCategory:
+    "Showing the Korean category label because English is not in the listing",
   icnDetailBackBrowse: "Facility list",
   icnDetailBackList: "Back to list",
   icnDetailHoursDisclaimer:

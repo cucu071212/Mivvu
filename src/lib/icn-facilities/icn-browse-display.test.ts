@@ -14,6 +14,8 @@ function item(overrides: Partial<IcnBrowseListItem> & Pick<IcnBrowseListItem, "s
     floor: "F3",
     locationDescription: "Gate area",
     categoryLabel: "Food",
+    categoryLargeKey: null,
+    categoryMediumKey: null,
     hoursText: null,
     ...overrides,
   };

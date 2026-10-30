@@ -75,6 +75,8 @@ export function buildIcnFacilityDetailView(
     floor: record.floor,
     locationDescription: record.locationDescription,
     categoryLabel: formatCategoryLabel(record),
+    categoryLargeKey: record.categories.large?.trim() || null,
+    categoryMediumKey: record.categories.medium?.trim() || null,
     hoursText: record.hoursText,
   };
   const [display] = toBrowseDisplayItems([listItem], locale, locale === "en" ? koreanFallbackBySourceId : null);

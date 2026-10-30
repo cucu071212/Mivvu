@@ -106,6 +106,8 @@ describe("GW-ICN-009 search + 007 fallback integration", () => {
         floor: null,
         locationDescription: "Gate area",
         categoryLabel: "Food",
+        categoryLargeKey: null,
+        categoryMediumKey: null,
         hoursText: null,
       },
       {
@@ -117,6 +119,8 @@ describe("GW-ICN-009 search + 007 fallback integration", () => {
         floor: null,
         locationDescription: "Other wing",
         categoryLabel: "Food",
+        categoryLargeKey: null,
+        categoryMediumKey: null,
         hoursText: null,
       },
     ];

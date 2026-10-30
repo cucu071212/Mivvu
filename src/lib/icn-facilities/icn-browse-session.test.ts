@@ -37,7 +37,12 @@ describe("icn-browse-session", () => {
     assert.equal(consumeHubRestoreFilters(), null);
     assert.ok(scheduleHubRestoreFromDetail());
     assert.equal(detailOpenedFromBrowse("encoded-ref"), false);
-    assert.deepEqual(consumeHubRestoreFilters(), { query: "ARABICA", terminalFilter: "P03" });
+    assert.deepEqual(consumeHubRestoreFilters(), {
+      query: "ARABICA",
+      terminalFilter: "P03",
+      categoryLarge: "all",
+      categoryMedium: "all",
+    });
     assert.equal(readIcnBrowseDetailSession(), null);
     unregister();
   });

@@ -8,13 +8,22 @@ import {
 export type IcnBrowseHubFilters = {
   query: string;
   terminalFilter: string;
+  categoryLarge: string;
+  categoryMedium: string;
 };
 
-const DEFAULT_FILTERS: IcnBrowseHubFilters = { query: "", terminalFilter: "all" };
+const DEFAULT_FILTERS: IcnBrowseHubFilters = {
+  query: "",
+  terminalFilter: "all",
+  categoryLarge: "all",
+  categoryMedium: "all",
+};
 
 const SERVER_SNAPSHOT: Readonly<IcnBrowseHubFilters> = Object.freeze({
   query: "",
   terminalFilter: "all",
+  categoryLarge: "all",
+  categoryMedium: "all",
 });
 
 const HUB_FILTERS_CHANGE_EVENT = "mivvu:icn-browse-hub-filters";
@@ -33,10 +42,17 @@ function publishFilters(next: IcnBrowseHubFilters): void {
   if (
     filtersSnapshot.query === next.query
     && filtersSnapshot.terminalFilter === next.terminalFilter
+    && filtersSnapshot.categoryLarge === next.categoryLarge
+    && filtersSnapshot.categoryMedium === next.categoryMedium
   ) {
     return;
   }
-  filtersSnapshot = { query: next.query, terminalFilter: next.terminalFilter };
+  filtersSnapshot = {
+    query: next.query,
+    terminalFilter: next.terminalFilter,
+    categoryLarge: next.categoryLarge,
+    categoryMedium: next.categoryMedium,
+  };
   emitHubFiltersChange();
 }
 
@@ -45,7 +61,12 @@ export function commitScheduledHubRestoreIfIdle(): boolean {
   if (hubFiltersDirtyFromUser || hubRestoreCommitInProgress) return false;
   const session = readIcnBrowseDetailSession();
   if (!session?.restoreOnNextHubVisit) return false;
-  const restored = { query: session.query, terminalFilter: session.terminalFilter };
+  const restored = {
+    query: session.query,
+    terminalFilter: session.terminalFilter,
+    categoryLarge: session.categoryLarge,
+    categoryMedium: session.categoryMedium,
+  };
   hubRestoreCommitInProgress = true;
   try {
     clearIcnBrowseSessionContextSilently();
@@ -119,5 +140,21 @@ export function setIcnBrowseHubQuery(query: string): void {
 export function setIcnBrowseHubTerminalFilter(terminalFilter: string): void {
   hubFiltersDirtyFromUser = true;
   filtersSnapshot = { ...filtersSnapshot, terminalFilter };
+  emitHubFiltersChange();
+}
+
+export function setIcnBrowseHubCategoryLarge(categoryLarge: string): void {
+  hubFiltersDirtyFromUser = true;
+  filtersSnapshot = {
+    ...filtersSnapshot,
+    categoryLarge,
+    categoryMedium: "all",
+  };
+  emitHubFiltersChange();
+}
+
+export function setIcnBrowseHubCategoryMedium(categoryMedium: string): void {
+  hubFiltersDirtyFromUser = true;
+  filtersSnapshot = { ...filtersSnapshot, categoryMedium };
   emitHubFiltersChange();
 }

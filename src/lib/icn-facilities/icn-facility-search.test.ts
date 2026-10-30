@@ -7,7 +7,8 @@ import { filterIcnBrowseItems, type IcnBrowseListItem } from "./icn-browse-view-
 // Synthetic listings only: expectations specify search rules, not airport facts.
 function item(id: string, name: string, fields: Partial<IcnBrowseListItem> = {}): IcnBrowseListItem {
   return { id, sourceId: id, name, terminalId: "P01", terminalLabel: "Terminal 1",
-    floor: null, locationDescription: null, categoryLabel: null, hoursText: null, ...fields };
+    floor: null, locationDescription: null, categoryLabel: null,
+    categoryLargeKey: null, categoryMediumKey: null, hoursText: null, ...fields };
 }
 function search(items: IcnBrowseListItem[], query: string, terminal = "all") {
   return filterIcnBrowseItems(items, query, terminal, "en").map((row) => row.id);

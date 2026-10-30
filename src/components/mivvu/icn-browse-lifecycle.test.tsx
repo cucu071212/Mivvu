@@ -156,7 +156,12 @@ it("subscription notification exposes the restored snapshot after changing store
 
 it("server snapshot remains empty instead of exposing module client filters", () => {
   hub.setIcnBrowseHubQuery("client-only");
-  expect(hub.getIcnBrowseHubFiltersServerSnapshot()).toEqual({ query: "", terminalFilter: "all" });
+  expect(hub.getIcnBrowseHubFiltersServerSnapshot()).toEqual({
+    query: "",
+    terminalFilter: "all",
+    categoryLarge: "all",
+    categoryMedium: "all",
+  });
 });
 
 it("stale session without live detail registration is not browse-origin", () => {

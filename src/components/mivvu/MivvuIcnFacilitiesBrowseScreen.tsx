@@ -1,17 +1,27 @@
 "use client";
 
-import { useEffect, useId, useMemo, useRef, useSyncExternalStore } from "react";
+import { useEffect, useId, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { MivvuIcnHeader } from "@/components/mivvu/MivvuIcnHeader";
+import { MivvuIcnCategoryBottomSheet } from "@/components/mivvu/MivvuIcnCategoryBottomSheet";
 import { useMivvuPreviewLocale } from "@/components/mivvu/MivvuPreviewLocaleProvider";
 import {
   buildKoreanFallbackIndex,
   toBrowseDisplayItems,
 } from "@/lib/icn-facilities/icn-browse-display";
 import {
+  buildIcnBrowseCategoryTaxonomy,
+  ICN_BROWSE_CATEGORY_ALL,
+  inheritKoreanCategoryKeysForFilter,
+  resolveLargeCategoryDisplay,
+  resolveMediumCategoryDisplay,
+} from "@/lib/icn-facilities/icn-browse-category-taxonomy";
+import {
   getIcnBrowseHubFiltersServerSnapshot,
   getIcnBrowseHubFiltersSnapshot,
   resetIcnBrowseHubFilters,
+  setIcnBrowseHubCategoryLarge,
+  setIcnBrowseHubCategoryMedium,
   setIcnBrowseHubQuery,
   setIcnBrowseHubTerminalFilter,
   subscribeIcnBrowseHubFilters,
@@ -66,9 +76,41 @@ function isAmbiguousEqualHours(hours: string): boolean {
 function markIcnBrowseDetailNavigation(
   query: string,
   terminalFilter: string,
+  categoryLarge: string,
+  categoryMedium: string,
   refPathSegment: string,
 ) {
-  saveIcnBrowseDetailNavigation({ query, terminalFilter, refPathSegment });
+  saveIcnBrowseDetailNavigation({
+    query,
+    terminalFilter,
+    categoryLarge,
+    categoryMedium,
+    refPathSegment,
+  });
+}
+
+type CategorySheetMode = "top" | "sub" | null;
+
+function CategoryTriggerValue({
+  label,
+  showKoreanLabelFallback,
+  fallbackMessage,
+}: {
+  label: string;
+  showKoreanLabelFallback: boolean;
+  fallbackMessage: string;
+}) {
+  return (
+    <span className="mivvu-icn-category-trigger-value">
+      <span className="mivvu-icn-category-trigger-primary">
+        <span>{label}</span>
+        <ChevronIcon />
+      </span>
+      {showKoreanLabelFallback ? (
+        <span className="mivvu-icn-ko-fallback">{fallbackMessage}</span>
+      ) : null}
+    </span>
+  );
 }
 
 export type MivvuIcnFacilitiesBrowseScreenProps = {
@@ -87,22 +129,92 @@ export function MivvuIcnFacilitiesBrowseScreen({
   const listId = useId();
   const terminalGroupId = useId();
   const chipRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
+  const [categorySheet, setCategorySheet] = useState<CategorySheetMode>(null);
 
-  const { query, terminalFilter } = useSyncExternalStore(
+  const { query, terminalFilter, categoryLarge, categoryMedium } = useSyncExternalStore(
     subscribeIcnBrowseHubFilters,
     getIcnBrowseHubFiltersSnapshot,
     getIcnBrowseHubFiltersServerSnapshot,
   );
 
-  const catalog = locale === "ko" ? catalogKo : catalogEn;
+  const categoryFilter = useMemo(
+    () => ({ categoryLarge, categoryMedium }),
+    [categoryLarge, categoryMedium],
+  );
+
+  const taxonomy = useMemo(
+    () => buildIcnBrowseCategoryTaxonomy(catalogKo.items, catalogEn.items),
+    [catalogKo.items, catalogEn.items],
+  );
+
+  const catalog = useMemo(() => {
+    const base = locale === "ko" ? catalogKo : catalogEn;
+    if (locale === "ko") return base;
+    return {
+      ...base,
+      items: inheritKoreanCategoryKeysForFilter(catalogKo.items, base.items),
+    };
+  }, [catalogEn, catalogKo, locale]);
   const koFallback = useMemo(
     () => buildKoreanFallbackIndex(catalogKo.items, catalogEn.items),
     [catalogKo.items, catalogEn.items],
   );
 
   const filtered = useMemo(
-    () => filterIcnBrowseItems(catalog.items, query, terminalFilter, locale),
-    [catalog.items, query, terminalFilter, locale],
+    () => filterIcnBrowseItems(catalog.items, query, terminalFilter, locale, categoryFilter),
+    [catalog.items, query, terminalFilter, locale, categoryFilter],
+  );
+
+  const activeTopLevel = taxonomy.topLevel.find((row) => row.key === categoryLarge);
+  const subcategoryOptions = useMemo(
+    () => activeTopLevel?.subcategories ?? [],
+    [activeTopLevel],
+  );
+  const showSubcategoryRow =
+    categoryLarge !== ICN_BROWSE_CATEGORY_ALL && subcategoryOptions.length > 0;
+
+  const topLevelPresentation = useMemo(() => {
+    if (categoryLarge === ICN_BROWSE_CATEGORY_ALL) {
+      return { label: messages.icnCategoryAll, labelFromKoreanFallback: false };
+    }
+    return (
+      resolveLargeCategoryDisplay(taxonomy, categoryLarge, locale) ?? {
+        label: categoryLarge,
+        labelFromKoreanFallback: locale === "en",
+      }
+    );
+  }, [categoryLarge, locale, messages.icnCategoryAll, taxonomy]);
+
+  const subcategoryPresentation = useMemo(() => {
+    if (categoryMedium === ICN_BROWSE_CATEGORY_ALL) {
+      return { label: messages.icnCategoryAll, labelFromKoreanFallback: false };
+    }
+    return (
+      resolveMediumCategoryDisplay(taxonomy, categoryLarge, categoryMedium, locale) ?? {
+        label: categoryMedium,
+        labelFromKoreanFallback: locale === "en",
+      }
+    );
+  }, [categoryLarge, categoryMedium, locale, messages.icnCategoryAll, taxonomy]);
+
+  const topSheetOptions = useMemo(
+    () =>
+      taxonomy.topLevel.map((row) => ({
+        value: row.key,
+        label: locale === "ko" ? row.labelKo : row.labelEn,
+        labelFromKoreanFallback: locale === "en" && row.labelEnFromKoreanFallback,
+      })),
+    [locale, taxonomy.topLevel],
+  );
+
+  const subSheetOptions = useMemo(
+    () =>
+      subcategoryOptions.map((row) => ({
+        value: row.key,
+        label: locale === "ko" ? row.labelKo : row.labelEn,
+        labelFromKoreanFallback: locale === "en" && row.labelEnFromKoreanFallback,
+      })),
+    [locale, subcategoryOptions],
   );
 
   const displayItems = useMemo(
@@ -207,6 +319,40 @@ export function MivvuIcnFacilitiesBrowseScreen({
           </div>
         </div>
 
+        <button
+          type="button"
+          className="mivvu-icn-category-trigger gw-focus-ring"
+          aria-expanded={categorySheet === "top"}
+          onClick={() => setCategorySheet("top")}
+        >
+          <span className="mivvu-icn-category-trigger-label">{messages.icnCategoryLabel}</span>
+          <CategoryTriggerValue
+            label={topLevelPresentation.label}
+            showKoreanLabelFallback={
+              locale === "en" && topLevelPresentation.labelFromKoreanFallback
+            }
+            fallbackMessage={messages.icnKoOnlyCategory}
+          />
+        </button>
+
+        {showSubcategoryRow ? (
+          <button
+            type="button"
+            className="mivvu-icn-category-trigger gw-focus-ring"
+            aria-expanded={categorySheet === "sub"}
+            onClick={() => setCategorySheet("sub")}
+          >
+            <span className="mivvu-icn-category-trigger-label">{messages.icnSubcategoryLabel}</span>
+            <CategoryTriggerValue
+              label={subcategoryPresentation.label}
+              showKoreanLabelFallback={
+                locale === "en" && subcategoryPresentation.labelFromKoreanFallback
+              }
+              fallbackMessage={messages.icnKoOnlyCategory}
+            />
+          </button>
+        ) : null}
+
         <p className="mivvu-icn-result-count" aria-live="polite">
           <span className="mivvu-icn-count-number">
             {filtered.length.toLocaleString(numberLocale)}
@@ -278,6 +424,8 @@ export function MivvuIcnFacilitiesBrowseScreen({
                         markIcnBrowseDetailNavigation(
                           query,
                           terminalFilter,
+                          categoryLarge,
+                          categoryMedium,
                           item.detailRefTransport!,
                         )
                       }
@@ -308,6 +456,29 @@ export function MivvuIcnFacilitiesBrowseScreen({
           <p className="mivvu-icn-snapshot-note">{catalog.snapshot.coverageNote}</p>
         </aside>
       </div>
+
+      <MivvuIcnCategoryBottomSheet
+        open={categorySheet === "top"}
+        title={messages.icnCategorySheetTopTitle}
+        options={topSheetOptions}
+        selectedValue={categoryLarge}
+        allLabel={messages.icnCategoryAll}
+        closeLabel={messages.icnCategorySheetClose}
+        koreanLabelFallbackHint={locale === "en" ? messages.icnKoOnlyCategory : null}
+        onClose={() => setCategorySheet(null)}
+        onSelect={(value) => setIcnBrowseHubCategoryLarge(value)}
+      />
+      <MivvuIcnCategoryBottomSheet
+        open={categorySheet === "sub"}
+        title={messages.icnCategorySheetSubTitle}
+        options={subSheetOptions}
+        selectedValue={categoryMedium}
+        allLabel={messages.icnCategoryAll}
+        closeLabel={messages.icnCategorySheetClose}
+        koreanLabelFallbackHint={locale === "en" ? messages.icnKoOnlyCategory : null}
+        onClose={() => setCategorySheet(null)}
+        onSelect={(value) => setIcnBrowseHubCategoryMedium(value)}
+      />
     </div>
   );
 }

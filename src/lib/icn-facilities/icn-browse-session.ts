@@ -8,6 +8,8 @@ import {
 export type IcnBrowseDetailSession = {
   query: string;
   terminalFilter: string;
+  categoryLarge: string;
+  categoryMedium: string;
   /** Encoded `[ref]` path segment for the detail opened from browse. */
   refPathSegment: string;
   /** When true, the next hub mount may apply filters once, then storage is cleared. */
@@ -16,7 +18,10 @@ export type IcnBrowseDetailSession = {
   visitToken?: string;
 };
 
-export type IcnBrowseSessionContext = Pick<IcnBrowseDetailSession, "query" | "terminalFilter">;
+export type IcnBrowseSessionContext = Pick<
+  IcnBrowseDetailSession,
+  "query" | "terminalFilter" | "categoryLarge" | "categoryMedium"
+>;
 
 const SESSION_CHANGE_EVENT = "mivvu:icn-browse-session";
 
@@ -93,6 +98,8 @@ function parseSession(raw: string | null): IcnBrowseDetailSession | null {
     return {
       query: parsed.query,
       terminalFilter: parsed.terminalFilter,
+      categoryLarge: typeof parsed.categoryLarge === "string" ? parsed.categoryLarge : "all",
+      categoryMedium: typeof parsed.categoryMedium === "string" ? parsed.categoryMedium : "all",
       refPathSegment: parsed.refPathSegment,
       restoreOnNextHubVisit: parsed.restoreOnNextHubVisit,
       visitToken: typeof parsed.visitToken === "string" ? parsed.visitToken : undefined,
@@ -107,11 +114,21 @@ export function readIcnBrowseDetailSession(): IcnBrowseDetailSession | null {
 }
 
 export function saveIcnBrowseDetailNavigation(
-  context: IcnBrowseSessionContext & { refPathSegment: string },
+  context: {
+    query: string;
+    terminalFilter: string;
+    refPathSegment: string;
+    categoryLarge?: string;
+    categoryMedium?: string;
+  },
 ): void {
   const visitToken = createVisitToken();
   const payload: IcnBrowseDetailSession = {
-    ...context,
+    query: context.query,
+    terminalFilter: context.terminalFilter,
+    categoryLarge: context.categoryLarge ?? "all",
+    categoryMedium: context.categoryMedium ?? "all",
+    refPathSegment: context.refPathSegment,
     restoreOnNextHubVisit: false,
     visitToken,
   };
@@ -226,14 +243,24 @@ export function scheduleHubRestoreFromDetail(): boolean {
 export function peekHubRestoreFilters(): IcnBrowseSessionContext | null {
   const session = readIcnBrowseDetailSession();
   if (!session?.restoreOnNextHubVisit) return null;
-  return { query: session.query, terminalFilter: session.terminalFilter };
+  return {
+    query: session.query,
+    terminalFilter: session.terminalFilter,
+    categoryLarge: session.categoryLarge,
+    categoryMedium: session.categoryMedium,
+  };
 }
 
 /** One-time hub filter restore after an explicit detail→list return. */
 export function consumeHubRestoreFilters(): IcnBrowseSessionContext | null {
   const session = readIcnBrowseDetailSession();
   if (!session?.restoreOnNextHubVisit) return null;
-  const restored = { query: session.query, terminalFilter: session.terminalFilter };
+  const restored = {
+    query: session.query,
+    terminalFilter: session.terminalFilter,
+    categoryLarge: session.categoryLarge,
+    categoryMedium: session.categoryMedium,
+  };
   clearIcnBrowseSessionContext();
   return restored;
 }
