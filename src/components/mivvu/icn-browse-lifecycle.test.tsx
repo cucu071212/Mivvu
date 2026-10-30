@@ -26,6 +26,9 @@ const props = {
   snapshotEn: info,
   detailKo: { kind: "error", status: "invalid_reference" },
   detailEn: { kind: "error", status: "invalid_reference" },
+  goodsServicesKo: { sectionVisible: false },
+  goodsServicesEn: { sectionVisible: false },
+  labeledDevSyntheticCompanion: false,
 } as const;
 
 beforeEach(() => {

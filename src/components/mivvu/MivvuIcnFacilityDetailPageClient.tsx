@@ -6,6 +6,8 @@ import { MivvuIcnHeader } from "@/components/mivvu/MivvuIcnHeader";
 import { useMivvuPreviewLocale } from "@/components/mivvu/MivvuPreviewLocaleProvider";
 import type { IcnFacilityDetailView } from "@/lib/icn-facilities/icn-facility-detail-present";
 import type { IcnBrowseCatalogSnapshot } from "@/lib/icn-facilities/icn-browse-view-model";
+import type { IcnGoodsServicesDetailProjection } from "@/types/icn-goods-services-companion";
+import { MivvuIcnGoodsServicesSection } from "@/components/mivvu/MivvuIcnGoodsServicesSection";
 import {
   abandonIcnBrowseDetailSessionIfPending,
   consumeBrowseOriginIntent,
@@ -25,6 +27,9 @@ export type MivvuIcnFacilityDetailPageClientProps = {
   snapshotEn: IcnBrowseCatalogSnapshot;
   detailKo: IcnFacilityDetailView;
   detailEn: IcnFacilityDetailView;
+  goodsServicesKo: IcnGoodsServicesDetailProjection;
+  goodsServicesEn: IcnGoodsServicesDetailProjection;
+  labeledDevSyntheticCompanion?: boolean;
 };
 
 function errorMessage(
@@ -53,12 +58,16 @@ export function MivvuIcnFacilityDetailPageClient({
   snapshotEn,
   detailKo,
   detailEn,
+  goodsServicesKo,
+  goodsServicesEn,
+  labeledDevSyntheticCompanion = false,
 }: MivvuIcnFacilityDetailPageClientProps) {
   const router = useRouter();
   const { locale, messages } = useMivvuPreviewLocale();
 
   const detail = locale === "ko" ? detailKo : detailEn;
   const snapshot = locale === "ko" ? snapshotKo : snapshotEn;
+  const goodsServices = locale === "ko" ? goodsServicesKo : goodsServicesEn;
 
   const fromBrowse = useSyncExternalStore(
     subscribeIcnBrowseSession,
@@ -156,6 +165,18 @@ export function MivvuIcnFacilityDetailPageClient({
                 <p className="mivvu-icn-facility-category mivvu-icn-detail-category">{detail.categoryLabel}</p>
               ) : null}
             </article>
+
+            {labeledDevSyntheticCompanion ? (
+              <p className="mivvu-icn-goods-dev-banner" role="status">
+                {messages.icnGoodsServicesDevVerificationBanner}
+              </p>
+            ) : null}
+
+            <MivvuIcnGoodsServicesSection
+              projection={goodsServices}
+              locale={locale}
+              messages={messages}
+            />
 
             <details className="mivvu-icn-detail-notes">
               <summary>{messages.icnDetailListingNotes}</summary>

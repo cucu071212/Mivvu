@@ -56,6 +56,14 @@ export type MivvuPreviewMessages = {
   icnDetailDepartureLabel: string;
   icnDetailDutyFreeYes: string;
   icnDetailDutyFreeNo: string;
+  icnGoodsServicesHeading: string;
+  icnGoodsServicesKoSourceLabel: string;
+  icnGoodsServicesDifferentFieldsNote: string;
+  icnGoodsServicesObservedOn: string;
+  icnGoodsServicesShowMore: string;
+  icnGoodsServicesShowLess: string;
+  icnGoodsServicesProvenanceNote: string;
+  icnGoodsServicesDevVerificationBanner: string;
 };
 
 const KO: MivvuPreviewMessages = {
@@ -118,6 +126,17 @@ const KO: MivvuPreviewMessages = {
   icnDetailDepartureLabel: "출국",
   icnDetailDutyFreeYes: "면세 구역 표시(목록)",
   icnDetailDutyFreeNo: "일반 구역 표시(목록)",
+  icnGoodsServicesHeading: "상품·서비스 설명",
+  icnGoodsServicesKoSourceLabel: "한국어 목록에만 상품·서비스 설명이 있습니다",
+  icnGoodsServicesDifferentFieldsNote:
+    "아래 문단은 출처 필드마다 다르게 기록된 내용입니다. 하나가 다른 하나의 오류를 뜻하지는 않습니다.",
+  icnGoodsServicesObservedOn: "설명 수집일",
+  icnGoodsServicesShowMore: "더 보기",
+  icnGoodsServicesShowLess: "접기",
+  icnGoodsServicesProvenanceNote:
+    "공항 공공데이터 목록에 기록된 설명입니다. 번역·실시간 제공·영업 여부를 보장하지 않습니다.",
+  icnGoodsServicesDevVerificationBanner:
+    "개발 검증 전용 합성 상품·서비스 데이터입니다. 실제 공항 목록·운영 데이터가 아닙니다.",
 };
 
 const EN: MivvuPreviewMessages = {
@@ -182,6 +201,17 @@ const EN: MivvuPreviewMessages = {
   icnDetailDepartureLabel: "Departures (directory)",
   icnDetailDutyFreeYes: "Duty-free area flag (listing)",
   icnDetailDutyFreeNo: "Non-duty-free flag (listing)",
+  icnGoodsServicesHeading: "Listed goods and services",
+  icnGoodsServicesKoSourceLabel: "Description available in Korean listing only",
+  icnGoodsServicesDifferentFieldsNote:
+    "The paragraphs below come from different source fields. That does not mean one is an error.",
+  icnGoodsServicesObservedOn: "Description observed on",
+  icnGoodsServicesShowMore: "Show more",
+  icnGoodsServicesShowLess: "Show less",
+  icnGoodsServicesProvenanceNote:
+    "Text recorded in the airport public listing. Not a translation, live menu, or open/closed guarantee.",
+  icnGoodsServicesDevVerificationBanner:
+    "Development verification only — synthetic goods/services data, not live airport catalog content.",
 };
 
 export function mivvuPreviewMessages(locale: MivvuPreviewLocale): MivvuPreviewMessages {

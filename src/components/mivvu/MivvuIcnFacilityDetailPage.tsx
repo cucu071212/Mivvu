@@ -7,10 +7,16 @@ import {
 } from "@/lib/icn-facilities/icn-facility-detail-present";
 import { resolveIcnFacilityRef } from "@/lib/icn-facilities/icn-facility-reference";
 import { decodeIcnFacilityRefPathSegment } from "@/lib/icn-facilities/icn-facility-ref-transport";
+import { projectIcnGoodsServicesForDetail } from "@/lib/icn-facilities/icn-goods-services-associate";
+import {
+  icnGoodsServicesDevCompanionLoadAllowed,
+  loadIcnGoodsServicesCompanion,
+} from "@/lib/icn-facilities/load-icn-goods-services-companion";
 import {
   loadIcnFacilitiesEnFixture,
   loadIcnFacilitiesKoFixture,
 } from "@/lib/icn-facilities/load-icn-facilities-fixture";
+import { mivvuPreviewMessages } from "@/lib/mivvu-preview-messages";
 import { MivvuIcnFacilityDetailPageClient } from "@/components/mivvu/MivvuIcnFacilityDetailPageClient";
 
 export type MivvuIcnFacilityDetailPageProps = {
@@ -36,6 +42,30 @@ export function MivvuIcnFacilityDetailPage({ refPathSegment }: MivvuIcnFacilityD
     koFallback,
   );
 
+  const rawCompanion = loadIcnGoodsServicesCompanion();
+  const labeledDevSyntheticCompanion = icnGoodsServicesDevCompanionLoadAllowed();
+  const messagesEn = mivvuPreviewMessages("en");
+  const goodsKo = projectIcnGoodsServicesForDetail({
+    rawCompanion,
+    koFixture,
+    enFixture,
+    referenceCatalogs,
+    serializedRef: serialized,
+    previewLocale: "ko",
+    resolution: resolutionKo,
+    koSourceLabel: messagesEn.icnGoodsServicesKoSourceLabel,
+  });
+  const goodsEn = projectIcnGoodsServicesForDetail({
+    rawCompanion,
+    koFixture,
+    enFixture,
+    referenceCatalogs,
+    serializedRef: serialized,
+    previewLocale: "en",
+    resolution: resolutionEn,
+    koSourceLabel: messagesEn.icnGoodsServicesKoSourceLabel,
+  });
+
   return (
     <MivvuIcnFacilityDetailPageClient
       refPathSegment={refPathSegment}
@@ -43,6 +73,9 @@ export function MivvuIcnFacilityDetailPage({ refPathSegment }: MivvuIcnFacilityD
       snapshotEn={catalogEn.snapshot}
       detailKo={detailKo}
       detailEn={detailEn}
+      goodsServicesKo={goodsKo}
+      goodsServicesEn={goodsEn}
+      labeledDevSyntheticCompanion={labeledDevSyntheticCompanion}
     />
   );
 }
