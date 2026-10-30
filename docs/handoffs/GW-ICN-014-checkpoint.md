@@ -35,7 +35,7 @@ Human owner **accepted** GW-ICN-014 after P2 re-verification (direct decision, 2
 
 ## Known test limitation (not fixed in 014)
 
-`MivvuIcnFacilitiesBrowseScreen.test.tsx` **combined run**: **3 FAIL / 3 PASS** — identical to baseline **135712d** (module-owned terminal filter leakage between cases). Each failing case **PASS** when run alone. **Do not** describe the full file or historical 71-test campaign as green.
+`MivvuIcnFacilitiesBrowseScreen.test.tsx` **combined run**: **3 FAIL / 3 PASS** — identical to baseline **135712d** (module-owned terminal filter leakage after `switches to English catalog while preserving terminal filter`). Failing cases: **shows English row without category line**; **shows ambiguous equal hours…**; **renders HTML-shaped source/query text…**. Each **PASS** when run alone. **Do not** describe the full file or historical 71-test campaign as green.
 
 ## Closeout verification (this publication pass)
 
@@ -57,10 +57,10 @@ Prior evidence reused (not re-run at closeout): webpack build, 390px KO + 360px 
 
 | Field | Value |
 | --- | --- |
-| Commit | *(filled after push — see GATEWISE STATUS below)* |
-| Remote | `origin/feat/gw-icn-014-category` |
-| PR base | `feat/gw-icn-013-detail` (013 not merged to `main` at closeout) |
-| PR | *(URL or coordinator handoff below)* |
+| Commit | `22c0cd9c6915cd8adb9b66c5f3960f1a4e7bf3f2` |
+| Remote | `origin/feat/gw-icn-014-category` @ same SHA (verified `git ls-remote`) |
+| PR base | `feat/gw-icn-013-detail` @ `135712d` (PR #8 not merged; remote 013 unchanged) |
+| PR | **Coordinator handoff** — create on `cucu071212/Mivvu` (repo moved from GateWise); see GATEWISE STATUS below |
 
 ## GATEWISE STATUS
 
@@ -78,7 +78,13 @@ Tests and commands actually run:
   npx tsc --noEmit → PASS
   git diff --check → PASS
 Known limitation: MivvuIcnFacilitiesBrowseScreen.test.tsx combined 3 FAIL (inherited)
-Git branch / commit / push state: see publication record above after push
+Git branch / commit / push state: feat/gw-icn-014-category @ 22c0cd9c6915cd8adb9b66c5f3960f1a4e7bf3f2 pushed to origin (verified)
+PR handoff (no gh / no GitHub token in Cursor):
+  base: feat/gw-icn-013-detail
+  head: feat/gw-icn-014-category
+  title: GW-ICN-014: ICN category bottom sheets and hub filters
+  compare: https://github.com/cucu071212/Mivvu/compare/feat/gw-icn-013-detail...feat/gw-icn-014-category
+CI on exact HEAD: not inspected (PR not created from this environment)
 Handoff: docs/handoffs/GW-ICN-014-checkpoint.md
 Decision needed from human owner: merge PR when dependency chain ready (out of scope here)
 ```
