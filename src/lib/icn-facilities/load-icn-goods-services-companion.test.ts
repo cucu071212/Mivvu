@@ -4,6 +4,7 @@ import {
   icnGoodsServicesDevCompanionLoadAllowed,
   loadIcnGoodsServicesCompanion,
 } from "./load-icn-goods-services-companion";
+import { REVIEWED_ICN_GOODS_SERVICES_COMPANION_SHA256 } from "./icn-goods-services-adoption";
 
 describe("loadIcnGoodsServicesCompanion isolation", () => {
   const env = { ...process.env };
@@ -17,10 +18,13 @@ describe("loadIcnGoodsServicesCompanion isolation", () => {
     vi.unstubAllEnvs();
   });
 
-  it("returns null with no companion when the dev flag is unset (shipped default path)", () => {
+  it("loads reviewed companion when the dev flag is unset (default real-data path)", () => {
     delete process.env.ICN_GOODS_SERVICES_DEV_COMPANION;
     assert.equal(icnGoodsServicesDevCompanionLoadAllowed(), false);
-    assert.equal(loadIcnGoodsServicesCompanion(), null);
+    const companion = loadIcnGoodsServicesCompanion();
+    assert.ok(companion);
+    assert.equal(companion?.schemaVersion, 1);
+    assert.equal(companion?.captures.K?.syncIntegrity, "api_total_mismatch");
   });
 
   it("loads labeled synthetic fixture only when flag=1 and runtime is non-production", () => {
@@ -31,20 +35,31 @@ describe("loadIcnGoodsServicesCompanion isolation", () => {
     const companion = loadIcnGoodsServicesCompanion();
     assert.ok(companion);
     assert.equal(companion?.schemaVersion, 1);
+    assert.equal(companion?.captures.K?.recordCount, 1);
   });
 
-  it("blocks synthetic companion in production NODE_ENV even when flag=1", () => {
+  it("loads reviewed companion in production NODE_ENV even when dev flag=1", () => {
     vi.stubEnv("ICN_GOODS_SERVICES_DEV_COMPANION", "1");
     vi.stubEnv("NODE_ENV", "production");
     assert.equal(icnGoodsServicesDevCompanionLoadAllowed(), false);
-    assert.equal(loadIcnGoodsServicesCompanion(), null);
+    const companion = loadIcnGoodsServicesCompanion();
+    assert.ok(companion);
+    assert.equal(companion?.captures.K?.recordCount, 1027);
   });
 
-  it("blocks synthetic companion on Vercel production even when flag=1", () => {
+  it("loads reviewed companion on Vercel production even when dev flag=1", () => {
     vi.stubEnv("ICN_GOODS_SERVICES_DEV_COMPANION", "1");
     vi.stubEnv("NODE_ENV", "development");
     vi.stubEnv("VERCEL_ENV", "production");
     assert.equal(icnGoodsServicesDevCompanionLoadAllowed(), false);
-    assert.equal(loadIcnGoodsServicesCompanion(), null);
+    const companion = loadIcnGoodsServicesCompanion();
+    assert.ok(companion);
+    assert.notEqual(companion?.captures.K?.recordCount, 1);
+  });
+});
+
+describe("loadIcnGoodsServicesCompanion reviewed artifact identity", () => {
+  it("binds to the human-adopted SHA-256 (see adoption tests for byte check)", () => {
+    assert.match(REVIEWED_ICN_GOODS_SERVICES_COMPANION_SHA256, /^[a-f0-9]{64}$/);
   });
 });

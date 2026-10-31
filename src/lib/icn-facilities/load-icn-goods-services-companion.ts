@@ -1,4 +1,13 @@
+import "server-only";
+
 import type { IcnGoodsServicesCompanion } from "@/types/icn-goods-services-companion";
+import {
+  loadAndValidateReviewedGoodsServicesCompanion,
+} from "./icn-goods-services-adoption";
+import {
+  loadIcnFacilitiesEnFixture,
+  loadIcnFacilitiesKoFixture,
+} from "./load-icn-facilities-fixture";
 import { validateIcnGoodsServicesCompanion } from "./icn-goods-services-companion-validate";
 
 /**
@@ -18,16 +27,27 @@ export function icnGoodsServicesDevCompanionLoadAllowed(): boolean {
   return true;
 }
 
-/**
- * Shipped default: no companion artifact (core fixtures unchanged).
- * Labeled dev fixture loads only when {@link icnGoodsServicesDevCompanionLoadAllowed} is true.
- */
-export function loadIcnGoodsServicesCompanion(): IcnGoodsServicesCompanion | null {
-  if (!icnGoodsServicesDevCompanionLoadAllowed()) {
-    return null;
-  }
+function loadDevSyntheticCompanion(): IcnGoodsServicesCompanion | null {
   // eslint-disable-next-line @typescript-eslint/no-require-imports -- dev-only optional fixture
   const raw = require("./__test-fixtures__/icn-goods-services-companion-dev.json") as unknown;
   const validated = validateIcnGoodsServicesCompanion(raw);
   return validated.valid ? validated.companion : null;
+}
+
+function loadReviewedShippedCompanion(): IcnGoodsServicesCompanion | null {
+  const koFixture = loadIcnFacilitiesKoFixture();
+  const enFixture = loadIcnFacilitiesEnFixture();
+  const loaded = loadAndValidateReviewedGoodsServicesCompanion(koFixture, enFixture);
+  return loaded.ok ? loaded.companion : null;
+}
+
+/**
+ * Default: human-adopted reviewed companion (validated + target-bound).
+ * Dev synthetic loads only when {@link icnGoodsServicesDevCompanionLoadAllowed} is true.
+ */
+export function loadIcnGoodsServicesCompanion(): IcnGoodsServicesCompanion | null {
+  if (icnGoodsServicesDevCompanionLoadAllowed()) {
+    return loadDevSyntheticCompanion();
+  }
+  return loadReviewedShippedCompanion();
 }
