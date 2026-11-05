@@ -57,6 +57,25 @@ export type MivvuPreviewMessages = {
   icnDetailDepartureLabel: string;
   icnDetailDutyFreeYes: string;
   icnDetailDutyFreeNo: string;
+  icnSituationTitle: string;
+  icnSituationLead: string;
+  icnSituationKnownHeading: string;
+  icnSituationUnknownHeading: string;
+  icnSituationNotClaimedHeading: string;
+  icnSituationKnownPlaceLine: string;
+  icnSituationKnownLocation: string;
+  icnSituationKnownHours: string;
+  icnSituationKnownDirectoryAd: string;
+  icnSituationKnownDirectoryDuty: string;
+  icnSituationKnownCategory: string;
+  icnSituationUnknownPlaceLine: string;
+  icnSituationUnknownLocation: string;
+  icnSituationUnknownHours: string;
+  icnSituationUnknownHoursAmbiguous: string;
+  icnSituationUnknownDirectoryAd: string;
+  icnSituationUnknownDirectoryDuty: string;
+  icnSituationUnknownCategory: string;
+  icnSituationNotClaimedItems: readonly string[];
   icnGoodsServicesHeading: string;
   icnGoodsServicesKoSourceLabel: string;
   icnGoodsServicesDifferentFieldsNote: string;
@@ -144,6 +163,33 @@ const KO: MivvuPreviewMessages = {
   icnDetailDepartureLabel: "출국",
   icnDetailDutyFreeYes: "면세 구역 표시(목록)",
   icnDetailDutyFreeNo: "일반 구역 표시(목록)",
+  icnSituationTitle: "내 상황에 맞는지",
+  icnSituationLead:
+    "아래는 목록에 기록된 사실과 확인되지 않은 항목, 그리고 이 앱이 알려주지 않는 것을 구분한 안내입니다. 적합성 점수나 ‘이용해도 된다/안 된다’는 판정은 표시하지 않습니다.",
+  icnSituationKnownHeading: "목록에서 확인된 정보",
+  icnSituationUnknownHeading: "목록에 없거나 불분명한 항목",
+  icnSituationNotClaimedHeading: "앱이 알려주지 않는 것",
+  icnSituationKnownPlaceLine: "터미널·층 정보가 공항 목록에 기록되어 있습니다.",
+  icnSituationKnownLocation: "위치 설명 문구가 공항 목록에 기록되어 있습니다.",
+  icnSituationKnownHours: "운영 시간 문구가 공항 목록에 기록되어 있습니다(위 표시와 동일 출처).",
+  icnSituationKnownDirectoryAd: "입국·출국 구분이 공항 목록 메타데이터로 기록되어 있습니다.",
+  icnSituationKnownDirectoryDuty: "면세 구역 표시가 공항 목록 메타데이터로 기록되어 있습니다.",
+  icnSituationKnownCategory: "시설 분류가 공항 목록에 기록되어 있습니다.",
+  icnSituationUnknownPlaceLine: "터미널·층 정보가 이 목록 행에 없습니다.",
+  icnSituationUnknownLocation: "위치 설명이 이 목록 행에 없습니다.",
+  icnSituationUnknownHours: "운영 시간 문구가 이 목록 행에 없습니다.",
+  icnSituationUnknownHoursAmbiguous:
+    "운영 시간 문구는 있으나 동일 시각으로만 기록되어 있어 해석이 어렵습니다.",
+  icnSituationUnknownDirectoryAd: "입국·출국 구분이 이 목록 행에 없습니다.",
+  icnSituationUnknownDirectoryDuty: "면세 구역 표시가 이 목록 행에 없습니다.",
+  icnSituationUnknownCategory: "시설 분류가 이 목록 행에 없습니다.",
+  icnSituationNotClaimedItems: [
+    "지금 영업 중이거나 문을 닫았는지(시계와 비교하지 않음)",
+    "게이트까지 거리·도보 시간·실내 경로·대기 줄",
+    "휠체어·접근성 경로",
+    "보안 구역 출입·탑승객 자격(목록 구분만으로는 알 수 없음)",
+    "탑승 시간 대비 방문 가능 여부나 ‘방문해도 된다’는 판정",
+  ],
   icnGoodsServicesHeading: "상품·서비스 설명",
   icnGoodsServicesKoSourceLabel: "한국어 목록에만 상품·서비스 설명이 있습니다",
   icnGoodsServicesDifferentFieldsNote:
@@ -236,6 +282,34 @@ const EN: MivvuPreviewMessages = {
   icnDetailDepartureLabel: "Departures (directory)",
   icnDetailDutyFreeYes: "Duty-free area flag (listing)",
   icnDetailDutyFreeNo: "Non-duty-free flag (listing)",
+  icnSituationTitle: "Fit for your situation",
+  icnSituationLead:
+    "This section lists what the listing records, what it omits, and what Mivvu does not tell you. Mivvu does not rate trip fit or give a yes/no visit answer.",
+  icnSituationKnownHeading: "From the listing",
+  icnSituationUnknownHeading: "Missing or unclear in the listing",
+  icnSituationNotClaimedHeading: "We do not tell you",
+  icnSituationKnownPlaceLine: "Terminal and floor appear in the airport directory listing.",
+  icnSituationKnownLocation: "A location description appears in the listing.",
+  icnSituationKnownHours:
+    "Hours text appears in the listing (same source as the hours line above).",
+  icnSituationKnownDirectoryAd: "Arrivals/departures directory metadata is recorded for this row.",
+  icnSituationKnownDirectoryDuty: "Duty-free area directory metadata is recorded for this row.",
+  icnSituationKnownCategory: "A facility category appears in the listing.",
+  icnSituationUnknownPlaceLine: "Terminal and floor are not provided on this listing row.",
+  icnSituationUnknownLocation: "No location description is provided on this listing row.",
+  icnSituationUnknownHours: "No hours text is provided on this listing row.",
+  icnSituationUnknownHoursAmbiguous:
+    "Hours text is present but uses identical start and end times, so it is hard to interpret.",
+  icnSituationUnknownDirectoryAd: "No arrivals/departures directory label is provided on this row.",
+  icnSituationUnknownDirectoryDuty: "No duty-free directory flag is provided on this row.",
+  icnSituationUnknownCategory: "No facility category is provided on this listing row.",
+  icnSituationNotClaimedItems: [
+    "Whether it is open or closed now (we do not compare hours to the clock)",
+    "Distance or walk time to a gate, indoor routes, or live queues",
+    "Wheelchair or step-free routing",
+    "Security-zone access or passenger eligibility (directory flags are not access rules)",
+    "Boarding-time feasibility or a yes/no “you can visit” judgment",
+  ],
   icnGoodsServicesHeading: "Listed goods and services",
   icnGoodsServicesKoSourceLabel: "Description available in Korean listing only",
   icnGoodsServicesDifferentFieldsNote:

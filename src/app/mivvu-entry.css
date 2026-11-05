@@ -896,6 +896,42 @@
   color: var(--mivvu-muted);
 }
 
+.mivvu-icn-situation {
+  margin-top: 0.25rem;
+  padding-bottom: 0.5rem;
+}
+
+.mivvu-icn-situation-lead {
+  margin: 0.375rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--mivvu-muted);
+}
+
+.mivvu-icn-situation-group {
+  margin-top: 0.75rem;
+}
+
+.mivvu-icn-situation-group-title {
+  margin: 0 0 0.375rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--mivvu-ink);
+}
+
+.mivvu-icn-situation-list {
+  margin: 0;
+  padding-left: 1.125rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--mivvu-ink);
+}
+
+.mivvu-icn-situation-list li + li {
+  margin-top: 0.25rem;
+}
+
 .mivvu-icn-detail-staged-note {
   margin: 1rem 0 0;
   font-size: 0.75rem;

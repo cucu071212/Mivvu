@@ -9,6 +9,7 @@ import type { IcnFacilityDetailView } from "@/lib/icn-facilities/icn-facility-de
 import type { IcnBrowseCatalogSnapshot } from "@/lib/icn-facilities/icn-browse-view-model";
 import type { IcnGoodsServicesDetailProjection } from "@/types/icn-goods-services-companion";
 import { MivvuIcnGoodsServicesSection } from "@/components/mivvu/MivvuIcnGoodsServicesSection";
+import { MivvuIcnSituationSection } from "@/components/mivvu/MivvuIcnSituationSection";
 import {
   abandonIcnBrowseDetailSessionIfPending,
   consumeBrowseOriginIntent,
@@ -290,6 +291,8 @@ export function MivvuIcnFacilityDetailPageClient({
               locale={locale}
               messages={messages}
             />
+
+            <MivvuIcnSituationSection detail={detail} messages={messages} />
 
             <details className="mivvu-icn-detail-notes">
               <summary>{messages.icnDetailListingNotes}</summary>
