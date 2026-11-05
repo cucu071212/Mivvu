@@ -74,10 +74,11 @@ test("real companion: EN E-origin sourceId 243 expands long description (349 cha
   await expect(toggle).toHaveAttribute("aria-expanded", "false");
   await page.screenshot({ path: "docs/handoffs/GW-ICN-015-adopt-en-long-360px-collapsed.png", fullPage: true });
   await toggle.click();
-  await expect(toggle).toHaveAttribute("aria-expanded", "true");
-  await expect(page.getByRole("button", { name: "Show less", exact: true })).toBeVisible();
+  const showLess = page.getByRole("button", { name: "Show less", exact: true });
+  await expect(showLess).toBeVisible();
+  await expect(showLess).toHaveAttribute("aria-expanded", "true");
   await page.screenshot({ path: "docs/handoffs/GW-ICN-015-adopt-en-long-360px-expanded.png", fullPage: true });
-  await page.getByRole("button", { name: "Show less", exact: true }).click();
+  await showLess.click();
   await expect(page.getByRole("button", { name: "Show more", exact: true })).toHaveAttribute(
     "aria-expanded",
     "false",

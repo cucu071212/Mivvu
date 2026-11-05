@@ -104,6 +104,7 @@ describe("capture-icn-goods-services-catalog pagination identity", () => {
       lang: "K",
       pageSize: 10,
       budget,
+      serviceKey: "test-service-key",
       fetchImpl: async (input) => {
         const url = typeof input === "string" ? input : input instanceof URL ? input.href : input.url;
         const pageNo = Number(new URL(url).searchParams.get("pageNo"));

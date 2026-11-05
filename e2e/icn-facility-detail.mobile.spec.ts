@@ -42,7 +42,7 @@ test("browse card opens detail, back preserves search, KO/EN shows EN copy on de
   await expect(page.getByText("Name available in Korean listing only")).toHaveCount(0);
 
   await page.getByRole("button", { name: "Facility list", exact: true }).click();
-  await expect(page).toHaveURL("/icn");
+  await expect(page).toHaveURL("/icn?q=%25+%EC%95%84%EB%9D%BC%EB%B9%84%EC%B9%B4");
   await expect(input).toHaveValue("% 아라비카");
 });
 
@@ -90,7 +90,12 @@ test("direct detail after unrelated navigation does not reuse browse return", as
   await page.locator(".mivvu-icn-facility-card-link").first().click();
   await expect(page.locator(".mivvu-icn-detail-name")).toContainText("아라비카", { timeout: 45_000 });
   await page.getByRole("button", { name: "시설 목록" }).click();
-  await expect(page).toHaveURL("/icn");
+  await expect(page).toHaveURL("/icn?q=%25+%EC%95%84%EB%9D%BC%EB%B9%84%EC%B9%B4&terminal=P03");
+  await expect(input).toHaveValue("% 아라비카");
+  await expect(page.getByRole("button", { name: "제2여객터미널", exact: true })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
   await page.goto("/flight");
   await page.goto(arabicaDetailHref());
   await expect(page.getByRole("status")).toContainText("목록에서 들어오지 않았습니다");
