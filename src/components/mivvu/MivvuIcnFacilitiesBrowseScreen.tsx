@@ -3,6 +3,7 @@
 import { useEffect, useId, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { MivvuIcnHeader } from "@/components/mivvu/MivvuIcnHeader";
+import { useMivvuIcnSavedHeaderEntry } from "@/components/mivvu/useMivvuIcnSavedHeaderEntry";
 import { MivvuIcnCategoryBottomSheet } from "@/components/mivvu/MivvuIcnCategoryBottomSheet";
 import { useMivvuPreviewLocale } from "@/components/mivvu/MivvuPreviewLocaleProvider";
 import {
@@ -124,6 +125,7 @@ export function MivvuIcnFacilitiesBrowseScreen({
 }: MivvuIcnFacilitiesBrowseScreenProps) {
   const router = useRouter();
   const { locale, messages } = useMivvuPreviewLocale();
+  const savedEntry = useMivvuIcnSavedHeaderEntry(false);
   const searchId = useId();
   const searchHintId = useId();
   const listId = useId();
@@ -257,6 +259,7 @@ export function MivvuIcnFacilitiesBrowseScreen({
             resetIcnBrowseHubFilters();
             router.push(MIVVU_ENTRY_PATH);
           }}
+          savedEntry={savedEntry}
         />
 
         <div className="mivvu-icn-browse-hero">

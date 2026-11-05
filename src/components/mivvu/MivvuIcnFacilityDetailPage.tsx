@@ -75,6 +75,7 @@ export function MivvuIcnFacilityDetailPage({ refPathSegment }: MivvuIcnFacilityD
       detailEn={detailEn}
       goodsServicesKo={goodsKo}
       goodsServicesEn={goodsEn}
+      serializedRef={serialized}
       labeledDevSyntheticCompanion={labeledDevSyntheticCompanion}
     />
   );

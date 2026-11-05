@@ -7,6 +7,21 @@ export const MIVVU_ICN_BROWSE_PATH = "/icn" as const;
 /** ICN facility detail (GW-ICN-013). `[ref]` is a URI-encoded serialized GW-ICN-012 reference. */
 export const MIVVU_ICN_FACILITY_DETAIL_PATH_PREFIX = "/icn/f/" as const;
 
+/** ICN saved facilities list (GW-ICN-016). */
+export const MIVVU_ICN_SAVED_FACILITIES_PATH = "/icn/saved" as const;
+
+/** Versioned local saved-list payload (`localStorage`). */
+export const MIVVU_ICN_SAVED_FACILITIES_STORAGE_KEY = "mivvu.icn.savedFacilities.v1" as const;
+
+/** Saved-list → detail origin intent (one-shot, consumed on detail mount). */
+export const MIVVU_ICN_SAVED_DETAIL_ORIGIN_INTENT_KEY = "mivvu.icn.savedDetailOriginIntent.v1" as const;
+
+/** Active saved-origin detail visit token. */
+export const MIVVU_ICN_ACTIVE_SAVED_DETAIL_VISIT_KEY = "mivvu.icn.activeSavedDetailVisit.v1" as const;
+
+/** Saved-origin detail payload (ref segment only). */
+export const MIVVU_ICN_SAVED_DETAIL_CONTEXT_SESSION_KEY = "mivvu.icn.savedDetailContext.v1" as const;
+
 /** Minimal browse filters for return-from-detail (not GW-ICN-017 URL sync). */
 export const MIVVU_ICN_BROWSE_CONTEXT_SESSION_KEY = "mivvu.icn.browseContext.v1" as const;
 

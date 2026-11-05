@@ -40,6 +40,7 @@ export type MivvuPreviewMessages = {
   icnKoOnlyCategory: string;
   icnDetailBackBrowse: string;
   icnDetailBackList: string;
+  icnDetailBackSaved: string;
   icnDetailHoursDisclaimer: string;
   icnDetailFlagDisclaimer: string;
   icnDetailListingNotes: string;
@@ -64,6 +65,22 @@ export type MivvuPreviewMessages = {
   icnGoodsServicesShowLess: string;
   icnGoodsServicesProvenanceNote: string;
   icnGoodsServicesDevVerificationBanner: string;
+  icnSavedEntry: string;
+  icnSavedTitle: string;
+  icnSavedEmpty: string;
+  icnSavedLocalNote: string;
+  icnSavedBackBrowse: string;
+  icnSave: string;
+  icnSaved: string;
+  icnRemoveSaved: string;
+  icnSaveOk: string;
+  icnSaveRemoved: string;
+  icnSaveFail: string;
+  icnSavedStale: string;
+  icnSavedLastKnownNote: string;
+  icnSavedStorageLoadFail: string;
+  icnSavedExploreCta: string;
+  icnSavedOpenDetail: string;
 };
 
 const KO: MivvuPreviewMessages = {
@@ -107,6 +124,7 @@ const KO: MivvuPreviewMessages = {
   icnKoOnlyCategory: "영어 목록에 이 분류명이 없어 한국어 분류명을 표시합니다",
   icnDetailBackBrowse: "시설 목록",
   icnDetailBackList: "목록으로",
+  icnDetailBackSaved: "저장한 시설",
   icnDetailHoursDisclaimer:
     "스냅샷에 기록된 시간입니다. 지금 영업 중인지는 알 수 없습니다.",
   icnDetailFlagDisclaimer:
@@ -137,6 +155,22 @@ const KO: MivvuPreviewMessages = {
     "공항 공공데이터 목록에 기록된 설명입니다. 번역·실시간 제공·영업 여부를 보장하지 않습니다.",
   icnGoodsServicesDevVerificationBanner:
     "개발 검증 전용 합성 상품·서비스 데이터입니다. 실제 공항 목록·운영 데이터가 아닙니다.",
+  icnSavedEntry: "저장",
+  icnSavedTitle: "저장한 시설",
+  icnSavedEmpty: "저장한 시설이 없습니다. 시설 상세에서 저장할 수 있습니다.",
+  icnSavedLocalNote: "이 기기에만 저장됩니다. 계정이나 다른 기기와 동기화되지 않습니다.",
+  icnSavedBackBrowse: "시설 목록",
+  icnSave: "저장",
+  icnSaved: "저장됨",
+  icnRemoveSaved: "저장에서 제거",
+  icnSaveOk: "저장했습니다.",
+  icnSaveRemoved: "저장 목록에서 제거했습니다.",
+  icnSaveFail: "저장할 수 없습니다. 브라우저 저장 공간을 확인해 주세요.",
+  icnSavedStale: "저장한 시설이 현재 목록에서 확인되지 않습니다.",
+  icnSavedLastKnownNote: "저장할 당시 목록에 표시된 이름·위치입니다. 현재 목록과 다를 수 있습니다.",
+  icnSavedStorageLoadFail: "저장 목록을 불러올 수 없습니다. 브라우저 저장 설정을 확인해 주세요.",
+  icnSavedExploreCta: "시설 목록으로",
+  icnSavedOpenDetail: "상세 확인",
 };
 
 const EN: MivvuPreviewMessages = {
@@ -181,6 +215,7 @@ const EN: MivvuPreviewMessages = {
     "Showing the Korean category label because English is not in the listing",
   icnDetailBackBrowse: "Facility list",
   icnDetailBackList: "Back to list",
+  icnDetailBackSaved: "Saved facilities",
   icnDetailHoursDisclaimer:
     "Hours come from the snapshot text only. We cannot tell if it is open now.",
   icnDetailFlagDisclaimer:
@@ -212,6 +247,22 @@ const EN: MivvuPreviewMessages = {
     "Text recorded in the airport public listing. Not a translation, live menu, or open/closed guarantee.",
   icnGoodsServicesDevVerificationBanner:
     "Development verification only — synthetic goods/services data, not live airport catalog content.",
+  icnSavedEntry: "Saved",
+  icnSavedTitle: "Saved facilities",
+  icnSavedEmpty: "Nothing saved yet. Save a facility from its detail page.",
+  icnSavedLocalNote: "Saved on this device only. No account or cross-device sync.",
+  icnSavedBackBrowse: "Facility list",
+  icnSave: "Save",
+  icnSaved: "Saved",
+  icnRemoveSaved: "Remove from saved",
+  icnSaveOk: "Saved to this device.",
+  icnSaveRemoved: "Removed from saved list.",
+  icnSaveFail: "Could not save. Check browser storage settings.",
+  icnSavedStale: "This saved facility is not in the current listing.",
+  icnSavedLastKnownNote: "Name and location from when you saved. The listing may have changed since then.",
+  icnSavedStorageLoadFail: "Could not load your saved list. Check browser storage settings.",
+  icnSavedExploreCta: "Browse facilities",
+  icnSavedOpenDetail: "View detail",
 };
 
 export function mivvuPreviewMessages(locale: MivvuPreviewLocale): MivvuPreviewMessages {

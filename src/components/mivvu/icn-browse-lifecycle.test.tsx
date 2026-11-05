@@ -22,6 +22,7 @@ const info = {
 };
 const props = {
   refPathSegment: "r",
+  serializedRef: "invalid",
   snapshotKo: info,
   snapshotEn: info,
   detailKo: { kind: "error", status: "invalid_reference" },

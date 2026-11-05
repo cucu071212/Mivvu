@@ -1,8 +1,9 @@
 "use client";
 
-import { useCallback, useLayoutEffect, useEffect, useSyncExternalStore } from "react";
+import { useCallback, useLayoutEffect, useEffect, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { MivvuIcnHeader } from "@/components/mivvu/MivvuIcnHeader";
+import { useMivvuIcnSavedHeaderEntry } from "@/components/mivvu/useMivvuIcnSavedHeaderEntry";
 import { useMivvuPreviewLocale } from "@/components/mivvu/MivvuPreviewLocaleProvider";
 import type { IcnFacilityDetailView } from "@/lib/icn-facilities/icn-facility-detail-present";
 import type { IcnBrowseCatalogSnapshot } from "@/lib/icn-facilities/icn-browse-view-model";
@@ -19,7 +20,27 @@ import {
   subscribeIcnBrowseSession,
   suspendDetailVisitAuthorizationOnCachedDeparture,
 } from "@/lib/icn-facilities/icn-browse-session";
-import { MIVVU_ICN_BROWSE_PATH } from "@/lib/mivvu-entry-routes";
+import {
+  consumeSavedDetailOriginIntent,
+  detailOpenedFromSaved,
+  reattachCommittedSavedOriginVisit,
+  registerActiveSavedDetailVisit,
+  subscribeIcnSavedDetailSession,
+} from "@/lib/icn-facilities/icn-saved-detail-session";
+import {
+  getIcnSavedFacilitiesClientSnapshot,
+  notifyIcnSavedFacilitiesChanged,
+  subscribeIcnSavedFacilities,
+} from "@/lib/icn-facilities/icn-saved-facilities-client-store";
+import {
+  isIcnSavedFacilityStored,
+  toggleIcnSavedFacilityInStorage,
+} from "@/lib/icn-facilities/icn-saved-facilities-persistence";
+import {
+  resolveIcnSavedUserNoticeMessage,
+  type IcnSavedUserNoticeKind,
+} from "@/lib/icn-facilities/icn-saved-user-notice";
+import { MIVVU_ICN_BROWSE_PATH, MIVVU_ICN_SAVED_FACILITIES_PATH } from "@/lib/mivvu-entry-routes";
 
 export type MivvuIcnFacilityDetailPageClientProps = {
   refPathSegment: string;
@@ -29,6 +50,7 @@ export type MivvuIcnFacilityDetailPageClientProps = {
   detailEn: IcnFacilityDetailView;
   goodsServicesKo: IcnGoodsServicesDetailProjection;
   goodsServicesEn: IcnGoodsServicesDetailProjection;
+  serializedRef: string;
   labeledDevSyntheticCompanion?: boolean;
 };
 
@@ -48,8 +70,14 @@ function errorMessage(
   return messages.icnDetailInvalidRef;
 }
 
-function readFromBrowseSnapshot(refPathSegment: string): boolean {
-  return detailOpenedFromBrowse(refPathSegment);
+function readFromSavedSnapshot(refPathSegment: string): boolean {
+  return detailOpenedFromSaved(refPathSegment);
+}
+
+function readIsSaved(serializedRef: string): boolean {
+  const snapshot = getIcnSavedFacilitiesClientSnapshot();
+  if (snapshot.read.status !== "ok") return false;
+  return isIcnSavedFacilityStored(snapshot.items, serializedRef);
 }
 
 export function MivvuIcnFacilityDetailPageClient({
@@ -60,10 +88,16 @@ export function MivvuIcnFacilityDetailPageClient({
   detailEn,
   goodsServicesKo,
   goodsServicesEn,
+  serializedRef,
   labeledDevSyntheticCompanion = false,
 }: MivvuIcnFacilityDetailPageClientProps) {
   const router = useRouter();
   const { locale, messages } = useMivvuPreviewLocale();
+  const savedEntry = useMivvuIcnSavedHeaderEntry(false);
+  const [saveNoticeKind, setSaveNoticeKind] = useState<IcnSavedUserNoticeKind | null>(null);
+  const saveNotice = saveNoticeKind
+    ? resolveIcnSavedUserNoticeMessage(saveNoticeKind, messages)
+    : null;
 
   const detail = locale === "ko" ? detailKo : detailEn;
   const snapshot = locale === "ko" ? snapshotKo : snapshotEn;
@@ -71,7 +105,19 @@ export function MivvuIcnFacilityDetailPageClient({
 
   const fromBrowse = useSyncExternalStore(
     subscribeIcnBrowseSession,
-    () => readFromBrowseSnapshot(refPathSegment),
+    () => detailOpenedFromBrowse(refPathSegment),
+    () => false,
+  );
+
+  const fromSaved = useSyncExternalStore(
+    subscribeIcnSavedDetailSession,
+    () => readFromSavedSnapshot(refPathSegment),
+    () => false,
+  );
+
+  const isSaved = useSyncExternalStore(
+    subscribeIcnSavedFacilities,
+    () => readIsSaved(serializedRef),
     () => false,
   );
 
@@ -83,6 +129,14 @@ export function MivvuIcnFacilityDetailPageClient({
     const replayToken = reattachCommittedBrowseOriginVisit(refPathSegment);
     if (replayToken) {
       return registerActiveDetailVisit(replayToken);
+    }
+    const savedIntent = consumeSavedDetailOriginIntent(refPathSegment);
+    if (savedIntent) {
+      return registerActiveSavedDetailVisit(savedIntent);
+    }
+    const savedReplay = reattachCommittedSavedOriginVisit(refPathSegment);
+    if (savedReplay) {
+      return registerActiveSavedDetailVisit(savedReplay);
     }
     return undefined;
   }, [refPathSegment]);
@@ -115,15 +169,58 @@ export function MivvuIcnFacilityDetailPageClient({
     router.push(MIVVU_ICN_BROWSE_PATH);
   }, [fromBrowse, router]);
 
+  const returnToSavedList = useCallback(() => {
+    router.push(MIVVU_ICN_SAVED_FACILITIES_PATH);
+  }, [router]);
+
+  const handleBack = useCallback(() => {
+    if (fromBrowse) {
+      returnToHub();
+      return;
+    }
+    if (fromSaved) {
+      returnToSavedList();
+      return;
+    }
+    returnToHub();
+  }, [fromBrowse, fromSaved, returnToHub, returnToSavedList]);
+
+  const toggleSave = useCallback(() => {
+    if (detail.kind !== "found") return;
+    const lastKnown = {
+      displayName: detail.displayName,
+      placeLine: detail.placeLine,
+      locale,
+    };
+    const result = toggleIcnSavedFacilityInStorage({
+      serializedRef,
+      savedAtMs: Date.now(),
+      lastKnown,
+    });
+    if (result.status !== "ok" || result.saved === null) {
+      setSaveNoticeKind("failed");
+      return;
+    }
+    notifyIcnSavedFacilitiesChanged();
+    setSaveNoticeKind(result.saved ? "saved" : "removed");
+  }, [detail, locale, serializedRef]);
+
   return (
     <div className="mivvu-entry-airport mivvu-icn-detail">
       <div className="mivvu-entry-airport-scroll">
         <MivvuIcnHeader
-          backLabel={fromBrowse ? messages.icnDetailBackBrowse : messages.icnDetailBackList}
-          onBack={returnToHub}
+          backLabel={
+            fromBrowse
+              ? messages.icnDetailBackBrowse
+              : fromSaved
+                ? messages.icnDetailBackSaved
+                : messages.icnDetailBackList
+          }
+          onBack={handleBack}
+          savedEntry={savedEntry}
         />
 
-        {!fromBrowse ? (
+        {!fromBrowse && !fromSaved ? (
           <p className="mivvu-icn-detail-banner" role="status">
             {messages.icnDetailDirectEntry}
           </p>
@@ -132,7 +229,7 @@ export function MivvuIcnFacilityDetailPageClient({
         {detail.kind === "error" ? (
           <div className="mivvu-icn-detail-error" role="alert">
             <p>{errorMessage(detail, messages)}</p>
-            <button type="button" className="mivvu-icn-detail-list-cta gw-focus-ring" onClick={returnToHub}>
+            <button type="button" className="mivvu-icn-detail-list-cta gw-focus-ring" onClick={handleBack}>
               {messages.icnDetailBackList}
             </button>
           </div>
@@ -160,6 +257,22 @@ export function MivvuIcnFacilityDetailPageClient({
                   </p>
                   <p className="mivvu-icn-detail-hours-note">{messages.icnDetailHoursDisclaimer}</p>
                 </div>
+              ) : null}
+              <button
+                type="button"
+                className="mivvu-icn-save-btn mivvu-icn-save-btn-inline gw-focus-ring"
+                aria-pressed={isSaved}
+                onClick={toggleSave}
+              >
+                {isSaved ? messages.icnSaved : messages.icnSave}
+              </button>
+              {saveNotice ? (
+                <p
+                  className={saveNotice.error ? "mivvu-icn-toast-error" : "mivvu-icn-toast"}
+                  role={saveNotice.error ? "alert" : "status"}
+                >
+                  {saveNotice.text}
+                </p>
               ) : null}
               {detail.categoryLabel ? (
                 <p className="mivvu-icn-facility-category mivvu-icn-detail-category">{detail.categoryLabel}</p>

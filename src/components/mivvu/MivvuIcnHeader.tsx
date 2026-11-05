@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { MivvuWordmark } from "@/components/mivvu/MivvuWordmark";
 import { MivvuLanguageToggle } from "@/components/mivvu/MivvuLanguageToggle";
 
@@ -11,13 +12,21 @@ function BackIcon() {
   );
 }
 
+export type MivvuIcnHeaderSavedEntry = {
+  href: string;
+  label: string;
+  count: number;
+  isCurrentPage: boolean;
+};
+
 export type MivvuIcnHeaderProps = {
   backLabel: string;
   onBack: () => void;
+  savedEntry?: MivvuIcnHeaderSavedEntry;
 };
 
-/** Accepted GW-ICN-019 two-row header (Save entry deferred to GW-ICN-016). */
-export function MivvuIcnHeader({ backLabel, onBack }: MivvuIcnHeaderProps) {
+/** Accepted GW-ICN-019 two-row header with GW-ICN-016 saved entry on row 2. */
+export function MivvuIcnHeader({ backLabel, onBack, savedEntry }: MivvuIcnHeaderProps) {
   return (
     <header className="mivvu-icn-header">
       <div className="mivvu-icn-header-row1">
@@ -28,7 +37,23 @@ export function MivvuIcnHeader({ backLabel, onBack }: MivvuIcnHeaderProps) {
         <MivvuWordmark variant="headerCompact" className="mivvu-wordmark-header-compact" />
       </div>
       <div className="mivvu-icn-header-row2">
-        <span className="mivvu-icn-header-row2-spacer" aria-hidden="true" />
+        {savedEntry ? (
+          <Link
+            href={savedEntry.href}
+            className="mivvu-icn-saved-link gw-focus-ring"
+            aria-current={savedEntry.isCurrentPage ? "page" : undefined}
+          >
+            <span className="mivvu-icn-saved-icon" aria-hidden="true">
+              ★
+            </span>
+            <span>{savedEntry.label}</span>
+            {savedEntry.count > 0 ? (
+              <span className="mivvu-icn-badge-inline">{savedEntry.count}</span>
+            ) : null}
+          </Link>
+        ) : (
+          <span className="mivvu-icn-header-row2-spacer" aria-hidden="true" />
+        )}
         <MivvuLanguageToggle />
       </div>
     </header>
