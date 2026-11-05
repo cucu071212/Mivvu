@@ -136,7 +136,7 @@ Findings **4–5** (double-read optimization, wrapper cleanup) intentionally **n
 
 | Field | Value |
 | --- | --- |
-| Commit | `04265ea8b8a80e7cad25b978e4ac4e1c0c9dd697` |
+| Commit | `570f90606657b92bf6d4e8da844b4e8e592aac06` (product publication; documentation correction follows) |
 | Remote | `origin/feat/gw-icn-016-saved-facilities` @ same SHA (verified `git ls-remote` after push) |
 | PR base (intended) | `codex/gw-icn-015-enrich-data` @ `27ae147` (PR #13 at coordinator check) |
 
@@ -144,4 +144,4 @@ Findings **4–5** (double-read optimization, wrapper cleanup) intentionally **n
 
 - No saved-list size cap (GW-ICN-019 open item deferred).
 - Stale row “open detail” on fully invalid refs shows resolver error UI (honest).
-- Independent Codex review of identity edge cases still pending per implementation plan.
+- Antigravity independently reviewed identity edge cases and re-verified Findings 1–3; no further identity review is pending for GW-ICN-016.
