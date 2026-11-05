@@ -31,6 +31,15 @@ export const MIVVU_ICN_ACTIVE_DETAIL_VISIT_KEY = "mivvu.icn.activeDetailVisit.v1
 /** One-shot browse-card → detail intent (consumed on detail mount). */
 export const MIVVU_ICN_BROWSE_ORIGIN_INTENT_KEY = "mivvu.icn.browseOriginIntent.v1" as const;
 
+/**
+ * GW-ICN-017 shareable browse query keys on `/icn` (see icn-browse-url-state.ts).
+ * Not used on detail or saved routes; locale stays in localStorage.
+ */
+export const ICN_BROWSE_URL_PARAM_QUERY = "q" as const;
+export const ICN_BROWSE_URL_PARAM_TERMINAL = "terminal" as const;
+export const ICN_BROWSE_URL_PARAM_TYPE = "type" as const;
+export const ICN_BROWSE_URL_PARAM_SUBTYPE = "subtype" as const;
+
 /** Legacy preview URLs — kept for bookmarks; pages redirect to canonical routes. */
 export const MIVVU_PREVIEW_ENTRY_PATH = "/preview/mivvu-entry" as const;
 export const MIVVU_PREVIEW_ICN_BROWSE_PATH = "/preview/mivvu-entry/icn" as const;

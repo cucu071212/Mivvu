@@ -17,6 +17,7 @@ import { useMivvuPreviewLocale } from "@/components/mivvu/MivvuPreviewLocaleProv
 import {
   MIVVU_ICN_BROWSE_PATH,
 } from "@/lib/mivvu-entry-routes";
+import { resetIcnBrowseHubFilters } from "@/lib/icn-facilities/icn-browse-hub-filters";
 
 function splitAirportName(name: string): { line1: string; line2: string | null } {
   const international = name.replace(
@@ -98,6 +99,7 @@ export function MivvuAirportSelectionScreen() {
 
   function handleExplore() {
     if (selectedIata === "ICN") {
+      resetIcnBrowseHubFilters();
       router.push(MIVVU_ICN_BROWSE_PATH);
       return;
     }

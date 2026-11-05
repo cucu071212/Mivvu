@@ -37,7 +37,10 @@ import {
   MIVVU_ENTRY_PATH,
 } from "@/lib/mivvu-entry-routes";
 import {
-  clearIcnBrowseSessionContext,
+  suppressIcnBrowseUrlHistorySync,
+} from "@/lib/icn-facilities/icn-browse-url-history-sync-guard";
+import {
+  clearIcnBrowseSessionContextSilently,
   saveIcnBrowseDetailNavigation,
 } from "@/lib/icn-facilities/icn-browse-session";
 
@@ -255,7 +258,8 @@ export function MivvuIcnFacilitiesBrowseScreen({
         <MivvuIcnHeader
           backLabel={messages.icnBack}
           onBack={() => {
-            clearIcnBrowseSessionContext();
+            suppressIcnBrowseUrlHistorySync();
+            clearIcnBrowseSessionContextSilently();
             resetIcnBrowseHubFilters();
             router.push(MIVVU_ENTRY_PATH);
           }}

@@ -1,8 +1,11 @@
 // @vitest-environment jsdom
 import assert from "node:assert/strict";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { afterEach, describe, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, it, vi } from "vitest";
 import { MivvuIcnFacilitiesBrowseScreen } from "@/components/mivvu/MivvuIcnFacilitiesBrowseScreen";
+import { resetIcnBrowseHubModuleStateForTests } from "@/lib/icn-facilities/icn-browse-hub-filters";
+import { resetIcnBrowseUrlHistorySyncGuardForTests } from "@/lib/icn-facilities/icn-browse-url-history-sync-guard";
+import { resetIcnBrowseUrlLocationBootstrapForTests } from "@/lib/icn-facilities/icn-browse-url-location-bootstrap";
 import { MivvuPreviewLocaleProvider } from "@/components/mivvu/MivvuPreviewLocaleProvider";
 import type { IcnBrowseCatalog } from "@/lib/icn-facilities/icn-browse-view-model";
 import {
@@ -107,6 +110,14 @@ function renderBrowse(ko = catalogKo, en = catalogEn) {
 }
 
 describe("MivvuIcnFacilitiesBrowseScreen", () => {
+  beforeEach(() => {
+    sessionStorage.clear();
+    resetIcnBrowseHubModuleStateForTests();
+    resetIcnBrowseUrlLocationBootstrapForTests();
+    resetIcnBrowseUrlHistorySyncGuardForTests();
+    window.history.replaceState({}, "", "/icn");
+  });
+
   afterEach(() => {
     cleanup();
     pushMock.mockReset();

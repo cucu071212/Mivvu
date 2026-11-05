@@ -4,6 +4,11 @@ import {
   readIcnBrowseDetailSession,
   subscribeIcnBrowseSession,
 } from "./icn-browse-session";
+import {
+  ensureIcnBrowseHubLocationBootstrap,
+  invalidateIcnBrowseUrlLocationBootstrapCache,
+  normalizeIcnBrowseUrlToCurrentHubFilters,
+} from "./icn-browse-url-location-bootstrap";
 
 export type IcnBrowseHubFilters = {
   query: string;
@@ -31,6 +36,7 @@ const HUB_FILTERS_CHANGE_EVENT = "mivvu:icn-browse-hub-filters";
 let filtersSnapshot: IcnBrowseHubFilters = { ...DEFAULT_FILTERS };
 let hubFiltersDirtyFromUser = false;
 let hubSessionBridgeRegistered = false;
+let hubSessionBridgeUnsub: (() => void) | null = null;
 let hubRestoreCommitInProgress = false;
 
 function emitHubFiltersChange(): void {
@@ -80,7 +86,7 @@ export function commitScheduledHubRestoreIfIdle(): boolean {
 function ensureHubSessionBridge(): void {
   if (hubSessionBridgeRegistered) return;
   hubSessionBridgeRegistered = true;
-  subscribeIcnBrowseSession(() => {
+  hubSessionBridgeUnsub = subscribeIcnBrowseSession(() => {
     if (hubRestoreCommitInProgress) return;
     if (peekHubRestoreFilters()) {
       commitScheduledHubRestoreIfIdle();
@@ -93,10 +99,20 @@ function ensureHubSessionBridge(): void {
   });
 }
 
+/** Vitest isolation: drop module-scoped hub bridge between cases. */
+export function resetIcnBrowseHubModuleStateForTests(): void {
+  hubSessionBridgeUnsub?.();
+  hubSessionBridgeUnsub = null;
+  hubSessionBridgeRegistered = false;
+  hubRestoreCommitInProgress = false;
+  resetIcnBrowseHubFilters();
+}
+
 /** Reset in-memory hub filters (e.g. leaving ICN to airport selection). */
 export function resetIcnBrowseHubFilters(): void {
   filtersSnapshot = { ...DEFAULT_FILTERS };
   hubFiltersDirtyFromUser = false;
+  invalidateIcnBrowseUrlLocationBootstrapCache();
   emitHubFiltersChange();
 }
 
@@ -105,8 +121,11 @@ export function subscribeIcnBrowseHubFilters(onStoreChange: () => void): () => v
     return () => {};
   }
   ensureHubSessionBridge();
+  ensureIcnBrowseHubLocationBootstrap();
   if (peekHubRestoreFilters()) {
-    commitScheduledHubRestoreIfIdle();
+    if (commitScheduledHubRestoreIfIdle()) {
+      normalizeIcnBrowseUrlToCurrentHubFilters();
+    }
   }
 
   const onHubChange = () => onStoreChange();
@@ -129,6 +148,20 @@ export function getIcnBrowseHubFiltersSnapshot(): IcnBrowseHubFilters {
 
 export function getIcnBrowseHubFiltersServerSnapshot(): IcnBrowseHubFilters {
   return SERVER_SNAPSHOT;
+}
+
+export function isIcnBrowseHubFiltersDefault(filters: IcnBrowseHubFilters): boolean {
+  return (
+    filters.query === DEFAULT_FILTERS.query
+    && filters.terminalFilter === DEFAULT_FILTERS.terminalFilter
+    && filters.categoryLarge === DEFAULT_FILTERS.categoryLarge
+    && filters.categoryMedium === DEFAULT_FILTERS.categoryMedium
+  );
+}
+
+/** Apply filters from URL, restore, or history without marking a user edit. */
+export function replaceIcnBrowseHubFilters(next: IcnBrowseHubFilters): void {
+  publishFilters(next);
 }
 
 export function setIcnBrowseHubQuery(query: string): void {
