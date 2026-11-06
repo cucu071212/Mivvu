@@ -16,8 +16,10 @@ import {
 } from "./icn-facility-reference";
 import {
   ICN_GOODS_SERVICES_LONG_TEXT_COLLAPSE_THRESHOLD,
+  bindValidatedGoodsServicesCompanion,
   projectIcnGoodsServicesForDetail,
 } from "./icn-goods-services-associate";
+import { readReviewedGoodsServicesCompanionRaw } from "./icn-goods-services-adoption";
 import { buildIcnBrowseCatalog } from "./icn-browse-view-model";
 import { buildIcnSearchIndex, searchIcnIndex } from "./icn-facility-search";
 
@@ -307,5 +309,57 @@ describe("projectIcnGoodsServicesForDetail", () => {
     const searchEn = searchIcnIndex(buildIcnSearchIndex(catalogEn.items, "en"), "ARABICA");
     assert.ok(searchKo.length > 0);
     assert.ok(searchEn.length > 0);
+  });
+
+  it("withholds bound companion enrichment when KO fixture meta changes after binding", () => {
+    const ko = structuredClone(koFixture);
+    const en = structuredClone(enFixture);
+    const catalogsMut = buildIcnFacilityReferenceCatalogs(ko, en);
+    const refMut = createIcnFacilityRef(ko.facilities.find((r) => r.sourceId === "3289")!, catalogsMut);
+    const serializedMut = serializeIcnFacilityRef(refMut);
+    const resolutionMut = resolveIcnFacilityRef(serializedMut, catalogsMut, "K");
+    assert.equal(resolutionMut.status, "found");
+    const raw = readReviewedGoodsServicesCompanionRaw();
+    const bound = bindValidatedGoodsServicesCompanion(raw, ko, en);
+    assert.ok(bound);
+    ko.meta.retrievedAt = "2026-11-05T00:00:00.000Z";
+    const out = projectIcnGoodsServicesForDetail({
+      rawCompanion: bound,
+      koFixture: ko,
+      enFixture: en,
+      referenceCatalogs: catalogsMut,
+      serializedRef: serializedMut,
+      previewLocale: "ko",
+      resolution: resolutionMut,
+      koSourceLabel: "Korean listing only",
+    });
+    assert.equal(out.sectionVisible, false);
+    assert.equal(out.internal?.unavailable?.reason, "artifact_mismatch");
+  });
+
+  it("withholds bound companion enrichment when EN fixture meta changes after binding", () => {
+    const ko = structuredClone(koFixture);
+    const en = structuredClone(enFixture);
+    const catalogsMut = buildIcnFacilityReferenceCatalogs(ko, en);
+    const refMut = createIcnFacilityRef(ko.facilities.find((r) => r.sourceId === "3289")!, catalogsMut);
+    const serializedMut = serializeIcnFacilityRef(refMut);
+    const resolutionMut = resolveIcnFacilityRef(serializedMut, catalogsMut, "K");
+    assert.equal(resolutionMut.status, "found");
+    const raw = readReviewedGoodsServicesCompanionRaw();
+    const bound = bindValidatedGoodsServicesCompanion(raw, ko, en);
+    assert.ok(bound);
+    en.meta.retrievedAt = "2026-11-05T00:00:00.000Z";
+    const out = projectIcnGoodsServicesForDetail({
+      rawCompanion: bound,
+      koFixture: ko,
+      enFixture: en,
+      referenceCatalogs: catalogsMut,
+      serializedRef: serializedMut,
+      previewLocale: "ko",
+      resolution: resolutionMut,
+      koSourceLabel: "Korean listing only",
+    });
+    assert.equal(out.sectionVisible, false);
+    assert.equal(out.internal?.unavailable?.reason, "artifact_mismatch");
   });
 });

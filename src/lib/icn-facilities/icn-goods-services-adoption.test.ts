@@ -23,7 +23,7 @@ import {
   serializeIcnFacilityRef,
 } from "./icn-facility-reference";
 import { buildIcnFacilityReferenceCatalogs } from "./icn-browse-detail-refs";
-import { projectIcnGoodsServicesForDetail } from "./icn-goods-services-associate";
+import { projectIcnGoodsServicesForDetail, bindValidatedGoodsServicesCompanion } from "./icn-goods-services-associate";
 import { validateIcnGoodsServicesCompanion } from "./icn-goods-services-companion-validate";
 import { companionTargetDigestsMatch } from "./icn-goods-services-target-digest";
 
@@ -120,6 +120,48 @@ describe("reviewed goods/services companion adoption", () => {
     assert.equal(validated.valid, true);
     if (!validated.valid) return;
     assert.equal(companionTargetDigestsMatch(validated.companion, ko, en), true);
+    const tamperedCounts = measureGoodsServicesAdoptionCoverage(tampered);
+    assert.equal(tamperedCounts.rawWeightedKo.visible, 0);
+    assert.equal(tamperedCounts.rawWeightedEn.visible, 0);
+    assert.equal(tamperedCounts.uniqueReferenceKo.visible, 0);
+    assert.equal(tamperedCounts.crossLocaleUnverifiedEn, 0);
+  });
+
+  it("measureGoodsServicesAdoptionCoverage returns zero visible when capture timestamps fail validation", () => {
+    const loaded = loadAndValidateReviewedGoodsServicesCompanion(
+      loadIcnFacilitiesKoFixture(),
+      loadIcnFacilitiesEnFixture(),
+    );
+    assert.equal(loaded.ok, true);
+    if (!loaded.ok) return;
+    const invalid = {
+      ...loaded.companion,
+      captures: {
+        ...loaded.companion.captures,
+        K: loaded.companion.captures.K
+          ? { ...loaded.companion.captures.K, completedAt: "INVALID-PROVENANCE" }
+          : null,
+      },
+    };
+    const counts = measureGoodsServicesAdoptionCoverage(invalid);
+    assert.equal(counts.rawWeightedKo.visible, 0);
+    assert.equal(counts.rawWeightedEn.visible, 0);
+  });
+
+  it("measureGoodsServicesAdoptionCoverage rejects in-place digest mutation after bind", () => {
+    const ko = loadIcnFacilitiesKoFixture();
+    const en = loadIcnFacilitiesEnFixture();
+    const loaded = loadAndValidateReviewedGoodsServicesCompanion(ko, en);
+    assert.equal(loaded.ok, true);
+    if (!loaded.ok) return;
+    const companion = loaded.companion;
+    const bound = bindValidatedGoodsServicesCompanion(companion, ko, en);
+    assert.ok(bound);
+    assert.equal(Object.isFrozen(bound), true);
+    companion.targetCoreDigests.K = "deadbeef";
+    const afterMutation = measureGoodsServicesAdoptionCoverage(companion);
+    assert.equal(afterMutation.rawWeightedKo.visible, 0);
+    assert.equal(afterMutation.rawWeightedEn.visible, 0);
   });
 });
 

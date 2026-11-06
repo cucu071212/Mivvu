@@ -2,14 +2,21 @@ import { readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
 import path from "node:path";
 import type { IcnFacilitiesFixture } from "@/types/icn-facility-browse";
-import type { IcnGoodsServicesCompanion } from "@/types/icn-goods-services-companion";
+import type {
+  IcnGoodsServicesCompanion,
+  IcnGoodsServicesDetailProjection,
+} from "@/types/icn-goods-services-companion";
 import {
   createIcnFacilityRef,
   resolveIcnFacilityRef,
   serializeIcnFacilityRef,
+  type IcnFacilityReferenceCatalogs,
 } from "./icn-facility-reference";
 import { buildIcnFacilityReferenceCatalogs } from "./icn-browse-detail-refs";
-import { projectIcnGoodsServicesForDetail } from "./icn-goods-services-associate";
+import {
+  bindValidatedGoodsServicesCompanion,
+  projectIcnGoodsServicesForDetail,
+} from "./icn-goods-services-associate";
 import { validateIcnGoodsServicesCompanion } from "./icn-goods-services-companion-validate";
 import { companionTargetDigestsMatch } from "./icn-goods-services-target-digest";
 import { icnFacilityContentFingerprint } from "./icn-snapshot-matching";
@@ -74,49 +81,68 @@ export type GoodsServicesAdoptionCoverageCounts = {
   crossLocaleUnverifiedEn: number;
 };
 
-function countForRecords(
+type CoverageBucket = {
+  visible: number;
+  empty: number;
+  noExact: number;
+  koFallback: number;
+  crossLocale: number;
+};
+
+function emptyBucket(): CoverageBucket {
+  return { visible: 0, empty: 0, noExact: 0, koFallback: 0, crossLocale: 0 };
+}
+
+function accumulate(bucket: CoverageBucket, out: IcnGoodsServicesDetailProjection): void {
+  if (out.sectionVisible) {
+    bucket.visible += 1;
+    if (out.available?.fallbackUsed) bucket.koFallback += 1;
+    return;
+  }
+  const reason = out.internal?.unavailable?.reason;
+  if (reason === "empty") bucket.empty += 1;
+  else if (reason === "no_exact_observation") bucket.noExact += 1;
+  else if (reason === "cross_locale_association_unverified") bucket.crossLocale += 1;
+}
+
+function zeroCoverageCounts(): GoodsServicesAdoptionCoverageCounts {
+  return {
+    rawWeightedKo: { visible: 0, empty: 0, noExact: 0 },
+    rawWeightedEn: { visible: 0, empty: 0, noExact: 0, koFallback: 0 },
+    uniqueReferenceKo: { visible: 0, empty: 0, noExact: 0 },
+    crossLocaleUnverifiedEn: 0,
+  };
+}
+
+function projectForCoverage(
   companion: IcnGoodsServicesCompanion,
   koFixture: IcnFacilitiesFixture,
   enFixture: IcnFacilitiesFixture,
-  records: IcnFacilitiesFixture["facilities"],
+  catalogs: IcnFacilityReferenceCatalogs,
+  serialized: string,
   previewLocale: "ko" | "en",
-): { visible: number; empty: number; noExact: number; koFallback: number; crossLocale: number } {
-  const catalogs = buildIcnFacilityReferenceCatalogs(koFixture, enFixture);
-  const koSourceLabel = "Korean listing only";
-  let visible = 0;
-  let empty = 0;
-  let noExact = 0;
-  let koFallback = 0;
-  let crossLocale = 0;
-  for (const record of records) {
-    const ref = createIcnFacilityRef(record, catalogs);
-    const serialized = serializeIcnFacilityRef(ref);
-    const resolution = resolveIcnFacilityRef(
-      serialized,
-      catalogs,
-      previewLocale === "ko" ? "K" : "E",
-    );
-    const out = projectIcnGoodsServicesForDetail({
-      rawCompanion: companion,
-      koFixture,
-      enFixture,
-      referenceCatalogs: catalogs,
-      serializedRef: serialized,
-      previewLocale,
-      resolution,
-      koSourceLabel,
-    });
-    if (out.sectionVisible) {
-      visible += 1;
-      if (out.available?.fallbackUsed) koFallback += 1;
-    } else {
-      const reason = out.internal?.unavailable?.reason;
-      if (reason === "empty") empty += 1;
-      else if (reason === "no_exact_observation") noExact += 1;
-      else if (reason === "cross_locale_association_unverified") crossLocale += 1;
-    }
-  }
-  return { visible, empty, noExact, koFallback, crossLocale };
+  cache: Map<string, IcnGoodsServicesDetailProjection>,
+): IcnGoodsServicesDetailProjection {
+  const key = `${previewLocale}:${serialized}`;
+  const cached = cache.get(key);
+  if (cached) return cached;
+  const resolution = resolveIcnFacilityRef(
+    serialized,
+    catalogs,
+    previewLocale === "ko" ? "K" : "E",
+  );
+  const out = projectIcnGoodsServicesForDetail({
+    rawCompanion: companion,
+    koFixture,
+    enFixture,
+    referenceCatalogs: catalogs,
+    serializedRef: serialized,
+    previewLocale,
+    resolution,
+    koSourceLabel: "Korean listing only",
+  });
+  cache.set(key, out);
+  return out;
 }
 
 export function uniqueRepresentativeRecords(
@@ -138,16 +164,67 @@ export function measureGoodsServicesAdoptionCoverage(
 ): GoodsServicesAdoptionCoverageCounts {
   const koFixture = loadIcnFacilitiesKoFixture();
   const enFixture = loadIcnFacilitiesEnFixture();
-  const koRaw = countForRecords(companion, koFixture, enFixture, koFixture.facilities, "ko");
-  const enRaw = countForRecords(companion, koFixture, enFixture, enFixture.facilities, "en");
-  const uniqueKo = countForRecords(
-    companion,
-    koFixture,
-    enFixture,
-    uniqueRepresentativeRecords(koFixture),
-    "ko",
-  );
-  const crossLocaleEn = countForRecords(companion, koFixture, enFixture, koFixture.facilities, "en");
+  const boundCompanion = bindValidatedGoodsServicesCompanion(companion, koFixture, enFixture);
+  if (!boundCompanion) {
+    return zeroCoverageCounts();
+  }
+  const catalogs = buildIcnFacilityReferenceCatalogs(koFixture, enFixture);
+  const projectionCache = new Map<string, IcnGoodsServicesDetailProjection>();
+
+  const koRaw = emptyBucket();
+  const uniqueReferenceKo = emptyBucket();
+  const seenKoFingerprint = new Set<string>();
+  const koSerializedRefs: string[] = [];
+
+  for (const record of koFixture.facilities) {
+    const serialized = serializeIcnFacilityRef(createIcnFacilityRef(record, catalogs));
+    koSerializedRefs.push(serialized);
+    const out = projectForCoverage(
+      boundCompanion,
+      koFixture,
+      enFixture,
+      catalogs,
+      serialized,
+      "ko",
+      projectionCache,
+    );
+    accumulate(koRaw, out);
+    const fingerprint = icnFacilityContentFingerprint(record);
+    if (!seenKoFingerprint.has(fingerprint)) {
+      seenKoFingerprint.add(fingerprint);
+      accumulate(uniqueReferenceKo, out);
+    }
+  }
+
+  const enRaw = emptyBucket();
+  for (const record of enFixture.facilities) {
+    const serialized = serializeIcnFacilityRef(createIcnFacilityRef(record, catalogs));
+    const out = projectForCoverage(
+      boundCompanion,
+      koFixture,
+      enFixture,
+      catalogs,
+      serialized,
+      "en",
+      projectionCache,
+    );
+    accumulate(enRaw, out);
+  }
+
+  const crossLocale = emptyBucket();
+  for (const serialized of koSerializedRefs) {
+    const out = projectForCoverage(
+      boundCompanion,
+      koFixture,
+      enFixture,
+      catalogs,
+      serialized,
+      "en",
+      projectionCache,
+    );
+    accumulate(crossLocale, out);
+  }
+
   return {
     rawWeightedKo: {
       visible: koRaw.visible,
@@ -161,10 +238,10 @@ export function measureGoodsServicesAdoptionCoverage(
       koFallback: enRaw.koFallback,
     },
     uniqueReferenceKo: {
-      visible: uniqueKo.visible,
-      empty: uniqueKo.empty,
-      noExact: uniqueKo.noExact,
+      visible: uniqueReferenceKo.visible,
+      empty: uniqueReferenceKo.empty,
+      noExact: uniqueReferenceKo.noExact,
     },
-    crossLocaleUnverifiedEn: crossLocaleEn.crossLocale,
+    crossLocaleUnverifiedEn: crossLocale.crossLocale,
   };
 }

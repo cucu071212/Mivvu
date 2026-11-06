@@ -25,6 +25,43 @@ import {
 
 export const ICN_GOODS_SERVICES_LONG_TEXT_COLLAPSE_THRESHOLD = 280;
 
+const verifiedCompanionBindings = new WeakMap<
+  IcnGoodsServicesCompanion,
+  { koFixture: IcnFacilitiesFixture; enFixture: IcnFacilitiesFixture }
+>();
+
+function deepFreeze<T>(value: T): T {
+  if (value && typeof value === "object" && !Object.isFrozen(value)) {
+    Object.freeze(value);
+    for (const child of Object.values(value as Record<string, unknown>)) {
+      deepFreeze(child);
+    }
+  }
+  return value;
+}
+
+/** Validate companion once and register a frozen owned copy for fast detail projection on the same fixtures. */
+export function bindValidatedGoodsServicesCompanion(
+  rawCompanion: unknown,
+  koFixture: IcnFacilitiesFixture,
+  enFixture: IcnFacilitiesFixture,
+): IcnGoodsServicesCompanion | null {
+  if (classifyIcnGoodsServicesCompanionSchema(rawCompanion) !== "accepted_v1") {
+    return null;
+  }
+  const validated = validateIcnGoodsServicesCompanion(rawCompanion);
+  if (!validated.valid) {
+    return null;
+  }
+  if (!companionTargetDigestsMatch(validated.companion, koFixture, enFixture)) {
+    return null;
+  }
+  const owned = structuredClone(validated.companion);
+  const frozen = deepFreeze(owned);
+  verifiedCompanionBindings.set(frozen, { koFixture, enFixture });
+  return frozen;
+}
+
 type SourceFieldKey = "facilityitem" | "goods" | "GOODS";
 
 type AssociationSuccess =
@@ -247,25 +284,37 @@ export function projectIcnGoodsServicesForDetail(params: {
     return { sectionVisible: false };
   }
 
-  if (params.rawCompanion === null || params.rawCompanion === undefined) {
+  let companion: IcnGoodsServicesCompanion;
+  const raw = params.rawCompanion;
+  const binding =
+    raw !== null && typeof raw === "object"
+      ? verifiedCompanionBindings.get(raw as IcnGoodsServicesCompanion)
+      : undefined;
+  if (binding && binding.koFixture === params.koFixture && binding.enFixture === params.enFixture) {
+    const boundCompanion = raw as IcnGoodsServicesCompanion;
+    if (!companionTargetDigestsMatch(boundCompanion, params.koFixture, params.enFixture)) {
+      return hidden("artifact_mismatch", requestedLanguage);
+    }
+    companion = boundCompanion;
+  } else if (params.rawCompanion === null || params.rawCompanion === undefined) {
     return hidden("not_captured", requestedLanguage);
-  }
+  } else {
+    const schemaOutcome = classifyIcnGoodsServicesCompanionSchema(params.rawCompanion);
+    if (schemaOutcome === "unsupported_version") {
+      return hidden("unsupported_version", requestedLanguage);
+    }
+    if (schemaOutcome !== "accepted_v1") {
+      return hidden("invalid_artifact", requestedLanguage);
+    }
 
-  const schemaOutcome = classifyIcnGoodsServicesCompanionSchema(params.rawCompanion);
-  if (schemaOutcome === "unsupported_version") {
-    return hidden("unsupported_version", requestedLanguage);
-  }
-  if (schemaOutcome !== "accepted_v1") {
-    return hidden("invalid_artifact", requestedLanguage);
-  }
-
-  const validated = validateIcnGoodsServicesCompanion(params.rawCompanion);
-  if (!validated.valid) {
-    return hidden("invalid_artifact", requestedLanguage);
-  }
-  const companion = validated.companion;
-  if (!companionTargetDigestsMatch(companion, params.koFixture, params.enFixture)) {
-    return hidden("artifact_mismatch", requestedLanguage);
+    const validated = validateIcnGoodsServicesCompanion(params.rawCompanion);
+    if (!validated.valid) {
+      return hidden("invalid_artifact", requestedLanguage);
+    }
+    companion = validated.companion;
+    if (!companionTargetDigestsMatch(companion, params.koFixture, params.enFixture)) {
+      return hidden("artifact_mismatch", requestedLanguage);
+    }
   }
 
   const parsedRef = parseIcnFacilityRef(params.serializedRef);
