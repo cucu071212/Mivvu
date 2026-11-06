@@ -61,20 +61,37 @@ Before work, read the current:
 
 ### ChatGPT coordinator
 
-- Clarifies requirements, drafts assignments and execution prompts, reviews architecture and evidence
+- **In scope:** project status synthesis, decision support, task scoping, and **English execution prompts** for separate **Cursor**, **Antigravity**, and **Codex (app)** sessions
+- Clarifies requirements, drafts assignments, reviews architecture and evidence
 - Coordinator output is **proposal** until reflected in `PLAN.md` / `docs/IMPLEMENTATION_PLAN.md` or confirmed by direct human decision
+
+#### ChatGPT coordinator — execution boundary
+
+The rules in this subsection apply **only to the ChatGPT coordinator**. They do **not** limit **Cursor**, the **Codex app**, or **Antigravity** when those environments receive an **explicit human task assignment** with matching permissions.
+
+- **Default mode is handoff, not execution.** Unless the human owner explicitly assigns a **specific action** to the coordinator, the coordinator must **not** edit repository files, mutate GitHub state (including PR create/update or merge), deploy, run implementation or verification tools on product code, or spawn an internal subagent to do that work.
+- **Delegation language is not permission.** Phrases such as “Cursor/Codex/Antigravity 시켜,” “맡겨,” or “have Codex review” mean: draft an **English handoff prompt** for the human owner to paste into the correct agent session. They do **not** authorize the coordinator to execute the work or launch an internal subagent.
+- **Conversation continuations are not permission.** A pasted agent report, “응/그래,” or “what next?” is **not** authorization to call tools, edit files, mutate GitHub, or launch an agent. Respond with status synthesis and/or the next agent prompt.
+- **One explicit assignment per distinct action.** GitHub PR creation or updates, merge, deployment, file edits, and tool use are **separate** actions. Authorization for one does **not** imply authorization for another.
+- **English prompts for execution agents** must include task ID, scope, applicable skills, verification commands, permissions, and stop conditions (see [Coordinator prompting and task dispatch](#coordinator-prompting-and-task-dispatch)).
+- **Evidence labeling:** When summarizing or reviewing reports, distinguish **fresh verification**, **reused evidence** (with source branch/SHA/date), **unverified claims**, and **human release decisions**.
+- **Instruction record, not enforcement:** This file states the human owner’s operating model. It does **not** technically disable coordinator-connected tools; coordinators and humans are expected to follow it voluntarily.
 
 ### Cursor (primary development and integration)
 
-- Default owner: UI, ordinary feature work, application integration, preview preparation
+- Default owner: UI, implementation, fixes, verification, **documentation**, application integration, and preview preparation
 - Default integration owner for wiring contracts into the app unless a task assigns otherwise
-- May merge to `main` and deploy **only when the task explicitly authorizes it**
+- **Authorized publication** (commit, push, documentation PR) **only when the task explicitly authorizes it**; may merge to `main` and deploy **only when the task explicitly authorizes that too**
 - Typical paths: `src/app/*`, `src/components/*`, integration, `package.json`, deployment config
 
-### Codex (specialist)
+### Antigravity (optional review)
+
+- Optional routine review when the human owner requests it; **not required** on every task
+
+### Codex (specialist — separate Codex app)
 
 - **Difficult engineering:** implementation, analysis, algorithms, data pipelines, adapters, security review, debugging, substantial features
-- **Independent adversarial verification** of consequential changes (tests, red-team expectations, regression analysis) when assigned
+- **Independent adversarial / final verification** of consequential changes when explicitly assigned (tests, red-team expectations, regression analysis)
 - **Not limited to QA** — may own full feature implementation when the task assigns it (including UI or backend)
 - When Codex implements a **consequential** change, the task should name **another reviewer** (human owner or Cursor) for integration review
 - Uses feature branches; does not merge to `main` unless the task authorizes
@@ -96,6 +113,7 @@ These rules help **agents audit** coordinator-generated prompts. They apply to h
 7. **Review incoming evidence** (STATUS reports, CI, QA) before creating another assignment; avoid redundant tasks or parallel work without clear boundaries.
 8. **Skills:** Name relevant skills; require honest reporting if a skill is unavailable or not used.
 9. **Language:** Explain the assignment to the **human owner in Korean**; write the **agent execution prompt in English**.
+10. **Coordinator default:** Treat coordinator output as prompts and status for the human owner unless a task **explicitly assigns** a named coordinator action (see [ChatGPT coordinator — execution boundary](#chatgpt-coordinator--execution-boundary)).
 
 Agents should refuse or clarify prompts that conflict with `PLAN.md`, lack execution permission, or omit verification for consequential changes.
 
