@@ -174,21 +174,21 @@ export function MivvuIcnFacilitiesBrowseScreen({
     [catalog.items, query, terminalFilter, locale, categoryFilter],
   );
 
-  // 기본(검색·터미널·카테고리·서브타입 필터 없음) 목록만 대분류 라운드 순서로 섞는다.
+  // 검색·카테고리·서브타입이 비활성일 때(터미널만 있어도) 대분류 라운드 순서로 섞는다.
   const listed = useMemo(() => {
-    // 활성 검색/필터가 있으면 기존 filter 결과 순서를 그대로 유지한다.
+    // 검색어·대분류·서브타입이 활성이면 기존 filter 결과 순서를 그대로 유지한다.
     if (
       !shouldApplyIcnDefaultCategoryRoundOrder({
-        query,
-        terminalFilter,
-        categoryFilter,
+        query, // 허브 검색 입력값이다.
+        terminalFilter, // 터미널만 선택된 경우에도 라운드 게이트는 true가 될 수 있다.
+        categoryFilter, // 대분류·중분류 활성 여부를 게이트에 넘긴다.
       })
     ) {
-      return filtered;
+      return filtered; // 검색/카테고리/서브타입 활성 시 필터 순서를 보존한다.
     }
-    // 대분류마다 라운드당 최대 2개를 가져와 AED 같은 단일 카테고리 독점을 완화한다.
-    return orderIcnBrowseItemsByTopLevelCategoryRounds(filtered);
-  }, [categoryFilter, filtered, query, terminalFilter]);
+    // 터미널 필터 이후 결과 위에서 대분류마다 라운드당 최대 2개를 가져와 독점을 완화한다.
+    return orderIcnBrowseItemsByTopLevelCategoryRounds(filtered); // filtered는 이미 터미널 등으로 좁혀진 목록이다.
+  }, [categoryFilter, filtered, query, terminalFilter]); // 허브 상태와 필터 결과가 바뀌면 재계산한다.
 
   const activeTopLevel = taxonomy.topLevel.find((row) => row.key === categoryLarge);
   const subcategoryOptions = useMemo(

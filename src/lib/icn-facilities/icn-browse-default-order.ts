@@ -11,25 +11,24 @@ import type { IcnBrowseListItem } from "./icn-browse-view-model"; // 브라우�
 export const ICN_BROWSE_DEFAULT_CATEGORY_ROUND_SIZE = 2; // 제품이 승인한 라운드당 대분류 노출 개수다.
 
 /**
- * 검색·터미널·대분류·서브타입이 모두 비활성일 때만 true를 반환한다.
+ * 유효 검색어가 비어 있고 대분류·서브타입이 비활성일 때 true를 반환한다.
+ * 터미널만 선택된 경우에도 라운드 순서를 적용한다(필터 결과 위에 재정렬).
  * 공백만 있는 검색어는 검색 인덱스와 같이 빈 쿼리로 취급한다.
  */
 export function shouldApplyIcnDefaultCategoryRoundOrder(args: {
   query: string; // 사용자가 입력한 원본 검색어 문자열이다.
-  terminalFilter: string; // 터미널 칩 값("all" 또는 P01 등)이다.
+  terminalFilter: string; // 터미널 칩 값("all"/P01 등). 게이트에서는 무시하며 호출 호환용이다.
   categoryFilter: IcnBrowseCategoryFilter; // 대분류·중분류 허브 필터 상태다.
 }): boolean {
+  // 터미널 인자는 화면 호출 시그니처 호환을 위해 받되, 터미널 단독 선택은 라운드를 막지 않는다.
+  void args.terminalFilter; // 의도적으로 미사용 — 터미널 필터 여부와 무관하게 아래 조건만 본다.
   // 정규화된 검색어가 남아 있으면 기본 라운드 순서를 적용하지 않는다.
   if (normalizeIcnSearchText(args.query)) return false; // normalizeIcnSearchText는 폭·대소문자·공백을 접는다.
-  // 터미널 필터가 켜져 있으면 기존 필터 순서를 유지한다.
-  if (args.terminalFilter !== "all" && args.terminalFilter !== ICN_BROWSE_CATEGORY_ALL) {
-    return false; // "all"이 아니면 터미널 필터가 활성이다.
-  }
   // 대분류 필터가 켜져 있으면 라운드 순서를 건너뛴다.
   if (args.categoryFilter.categoryLarge !== ICN_BROWSE_CATEGORY_ALL) return false; // 대분류가 all이 아니면 활성이다.
   // 서브타입(중분류) 필터가 켜져 있어도 라운드 순서를 건너뛴다.
   if (args.categoryFilter.categoryMedium !== ICN_BROWSE_CATEGORY_ALL) return false; // 중분류가 all이 아니면 활성이다.
-  // 검색과 필터가 모두 비어 있으므로 기본 라운드 순서를 적용한다.
+  // 검색·카테고리·서브타입이 비활성이므로(터미널 유무와 무관) 라운드 순서를 적용한다.
   return true; // 호출자는 이 값이 true일 때만 order 함수를 호출한다.
 }
 
