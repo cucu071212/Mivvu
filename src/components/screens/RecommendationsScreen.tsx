@@ -4,9 +4,12 @@ import Link from "next/link";
 import { AmenityCard } from "@/components/AmenityCard";
 import { WhatIfSimulator } from "@/components/WhatIfSimulator";
 import { useGateWiseSession } from "@/context/gatewise-session";
+import { useSfoDemoAppHref } from "@/components/useSfoDemoAppHref";
 
 export function RecommendationsScreen() {
   const session = useGateWiseSession();
+  const flightHref = useSfoDemoAppHref("/flight");
+  const exploreHref = useSfoDemoAppHref("/explore");
 
   return (
     <div className="flex flex-col gap-6">
@@ -26,7 +29,7 @@ export function RecommendationsScreen() {
         <p className="text-xs text-muted-foreground">
           Baseline: {session.minutesInput} min · Buffer: {session.bufferInput}{" "}
           min · Demo: {session.demoEstimatesEnabled ? "on" : "off"}.{" "}
-          <Link href="/flight" className="font-medium underline">
+          <Link href={flightHref} className="font-medium underline">
             Edit on Flight
           </Link>
         </p>
@@ -54,7 +57,7 @@ export function RecommendationsScreen() {
             role="alert"
           >
             Fix flight context on{" "}
-            <Link href="/flight" className="font-semibold underline">
+            <Link href={flightHref} className="font-semibold underline">
               Flight
             </Link>{" "}
             to see recommendations.
@@ -70,7 +73,7 @@ export function RecommendationsScreen() {
           >
             Recommendations are paused until you restore your last manual minutes
             after the countdown stopped unexpectedly.{" "}
-            <Link href="/flight" className="font-semibold underline">
+            <Link href={flightHref} className="font-semibold underline">
               Restore on Flight
             </Link>
           </p>
@@ -96,7 +99,7 @@ export function RecommendationsScreen() {
         session.recommendations.length === 0 ? (
           <p className="gw-surface-card p-4 text-sm text-muted-foreground">
             No places match your filters. Adjust search on{" "}
-            <Link href="/explore" className="font-medium underline">
+            <Link href={exploreHref} className="font-medium underline">
               Explore
             </Link>
             .

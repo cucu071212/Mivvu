@@ -12,13 +12,15 @@ import { BoardingCountdownControls } from "@/components/BoardingCountdownControl
 import { PersonalizedTimeControls } from "@/components/PersonalizedTimeControls";
 import { useGateWiseSession } from "@/context/gatewise-session";
 import { MIVVU_ENTRY_PATH } from "@/lib/mivvu-entry-routes";
+import { stripSfoDemoHarnessPrefix } from "@/lib/sfo-demo-harness";
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname() || "/";
+  const logicalPath = stripSfoDemoHarnessPrefix(pathname);
   const router = useRouter();
   const session = useGateWiseSession();
-  const onFlight = pathname === "/flight";
-  const onResults = pathname === "/recommendations";
+  const onFlight = logicalPath === "/flight";
+  const onResults = logicalPath === "/recommendations";
   const countdownVariant = onFlight ? "full" : "dock";
 
   return (

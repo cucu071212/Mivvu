@@ -10,12 +10,12 @@ import {
   type MivvuEntryAirportIata,
 } from "@/data/mivvu-entry-airport-catalog";
 import { filterAirportSelectionCatalog } from "@/lib/filter-airport-selection-catalog";
-import { acknowledgeAirportSelection } from "@/lib/airport-selection-preference";
 import { MivvuWordmark } from "@/components/mivvu/MivvuWordmark";
 import { MivvuLanguageToggle } from "@/components/mivvu/MivvuLanguageToggle";
 import { useMivvuPreviewLocale } from "@/components/mivvu/MivvuPreviewLocaleProvider";
 import {
   MIVVU_ICN_BROWSE_PATH,
+  MIVVU_SFO_BROWSE_PATH,
 } from "@/lib/mivvu-entry-routes";
 import { resetIcnBrowseHubFilters } from "@/lib/icn-facilities/icn-browse-hub-filters";
 
@@ -98,21 +98,29 @@ export function MivvuAirportSelectionScreen() {
   }
 
   function handleExplore() {
+    // ICN: 허브 필터를 초기화한 뒤 시설 브라우즈로 이동합니다.
     if (selectedIata === "ICN") {
       resetIcnBrowseHubFilters();
       router.push(MIVVU_ICN_BROWSE_PATH);
       return;
     }
 
+    // SFO: 공개 ICN형 셸(/sfo)로 이동합니다. 데모 acknowledge·/explore는 쓰지 않습니다.
+    if (selectedIata === "SFO") {
+      router.push(MIVVU_SFO_BROWSE_PATH);
+      return;
+    }
+
+    // 카탈로그에 있으나 공개 브라우즈 대상이 아닌 IATA는 안내만 표시합니다.
     if (!isMivvuEntryBrowsable(selectedIata)) {
       setFeedback(messages.airportUnavailable);
       feedbackRef.current?.focus();
       return;
     }
 
-    const today = new Date().toISOString().slice(0, 10);
-    acknowledgeAirportSelection(today);
-    router.push("/explore");
+    // 방어적 폴백: 알 수 없는 browsable IATA도 공개 데모로 보내지 않습니다.
+    setFeedback(messages.airportUnavailable);
+    feedbackRef.current?.focus();
   }
 
   return (

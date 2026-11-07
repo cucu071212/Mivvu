@@ -1,11 +1,12 @@
 import { test, expect } from "./fixtures";
 import path from "node:path";
+import { sfoDemo } from "./sfo-demo-harness";
 
 const screenshotDir = path.join("docs", "gw-e2-preview");
 
 test.describe("Two-stop planner demo", () => {
   test("strict unknown, demo opt-in, and both orders", async ({ page }) => {
-    await page.goto("/plan");
+    await page.goto(sfoDemo("/plan"));
     await expect(page.getByRole("heading", { name: "Two-stop planner" })).toBeVisible();
     await expect(page.getByText("Demo — not in production release")).toBeVisible();
     await expect(page.getByRole("heading", { name: "Complete demo setup" })).toBeVisible();
@@ -33,7 +34,7 @@ test.describe("Two-stop planner demo", () => {
       .getByRole("checkbox", { name: /Demo estimates for wait/i })
       .check();
     await nav.getByRole("link", { name: "My Plan", exact: true }).click();
-    await expect(page).toHaveURL(/\/plan$/);
+    await expect(page).toHaveURL(/\/preview\/sfo-demo\/plan$/);
     await page
       .getByRole("checkbox", {
         name: /^Use illustrative D-Gates travel times \(demo only\)$/i,
@@ -56,7 +57,7 @@ test.describe("Two-stop planner demo", () => {
   });
 
   test("desktop and mobile screenshots for review", async ({ page }) => {
-    await page.goto("/flight");
+    await page.goto(sfoDemo("/flight"));
     await page
       .getByRole("checkbox", { name: /Demo estimates for wait/i })
       .check();
@@ -90,11 +91,11 @@ test.describe("Two-stop planner demo", () => {
 
   test("mobile nav reaches planner with focusable controls", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto("/flight");
+    await page.goto(sfoDemo("/flight"));
     await page.getByRole("navigation", { name: "Primary mobile" }).getByRole("link", {
       name: "My Plan",
     }).click();
-    await expect(page).toHaveURL(/\/plan$/);
+    await expect(page).toHaveURL(/\/preview\/sfo-demo\/plan$/);
     const firstPicker = page.getByLabel("First facility (picker)");
     await firstPicker.focus();
     await expect(firstPicker).toBeFocused();

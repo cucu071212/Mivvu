@@ -1,11 +1,12 @@
 import { test, expect } from "./fixtures";
+import { sfoDemo } from "./sfo-demo-harness";
 
 // UTC timezone in config makes datetime-local input independent of the host.
 const now = new Date("2026-10-25T16:00:00Z");
 test.beforeEach(async ({ page }) => {
   await page.clock.install({ time: now });
   await page.clock.pauseAt(now);
-  await page.goto("/flight");
+  await page.goto(sfoDemo("/flight"));
 });
 
 test("Countdown rejects empty and more-than-24-hour targets without replacing manual budget", async ({ page }) => {

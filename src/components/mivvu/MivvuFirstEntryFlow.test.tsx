@@ -74,7 +74,7 @@ describe("MivvuFirstEntryFlow", () => {
     assert.equal(window.sessionStorage.getItem("mivvu.entry.introSeen.v1"), "1");
   });
 
-  it("navigates to ICN browse preview and to SFO explore", async () => {
+  it("navigates to ICN browse and to the public SFO browse shell", async () => {
     window.sessionStorage.setItem("mivvu.entry.introSeen.v1", "1");
     renderFlow();
     await screen.findByRole("heading", { name: /Choose your airport/i });
@@ -89,7 +89,7 @@ describe("MivvuFirstEntryFlow", () => {
       screen.getByRole("radio", { name: /San Francisco International Airport/i }),
     );
     fireEvent.click(screen.getByRole("button", { name: /Explore SFO/i }));
-    await waitFor(() => assert.equal(pushMock.mock.calls[0]?.[0], "/explore"));
+    await waitFor(() => assert.equal(pushMock.mock.calls[0]?.[0], "/sfo"));
   });
 
   it("filters search and shows empty state", async () => {

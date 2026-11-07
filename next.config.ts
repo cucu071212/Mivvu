@@ -33,6 +33,18 @@ const nextConfig: NextConfig = {
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
+  /**
+   * Legacy public SFO demo routes → public `/sfo` browse shell.
+   * Demo screens/data remain in the repo for private/harness use; no public demo link.
+   */
+  async redirects() {
+    return [
+      { source: "/explore", destination: "/sfo", permanent: false },
+      { source: "/flight", destination: "/sfo", permanent: false },
+      { source: "/recommendations", destination: "/sfo", permanent: false },
+      { source: "/plan", destination: "/sfo", permanent: false },
+    ];
+  },
   cacheComponents: true,
   partialPrefetching: true,
   turbopack: {

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useGateWiseSession } from "@/context/gatewise-session";
+import { useSfoDemoAppHref } from "@/components/useSfoDemoAppHref";
 import {
   listTwoStopEligibleFacilities,
   runTwoStopPlannerEvaluation,
@@ -25,6 +26,7 @@ const DEMO_TRAVEL_CHECKBOX_ID = "two-stop-demo-travel";
 
 export function TwoStopPlannerDemo() {
   const session = useGateWiseSession();
+  const flightHref = useSfoDemoAppHref("/flight");
   const [stopAId, setStopAId] = useState("");
   const [stopBId, setStopBId] = useState("");
   const [demoLegacyTravelEnabled, setDemoLegacyTravelEnabled] = useState(false);
@@ -78,6 +80,7 @@ export function TwoStopPlannerDemo() {
       <TwoStopDemoSetupPanel
         demoQueueActivityEnabled={session.demoEstimatesEnabled}
         illustrativeTravelEnabled={demoLegacyTravelEnabled}
+        flightHref={flightHref}
       />
 
       <section
@@ -89,7 +92,7 @@ export function TwoStopPlannerDemo() {
         </h2>
         <p className="text-sm text-muted-foreground">
           Minutes until boarding starts and safety buffer come from{" "}
-          <Link href="/flight" className="font-medium text-primary underline">
+          <Link href={flightHref} className="font-medium text-primary underline">
             Flight
           </Link>
           . Personal overrides on Results apply here too.

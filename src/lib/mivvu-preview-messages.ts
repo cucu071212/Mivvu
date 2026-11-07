@@ -13,6 +13,10 @@ export type MivvuPreviewMessages = {
   exploreIcn: string;
   exploreSfo: string;
   airportUnavailable: string;
+  /** Public SFO browse title including airport code. */
+  sfoTitle: string;
+  /** First-load results-area copy when SFO facility data is not public. */
+  sfoFacilityUnavailable: string;
   icnBack: string;
   icnTitle: string;
   icnLead: string;
@@ -115,7 +119,9 @@ const KO: MivvuPreviewMessages = {
   exploreIcn: "인천공항 탐색",
   exploreSfo: "SFO 탐색",
   airportUnavailable:
-    "이 공항은 아직 프리뷰에서 사용할 수 없습니다. 샌프란시스코(SFO)만 전체 데모를 제공합니다.",
+    "이 공항은 아직 이용할 수 없습니다. 인천(ICN) 또는 샌프란시스코(SFO)를 선택해 주세요.",
+  sfoTitle: "샌프란시스코 국제공항 (SFO)",
+  sfoFacilityUnavailable: "시설 정보를 이용할 수 없습니다",
   icnBack: "공항 선택",
   icnTitle: "인천공항 시설",
   icnLead: "터미널별 식음료, 편의시설, 라운지 등 공항 시설 목록입니다.",
@@ -232,7 +238,9 @@ const EN: MivvuPreviewMessages = {
   exploreIcn: "Explore ICN",
   exploreSfo: "Explore SFO",
   airportUnavailable:
-    "This airport is not available in the preview yet. San Francisco (SFO) has the full demo experience.",
+    "This airport is not available yet. Choose Incheon (ICN) or San Francisco (SFO).",
+  sfoTitle: "San Francisco International Airport (SFO)",
+  sfoFacilityUnavailable: "Facility information is not available",
   icnBack: "Airports",
   icnTitle: "Incheon Airport facilities",
   icnLead: "Directory of dining, services, lounges, and amenities by terminal.",

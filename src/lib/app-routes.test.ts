@@ -14,6 +14,8 @@ describe("app routes", () => {
   it("treats only exact flight path as Flight active", () => {
     expect(isAppRouteActive("/flight", "/flight")).toBe(true);
     expect(isAppRouteActive("/", "/flight")).toBe(false);
+    expect(isAppRouteActive("/preview/sfo-demo/flight", "/flight")).toBe(true);
+    expect(isAppRouteActive("/preview/sfo-demo/explore", "/explore")).toBe(true);
     expect(isAppRouteActive("/recommendations", "/recommendations")).toBe(true);
     expect(isAppRouteActive("/recommendations/extra", "/recommendations")).toBe(
       true,

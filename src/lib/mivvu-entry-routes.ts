@@ -4,6 +4,12 @@ export const MIVVU_ENTRY_PATH = "/" as const;
 /** ICN facility browse directory (static fixtures). */
 export const MIVVU_ICN_BROWSE_PATH = "/icn" as const;
 
+/**
+ * Public SFO browse shell (ICN layout; facility listings unavailable).
+ * Legacy demo routes (/explore, /flight, /recommendations, /plan) redirect here.
+ */
+export const MIVVU_SFO_BROWSE_PATH = "/sfo" as const;
+
 /** ICN facility detail (GW-ICN-013). `[ref]` is a URI-encoded serialized GW-ICN-012 reference. */
 export const MIVVU_ICN_FACILITY_DETAIL_PATH_PREFIX = "/icn/f/" as const;
 

@@ -1,4 +1,5 @@
 import { test, expect } from "./fixtures";
+import { sfoDemo } from "./sfo-demo-harness";
 
 // Independent Phase X acceptance list. Do not derive expected eligibility from
 // production data/validators: an accidental eligibility expansion must fail.
@@ -9,7 +10,7 @@ const eligibleNames = [
 ];
 
 test("Flight renders essential controls with honest defaults", async ({ page }) => {
-  await page.goto("/flight");
+  await page.goto(sfoDemo("/flight"));
   await expect(page).toHaveTitle("GateWise");
   await expect(page.getByRole("heading", { name: "Flight context" })).toBeVisible();
   await expect(page.getByRole("textbox", { name: "Boarding area", exact: true })).toHaveValue("Zone D — D Gates");
@@ -23,7 +24,7 @@ test("Flight renders essential controls with honest defaults", async ({ page }) 
 });
 
 test("Explore filters terminals, searches, and explains browse-only facilities", async ({ page }) => {
-  await page.goto("/explore");
+  await page.goto(sfoDemo("/explore"));
   const directory = page.getByRole("region", { name: "Facility directory", exact: true });
   await expect(directory.getByRole("article")).toHaveCount(26);
   await expect(page.getByText(/no cross-terminal walking times are modeled/)).toBeVisible();
@@ -45,7 +46,7 @@ test("Explore filters terminals, searches, and explains browse-only facilities",
 });
 
 test("Only the 12 eligible facilities participate in timing; other cards explain ineligibility", async ({ page }) => {
-  await page.goto("/recommendations");
+  await page.goto(sfoDemo("/recommendations"));
   const ranked = page.getByRole("region", { name: "Ranked recommendations", exact: true });
   await expect(ranked.getByRole("article")).toHaveCount(26);
   const timedCards = ranked.getByRole("article").filter({ has: page.getByLabel(/^Unknown timing data/) });
@@ -66,14 +67,14 @@ test("Only the 12 eligible facilities participate in timing; other cards explain
 });
 
 test("Desktop navigation retains context and never models browse-only filter results", async ({ page }) => {
-  await page.goto("/flight");
+  await page.goto(sfoDemo("/flight"));
   const nav = page.getByRole("navigation", { name: "Primary", exact: true });
   await page.getByLabel("Baseline: minutes until boarding starts").fill("42");
   await nav.getByRole("link", { name: "Explore", exact: true }).click();
-  await expect(page).toHaveURL(/\/explore$/);
+  await expect(page).toHaveURL(/\/preview\/sfo-demo\/explore$/);
   await page.getByRole("combobox", { name: "Terminal", exact: true }).selectOption({ label: "Harvey Milk Terminal 1" });
   await nav.getByRole("link", { name: "Results", exact: true }).click();
-  await expect(page).toHaveURL(/\/recommendations$/);
+  await expect(page).toHaveURL(/\/preview\/sfo-demo\/recommendations$/);
   await expect(page.getByText(/Baseline: 42 min/)).toBeVisible();
   const ranked = page.getByRole("region", { name: "Ranked recommendations", exact: true });
   await expect(ranked.getByRole("article")).toHaveCount(3);
@@ -85,7 +86,7 @@ test("Desktop navigation retains context and never models browse-only filter res
 });
 
 test("Demo estimates and What-if update visible margins without changing baseline", async ({ page }) => {
-  await page.goto("/flight");
+  await page.goto(sfoDemo("/flight"));
   await page.getByRole("checkbox", { name: /Demo estimates for wait/ }).check();
   await expect(page.getByText(/These are simulated scenarios, not measured SFO times/)).toBeVisible();
   await page.getByRole("link", { name: "View results", exact: true }).click();
