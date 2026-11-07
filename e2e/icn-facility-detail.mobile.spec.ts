@@ -96,7 +96,9 @@ test("direct detail after unrelated navigation does not reuse browse return", as
     "aria-pressed",
     "true",
   );
-  await page.goto("/flight");
+  // Unrelated public route (legacy /flight now redirects to /sfo) must clear browse-return context.
+  await page.goto("/sfo");
+  await expect(page).toHaveURL(/\/sfo$/);
   await page.goto(arabicaDetailHref());
   await expect(page.getByRole("status")).toContainText("목록에서 들어오지 않았습니다");
   await page.getByRole("button", { name: "목록으로", exact: true }).click();

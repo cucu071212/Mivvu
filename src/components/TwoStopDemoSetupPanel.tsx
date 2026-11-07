@@ -3,11 +3,14 @@ import Link from "next/link";
 export type TwoStopDemoSetupPanelProps = {
   demoQueueActivityEnabled: boolean;
   illustrativeTravelEnabled: boolean;
+  /** Flight deep link (may be harness-prefixed). */
+  flightHref?: string;
 };
 
 export function TwoStopDemoSetupPanel({
   demoQueueActivityEnabled,
   illustrativeTravelEnabled,
+  flightHref = "/flight",
 }: TwoStopDemoSetupPanelProps) {
   return (
     <section
@@ -32,7 +35,7 @@ export function TwoStopDemoSetupPanel({
           {!demoQueueActivityEnabled ? (
             <dd className="mt-2">
               <Link
-                href="/flight"
+                href={flightHref}
                 className="gw-focus-ring text-sm font-medium text-primary underline"
               >
                 Enable on Flight

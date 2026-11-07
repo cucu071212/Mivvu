@@ -1,14 +1,15 @@
 import { test, expect } from "./fixtures";
+import { sfoDemo } from "./sfo-demo-harness";
 
 test("390px mobile navigation is usable and preserves flight inputs", async ({ page }) => {
-  await page.goto("/flight");
+  await page.goto(sfoDemo("/flight"));
   await page.getByLabel("Baseline: minutes until boarding starts").fill("40");
   const nav = page.getByRole("navigation", { name: "Primary mobile", exact: true });
   for (const [link, path, heading] of [
-    ["Explore", "/explore", "Explore"],
-    ["Results", "/recommendations", "Recommendations"],
-    ["Flight", "/flight", "Flight context"],
-  ]) {
+    ["Explore", sfoDemo("/explore"), "Explore"],
+    ["Results", sfoDemo("/recommendations"), "Recommendations"],
+    ["Flight", sfoDemo("/flight"), "Flight context"],
+  ] as const) {
     const target = nav.getByRole("link", { name: link, exact: true });
     await expect(target).toBeInViewport();
     await target.tap();
@@ -21,7 +22,7 @@ test("390px mobile navigation is usable and preserves flight inputs", async ({ p
 });
 
 test("390px Explore facility details show Location guidance", async ({ page }) => {
-  await page.goto("/explore");
+  await page.goto(sfoDemo("/explore"));
   const trigger = page
     .getByRole("region", { name: "Facility directory", exact: true })
     .getByRole("button", { name: "View facility details" })

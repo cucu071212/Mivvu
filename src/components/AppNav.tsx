@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { APP_ROUTES, isAppRouteActive } from "@/lib/app-routes";
+import { withSfoDemoHarnessPrefix } from "@/lib/sfo-demo-harness";
 
 type AppNavProps = {
   /** Desktop pills live in the header; mobile bar must sit outside backdrop-filter ancestors. */
@@ -18,10 +19,11 @@ export function AppNav({ variant }: AppNavProps) {
         <ul className="gw-app-nav-list">
           {APP_ROUTES.map((route) => {
             const active = isAppRouteActive(pathname, route.href);
+            const href = withSfoDemoHarnessPrefix(pathname, route.href);
             return (
               <li key={route.href}>
                 <Link
-                  href={route.href}
+                  href={href}
                   className={`gw-app-nav-link ${active ? "gw-app-nav-link-active" : ""}`}
                   aria-current={active ? "page" : undefined}
                 >
@@ -40,10 +42,11 @@ export function AppNav({ variant }: AppNavProps) {
       <ul className="gw-app-nav-mobile-list">
         {APP_ROUTES.map((route) => {
           const active = isAppRouteActive(pathname, route.href);
+          const href = withSfoDemoHarnessPrefix(pathname, route.href);
           return (
             <li key={route.href}>
               <Link
-                href={route.href}
+                href={href}
                 className={`gw-app-nav-mobile-link ${active ? "gw-app-nav-mobile-link-active" : ""}`}
                 aria-current={active ? "page" : undefined}
               >
