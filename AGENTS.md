@@ -146,6 +146,7 @@ Agents should refuse or clarify prompts that conflict with `PLAN.md`, lack execu
 - `ui-ux-pro-max` for substantive UI.
 - **Verification before completion:** use checks appropriate to the task (Markdown: link/consistency review; critical logic/regression fixes: targeted tests, often TDD). Markdown-only work does **not** require application tests.
 - No autonomous multi-agent fan-out or broad `executing-plans` without explicit human approval.
+- **Agent tool baseline:** [`docs/tooling/agent-tool-inventory.md`](docs/tooling/agent-tool-inventory.md) — human-provided, environment-specific inventory. Consult it when preparing or executing tasks; read applicable skill instructions and use **only relevant** tools. The inventory is **descriptive**, not authorization to install tools, change configuration, publish, or expand scope. Report a relevant availability mismatch if encountered during actual work; do **not** run a full inventory audit before every task.
 
 ## Git collaboration
 
