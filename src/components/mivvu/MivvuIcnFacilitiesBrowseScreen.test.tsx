@@ -1,8 +1,11 @@
 // @vitest-environment jsdom
 import assert from "node:assert/strict";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { afterEach, describe, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, it, vi } from "vitest";
 import { MivvuIcnFacilitiesBrowseScreen } from "@/components/mivvu/MivvuIcnFacilitiesBrowseScreen";
+import { resetIcnBrowseHubModuleStateForTests } from "@/lib/icn-facilities/icn-browse-hub-filters";
+import { resetIcnBrowseUrlHistorySyncGuardForTests } from "@/lib/icn-facilities/icn-browse-url-history-sync-guard";
+import { resetIcnBrowseUrlLocationBootstrapForTests } from "@/lib/icn-facilities/icn-browse-url-location-bootstrap";
 import { MivvuPreviewLocaleProvider } from "@/components/mivvu/MivvuPreviewLocaleProvider";
 import type { IcnBrowseCatalog } from "@/lib/icn-facilities/icn-browse-view-model";
 import {
@@ -27,6 +30,8 @@ const catalogKo: IcnBrowseCatalog = {
       floor: "F3",
       locationDescription: "1층 중앙",
       categoryLabel: "식・음료",
+      categoryLargeKey: "식・음료",
+      categoryMediumKey: null,
       hoursText: "07:00 ~ 22:00",
     },
     {
@@ -38,6 +43,8 @@ const catalogKo: IcnBrowseCatalog = {
       floor: null,
       locationDescription: "면세 구역",
       categoryLabel: "안내・편의시설 · 라운지",
+      categoryLargeKey: "안내・편의시설",
+      categoryMediumKey: "라운지",
       hoursText: null,
     },
   ],
@@ -64,6 +71,8 @@ const catalogEn: IcnBrowseCatalog = {
       floor: "F3",
       locationDescription: "Central hall",
       categoryLabel: null,
+      categoryLargeKey: "식・음료",
+      categoryMediumKey: null,
       hoursText: "07:00 ~ 22:00",
     },
     {
@@ -75,6 +84,8 @@ const catalogEn: IcnBrowseCatalog = {
       floor: null,
       locationDescription: "Duty-free zone",
       categoryLabel: "Lounges",
+      categoryLargeKey: "안내・편의시설",
+      categoryMediumKey: "라운지",
       hoursText: null,
     },
   ],
@@ -99,6 +110,14 @@ function renderBrowse(ko = catalogKo, en = catalogEn) {
 }
 
 describe("MivvuIcnFacilitiesBrowseScreen", () => {
+  beforeEach(() => {
+    sessionStorage.clear();
+    resetIcnBrowseHubModuleStateForTests();
+    resetIcnBrowseUrlLocationBootstrapForTests();
+    resetIcnBrowseUrlHistorySyncGuardForTests();
+    window.history.replaceState({}, "", "/icn");
+  });
+
   afterEach(() => {
     cleanup();
     pushMock.mockReset();

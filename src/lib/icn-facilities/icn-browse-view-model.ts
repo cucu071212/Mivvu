@@ -5,12 +5,19 @@ import type {
 } from "@/types/icn-facility-browse";
 import type { MivvuPreviewLocale } from "@/lib/mivvu-preview-locale";
 
+import {
+  applyIcnBrowseCategoryFilter,
+  type IcnBrowseCategoryFilter,
+  defaultIcnBrowseCategoryFilter,
+} from "./icn-browse-category-taxonomy";
 import { collapseDuplicateListings } from "./icn-snapshot-matching";
 export { icnFacilityContentFingerprint } from "./icn-snapshot-matching";
 
 export type IcnBrowseListItem = {
   /** Stable key for React lists (`browse-{listingIndex}` of kept row). */
   id: string;
+  /** URI-encoded `[ref]` segment; present when catalog built with GW-ICN-012 refs. */
+  detailRefTransport?: string;
   sourceId: string;
   name: string;
   terminalId: string | null;
@@ -18,6 +25,10 @@ export type IcnBrowseListItem = {
   floor: string | null;
   locationDescription: string | null;
   categoryLabel: string | null;
+  /** KO `large` category key for hub filters (stable across locale). */
+  categoryLargeKey: string | null;
+  /** KO `medium` category key when present. */
+  categoryMediumKey: string | null;
   hoursText: string | null;
 };
 
@@ -155,6 +166,8 @@ function toListItem(
     floor: record.floor,
     locationDescription: record.locationDescription,
     categoryLabel: formatCategoryLabel(record),
+    categoryLargeKey: record.categories.large?.trim() || null,
+    categoryMediumKey: record.categories.medium?.trim() || null,
     hoursText: record.hoursText,
   };
 }
@@ -227,6 +240,8 @@ export function filterIcnBrowseItems(
   query: string,
   terminalFilter: string,
   locale: MivvuPreviewLocale = "ko",
+  categoryFilter: IcnBrowseCategoryFilter = defaultIcnBrowseCategoryFilter(),
 ): IcnBrowseListItem[] {
-  return searchIcnIndex(getIcnSearchIndex(items, locale), query, terminalFilter);
+  const scoped = applyIcnBrowseCategoryFilter(items, categoryFilter);
+  return searchIcnIndex(getIcnSearchIndex(scoped, locale), query, terminalFilter);
 }

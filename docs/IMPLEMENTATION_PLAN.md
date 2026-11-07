@@ -2,7 +2,7 @@
 
 > **For agentic workers:** One task ID at a time unless the human authorizes parallel work with clear boundaries. Post GATEWISE STATUS and stop unless the task says otherwise.
 
-**Plan revision:** `GW-PLAN-REV-2026-10-26` ([`docs/plan-revisions.md`](./plan-revisions.md))
+**Plan revision:** `GW-PLAN-REV-2026-10-29` ([`docs/plan-revisions.md`](./plan-revisions.md))
 **Goal:** Post-hackathon ICN mobile product with trustworthy facility discovery and preserved SFO shipped demo.
 **Architecture:** Mobile-first App Router UI; airport-specific **adapter boundary** for ICN; existing SFO paths unchanged until integration tasks say otherwise.
 **Tech stack:** Next.js App Router, React, TypeScript, Tailwind CSS, Vitest, Playwright, Vercel.
@@ -209,6 +209,96 @@ Use **four orthogonal dimensions** in GATEWISE STATUS and task tables:
 | **Integration / release** | `production` — `main` @ `bb4735d07f9b5cb68c6b44944ee76e994df801a8`; https://gate-wise-iota.vercel.app |
 | **Evidence** | [Integration checkpoint](handoffs/GW-ICN-009-integration.md); [Release record](submission/MIVVU_RELEASE_2026-10-28-icn-search.md); [Production smoke](../qa/mivvu-production-smoke-2026-10-28-icn-search.md) |
 | **Branch** | `codex/gw-icn-009-integration` merged via [PR #3](https://github.com/cucu071212/Mivvu/pull/3) |
+
+### GW-ICN-010: Mivvu code map and change-impact analysis
+
+| Field | Value |
+| --- | --- |
+| **Plan revision** | `GW-PLAN-REV-2026-10-26` (analysis); publication on `docs/gw-icn-010-code-map` |
+| **Owner** | Codex |
+| **Reviewer / final acceptance** | ChatGPT coordinator / human owner (**accepted**) |
+| **Execution permission** | `authorized` (analysis + publication follow-up) |
+| **Work progress** | `complete` |
+| **Review / acceptance** | `accepted` |
+| **Integration / release** | `n/a` (documentation PR [#5](https://github.com/cucu071212/Mivvu/pull/5); analyzed code @ `2e56a28c16ebd71eb202db7aa428db7ba9b50b78`) |
+| **Deliverable** | [Code map @ PR #5 `1c3f721`](https://github.com/cucu071212/Mivvu/blob/1c3f7215f44e48e8fc89736b0829fd2e5f667aea/docs/analysis/GW-ICN-010-code-map.md), [checkpoint @ PR #5](https://github.com/cucu071212/Mivvu/blob/1c3f7215f44e48e8fc89736b0829fd2e5f667aea/docs/handoffs/GW-ICN-010-checkpoint.md) (after merge: [`./analysis/GW-ICN-010-code-map.md`](./analysis/GW-ICN-010-code-map.md), [`./handoffs/GW-ICN-010-checkpoint.md`](./handoffs/GW-ICN-010-checkpoint.md)) |
+| **Use** | Impact boundaries for ICN search, snapshots/locale, and SFO separation — input to **GW-ICN-011** |
+
+### GW-ICN-011: ICN product scope, user flows, and implementation plan
+
+| Field | Value |
+| --- | --- |
+| **Plan revision** | `GW-PLAN-REV-2026-10-28` |
+| **Owner** | Cursor |
+| **Reviewer / final acceptance** | ChatGPT coordinator / human owner |
+| **Depends on** | Reviewed canon; shipped ICN browse/search @ `2e56a28`; GW-ICN-010 analysis (PR #5 or same SHA) |
+| **Execution permission** | `authorized` (source: direct human dispatch — **local planning Markdown only**, 2026-10-28) |
+| **Task permissions** | Edit only: `PLAN.md`, this file, `docs/plan-revisions.md`, `docs/design/GW-ICN-011-product-flow.md`, `docs/handoffs/GW-ICN-011-checkpoint.md` on branch `docs/gw-icn-011-product-plan`. **No** commit, push, PR, merge, deploy, application edits, or subagents. |
+| **Work progress** | `complete` |
+| **Review / acceptance** | `accepted` (ChatGPT coordinator assessment; human owner **2026-10-29** — corrected plan) |
+| **Integration / release** | `n/a` (accepted deliverable; **publication** via PR `chore/gw-icn-011-012-package` — **not** `main` merge or production) |
+| **Deliverable** | Updated product/implementation plans; flow/design doc; checkpoint; registered future tasks GW-ICN-013–019 |
+| **Evidence base** | `origin/main` @ `2e56a28c16ebd71eb202db7aa428db7ba9b50b78`; source inspection + GW-ICN-010 map |
+
+### GW-ICN-012: ICN facility reference identity (candidate contract)
+
+| Field | Value |
+| --- | --- |
+| **Plan revision** | `GW-PLAN-REV-2026-10-28` (implementation); acceptance recorded under **`GW-PLAN-REV-2026-10-29`** |
+| **Owner** | Codex |
+| **Integration reviewer** | Cursor (**accepted** — independent integration review 2026-10-29) |
+| **Final acceptance** | Human owner **accepted** (2026-10-29), following Cursor review |
+| **Depends on** | GW-ICN-011 accepted |
+| **Execution permission** | `authorized` (direct human assignment to Codex, 2026-10-29) |
+| **Work progress** | `complete` |
+| **Review / acceptance** | `accepted` |
+| **Integration / release** | `n/a` (pure module; **publication** via PR `chore/gw-icn-011-012-package` — **not** wired to routes/UI; **not** `main`/production) |
+| **Deliverable** | [`icn-facility-reference.ts`](../src/lib/icn-facilities/icn-facility-reference.ts), tests, [`icn-facility-reference-contract.md`](data/icn-facility-reference-contract.md), [checkpoint](handoffs/GW-ICN-012-checkpoint.md) |
+| **Integration requirements (not defects)** | Callers must pass **complete** normalized KO/EN catalogs; plan verbose ref transport for future routes; UI must not infer changed vs removed snapshot rows |
+
+---
+
+## ICN product completion — planned tasks (not authorized)
+
+Registered by **GW-ICN-011** / updated **`GW-PLAN-REV-2026-10-29`**. Cite applicable **`GW-PLAN-REV-*`** when dispatching.
+
+**GW-ICN-019 (2026-10-29):** Direct human dispatch on branch `design/gw-icn-019-icn-ux` (base `chore/gw-icn-011-012-package` @ `460be126cddebc8b9df4a00b5fe9d5ea645a775b`). **Execution permission:** `authorized`. **Work progress:** `complete`. **Review / acceptance:** **`accepted`** (human owner 2026-10-29 — header inset in `11-header-browse-ko-390px.png`). **Integration / release:** `n/a` (design-only PR). **Evidence:** [`docs/design/gw-icn-019/`](design/gw-icn-019/) (prototype + EN `07`–`10` + header `11`–`16`), [`docs/design/gw-icn-019/screenshots/README.md`](design/gw-icn-019/screenshots/README.md), [`docs/handoffs/GW-ICN-019-checkpoint.md`](handoffs/GW-ICN-019-checkpoint.md). Playwright: capture scripts PASS (reuse; no full recapture at publication).
+
+**GW-ICN-014 (2026-10-29):** Branch `feat/gw-icn-014-category` @ **`22c0cd9c6915cd8adb9b66c5f3960f1a4e7bf3f2`** (base `feat/gw-icn-013-detail` @ `135712d8561518d36b4f89fc508fdf6981889b94`, pushed). **Execution permission:** `authorized`. **Work progress:** `complete`. **Review / acceptance:** **`accepted`** (human owner 2026-10-29, after Codex P2 re-verification). **Integration / release:** **publication** (PR stacked on `feat/gw-icn-013-detail`; **not** `main` merge or production). **Evidence:** [`docs/handoffs/GW-ICN-014-checkpoint.md`](handoffs/GW-ICN-014-checkpoint.md), [`docs/handoffs/GW-ICN-019-bottom-sheet-refinement.md`](handoffs/GW-ICN-019-bottom-sheet-refinement.md), screenshots `GW-ICN-014-*.png`. **Test note:** `MivvuIcnFacilitiesBrowseScreen.test.tsx` still has **three inherited combined-run failures** (baseline `@135712d`); focused category/hub/lifecycle suites pass.
+
+**GW-ICN-015-ENRICH-DATA/ADOPT publication (2026-10-31):** Branch **`codex/gw-icn-015-enrich-data`** stacked on **`feat/gw-icn-015-goods-services`** (PR **#12** @ **`dac99bb…`**). **Execution permission:** `authorized` (human accept + commit/push/PR; **not** merge/deploy/API/core refresh). **Work progress:** `complete`. **Review / acceptance:** **`accepted`** (human owner 2026-10-31); DATA findings **1–3** independently **RESOLVED**; ADOPT runtime **supportable** (Codex adopt review — external); final E2E/doc correction **author-only** (Playwright **not executed**). **Integration / release:** **publication** (PR). **Evidence:** [`docs/handoffs/GW-ICN-015-enrich-data-checkpoint.md`](handoffs/GW-ICN-015-enrich-data-checkpoint.md), [`docs/handoffs/GW-ICN-015-enrich-adopt-checkpoint.md`](handoffs/GW-ICN-015-enrich-adopt-checkpoint.md), [`docs/data/GW-ICN-015-enrich-data-assessment.md`](data/GW-ICN-015-enrich-data-assessment.md). **Artifact SHA:** `45f52bc…`. **Not** full **GW-ICN-015** milestone.
+
+**GW-ICN-015-ENRICH-ADOPT (2026-10-31, integration):** Real companion packaged at `src/data/fixtures/icn-goods-services-companion-v1.json`; server loader + adoption tests; corrected mobile E2E spec. See publication row above.
+
+**GW-ICN-015-ENRICH-DATA (2026-10-31, capture):** 22 HTTP; candidate SHA `45f52bc…`; producer **1–3** fixed; assessment finding **4** wording corrected. See publication row and DATA checkpoint.
+
+**GW-ICN-015-ENRICH-DATA (2026-10-31, initial capture):** Branch `codex/gw-icn-015-enrich-data` @ **`dac99bb8b89807ceda9e562aabe630c773121a69`** (worktree `/private/tmp/GateWise-gw-icn-015-enrich-data`). **Execution permission:** `authorized` (live API max **30** attempts; local producer; **no** production adoption/commit/push). **Work progress:** `complete`. **Review / acceptance:** **pending** (adoption **not** recommended — `api_total_mismatch`). **Integration / release:** `n/a`. **Evidence:** [`docs/data/GW-ICN-015-enrich-data-assessment.md`](data/GW-ICN-015-enrich-data-assessment.md); external candidate `GW-ICN-015-evidence/gw-icn-015-enrich-data-run/`. **Capture:** 22/30 HTTP; K/E **1027** rows; API `totalCount` **1174**; validator **valid**; shipped fixtures **unchanged**.
+
+**GW-ICN-015-ENRICH-IMPL (2026-10-30):** Branch `feat/gw-icn-015-goods-services` (stacked on `feat/gw-icn-014-category`). **Execution permission:** `authorized`. **Work progress:** `complete` (**enrichment slice only** — not full **GW-ICN-015** suitability milestone). **Review / acceptance:** **`accepted`** (human owner 2026-10-30); independent review **acceptable**, findings **1–4 RESOLVED** (Codex `TIMESTAMP-REVERIFICATION.md`, external evidence). **Integration / release:** **publication** (commit/push/PR; **not** merge, production deploy, or acquisition). **Evidence:** [`docs/handoffs/GW-ICN-015-enrich-impl-checkpoint.md`](handoffs/GW-ICN-015-enrich-impl-checkpoint.md), browser PNGs `GW-ICN-015-browser-*.png`, contract [`docs/data/icn-facility-goods-services-contract.md`](data/icn-facility-goods-services-contract.md). **Verification:** 20 focused vitest PASS; independent **77/77** + **32/32** timestamp probes (fresh `timestamp-reverification/`); prior `reverification/probe-outcomes.json` retained at **73/77** — see checkpoint provenance. **Test note:** inherited `icn-shipped-output.test.ts` FAIL and three combined `MivvuIcnFacilitiesBrowseScreen.test.tsx` FAILs unchanged. **Data gap:** no real companion in production; core fixtures unchanged.
+
+| Task ID | Objective | Owner (default) | Depends on | Integration reviewer | Excludes |
+| --- | --- | --- | --- | --- | --- |
+| **GW-ICN-019** | **ICN UI/UX design and human owner review** — Browse/search/category layout; detail hierarchy and interactions; saved-list entry and stale/missing states; back navigation and exploration-state expectations; KO/EN with real fixture records, long content, and missing data at 360/390/430; reuse settled Mivvu identity/intro. Deliver design artifacts and explicit human review **before** screen coding. | Cursor (+ UI/design skill when authorized) | GW-ICN-011 accepted; GW-ICN-012 accepted | Human owner | Six-tab IA, brand redesign, live open/access claims, automatic SFO feature migration, immediate implementation in this task |
+| **GW-ICN-013** | **ICN facility detail route** — Traveler-relevant primary content; snapshot/source transparency; unknown handling; wire `resolveIcnFacilityRef` with full catalogs | Cursor | GW-ICN-012 accepted; **GW-ICN-019 accepted** (screen/UI portions) | Codex (data contract) | Live open/closed, maps, walking times, gate suitability |
+| **GW-ICN-014** | **ICN category discovery** — browse/filter by existing API taxonomy (no invented groups). **Data/filter logic** may be scoped independently; **browse UI layout** requires **GW-ICN-019**. **2026-10-29 refinement:** bottom sheet type selector (see [`docs/handoffs/GW-ICN-019-bottom-sheet-refinement.md`](handoffs/GW-ICN-019-bottom-sheet-refinement.md), local checkpoint [`docs/handoffs/GW-ICN-014-checkpoint.md`](handoffs/GW-ICN-014-checkpoint.md)). | Cursor | **GW-ICN-019 accepted** (UI); GW-ICN-013 optional for card→detail | Human owner (IA) | Search algorithm rewrite |
+| **GW-ICN-015** | **Situation suitability panel** — structured known/unknown/not claimed; no security-access inference from raw flags | Cursor + Codex review | GW-ICN-013; **GW-ICN-019 accepted** (presentation) | Human owner | SFO `recommendFacilities`, synthetic walks |
+| **GW-ICN-016** | **Saved facilities (local)** — save, list, reopen detail; stale/missing/ambiguous handling | Cursor | GW-ICN-012, GW-ICN-013; **GW-ICN-019 accepted** (saved UX) | Codex (identity edge cases) | Auth, database, cross-device sync |
+
+**GW-ICN-016 (2026-11-04):** Branch `feat/gw-icn-016-saved-facilities` pushed from parent **`27ae147ca1c8ec3e804482cee07f75814ba9af7b`** (intended PR base: `codex/gw-icn-015-enrich-data`, PR #13; publication SHA in checkpoint **Publication record**). **Execution permission:** `authorized`. **Work progress:** `complete`. **Review / acceptance:** **`accepted`** (human owner **2026-11-04**). **Independent technical review:** Antigravity focused re-verification **PASS**, Findings 1–3 **RESOLVED** (external report `/private/tmp/GW-ICN-016-antigravity-reverification/REVERIFICATION.md` — distinguish from repo CI). **Integration / release:** branch pushed to `origin` — **no merge/deploy** in this task. **Evidence:** [`docs/handoffs/GW-ICN-016-checkpoint.md`](handoffs/GW-ICN-016-checkpoint.md). **Scope:** `/icn/saved`, detail save/unsave, `localStorage` v1, bilingual saved identity, stale/last-known rows, notice re-localization, browse/saved detail sessions. **Verification limits:** focused vitest **30/30** PASS; eslint/tsc/build PASS on slice; **`icn-shipped-output.test.ts` FAIL** (inherited); **full suite not green** — do not claim otherwise. **Not included:** list cap, cross-device sync, recommendations, Findings 4–5 optimizations.
+| **GW-ICN-017** | **Exploration state preservation** — shareable `/icn` URL browse state (`q`, `terminal`, `type`, `subtype`); browser history; detail-return precedence with existing session restore | Cursor | GW-ICN-013; **GW-ICN-019 accepted** (navigation model) | Codex optional | Forced global state merge with SFO session |
+
+**GW-ICN-017 (2026-11-05):** Branch `feat/gw-icn-017-browse-url` in worktree `.worktrees/feat-gw-icn-017-browse-url` from `origin/feat/gw-icn-016-saved-facilities` @ **`5805d2d881cadae533a59555bd71fc5bfca23a06`**. **Execution permission:** `authorized` (direct human assign; **publication** commit/push/PR **2026-11-05**). **Work progress:** `complete`. **Review / acceptance:** **`accepted`** (human owner **2026-11-05**). **Independent technical review:** Antigravity Findings **1–6 RESOLVED** (final Finding 3: `/private/tmp/GW-ICN-017-antigravity-finding3-reverification/FINDING3_REVERIFICATION.md`). **Integration / release:** branch push to `origin`; stacked PR base **`feat/gw-icn-016-saved-facilities`** — **no merge/deploy** in this task. **Evidence:** [`docs/handoffs/GW-ICN-017-checkpoint.md`](handoffs/GW-ICN-017-checkpoint.md). **Scope:** URL parse/serialize + validation, location bootstrap precedence, `history.replaceState` for search / `pushState` for terminal & category, preserved GW-ICN-013/016 session + BFCache paths; **no fixture changes**. **Verification limits:** focused vitest **45/45**; lint/tsc/build on slice; **`icn-shipped-output.test.ts` FAIL** (inherited); full suite **not** green.
+
+**GW-ICN-015-SITUATION (2026-11-05):** Branch `feat/gw-icn-015-situation` in worktree `.worktrees/feat-gw-icn-015-situation` from **`feat/gw-icn-017-browse-url`** @ **`93575cdef8b400864c0b8a2c9a356a137c1ad714`**. **Execution permission:** `authorized` (direct human assign; **publication** commit/push/PR **2026-11-05**). **Work progress:** `complete`. **Review / acceptance:** **`accepted`** (human owner **2026-11-05**). **Independent review:** Antigravity **Acceptable** with two low-severity findings (`/private/tmp/GW-ICN-015-situation-antigravity-review/REVIEW.md`); Cursor corrected Findings **1–2** (no new independent re-verification of corrections). **Integration / release:** branch push to `origin`; stacked PR base **`feat/gw-icn-017-browse-url`** — **no merge/deploy**. **Evidence:** [`docs/handoffs/GW-ICN-015-situation-checkpoint.md`](handoffs/GW-ICN-015-situation-checkpoint.md). **Scope:** Detail Situation section; no clock/open-now/walk claims; **separate from** GW-ICN-015 goods/services enrichment; **no fixture changes**. **Verification limits:** focused vitest **13/13**; scoped eslint **0/0**; tsc/build/browser per Antigravity + prior author pass; **`icn-shipped-output.test.ts` FAIL** (inherited); full suite **not** green.
+| **GW-ICN-018** | **ICN Core Journey verification** — Playwright + viewport checklist for milestone in `PLAN.md` (discover/search, **GW-ICN-014**, detail, **GW-ICN-015**, save/revisit, exploration state) | Cursor | GW-ICN-013, GW-ICN-014, GW-ICN-015, GW-ICN-016, GW-ICN-017 (each **accepted** when implemented) | Human owner | Production promotion (separate release task) |
+
+**GW-ICN-018-HASH-DISPOSITION (2026-11-05):** Branch `fix/gw-icn-018-shipped-output-baseline` from **`7dbca210e5e340d3b5a93aebe27053b2db26b17b`** (intended PR base: **`test/gw-icn-018-core-journey`**). **Execution permission:** `authorized` (human acceptance + commit/push **2026-11-05**; **no merge/deploy**). **Work progress:** `complete`. **Review / acceptance:** **`accepted`** (human owner **2026-11-05**). **Independent technical review:** Codex validation boundary + **P2 RESOLVED** (`/private/tmp/GW-ICN-018-HASH-DISPOSITION-codex-p2-reverification/REVIEW.md`; full suite **1299 pass / 0 fail / 6 skip — 48.89s** in Codex `full.log`). **Integration / release:** branch push only. **Evidence:** [`docs/handoffs/GW-ICN-018-HASH-DISPOSITION-handoff.md`](handoffs/GW-ICN-018-HASH-DISPOSITION-handoff.md). **Scope:** shipped-output digest rebaseline; sealed `bindValidatedGoodsServicesCompanion`; adoption coverage perf + invalid-input zeros; bound-path fixture digest recheck. **No fixture byte changes.**
+
+**Recommended next bounded task (proposal):** **GW-ICN-013** (detail route) after **GW-ICN-019** design PR merges into `chore/gw-icn-011-012-package`. **GW-ICN-012** reference module is **accepted** and available for integration tasks.
+
+**012 integration notes (carry forward):** (1) Full normalized catalogs at create/resolve — not browse projections. (2) Serialized refs are verbose (~1 KB+ on shipped fixtures); plan URL/storage in route tasks. (3) Changed vs removed content both surface as `reference_content_not_found`; UI copy must stay honest.
+
+**SFO connection work:** No row above migrates SFO engines to ICN. Optional **later** tasks may expose SFO demo entry from ICN hub for outreach; defer until ICN Core Journey milestone unless human directs otherwise.
 
 GW-ICN-001 and GW-ICN-002 may run in parallel when **separately authorized**.
 
