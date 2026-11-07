@@ -2,7 +2,7 @@
 
 ## 문서 성격
 
-이 문서는 **프로젝트 오너가 제공한 최종 도구 인벤토리**를 기록한 **설명용 베이스라인**입니다.
+이 문서는 **프로젝트 오너가 제공한 도구 인벤토리**를 기록한 **설명용 베이스라인**입니다. 아래에 적힌 도구·연결은 **당시 오너가 기록한 가용성**이며, **현재 세션에서 설치·인증·사용 가능함을 검증한 결과가 아닙니다.**
 
 - 에이전트가 **독립적으로 설치·연결을 검증했다고 주장하지 않습니다.**
 - 목록에 있는 항목만으로 **매 세션마다 자동 실행**, **인증 완료**, **항상 사용 가능**을 **추론하지 않습니다.**
@@ -17,12 +17,13 @@
 
 | 역할 | 책임 |
 |------|------|
-| **인간 오너** | 최종 제품 결정, 수용(acceptance), 실행·배포·범위 **승인** |
-| **ChatGPT coordinator** | 요구사항 정리, 범위·과제 배정, 보고·증거 검토 |
+| **인간 오너** | 최종 제품 방향, 수용(acceptance), 실행·배포·범위 **승인** |
+| **ChatGPT coordinator** | 요구사항 정리, 범위·과제 배정, 보고·증거 검토 (실행 경계는 `AGENTS.md`의 coordinator subsection) |
 | **Cursor** | UI, 애플리케이션 구현, 통합(integration) |
-| **Codex** | 로직, 디버깅, 독립 검토·어려운 엔지니어링 |
+| **Codex** | 로직, 디버깅, 독립 검토·어려운 엔지니어링 (별도 Codex 앱 세션) |
+| **Antigravity** | **선택적(optional) 리뷰** — 인간 오너가 요청할 때만, **별도 세션**에서 수행. 모든 과제에 필수가 아님 |
 
-과제마다 **해당 작업에 맞는 도구만** 선택합니다. **모든 과제에서 모든 도구를 실행할 것을 지시하지 않습니다.** 기존 `AGENTS.md`의 역할·권한·검증 경계는 그대로 유지합니다.
+과제마다 **해당 작업에 맞는 도구만** 선택합니다. **모든 과제에서 모든 도구를 실행할 것을 지시하지 않습니다.** 기존 `AGENTS.md`의 역할·권한·검증 경계(및 ChatGPT coordinator execution boundary)는 그대로 유지합니다.
 
 ### 과제 유형별 도구 선택 (가이드)
 
@@ -72,6 +73,17 @@ Codex 측 Graphify·Ponytail·브라우저 도구에 대한 **설치 정책·범
 
 ---
 
+## Antigravity
+
+| 항목 | 설명 |
+|------|------|
+| **역할** | Optional review in a **separate** agent session when the human owner requests it |
+| **기본값** | **Not required** on every task (matches `AGENTS.md`) |
+| **도구 목록** | 전용 고정 도구 표를 두지 않습니다. 과제에 **명시된** 검토 범위와 그 세션에서 실제로 쓸 수 있는 도구만 사용합니다. |
+| **권한** | 이 행은 리뷰·설치·배포 권한을 주지 않습니다. |
+
+---
+
 ## ChatGPT coordinator
 
 | 연결·도구 | 용도 |
@@ -93,6 +105,6 @@ Codex 측 Graphify·Ponytail·브라우저 도구에 대한 **설치 정책·범
 
 ## 관련 문서
 
-- [`AGENTS.md`](../../AGENTS.md) — 역할, 권한, 스킬 정책, Codex 로컬 도구 정책
+- [`AGENTS.md`](../../AGENTS.md) — 역할, 권한, ChatGPT coordinator execution boundary, 스킬 정책, Codex 로컬 도구 정책
 - [`PLAN.md`](../../PLAN.md) — 제품 요구사항
 - [`docs/IMPLEMENTATION_PLAN.md`](../IMPLEMENTATION_PLAN.md) — 과제별 권한·증거
