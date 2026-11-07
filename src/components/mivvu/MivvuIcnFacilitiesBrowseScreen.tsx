@@ -28,6 +28,10 @@ import {
   subscribeIcnBrowseHubFilters,
 } from "@/lib/icn-facilities/icn-browse-hub-filters";
 import {
+  orderIcnBrowseItemsByTopLevelCategoryRounds,
+  shouldApplyIcnDefaultCategoryRoundOrder,
+} from "@/lib/icn-facilities/icn-browse-default-order";
+import {
   filterIcnBrowseItems,
   formatIcnTerminalFloorLine,
   type IcnBrowseCatalog,
@@ -170,6 +174,22 @@ export function MivvuIcnFacilitiesBrowseScreen({
     [catalog.items, query, terminalFilter, locale, categoryFilter],
   );
 
+  // 기본(검색·터미널·카테고리·서브타입 필터 없음) 목록만 대분류 라운드 순서로 섞는다.
+  const listed = useMemo(() => {
+    // 활성 검색/필터가 있으면 기존 filter 결과 순서를 그대로 유지한다.
+    if (
+      !shouldApplyIcnDefaultCategoryRoundOrder({
+        query,
+        terminalFilter,
+        categoryFilter,
+      })
+    ) {
+      return filtered;
+    }
+    // 대분류마다 라운드당 최대 2개를 가져와 AED 같은 단일 카테고리 독점을 완화한다.
+    return orderIcnBrowseItemsByTopLevelCategoryRounds(filtered);
+  }, [categoryFilter, filtered, query, terminalFilter]);
+
   const activeTopLevel = taxonomy.topLevel.find((row) => row.key === categoryLarge);
   const subcategoryOptions = useMemo(
     () => activeTopLevel?.subcategories ?? [],
@@ -225,20 +245,20 @@ export function MivvuIcnFacilitiesBrowseScreen({
   const displayItems = useMemo(
     () =>
       toBrowseDisplayItems(
-        filtered,
+        listed,
         locale,
         locale === "en" ? koFallback : null,
       ),
-    [filtered, locale, koFallback],
+    [listed, locale, koFallback],
   );
 
   const numberLocale = locale === "ko" ? "ko-KR" : "en-US";
 
   const countLabel =
-    filtered.length === catalog.snapshot.listingCount
+    listed.length === catalog.snapshot.listingCount
       ? messages.icnCountAll
       : messages.icnCountFiltered(
-          filtered.length.toLocaleString(numberLocale),
+          listed.length.toLocaleString(numberLocale),
           catalog.snapshot.listingCount.toLocaleString(numberLocale),
         );
 
@@ -362,7 +382,7 @@ export function MivvuIcnFacilitiesBrowseScreen({
 
         <p className="mivvu-icn-result-count" aria-live="polite">
           <span className="mivvu-icn-count-number">
-            {filtered.length.toLocaleString(numberLocale)}
+            {listed.length.toLocaleString(numberLocale)}
           </span>
           <span className="mivvu-icn-count-label">{countLabel}</span>
         </p>
