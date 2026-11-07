@@ -392,6 +392,16 @@
   --mivvu-surface-inline-pad: 0.875rem;
 }
 
+.mivvu-icn-saved .mivvu-entry-airport-scroll {
+  padding-bottom: 2rem;
+  overflow-x: hidden;
+  --mivvu-surface-inline-pad: 0.875rem;
+}
+
+.mivvu-icn-saved .mivvu-icn-browse-title {
+  margin-bottom: 0.75rem;
+}
+
 .mivvu-icn-header {
   margin-bottom: 0.75rem;
   display: flex;
@@ -1249,11 +1259,16 @@
 
 .mivvu-icn-saved-row-button {
   width: 100%;
-  padding: 0;
-  border: none;
-  background: transparent;
   text-align: inherit;
   font: inherit;
+  color: inherit;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+button.mivvu-icn-saved-row-button.mivvu-icn-facility-card {
+  padding: 0.75rem var(--mivvu-surface-inline-pad, 0.875rem);
 }
 
 .mivvu-icn-saved-stale-row {

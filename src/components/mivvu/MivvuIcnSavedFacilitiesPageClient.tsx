@@ -199,7 +199,7 @@ export function MivvuIcnSavedFacilitiesPageClient({
           </ul>
         ) : null}
 
-        <aside className="mivvu-icn-snapshot-aside">
+        <aside className="mivvu-icn-snapshot" aria-label={messages.icnSnapshotTitle}>
           <h2 className="mivvu-icn-snapshot-title">{messages.icnSnapshotTitle}</h2>
           <dl className="mivvu-icn-snapshot-list">
             <div>
