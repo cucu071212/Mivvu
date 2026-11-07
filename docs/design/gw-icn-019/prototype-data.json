@@ -1,0 +1,1972 @@
+{
+  "snapshot": {
+    "retrievedDateLabel": "2026년 10월 27일",
+    "sourceLabel": "인천국제공항공사 공공데이터 (여객터미널 시설정보)",
+    "coverageNote": "저장된 목록 스냅샷입니다. 실시간 개장 여부, 대기시간, 좌표, 도보 시간은 포함되지 않으며 공항 전체를 모두 담고 있지 않을 수 있습니다.",
+    "listingCount": 1011,
+    "retrievedDateLabelEn": "October 27, 2026",
+    "sourceLabelEn": "Incheon International Airport Corp. open data (passenger terminal facilities)",
+    "coverageNoteEn": "Saved listing from open data. It does not include live open/closed status, queues, coordinates, or walking times, and may not list every facility at the airport."
+  },
+  "prototypeListingCount": 65,
+  "terminals": [
+    {
+      "value": "P01",
+      "label": "제1여객터미널",
+      "chipLabel": "T1"
+    },
+    {
+      "value": "P02",
+      "label": "탑승동",
+      "chipLabel": "탑승동"
+    },
+    {
+      "value": "P03",
+      "label": "제2여객터미널",
+      "chipLabel": "T2"
+    }
+  ],
+  "terminalsEn": [
+    {
+      "value": "P01",
+      "label": "Terminal 1",
+      "chipLabel": "T1"
+    },
+    {
+      "value": "P02",
+      "label": "Concourse",
+      "chipLabel": "Concourse"
+    },
+    {
+      "value": "P03",
+      "label": "Terminal 2",
+      "chipLabel": "T2"
+    }
+  ],
+  "categoryLargeKo": [
+    "공항즐기기",
+    "교통시설",
+    "기타시설",
+    "면세점쇼핑",
+    "식・음료",
+    "안내・편의시설",
+    "일반쇼핑",
+    "출입국시설"
+  ],
+  "categoryLargeEn": [
+    "Airport Facility",
+    "Attractions",
+    "Duty Free Shopping",
+    "Gerneral Shopping",
+    "Other facilities",
+    "Restaurants"
+  ],
+  "samples": [
+    {
+      "sourceId": "3289",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-0",
+        "sourceId": "3289",
+        "name": "% 아라비카",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 209번 게이트 부근",
+        "categoryLabel": "식・음료 · 스낵/카페/디저트",
+        "hoursText": "06:00 ~ 22:00"
+      },
+      "en": {
+        "id": "browse-0",
+        "sourceId": "3289",
+        "name": "% ARABICA",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Near Gate 209 on 3F, Terminal 2",
+        "categoryLabel": "Restaurants · Snack / Cafe / Dessert",
+        "hoursText": "06:00 ~ 22:00"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"3289\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"% 아라비카\\\",\\\"categories.large\\\":\\\"식・음료\\\",\\\"categories.medium\\\":\\\"스낵/카페/디저트\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 209번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:00 ~ 22:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"3289\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"% ARABICA\\\",\\\"categories.large\\\":\\\"Restaurants\\\",\\\"categories.medium\\\":\\\"Snack / Cafe / Dessert\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 209 on 3F, Terminal 2\\\",\\\"hoursText\\\":\\\"06:00 ~ 22:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "2021",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-147",
+        "sourceId": "2021",
+        "name": "We All Dream of Flying (Universal Everything)",
+        "terminalId": "P02",
+        "terminalLabel": "탑승동",
+        "floor": "F3",
+        "locationDescription": "탑승동 3층 중앙부",
+        "categoryLabel": "공항즐기기 · 예술품",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "en": {
+        "id": "browse-859",
+        "sourceId": "2021",
+        "name": "We All Dream of Flying (Universal Everything)",
+        "terminalId": "P02",
+        "terminalLabel": "Concourse",
+        "floor": "F3",
+        "locationDescription": "Center of Concourse (3F)",
+        "categoryLabel": "Attractions · Artwork",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"2021\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"We All Dream of Flying (Universal Everything)\\\",\\\"categories.large\\\":\\\"공항즐기기\\\",\\\"categories.medium\\\":\\\"예술품\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P02\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"탑승동 3층 중앙부\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"2021\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"We All Dream of Flying (Universal Everything)\\\",\\\"categories.large\\\":\\\"Attractions\\\",\\\"categories.medium\\\":\\\"Artwork\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P02\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Center of Concourse (3F)\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "2821",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-392",
+        "sourceId": "2821",
+        "name": "동측장기주차타워",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F1",
+        "locationDescription": "제1여객터미널 장기주차장",
+        "categoryLabel": "교통시설 · 주차장",
+        "hoursText": null
+      },
+      "en": {
+        "id": "browse-268",
+        "sourceId": "2821",
+        "name": "East Long-term Parking Tower",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F1",
+        "locationDescription": "Terminal 1, Long-term parking lot",
+        "categoryLabel": null,
+        "hoursText": null
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"2821\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"동측장기주차타워\\\",\\\"categories.large\\\":\\\"교통시설\\\",\\\"categories.medium\\\":\\\"주차장\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F1\\\",\\\"locationDescription\\\":\\\"제1여객터미널 장기주차장\\\",\\\"hoursText\\\":null,\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"N\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"2821\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"East Long-term Parking Tower\\\",\\\"categories.large\\\":null,\\\"categories.medium\\\":null,\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F1\\\",\\\"locationDescription\\\":\\\"Terminal 1, Long-term parking lot\\\",\\\"hoursText\\\":null,\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"N\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    }
+  ],
+  "browsePool": [
+    {
+      "sourceId": "3289",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-0",
+        "sourceId": "3289",
+        "name": "% 아라비카",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 209번 게이트 부근",
+        "categoryLabel": "식・음료 · 스낵/카페/디저트",
+        "hoursText": "06:00 ~ 22:00"
+      },
+      "en": {
+        "id": "browse-0",
+        "sourceId": "3289",
+        "name": "% ARABICA",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Near Gate 209 on 3F, Terminal 2",
+        "categoryLabel": "Restaurants · Snack / Cafe / Dessert",
+        "hoursText": "06:00 ~ 22:00"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"3289\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"% 아라비카\\\",\\\"categories.large\\\":\\\"식・음료\\\",\\\"categories.medium\\\":\\\"스낵/카페/디저트\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 209번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:00 ~ 22:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"3289\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"% ARABICA\\\",\\\"categories.large\\\":\\\"Restaurants\\\",\\\"categories.medium\\\":\\\"Snack / Cafe / Dessert\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 209 on 3F, Terminal 2\\\",\\\"hoursText\\\":\\\"06:00 ~ 22:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "2030",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-1",
+        "sourceId": "2030",
+        "name": "15 Benches (김소산)",
+        "terminalId": "P01",
+        "terminalLabel": "제1여객터미널",
+        "floor": "F4",
+        "locationDescription": "제1여객터미널 한국문화거리 4F 중앙부",
+        "categoryLabel": "공항즐기기 · 예술품",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "en": {
+        "id": "browse-3",
+        "sourceId": "2030",
+        "name": "15 Benches (So-san Kim)",
+        "terminalId": "P01",
+        "terminalLabel": "Terminal 1",
+        "floor": "F4",
+        "locationDescription": "Korean Cultural Street(4F), Terminal 1",
+        "categoryLabel": "Attractions · Artwork",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"2030\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"15 Benches (김소산)\\\",\\\"categories.large\\\":\\\"공항즐기기\\\",\\\"categories.medium\\\":\\\"예술품\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F4\\\",\\\"locationDescription\\\":\\\"제1여객터미널 한국문화거리 4F 중앙부\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"N\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"2030\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"15 Benches (So-san Kim)\\\",\\\"categories.large\\\":\\\"Attractions\\\",\\\"categories.medium\\\":\\\"Artwork\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F4\\\",\\\"locationDescription\\\":\\\"Korean Cultural Street(4F), Terminal 1\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"N\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "3282",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-90",
+        "sourceId": "3282",
+        "name": "BHC",
+        "terminalId": "P02",
+        "terminalLabel": "탑승동",
+        "floor": "F3",
+        "locationDescription": "탑승동 3층 122번 게이트 부근",
+        "categoryLabel": "식・음료 · 푸드코트",
+        "hoursText": "06:00 ~ 22:00"
+      },
+      "en": {
+        "id": "browse-129",
+        "sourceId": "3282",
+        "name": "BHC CHICKEN",
+        "terminalId": "P02",
+        "terminalLabel": "Concourse",
+        "floor": "F3",
+        "locationDescription": "Near Gate 122 on 3F, Concourse",
+        "categoryLabel": "Restaurants · Food Court",
+        "hoursText": "06:00 ~ 22:00"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"3282\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"BHC\\\",\\\"categories.large\\\":\\\"식・음료\\\",\\\"categories.medium\\\":\\\"푸드코트\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P02\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"탑승동 3층 122번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:00 ~ 22:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"3282\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"BHC CHICKEN\\\",\\\"categories.large\\\":\\\"Restaurants\\\",\\\"categories.medium\\\":\\\"Food Court\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P02\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 122 on 3F, Concourse\\\",\\\"hoursText\\\":\\\"06:00 ~ 22:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "2028",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-91",
+        "sourceId": "2028",
+        "name": "Beautiful World (Roman De Guili)",
+        "terminalId": "P01",
+        "terminalLabel": "제1여객터미널",
+        "floor": "F1",
+        "locationDescription": "제1여객터미널 일반지역 중앙 밀레니엄홀 미디어타워",
+        "categoryLabel": "공항즐기기 · 예술품",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "en": {
+        "id": "browse-171",
+        "sourceId": "2028",
+        "name": "Beautiful World (Roman De Guili)",
+        "terminalId": "P01",
+        "terminalLabel": "Terminal 1",
+        "floor": "F1",
+        "locationDescription": "Media Tower, Millennium hall at Terminal 1",
+        "categoryLabel": "Attractions · Artwork",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"2028\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"Beautiful World (Roman De Guili)\\\",\\\"categories.large\\\":\\\"공항즐기기\\\",\\\"categories.medium\\\":\\\"예술품\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F1\\\",\\\"locationDescription\\\":\\\"제1여객터미널 일반지역 중앙 밀레니엄홀 미디어타워\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"A\\\",\\\"dutyFreeFlag\\\":\\\"N\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"2028\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"Beautiful World (Roman De Guili)\\\",\\\"categories.large\\\":\\\"Attractions\\\",\\\"categories.medium\\\":\\\"Artwork\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F1\\\",\\\"locationDescription\\\":\\\"Media Tower, Millennium hall at Terminal 1\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"A\\\",\\\"dutyFreeFlag\\\":\\\"N\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "2027",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-103",
+        "sourceId": "2027",
+        "name": "Dreaming Space (오순미)",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F2",
+        "locationDescription": "제2여객터미널 2층 면세지역 239/240 게이트, 261/262 게이트 중앙 윙팁지역",
+        "categoryLabel": "공항즐기기 · 예술품",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "en": {
+        "id": "browse-264",
+        "sourceId": "2027",
+        "name": "Dreaming Space (Soon-mi Oh)",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F2",
+        "locationDescription": "Near Gate 239/240(2F), 261/262(2F), Terminal 2",
+        "categoryLabel": "Attractions · Artwork",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"2027\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"Dreaming Space (오순미)\\\",\\\"categories.large\\\":\\\"공항즐기기\\\",\\\"categories.medium\\\":\\\"예술품\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F2\\\",\\\"locationDescription\\\":\\\"제2여객터미널 2층 면세지역 239/240 게이트, 261/262 게이트 중앙 윙팁지역\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"2027\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"Dreaming Space (Soon-mi Oh)\\\",\\\"categories.large\\\":\\\"Attractions\\\",\\\"categories.medium\\\":\\\"Artwork\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F2\\\",\\\"locationDescription\\\":\\\"Near Gate 239/240(2F), 261/262(2F), Terminal 2\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "2026",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-105",
+        "sourceId": "2026",
+        "name": "Flying to the Future (김무기)",
+        "terminalId": "P01",
+        "terminalLabel": "제1여객터미널",
+        "floor": "F1",
+        "locationDescription": "제1여객터미널 진입로 부근",
+        "categoryLabel": "공항즐기기 · 예술품",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "en": {
+        "id": "browse-280",
+        "sourceId": "2026",
+        "name": "Flying to the Future (Mu-kee Kim)",
+        "terminalId": "P01",
+        "terminalLabel": "Terminal 1",
+        "floor": "F1",
+        "locationDescription": "Access way to Terminal 1",
+        "categoryLabel": "Attractions · Artwork",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"2026\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"Flying to the Future (김무기)\\\",\\\"categories.large\\\":\\\"공항즐기기\\\",\\\"categories.medium\\\":\\\"예술품\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F1\\\",\\\"locationDescription\\\":\\\"제1여객터미널 진입로 부근\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"N\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"2026\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"Flying to the Future (Mu-kee Kim)\\\",\\\"categories.large\\\":\\\"Attractions\\\",\\\"categories.medium\\\":\\\"Artwork\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F1\\\",\\\"locationDescription\\\":\\\"Access way to Terminal 1\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"N\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "2025",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-110",
+        "sourceId": "2025",
+        "name": "Hello (강희라)",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 일반지역 중앙부",
+        "categoryLabel": "공항즐기기 · 예술품",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "en": {
+        "id": "browse-336",
+        "sourceId": "2025",
+        "name": "Hello (Hee-ra Kang)",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Center of Public Area(3F), Terminal 2",
+        "categoryLabel": "Attractions · Artwork",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"2025\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"Hello (강희라)\\\",\\\"categories.large\\\":\\\"공항즐기기\\\",\\\"categories.medium\\\":\\\"예술품\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 일반지역 중앙부\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"N\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"2025\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"Hello (Hee-ra Kang)\\\",\\\"categories.large\\\":\\\"Attractions\\\",\\\"categories.medium\\\":\\\"Artwork\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Center of Public Area(3F), Terminal 2\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"N\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "541",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-111",
+        "sourceId": "541",
+        "name": "K-Culture Zone",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F4",
+        "locationDescription": "제2여객터미널 4층 에어사이드 환승편의시설 부근",
+        "categoryLabel": "공항즐기기 · 전시/체험",
+        "hoursText": "07:30 ~ 15:30"
+      },
+      "en": {
+        "id": "browse-390",
+        "sourceId": "541",
+        "name": "K-Culture Zone",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F4",
+        "locationDescription": "Near Transfer Lounge on 4F, Terminal 2",
+        "categoryLabel": "Attractions · Exhibition/Experience",
+        "hoursText": "07:30 ~ 15:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"541\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"K-Culture Zone\\\",\\\"categories.large\\\":\\\"공항즐기기\\\",\\\"categories.medium\\\":\\\"전시/체험\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F4\\\",\\\"locationDescription\\\":\\\"제2여객터미널 4층 에어사이드 환승편의시설 부근\\\",\\\"hoursText\\\":\\\"07:30 ~ 15:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"541\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"K-Culture Zone\\\",\\\"categories.large\\\":\\\"Attractions\\\",\\\"categories.medium\\\":\\\"Exhibition/Experience\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F4\\\",\\\"locationDescription\\\":\\\"Near Transfer Lounge on 4F, Terminal 2\\\",\\\"hoursText\\\":\\\"07:30 ~ 15:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "610",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-112",
+        "sourceId": "610",
+        "name": "K-Culture Zone",
+        "terminalId": "P01",
+        "terminalLabel": "제1여객터미널",
+        "floor": "F4",
+        "locationDescription": "제1여객터미널 4층 에어사이드 환승편의시설 부근",
+        "categoryLabel": "공항즐기기 · 전시/체험",
+        "hoursText": "07:30 ~ 15:30"
+      },
+      "en": {
+        "id": "browse-391",
+        "sourceId": "610",
+        "name": "K-Culture Zone",
+        "terminalId": "P01",
+        "terminalLabel": "Terminal 1",
+        "floor": "F4",
+        "locationDescription": "Near Transfer Lounge on 4F, Terminal 1",
+        "categoryLabel": "Attractions · Exhibition/Experience",
+        "hoursText": "07:30 ~ 15:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"610\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"K-Culture Zone\\\",\\\"categories.large\\\":\\\"공항즐기기\\\",\\\"categories.medium\\\":\\\"전시/체험\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F4\\\",\\\"locationDescription\\\":\\\"제1여객터미널 4층 에어사이드 환승편의시설 부근\\\",\\\"hoursText\\\":\\\"07:30 ~ 15:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"610\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"K-Culture Zone\\\",\\\"categories.large\\\":\\\"Attractions\\\",\\\"categories.medium\\\":\\\"Exhibition/Experience\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F4\\\",\\\"locationDescription\\\":\\\"Near Transfer Lounge on 4F, Terminal 1\\\",\\\"hoursText\\\":\\\"07:30 ~ 15:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "2036",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-113",
+        "sourceId": "2036",
+        "name": "K-컬처 뮤지엄(K-Culture Museum)",
+        "terminalId": "P01",
+        "terminalLabel": "제1여객터미널",
+        "floor": "B1",
+        "locationDescription": "제1교통센터 지하1층 동편",
+        "categoryLabel": "공항즐기기 · 문화예술시설",
+        "hoursText": "10:00 ~ 19:00"
+      },
+      "en": {
+        "id": "browse-389",
+        "sourceId": "2036",
+        "name": "K-Culture Museum",
+        "terminalId": "P01",
+        "terminalLabel": "Terminal 1",
+        "floor": "B1",
+        "locationDescription": "B1F, East of Transportation Center 1",
+        "categoryLabel": "Attractions",
+        "hoursText": "10:00 ~ 19:00"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"2036\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"K-컬처 뮤지엄(K-Culture Museum)\\\",\\\"categories.large\\\":\\\"공항즐기기\\\",\\\"categories.medium\\\":\\\"문화예술시설\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"B1\\\",\\\"locationDescription\\\":\\\"제1교통센터 지하1층 동편\\\",\\\"hoursText\\\":\\\"10:00 ~ 19:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"N\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"2036\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"K-Culture Museum\\\",\\\"categories.large\\\":\\\"Attractions\\\",\\\"categories.medium\\\":null,\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"B1\\\",\\\"locationDescription\\\":\\\"B1F, East of Transportation Center 1\\\",\\\"hoursText\\\":\\\"10:00 ~ 19:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"N\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "2236",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-121",
+        "sourceId": "2236",
+        "name": "Korea Jazz(존원)",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 225번 게이트 앞",
+        "categoryLabel": "공항즐기기 · 예술품",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "en": {
+        "id": "browse-428",
+        "sourceId": "2236",
+        "name": "Korea Jazz(JONONE)",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Near Gate 225 on 3F, Terminal 2",
+        "categoryLabel": "Attractions · Artwork",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"2236\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"Korea Jazz(존원)\\\",\\\"categories.large\\\":\\\"공항즐기기\\\",\\\"categories.medium\\\":\\\"예술품\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 225번 게이트 앞\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"2236\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"Korea Jazz(JONONE)\\\",\\\"categories.large\\\":\\\"Attractions\\\",\\\"categories.medium\\\":\\\"Artwork\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 225 on 3F, Terminal 2\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "2237",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-122",
+        "sourceId": "2237",
+        "name": "Korea Jazz(존원)_아트 파빌리온",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 208번~230번 게이트 부근",
+        "categoryLabel": "공항즐기기 · 예술품",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "en": {
+        "id": "browse-429",
+        "sourceId": "2237",
+        "name": "Korea Jazz(JONONE)_Art Pavilion",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Between Gate 208 and 230(3F), Terminal 2",
+        "categoryLabel": "Attractions · Artwork",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"2237\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"Korea Jazz(존원)_아트 파빌리온\\\",\\\"categories.large\\\":\\\"공항즐기기\\\",\\\"categories.medium\\\":\\\"예술품\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 208번~230번 게이트 부근\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"2237\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"Korea Jazz(JONONE)_Art Pavilion\\\",\\\"categories.large\\\":\\\"Attractions\\\",\\\"categories.medium\\\":\\\"Artwork\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Between Gate 208 and 230(3F), Terminal 2\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "2492",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-130",
+        "sourceId": "2492",
+        "name": "New born(아니쉬 카푸어)",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 일반지역 3층(출국층) 체크인카운터 F, G 사이",
+        "categoryLabel": "공항즐기기 · 예술품",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "en": {
+        "id": "browse-515",
+        "sourceId": "2492",
+        "name": "New born(Anish Kapoor)",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Terminal 2, 3rd Floor(Departure Level), between Check-in Counters F and G",
+        "categoryLabel": "Attractions · Artwork",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"2492\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"New born(아니쉬 카푸어)\\\",\\\"categories.large\\\":\\\"공항즐기기\\\",\\\"categories.medium\\\":\\\"예술품\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 일반지역 3층(출국층) 체크인카운터 F, G 사이\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"N\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"2492\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"New born(Anish Kapoor)\\\",\\\"categories.large\\\":\\\"Attractions\\\",\\\"categories.medium\\\":\\\"Artwork\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Terminal 2, 3rd Floor(Departure Level), between Check-in Counters F and G\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"N\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "2329",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-131",
+        "sourceId": "2329",
+        "name": "PHO",
+        "terminalId": "P01",
+        "terminalLabel": "제1여객터미널",
+        "floor": "B1",
+        "locationDescription": "인천국제공항 제1여객터미널 지하 1층 교통센터 중앙",
+        "categoryLabel": "식・음료 · 아시안",
+        "hoursText": "06:00 ~ 22:00"
+      },
+      "en": {
+        "id": "browse-532",
+        "sourceId": "2329",
+        "name": "PHO",
+        "terminalId": "P01",
+        "terminalLabel": "Terminal 1",
+        "floor": "B1",
+        "locationDescription": "Center of the Traffic Center, B1, Terminal 1, Incheon International Airport",
+        "categoryLabel": "Restaurants · Asian",
+        "hoursText": "06:00 ~ 22:00"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"2329\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"PHO\\\",\\\"categories.large\\\":\\\"식・음료\\\",\\\"categories.medium\\\":\\\"아시안\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"B1\\\",\\\"locationDescription\\\":\\\"인천국제공항 제1여객터미널 지하 1층 교통센터 중앙\\\",\\\"hoursText\\\":\\\"06:00 ~ 22:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"N\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"2329\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"PHO\\\",\\\"categories.large\\\":\\\"Restaurants\\\",\\\"categories.medium\\\":\\\"Asian\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"B1\\\",\\\"locationDescription\\\":\\\"Center of the Traffic Center, B1, Terminal 1, Incheon International Airport\\\",\\\"hoursText\\\":\\\"06:00 ~ 22:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"N\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "2002",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-144",
+        "sourceId": "2002",
+        "name": "The Eternal Sky",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제 2여객터미널 3층 출국장(B, L 체크인 카운터)",
+        "categoryLabel": "공항즐기기 · 예술품",
+        "hoursText": "08:10 ~ 21:40"
+      },
+      "en": {
+        "id": "browse-700",
+        "sourceId": "2002",
+        "name": "The Eternal Sky",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Departure Hall, 3rd Floor, Terminal 2",
+        "categoryLabel": "Attractions · Artwork",
+        "hoursText": "08:10 ~ 21:40"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"2002\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"The Eternal Sky\\\",\\\"categories.large\\\":\\\"공항즐기기\\\",\\\"categories.medium\\\":\\\"예술품\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제 2여객터미널 3층 출국장(B, L 체크인 카운터)\\\",\\\"hoursText\\\":\\\"08:10 ~ 21:40\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"N\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"2002\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"The Eternal Sky\\\",\\\"categories.large\\\":\\\"Attractions\\\",\\\"categories.medium\\\":\\\"Artwork\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Departure Hall, 3rd Floor, Terminal 2\\\",\\\"hoursText\\\":\\\"08:10 ~ 21:40\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"N\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "2022",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-146",
+        "sourceId": "2022",
+        "name": "Universe (박제성)",
+        "terminalId": "P02",
+        "terminalLabel": "탑승동",
+        "floor": "F3",
+        "locationDescription": "탑승동 3층 중앙부",
+        "categoryLabel": "공항즐기기 · 예술품",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "en": {
+        "id": "browse-853",
+        "sourceId": "2022",
+        "name": "Universe (Je Baak)",
+        "terminalId": "P02",
+        "terminalLabel": "Concourse",
+        "floor": "F3",
+        "locationDescription": "Center of Concourse(3F)",
+        "categoryLabel": "Attractions · Artwork",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"2022\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"Universe (박제성)\\\",\\\"categories.large\\\":\\\"공항즐기기\\\",\\\"categories.medium\\\":\\\"예술품\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P02\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"탑승동 3층 중앙부\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"2022\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"Universe (Je Baak)\\\",\\\"categories.large\\\":\\\"Attractions\\\",\\\"categories.medium\\\":\\\"Artwork\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P02\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Center of Concourse(3F)\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "2021",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-147",
+        "sourceId": "2021",
+        "name": "We All Dream of Flying (Universal Everything)",
+        "terminalId": "P02",
+        "terminalLabel": "탑승동",
+        "floor": "F3",
+        "locationDescription": "탑승동 3층 중앙부",
+        "categoryLabel": "공항즐기기 · 예술품",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "en": {
+        "id": "browse-859",
+        "sourceId": "2021",
+        "name": "We All Dream of Flying (Universal Everything)",
+        "terminalId": "P02",
+        "terminalLabel": "Concourse",
+        "floor": "F3",
+        "locationDescription": "Center of Concourse (3F)",
+        "categoryLabel": "Attractions · Artwork",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"2021\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"We All Dream of Flying (Universal Everything)\\\",\\\"categories.large\\\":\\\"공항즐기기\\\",\\\"categories.medium\\\":\\\"예술품\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P02\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"탑승동 3층 중앙부\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"2021\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"We All Dream of Flying (Universal Everything)\\\",\\\"categories.large\\\":\\\"Attractions\\\",\\\"categories.medium\\\":\\\"Artwork\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P02\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Center of Concourse (3F)\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "2020",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-148",
+        "sourceId": "2020",
+        "name": "Wings of Vision (지니 서)",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 Gate 232~247 / 254~267 부근",
+        "categoryLabel": "공항즐기기 · 예술품",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "en": {
+        "id": "browse-863",
+        "sourceId": "2020",
+        "name": "Wings of Vision (Jinnie Seo)_Art Pavilion",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Between Gate 232 and 247 / 254 and 267(3F), Terminal 2",
+        "categoryLabel": "Attractions · Artwork",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"2020\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"Wings of Vision (지니 서)\\\",\\\"categories.large\\\":\\\"공항즐기기\\\",\\\"categories.medium\\\":\\\"예술품\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 Gate 232~247 / 254~267 부근\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"2020\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"Wings of Vision (Jinnie Seo)_Art Pavilion\\\",\\\"categories.large\\\":\\\"Attractions\\\",\\\"categories.medium\\\":\\\"Artwork\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Between Gate 232 and 247 / 254 and 267(3F), Terminal 2\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "106",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-149",
+        "sourceId": "106",
+        "name": "[경복궁면세점] 스케쳐스",
+        "terminalId": "P01",
+        "terminalLabel": "제1여객터미널",
+        "floor": "F3",
+        "locationDescription": "제1여객터미널 3층 면세지역 12번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 경복궁면세점 · 복합",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-961",
+        "sourceId": "106",
+        "name": "[KyungBokKung DFS] SKECHERS",
+        "terminalId": "P01",
+        "terminalLabel": "Terminal 1",
+        "floor": "F3",
+        "locationDescription": "Near Gate 12 on 3F, Terminal 1",
+        "categoryLabel": "Duty Free Shopping · KYUNG BOK KUNG duty free · Complexed Store",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"106\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[경복궁면세점] 스케쳐스\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"경복궁면세점\\\",\\\"categories.small\\\":\\\"복합\\\",\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제1여객터미널 3층 면세지역 12번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"106\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[KyungBokKung DFS] SKECHERS\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"KYUNG BOK KUNG duty free\\\",\\\"categories.small\\\":\\\"Complexed Store\\\",\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 12 on 3F, Terminal 1\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "572",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-150",
+        "sourceId": "572",
+        "name": "[경복궁면세점] 유아/기념품/시가(담배)",
+        "terminalId": "P01",
+        "terminalLabel": "제1여객터미널",
+        "floor": "F3",
+        "locationDescription": "제1여객터미널 3층 면세지역 14번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 경복궁면세점 · 유아·기념품",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-959",
+        "sourceId": "572",
+        "name": "[KyungBokKung DFS] KIDS/GIFT/Cigar",
+        "terminalId": "P01",
+        "terminalLabel": "Terminal 1",
+        "floor": "F3",
+        "locationDescription": "Near Gate 14 on 3F, Terminal 1",
+        "categoryLabel": "Duty Free Shopping · KYUNG BOK KUNG duty free · Child",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"572\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[경복궁면세점] 유아/기념품/시가(담배)\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"경복궁면세점\\\",\\\"categories.small\\\":\\\"유아·기념품\\\",\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제1여객터미널 3층 면세지역 14번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"572\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[KyungBokKung DFS] KIDS/GIFT/Cigar\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"KYUNG BOK KUNG duty free\\\",\\\"categories.small\\\":\\\"Child\\\",\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 14 on 3F, Terminal 1\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "1055",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-151",
+        "sourceId": "1055",
+        "name": "[경복궁면세점] 입국장면세점",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F1",
+        "locationDescription": "제2여객터미널 1층 11번 수하물수취대 부근",
+        "categoryLabel": "면세점쇼핑 · 경복궁면세점 · 복합",
+        "hoursText": "00:00 ~ 24:00"
+      },
+      "en": {
+        "id": "browse-956",
+        "sourceId": "1055",
+        "name": "[KyungBokKung DFS] Arrival DutyFree",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F1",
+        "locationDescription": "In the vicinity of baggage carousels #11 in the Baggage Claim Area on the 1st floor of Terminal 2",
+        "categoryLabel": "Duty Free Shopping · KYUNG BOK KUNG duty free · Complexed Store",
+        "hoursText": "00:00 ~ 24:00"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"1055\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[경복궁면세점] 입국장면세점\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"경복궁면세점\\\",\\\"categories.small\\\":\\\"복합\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F1\\\",\\\"locationDescription\\\":\\\"제2여객터미널 1층 11번 수하물수취대 부근\\\",\\\"hoursText\\\":\\\"00:00 ~ 24:00\\\",\\\"arrivalOrDeparture\\\":\\\"A\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"1055\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[KyungBokKung DFS] Arrival DutyFree\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"KYUNG BOK KUNG duty free\\\",\\\"categories.small\\\":\\\"Complexed Store\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F1\\\",\\\"locationDescription\\\":\\\"In the vicinity of baggage carousels #11 in the Baggage Claim Area on the 1st floor of Terminal 2\\\",\\\"hoursText\\\":\\\"00:00 ~ 24:00\\\",\\\"arrivalOrDeparture\\\":\\\"A\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "252",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-152",
+        "sourceId": "252",
+        "name": "[경복궁면세점] 입국장면세점",
+        "terminalId": "P01",
+        "terminalLabel": "제1여객터미널",
+        "floor": "F1",
+        "locationDescription": "제1여객터미널 1층 6,7번 수하물수취대 부근",
+        "categoryLabel": "면세점쇼핑 · 경복궁면세점 · 복합",
+        "hoursText": "00:00 ~ 24:00"
+      },
+      "en": {
+        "id": "browse-957",
+        "sourceId": "252",
+        "name": "[KyungBokKung DFS] Arrival DutyFree",
+        "terminalId": "P01",
+        "terminalLabel": "Terminal 1",
+        "floor": "F1",
+        "locationDescription": "Nearby baggage carousels #6 and #7 in the Baggage Claim Area of the 1st floor of Terminal 1",
+        "categoryLabel": "Duty Free Shopping · KYUNG BOK KUNG duty free · Complexed Store",
+        "hoursText": "00:00 ~ 24:00"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"252\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[경복궁면세점] 입국장면세점\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"경복궁면세점\\\",\\\"categories.small\\\":\\\"복합\\\",\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F1\\\",\\\"locationDescription\\\":\\\"제1여객터미널 1층 6,7번 수하물수취대 부근\\\",\\\"hoursText\\\":\\\"00:00 ~ 24:00\\\",\\\"arrivalOrDeparture\\\":\\\"A\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"252\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[KyungBokKung DFS] Arrival DutyFree\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"KYUNG BOK KUNG duty free\\\",\\\"categories.small\\\":\\\"Complexed Store\\\",\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F1\\\",\\\"locationDescription\\\":\\\"Nearby baggage carousels #6 and #7 in the Baggage Claim Area of the 1st floor of Terminal 1\\\",\\\"hoursText\\\":\\\"00:00 ~ 24:00\\\",\\\"arrivalOrDeparture\\\":\\\"A\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "385",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-153",
+        "sourceId": "385",
+        "name": "[경복궁면세점] 입국장면세점",
+        "terminalId": "P01",
+        "terminalLabel": "제1여객터미널",
+        "floor": "F1",
+        "locationDescription": "제1여객터미널 1층 16,17번 수하물수취대 부근",
+        "categoryLabel": "면세점쇼핑 · 경복궁면세점 · 복합",
+        "hoursText": "00:00 ~ 24:00"
+      },
+      "en": {
+        "id": "browse-958",
+        "sourceId": "385",
+        "name": "[KyungBokKung DFS] Arrival DutyFree",
+        "terminalId": "P01",
+        "terminalLabel": "Terminal 1",
+        "floor": "F1",
+        "locationDescription": "Nearby baggage carousels #16 and #17 in the Baggage Claim Area on the 1st floor of Terminal 1",
+        "categoryLabel": "Duty Free Shopping · KYUNG BOK KUNG duty free · Complexed Store",
+        "hoursText": "00:00 ~ 24:00"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"385\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[경복궁면세점] 입국장면세점\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"경복궁면세점\\\",\\\"categories.small\\\":\\\"복합\\\",\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F1\\\",\\\"locationDescription\\\":\\\"제1여객터미널 1층 16,17번 수하물수취대 부근\\\",\\\"hoursText\\\":\\\"00:00 ~ 24:00\\\",\\\"arrivalOrDeparture\\\":\\\"A\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"385\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[KyungBokKung DFS] Arrival DutyFree\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"KYUNG BOK KUNG duty free\\\",\\\"categories.small\\\":\\\"Complexed Store\\\",\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F1\\\",\\\"locationDescription\\\":\\\"Nearby baggage carousels #16 and #17 in the Baggage Claim Area on the 1st floor of Terminal 1\\\",\\\"hoursText\\\":\\\"00:00 ~ 24:00\\\",\\\"arrivalOrDeparture\\\":\\\"A\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "3311",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-154",
+        "sourceId": "3311",
+        "name": "[경복궁면세점] 전품목",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 277번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 경복궁면세점 · 복합",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-952",
+        "sourceId": "3311",
+        "name": "[KyungBokKung DFS] ALL ITEMS",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Near Gate 277 on 3F, Terminal 2",
+        "categoryLabel": "Duty Free Shopping · KYUNG BOK KUNG duty free · Complexed Store",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"3311\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[경복궁면세점] 전품목\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"경복궁면세점\\\",\\\"categories.small\\\":\\\"복합\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 277번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"3311\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[KyungBokKung DFS] ALL ITEMS\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"KYUNG BOK KUNG duty free\\\",\\\"categories.small\\\":\\\"Complexed Store\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 277 on 3F, Terminal 2\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "615",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-155",
+        "sourceId": "615",
+        "name": "[경복궁면세점] 전품목",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 254번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 경복궁면세점 · 복합",
+        "hoursText": "05:00 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-953",
+        "sourceId": "615",
+        "name": "[KyungBokKung DFS] ALL ITEMS",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Near Gate 254 on 3F, Terminal 2",
+        "categoryLabel": "Duty Free Shopping · KYUNG BOK KUNG duty free · Complexed Store",
+        "hoursText": "05:00 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"615\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[경복궁면세점] 전품목\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"경복궁면세점\\\",\\\"categories.small\\\":\\\"복합\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 254번 게이트 부근\\\",\\\"hoursText\\\":\\\"05:00 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"615\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[KyungBokKung DFS] ALL ITEMS\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"KYUNG BOK KUNG duty free\\\",\\\"categories.small\\\":\\\"Complexed Store\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 254 on 3F, Terminal 2\\\",\\\"hoursText\\\":\\\"05:00 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "2325",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-156",
+        "sourceId": "2325",
+        "name": "[경복궁면세점] 전품목",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 274번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 경복궁면세점 · 복합",
+        "hoursText": "05:00 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-954",
+        "sourceId": "2325",
+        "name": "[KyungBokKung DFS] ALL ITEMS",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Near Gate 274 on 3F, Terminal 2",
+        "categoryLabel": "Duty Free Shopping · KYUNG BOK KUNG duty free · Complexed Store",
+        "hoursText": "05:00 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"2325\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[경복궁면세점] 전품목\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"경복궁면세점\\\",\\\"categories.small\\\":\\\"복합\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 274번 게이트 부근\\\",\\\"hoursText\\\":\\\"05:00 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"2325\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[KyungBokKung DFS] ALL ITEMS\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"KYUNG BOK KUNG duty free\\\",\\\"categories.small\\\":\\\"Complexed Store\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 274 on 3F, Terminal 2\\\",\\\"hoursText\\\":\\\"05:00 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "192",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-157",
+        "sourceId": "192",
+        "name": "[경복궁면세점] 전품목",
+        "terminalId": "P01",
+        "terminalLabel": "제1여객터미널",
+        "floor": "F3",
+        "locationDescription": "제1여객터미널 3층 면세지역 12번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 경복궁면세점 · 향수·화장품",
+        "hoursText": "00:00 ~ 24:00"
+      },
+      "en": {
+        "id": "browse-955",
+        "sourceId": "192",
+        "name": "[KyungBokKung DFS] ALL ITEMS",
+        "terminalId": "P01",
+        "terminalLabel": "Terminal 1",
+        "floor": "F3",
+        "locationDescription": "Near Gate 12 on 3F, Terminal 1",
+        "categoryLabel": "Duty Free Shopping · KYUNG BOK KUNG duty free · Cosmetics/Perfumes",
+        "hoursText": "00:00 ~ 24:00"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"192\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[경복궁면세점] 전품목\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"경복궁면세점\\\",\\\"categories.small\\\":\\\"향수·화장품\\\",\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제1여객터미널 3층 면세지역 12번 게이트 부근\\\",\\\"hoursText\\\":\\\"00:00 ~ 24:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"192\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[KyungBokKung DFS] ALL ITEMS\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"KYUNG BOK KUNG duty free\\\",\\\"categories.small\\\":\\\"Cosmetics/Perfumes\\\",\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 12 on 3F, Terminal 1\\\",\\\"hoursText\\\":\\\"00:00 ~ 24:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "30",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-158",
+        "sourceId": "30",
+        "name": "[경복궁면세점] 주류/담배/식품",
+        "terminalId": "P01",
+        "terminalLabel": "제1여객터미널",
+        "floor": "F3",
+        "locationDescription": "제1 여객터미널 3층 면세지역 28번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 경복궁면세점 · 주류·담배",
+        "hoursText": "00:00 ~ 24:00"
+      },
+      "en": {
+        "id": "browse-960",
+        "sourceId": "30",
+        "name": "[KyungBokKung DFS] LIQUOR/TOBACCO/FOODS",
+        "terminalId": "P01",
+        "terminalLabel": "Terminal 1",
+        "floor": "F3",
+        "locationDescription": "Near Gate 28 on 3F, Terminal 1",
+        "categoryLabel": "Duty Free Shopping · KYUNG BOK KUNG duty free · Liquor/Tobacco",
+        "hoursText": "00:00 ~ 24:00"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"30\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[경복궁면세점] 주류/담배/식품\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"경복궁면세점\\\",\\\"categories.small\\\":\\\"주류·담배\\\",\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제1 여객터미널 3층 면세지역 28번 게이트 부근\\\",\\\"hoursText\\\":\\\"00:00 ~ 24:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"30\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[KyungBokKung DFS] LIQUOR/TOBACCO/FOODS\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"KYUNG BOK KUNG duty free\\\",\\\"categories.small\\\":\\\"Liquor/Tobacco\\\",\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 28 on 3F, Terminal 1\\\",\\\"hoursText\\\":\\\"00:00 ~ 24:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "3402",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-159",
+        "sourceId": "3402",
+        "name": "[롯데면세점] SK-II",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 252번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 롯데면세점 · 향수·화장품",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-984",
+        "sourceId": "3402",
+        "name": "[LOTTE Duty Free] SK-II",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Near Gate 252 on 3F, Terminal 2",
+        "categoryLabel": "Duty Free Shopping · Hotel Lotte Lotte Duty Free · Cosmetics/Perfumes",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"3402\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[롯데면세점] SK-II\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"롯데면세점\\\",\\\"categories.small\\\":\\\"향수·화장품\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 252번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"3402\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[LOTTE Duty Free] SK-II\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"Hotel Lotte Lotte Duty Free\\\",\\\"categories.small\\\":\\\"Cosmetics/Perfumes\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 252 on 3F, Terminal 2\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "3364",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-160",
+        "sourceId": "3364",
+        "name": "[롯데면세점] 겔랑",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 251번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 롯데면세점 · 향수·화장품",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-973",
+        "sourceId": "3364",
+        "name": "[LOTTE Duty Free] Guerlain",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Near Gate 251 on 3F, Terminal 2",
+        "categoryLabel": "Duty Free Shopping · Hotel Lotte Lotte Duty Free · Cosmetics/Perfumes",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"3364\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[롯데면세점] 겔랑\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"롯데면세점\\\",\\\"categories.small\\\":\\\"향수·화장품\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 251번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"3364\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[LOTTE Duty Free] Guerlain\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"Hotel Lotte Lotte Duty Free\\\",\\\"categories.small\\\":\\\"Cosmetics/Perfumes\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 251 on 3F, Terminal 2\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "3407",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-161",
+        "sourceId": "3407",
+        "name": "[롯데면세점] 글렌 모렌지",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 249번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 롯데면세점 · 주류·담배",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-972",
+        "sourceId": "3407",
+        "name": "[LOTTE Duty Free] GLENMORANGIE",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Near Gate 249 on 3F, Terminal 2",
+        "categoryLabel": "Duty Free Shopping · Hotel Lotte Lotte Duty Free · Liquor/Tobacco",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"3407\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[롯데면세점] 글렌 모렌지\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"롯데면세점\\\",\\\"categories.small\\\":\\\"주류·담배\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 249번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"3407\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[LOTTE Duty Free] GLENMORANGIE\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"Hotel Lotte Lotte Duty Free\\\",\\\"categories.small\\\":\\\"Liquor/Tobacco\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 249 on 3F, Terminal 2\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "3408",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-162",
+        "sourceId": "3408",
+        "name": "[롯데면세점] 글렌피딕",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 249번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 롯데면세점 · 주류·담배",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-971",
+        "sourceId": "3408",
+        "name": "[LOTTE Duty Free] GLENFIDDICH",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Near Gate 249 on 3F, Terminal 2",
+        "categoryLabel": "Duty Free Shopping · Hotel Lotte Lotte Duty Free · Liquor/Tobacco",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"3408\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[롯데면세점] 글렌피딕\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"롯데면세점\\\",\\\"categories.small\\\":\\\"주류·담배\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 249번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"3408\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[LOTTE Duty Free] GLENFIDDICH\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"Hotel Lotte Lotte Duty Free\\\",\\\"categories.small\\\":\\\"Liquor/Tobacco\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 249 on 3F, Terminal 2\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "3405",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-163",
+        "sourceId": "3405",
+        "name": "[롯데면세점] 디올",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 252번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 롯데면세점 · 향수·화장품",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-969",
+        "sourceId": "3405",
+        "name": "[LOTTE Duty Free] DIOR",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Near Gate 252 on 3F, Terminal 2",
+        "categoryLabel": "Duty Free Shopping · Hotel Lotte Lotte Duty Free · Cosmetics/Perfumes",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"3405\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[롯데면세점] 디올\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"롯데면세점\\\",\\\"categories.small\\\":\\\"향수·화장품\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 252번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"3405\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[LOTTE Duty Free] DIOR\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"Hotel Lotte Lotte Duty Free\\\",\\\"categories.small\\\":\\\"Cosmetics/Perfumes\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 252 on 3F, Terminal 2\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "3403",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-164",
+        "sourceId": "3403",
+        "name": "[롯데면세점] 랑콤",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 252번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 롯데면세점 · 향수·화장품",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-977",
+        "sourceId": "3403",
+        "name": "[LOTTE Duty Free] LANCOME",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Near Gate 252 on 3F, Terminal 2",
+        "categoryLabel": "Duty Free Shopping · Hotel Lotte Lotte Duty Free · Cosmetics/Perfumes",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"3403\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[롯데면세점] 랑콤\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"롯데면세점\\\",\\\"categories.small\\\":\\\"향수·화장품\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 252번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"3403\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[LOTTE Duty Free] LANCOME\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"Hotel Lotte Lotte Duty Free\\\",\\\"categories.small\\\":\\\"Cosmetics/Perfumes\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 252 on 3F, Terminal 2\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "3411",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-165",
+        "sourceId": "3411",
+        "name": "[롯데면세점] 로얄 살루트",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 249번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 롯데면세점 · 주류·담배",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-983",
+        "sourceId": "3411",
+        "name": "[LOTTE Duty Free] ROYAL SALUTE",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Near Gate 249 on 3F, Terminal 2",
+        "categoryLabel": "Duty Free Shopping · Hotel Lotte Lotte Duty Free · Liquor/Tobacco",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"3411\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[롯데면세점] 로얄 살루트\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"롯데면세점\\\",\\\"categories.small\\\":\\\"주류·담배\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 249번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"3411\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[LOTTE Duty Free] ROYAL SALUTE\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"Hotel Lotte Lotte Duty Free\\\",\\\"categories.small\\\":\\\"Liquor/Tobacco\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 249 on 3F, Terminal 2\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "3412",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-166",
+        "sourceId": "3412",
+        "name": "[롯데면세점] 발렌타인",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 249번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 롯데면세점 · 주류·담배",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-962",
+        "sourceId": "3412",
+        "name": "[LOTTE Duty Free] BALLANTINES",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Near Gate 249 on 3F, Terminal 2",
+        "categoryLabel": "Duty Free Shopping · Hotel Lotte Lotte Duty Free · Liquor/Tobacco",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"3412\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[롯데면세점] 발렌타인\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"롯데면세점\\\",\\\"categories.small\\\":\\\"주류·담배\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 249번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"3412\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[LOTTE Duty Free] BALLANTINES\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"Hotel Lotte Lotte Duty Free\\\",\\\"categories.small\\\":\\\"Liquor/Tobacco\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 249 on 3F, Terminal 2\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "3406",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-167",
+        "sourceId": "3406",
+        "name": "[롯데면세점] 샤넬",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 252번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 롯데면세점 · 향수·화장품",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-963",
+        "sourceId": "3406",
+        "name": "[LOTTE Duty Free] CHANEL",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Near Gate 252 on 3F, Terminal 2",
+        "categoryLabel": "Duty Free Shopping · Hotel Lotte Lotte Duty Free · Cosmetics/Perfumes",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"3406\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[롯데면세점] 샤넬\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"롯데면세점\\\",\\\"categories.small\\\":\\\"향수·화장품\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 252번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"3406\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[LOTTE Duty Free] CHANEL\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"Hotel Lotte Lotte Duty Free\\\",\\\"categories.small\\\":\\\"Cosmetics/Perfumes\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 252 on 3F, Terminal 2\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "3401",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-168",
+        "sourceId": "3401",
+        "name": "[롯데면세점] 설화수",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 252번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 롯데면세점 · 향수·화장품",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-985",
+        "sourceId": "3401",
+        "name": "[LOTTE Duty Free] SULWHASOO",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Near Gate 252 on 3F, Terminal 2",
+        "categoryLabel": "Duty Free Shopping · Hotel Lotte Lotte Duty Free · Cosmetics/Perfumes",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"3401\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[롯데면세점] 설화수\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"롯데면세점\\\",\\\"categories.small\\\":\\\"향수·화장품\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 252번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"3401\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[LOTTE Duty Free] SULWHASOO\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"Hotel Lotte Lotte Duty Free\\\",\\\"categories.small\\\":\\\"Cosmetics/Perfumes\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 252 on 3F, Terminal 2\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "3404",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-169",
+        "sourceId": "3404",
+        "name": "[롯데면세점] 에스티 로더",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 252번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 롯데면세점 · 향수·화장품",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-970",
+        "sourceId": "3404",
+        "name": "[LOTTE Duty Free] E.LAUDER",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Near Gate 252 on 3F, Terminal 2",
+        "categoryLabel": "Duty Free Shopping · Hotel Lotte Lotte Duty Free · Cosmetics/Perfumes",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"3404\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[롯데면세점] 에스티 로더\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"롯데면세점\\\",\\\"categories.small\\\":\\\"향수·화장품\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 252번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"3404\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[LOTTE Duty Free] E.LAUDER\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"Hotel Lotte Lotte Duty Free\\\",\\\"categories.small\\\":\\\"Cosmetics/Perfumes\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 252 on 3F, Terminal 2\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "269",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-170",
+        "sourceId": "269",
+        "name": "[롯데면세점] 정관장",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 250번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 롯데면세점 · 포장식품",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-976",
+        "sourceId": "269",
+        "name": "[LOTTE Duty Free] JUNG KWAN JANG",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Near Gate 250 on 3F, Terminal 2",
+        "categoryLabel": "Duty Free Shopping · Hotel Lotte Lotte Duty Free · Packaged Foods",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"269\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[롯데면세점] 정관장\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"롯데면세점\\\",\\\"categories.small\\\":\\\"포장식품\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 250번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"269\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[LOTTE Duty Free] JUNG KWAN JANG\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"Hotel Lotte Lotte Duty Free\\\",\\\"categories.small\\\":\\\"Packaged Foods\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 250 on 3F, Terminal 2\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "3410",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-171",
+        "sourceId": "3410",
+        "name": "[롯데면세점] 조니 워커",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 249번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 롯데면세점 · 주류·담배",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-975",
+        "sourceId": "3410",
+        "name": "[LOTTE Duty Free] JOHNNIE WALKER",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Near Gate 249 on 3F, Terminal 2",
+        "categoryLabel": "Duty Free Shopping · Hotel Lotte Lotte Duty Free · Liquor/Tobacco",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"3410\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[롯데면세점] 조니 워커\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"롯데면세점\\\",\\\"categories.small\\\":\\\"주류·담배\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 249번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"3410\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[LOTTE Duty Free] JOHNNIE WALKER\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"Hotel Lotte Lotte Duty Free\\\",\\\"categories.small\\\":\\\"Liquor/Tobacco\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 249 on 3F, Terminal 2\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "3362",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-172",
+        "sourceId": "3362",
+        "name": "[롯데면세점] 주류/담배",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 249번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 롯데면세점 · 주류·담배",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "en": {
+        "id": "browse-978",
+        "sourceId": "3362",
+        "name": "[LOTTE Duty Free] LIQUOR/TOBACCO",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Near Gate 249 on 3F, Terminal 2",
+        "categoryLabel": "Duty Free Shopping · Hotel Lotte Lotte Duty Free · Liquor/Tobacco",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"3362\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[롯데면세점] 주류/담배\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"롯데면세점\\\",\\\"categories.small\\\":\\\"주류·담배\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 249번 게이트 부근\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"3362\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[LOTTE Duty Free] LIQUOR/TOBACCO\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"Hotel Lotte Lotte Duty Free\\\",\\\"categories.small\\\":\\\"Liquor/Tobacco\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 249 on 3F, Terminal 2\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "3357",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-173",
+        "sourceId": "3357",
+        "name": "[롯데면세점] 주류/담배/식품",
+        "terminalId": "P01",
+        "terminalLabel": "제1여객터미널",
+        "floor": "F3",
+        "locationDescription": "제1여객터미널 3층 면세지역 42번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 롯데면세점 · 주류·담배",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "en": {
+        "id": "browse-979",
+        "sourceId": "3357",
+        "name": "[LOTTE Duty Free] LIQUOR/TOBACCO/FOODS",
+        "terminalId": "P01",
+        "terminalLabel": "Terminal 1",
+        "floor": "F3",
+        "locationDescription": "Near Gate 42 on 3F, Terminal 1",
+        "categoryLabel": "Duty Free Shopping · Hotel Lotte Lotte Duty Free · Liquor/Tobacco",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"3357\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[롯데면세점] 주류/담배/식품\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"롯데면세점\\\",\\\"categories.small\\\":\\\"주류·담배\\\",\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제1여객터미널 3층 면세지역 42번 게이트 부근\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"3357\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[LOTTE Duty Free] LIQUOR/TOBACCO/FOODS\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"Hotel Lotte Lotte Duty Free\\\",\\\"categories.small\\\":\\\"Liquor/Tobacco\\\",\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 42 on 3F, Terminal 1\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "641",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-174",
+        "sourceId": "641",
+        "name": "[롯데면세점] 주류/담배/식품",
+        "terminalId": "P01",
+        "terminalLabel": "제1여객터미널",
+        "floor": "F3",
+        "locationDescription": "제1여객터미널 3층 면세지역 35번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 롯데면세점 · 주류·담배",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-980",
+        "sourceId": "641",
+        "name": "[LOTTE Duty Free] LIQUOR/TOBACCO/FOODS",
+        "terminalId": "P01",
+        "terminalLabel": "Terminal 1",
+        "floor": "F3",
+        "locationDescription": "Near Gate 35 on 3F, Terminal 1",
+        "categoryLabel": "Duty Free Shopping · Hotel Lotte Lotte Duty Free · Liquor/Tobacco",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"641\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[롯데면세점] 주류/담배/식품\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"롯데면세점\\\",\\\"categories.small\\\":\\\"주류·담배\\\",\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제1여객터미널 3층 면세지역 35번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"641\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[LOTTE Duty Free] LIQUOR/TOBACCO/FOODS\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"Hotel Lotte Lotte Duty Free\\\",\\\"categories.small\\\":\\\"Liquor/Tobacco\\\",\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 35 on 3F, Terminal 1\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "3360",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-175",
+        "sourceId": "3360",
+        "name": "[롯데면세점] 주류/담배/식품",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 243번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 롯데면세점 · 주류·담배",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-981",
+        "sourceId": "3360",
+        "name": "[LOTTE Duty Free] LIQUOR/TOBACCO/FOODS",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Near Gate 243 on 3F, Terminal 2",
+        "categoryLabel": "Duty Free Shopping · Hotel Lotte Lotte Duty Free · Liquor/Tobacco",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"3360\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[롯데면세점] 주류/담배/식품\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"롯데면세점\\\",\\\"categories.small\\\":\\\"주류·담배\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 243번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"3360\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[LOTTE Duty Free] LIQUOR/TOBACCO/FOODS\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"Hotel Lotte Lotte Duty Free\\\",\\\"categories.small\\\":\\\"Liquor/Tobacco\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 243 on 3F, Terminal 2\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "3356",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-176",
+        "sourceId": "3356",
+        "name": "[롯데면세점] 주류/담배/식품",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 248번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 롯데면세점 · 주류·담배",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "en": {
+        "id": "browse-982",
+        "sourceId": "3356",
+        "name": "[LOTTE Duty Free] LIQUOR/TOBACCO/FOODS",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Near Gate 248 on 3F, Terminal 2",
+        "categoryLabel": "Duty Free Shopping · Hotel Lotte Lotte Duty Free · Liquor/Tobacco",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"3356\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[롯데면세점] 주류/담배/식품\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"롯데면세점\\\",\\\"categories.small\\\":\\\"주류·담배\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 248번 게이트 부근\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"3356\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[LOTTE Duty Free] LIQUOR/TOBACCO/FOODS\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"Hotel Lotte Lotte Duty Free\\\",\\\"categories.small\\\":\\\"Liquor/Tobacco\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 248 on 3F, Terminal 2\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "3358",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-177",
+        "sourceId": "3358",
+        "name": "[롯데면세점] 향수/화장품",
+        "terminalId": "P01",
+        "terminalLabel": "제1여객터미널",
+        "floor": "F3",
+        "locationDescription": "제1여객터미널 3층 면세지역 11번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 롯데면세점 · 향수·화장품",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "en": {
+        "id": "browse-964",
+        "sourceId": "3358",
+        "name": "[LOTTE Duty Free] Cosmetics/Perfumes",
+        "terminalId": "P01",
+        "terminalLabel": "Terminal 1",
+        "floor": "F3",
+        "locationDescription": "Near Gate 11 on 3F, Terminal 1",
+        "categoryLabel": "Duty Free Shopping · Hotel Lotte Lotte Duty Free · Cosmetics/Perfumes",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"3358\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[롯데면세점] 향수/화장품\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"롯데면세점\\\",\\\"categories.small\\\":\\\"향수·화장품\\\",\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제1여객터미널 3층 면세지역 11번 게이트 부근\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"3358\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[LOTTE Duty Free] Cosmetics/Perfumes\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"Hotel Lotte Lotte Duty Free\\\",\\\"categories.small\\\":\\\"Cosmetics/Perfumes\\\",\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 11 on 3F, Terminal 1\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "3363",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-178",
+        "sourceId": "3363",
+        "name": "[롯데면세점] 향수/화장품",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 253번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 롯데면세점 · 향수·화장품",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "en": {
+        "id": "browse-965",
+        "sourceId": "3363",
+        "name": "[LOTTE Duty Free] Cosmetics/Perfumes",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Near Gate 253 on 3F, Terminal 2",
+        "categoryLabel": "Duty Free Shopping · Hotel Lotte Lotte Duty Free · Cosmetics/Perfumes",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"3363\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[롯데면세점] 향수/화장품\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"롯데면세점\\\",\\\"categories.small\\\":\\\"향수·화장품\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 253번 게이트 부근\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"3363\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[LOTTE Duty Free] Cosmetics/Perfumes\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"Hotel Lotte Lotte Duty Free\\\",\\\"categories.small\\\":\\\"Cosmetics/Perfumes\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 253 on 3F, Terminal 2\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "3359",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-179",
+        "sourceId": "3359",
+        "name": "[롯데면세점] 향수/화장품",
+        "terminalId": "P02",
+        "terminalLabel": "탑승동",
+        "floor": "F3",
+        "locationDescription": "제1여객터미널 탑승동 3층 면세지역 117번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 롯데면세점 · 향수·화장품",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-966",
+        "sourceId": "3359",
+        "name": "[LOTTE Duty Free] Cosmetics/Perfumes",
+        "terminalId": "P02",
+        "terminalLabel": "Concourse",
+        "floor": "F3",
+        "locationDescription": "Near Gate 117 on 3F, Terminal 1 Concourse",
+        "categoryLabel": "Duty Free Shopping · Hotel Lotte Lotte Duty Free · Cosmetics/Perfumes",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"3359\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[롯데면세점] 향수/화장품\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"롯데면세점\\\",\\\"categories.small\\\":\\\"향수·화장품\\\",\\\"terminalId\\\":\\\"P02\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제1여객터미널 탑승동 3층 면세지역 117번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"3359\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[LOTTE Duty Free] Cosmetics/Perfumes\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"Hotel Lotte Lotte Duty Free\\\",\\\"categories.small\\\":\\\"Cosmetics/Perfumes\\\",\\\"terminalId\\\":\\\"P02\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 117 on 3F, Terminal 1 Concourse\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "3365",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-180",
+        "sourceId": "3365",
+        "name": "[롯데면세점] 향수/화장품",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 252번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 롯데면세점 · 향수·화장품",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-967",
+        "sourceId": "3365",
+        "name": "[LOTTE Duty Free] Cosmetics/Perfumes",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Near Gate 252 on 3F, Terminal 2",
+        "categoryLabel": "Duty Free Shopping · Hotel Lotte Lotte Duty Free · Cosmetics/Perfumes",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"3365\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[롯데면세점] 향수/화장품\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"롯데면세점\\\",\\\"categories.small\\\":\\\"향수·화장품\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 252번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"3365\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[LOTTE Duty Free] Cosmetics/Perfumes\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"Hotel Lotte Lotte Duty Free\\\",\\\"categories.small\\\":\\\"Cosmetics/Perfumes\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 252 on 3F, Terminal 2\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "3361",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-181",
+        "sourceId": "3361",
+        "name": "[롯데면세점] 향수/화장품",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 255번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 롯데면세점 · 향수·화장품",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-968",
+        "sourceId": "3361",
+        "name": "[LOTTE Duty Free] Cosmetics/Perfumes",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Near Gate 255 on 3F, Terminal 2",
+        "categoryLabel": "Duty Free Shopping · Hotel Lotte Lotte Duty Free · Cosmetics/Perfumes",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"3361\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[롯데면세점] 향수/화장품\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"롯데면세점\\\",\\\"categories.small\\\":\\\"향수·화장품\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 255번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"3361\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[LOTTE Duty Free] Cosmetics/Perfumes\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"Hotel Lotte Lotte Duty Free\\\",\\\"categories.small\\\":\\\"Cosmetics/Perfumes\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 255 on 3F, Terminal 2\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "3409",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-182",
+        "sourceId": "3409",
+        "name": "[롯데면세점] 헤네시",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 249번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 롯데면세점 · 주류·담배",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-974",
+        "sourceId": "3409",
+        "name": "[LOTTE Duty Free] HENNESSY",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Near Gate 249 on 3F, Terminal 2",
+        "categoryLabel": "Duty Free Shopping · Hotel Lotte Lotte Duty Free · Liquor/Tobacco",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"3409\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[롯데면세점] 헤네시\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"롯데면세점\\\",\\\"categories.small\\\":\\\"주류·담배\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 249번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"3409\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[LOTTE Duty Free] HENNESSY\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"Hotel Lotte Lotte Duty Free\\\",\\\"categories.small\\\":\\\"Liquor/Tobacco\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 249 on 3F, Terminal 2\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "391",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-183",
+        "sourceId": "391",
+        "name": "[시티면세점] FILA",
+        "terminalId": "P01",
+        "terminalLabel": "제1여객터미널",
+        "floor": "F3",
+        "locationDescription": "제1여객터미널 3층 면세지역 31번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 시티면세점",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-905",
+        "sourceId": "391",
+        "name": "[CITY Duty Free] FILA",
+        "terminalId": "P01",
+        "terminalLabel": "Terminal 1",
+        "floor": "F3",
+        "locationDescription": "Near Gate 31 on 3F, Terminal 1",
+        "categoryLabel": "Duty Free Shopping · City duty free",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"391\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[시티면세점] FILA\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"시티면세점\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제1여객터미널 3층 면세지역 31번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"391\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[CITY Duty Free] FILA\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"City duty free\\\",\\\"categories.small\\\":null,\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 31 on 3F, Terminal 1\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "2346",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-184",
+        "sourceId": "2346",
+        "name": "[시티면세점] 기념품 & 완구",
+        "terminalId": "P01",
+        "terminalLabel": "제1여객터미널",
+        "floor": "F3",
+        "locationDescription": "제1여객터미널 3층 면세지역 31번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 시티면세점 · 유아·기념품",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-907",
+        "sourceId": "2346",
+        "name": "[CITY Duty Free] Gift & Toys",
+        "terminalId": "P01",
+        "terminalLabel": "Terminal 1",
+        "floor": "F3",
+        "locationDescription": "Near Gate 31 on 3F, Terminal 1",
+        "categoryLabel": "Duty Free Shopping · City duty free · Child",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"2346\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[시티면세점] 기념품 & 완구\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"시티면세점\\\",\\\"categories.small\\\":\\\"유아·기념품\\\",\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제1여객터미널 3층 면세지역 31번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"2346\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[CITY Duty Free] Gift & Toys\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"City duty free\\\",\\\"categories.small\\\":\\\"Child\\\",\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 31 on 3F, Terminal 1\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "1072",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-185",
+        "sourceId": "1072",
+        "name": "[시티면세점] 복합매장",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 247번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 시티면세점 · 복합",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-901",
+        "sourceId": "1072",
+        "name": "[CITY Duty Free] Complexed Store",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Near Gate 247 on 3F, Terminal 2",
+        "categoryLabel": "Duty Free Shopping · City duty free · Complexed Store",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"1072\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[시티면세점] 복합매장\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"시티면세점\\\",\\\"categories.small\\\":\\\"복합\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 247번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"1072\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[CITY Duty Free] Complexed Store\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"City duty free\\\",\\\"categories.small\\\":\\\"Complexed Store\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 247 on 3F, Terminal 2\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "2344",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-186",
+        "sourceId": "2344",
+        "name": "[시티면세점] 복합매장",
+        "terminalId": "P01",
+        "terminalLabel": "제1여객터미널",
+        "floor": "F3",
+        "locationDescription": "제1여객터미널 3층 면세지역 30번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 시티면세점 · 복합",
+        "hoursText": "00:00 ~ 24:00"
+      },
+      "en": {
+        "id": "browse-902",
+        "sourceId": "2344",
+        "name": "[CITY Duty Free] Complexed Store",
+        "terminalId": "P01",
+        "terminalLabel": "Terminal 1",
+        "floor": "F3",
+        "locationDescription": "Near Gate 30 on 3F, Terminal 1",
+        "categoryLabel": "Duty Free Shopping · City duty free · Complexed Store",
+        "hoursText": "00:00 ~ 24:00"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"2344\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[시티면세점] 복합매장\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"시티면세점\\\",\\\"categories.small\\\":\\\"복합\\\",\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제1여객터미널 3층 면세지역 30번 게이트 부근\\\",\\\"hoursText\\\":\\\"00:00 ~ 24:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"2344\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[CITY Duty Free] Complexed Store\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"City duty free\\\",\\\"categories.small\\\":\\\"Complexed Store\\\",\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 30 on 3F, Terminal 1\\\",\\\"hoursText\\\":\\\"00:00 ~ 24:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "2246",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-187",
+        "sourceId": "2246",
+        "name": "[시티면세점] 복합매장",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 247번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 시티면세점 · 복합",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-903",
+        "sourceId": "2246",
+        "name": "[CITY Duty Free] Complexed Store",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Near Gate 247 on 3F, Terminal 2",
+        "categoryLabel": "Duty Free Shopping · City duty free · Complexed Store",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"2246\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[시티면세점] 복합매장\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"시티면세점\\\",\\\"categories.small\\\":\\\"복합\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 247번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"2246\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[CITY Duty Free] Complexed Store\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"City duty free\\\",\\\"categories.small\\\":\\\"Complexed Store\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 247 on 3F, Terminal 2\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "2345",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-188",
+        "sourceId": "2345",
+        "name": "[시티면세점] 복합매장",
+        "terminalId": "P01",
+        "terminalLabel": "제1여객터미널",
+        "floor": "F3",
+        "locationDescription": "제1여객터미널 3층 면세지역 30번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 시티면세점 · 복합",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-904",
+        "sourceId": "2345",
+        "name": "[CITY Duty Free] Complexed Store",
+        "terminalId": "P01",
+        "terminalLabel": "Terminal 1",
+        "floor": "F3",
+        "locationDescription": "Near Gate 30 on 3F, Terminal 1",
+        "categoryLabel": "Duty Free Shopping · City duty free · Complexed Store",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"2345\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[시티면세점] 복합매장\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"시티면세점\\\",\\\"categories.small\\\":\\\"복합\\\",\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제1여객터미널 3층 면세지역 30번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"2345\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[CITY Duty Free] Complexed Store\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"City duty free\\\",\\\"categories.small\\\":\\\"Complexed Store\\\",\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 30 on 3F, Terminal 1\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "2348",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-189",
+        "sourceId": "2348",
+        "name": "[시티면세점] 식품",
+        "terminalId": "P01",
+        "terminalLabel": "제1여객터미널",
+        "floor": "F3",
+        "locationDescription": "제1여객터미널 3층 면세지역 30번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 시티면세점 · 포장식품",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "en": {
+        "id": "browse-906",
+        "sourceId": "2348",
+        "name": "[CITY Duty Free] Food",
+        "terminalId": "P01",
+        "terminalLabel": "Terminal 1",
+        "floor": "F3",
+        "locationDescription": "Near Gate 30 on 3F, Terminal 1",
+        "categoryLabel": "Duty Free Shopping · City duty free · Packaged Foods",
+        "hoursText": "00:00 ~ 00:00"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"2348\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[시티면세점] 식품\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"시티면세점\\\",\\\"categories.small\\\":\\\"포장식품\\\",\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제1여객터미널 3층 면세지역 30번 게이트 부근\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"2348\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[CITY Duty Free] Food\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"City duty free\\\",\\\"categories.small\\\":\\\"Packaged Foods\\\",\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 30 on 3F, Terminal 1\\\",\\\"hoursText\\\":\\\"00:00 ~ 00:00\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "3312",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-190",
+        "sourceId": "3312",
+        "name": "[시티면세점] 포장식품 & 기념품 & 화장품 & 키즈",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 221번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 시티면세점 · 복합",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-908",
+        "sourceId": "3312",
+        "name": "[City Duty Free] Packaged Food & Souvenirs & Cosmetics & Kids",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Near Gate 221 on 3F, Terminal 2",
+        "categoryLabel": "Duty Free Shopping · City duty free · Complexed Store",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"3312\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[시티면세점] 포장식품 & 기념품 & 화장품 & 키즈\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"시티면세점\\\",\\\"categories.small\\\":\\\"복합\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 221번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"3312\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[City Duty Free] Packaged Food & Souvenirs & Cosmetics & Kids\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"City duty free\\\",\\\"categories.small\\\":\\\"Complexed Store\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 221 on 3F, Terminal 2\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "766",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-191",
+        "sourceId": "766",
+        "name": "[신라면세점] 구찌 GUCCI",
+        "terminalId": "P01",
+        "terminalLabel": "제1여객터미널",
+        "floor": "F3",
+        "locationDescription": "제1여객터미널 3층 면세지역 28번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 신라면세점 · 명품브랜드",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-994",
+        "sourceId": "766",
+        "name": "[SHILLA Duty Free] GUCCI",
+        "terminalId": "P01",
+        "terminalLabel": "Terminal 1",
+        "floor": "F3",
+        "locationDescription": "Near Gate 28 on 3F, Terminal 1",
+        "categoryLabel": "Duty Free Shopping · Silla duty free · luxury brand",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"766\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[신라면세점] 구찌 GUCCI\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"신라면세점\\\",\\\"categories.small\\\":\\\"명품브랜드\\\",\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제1여객터미널 3층 면세지역 28번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"766\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[SHILLA Duty Free] GUCCI\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"Silla duty free\\\",\\\"categories.small\\\":\\\"luxury brand\\\",\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 28 on 3F, Terminal 1\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "3345",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-192",
+        "sourceId": "3345",
+        "name": "[신라면세점] 디올(C.DIOR)",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 251번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 신라면세점 · 명품브랜드",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-986",
+        "sourceId": "3345",
+        "name": "[SHILLA Duty Free] C.DIOR",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Near Gate 251on 3F, Terminal 2",
+        "categoryLabel": "Duty Free Shopping · Silla duty free · luxury brand",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"3345\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[신라면세점] 디올(C.DIOR)\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"신라면세점\\\",\\\"categories.small\\\":\\\"명품브랜드\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 251번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"3345\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[SHILLA Duty Free] C.DIOR\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"Silla duty free\\\",\\\"categories.small\\\":\\\"luxury brand\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 251on 3F, Terminal 2\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "2289",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-193",
+        "sourceId": "2289",
+        "name": "[신라면세점] 로에베 LOEWE",
+        "terminalId": "P01",
+        "terminalLabel": "제1여객터미널",
+        "floor": "F3",
+        "locationDescription": "제1여객터미널 3층 면세지역 25번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 신라면세점 · 명품브랜드",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-1007",
+        "sourceId": "2289",
+        "name": "[Shilla Duty Free] LOEWE",
+        "terminalId": "P01",
+        "terminalLabel": "Terminal 1",
+        "floor": "F3",
+        "locationDescription": "Near Gate 25 on 3F Duty-Free Area, Terminal1",
+        "categoryLabel": "Duty Free Shopping · Silla duty free · luxury brand",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"2289\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[신라면세점] 로에베 LOEWE\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"신라면세점\\\",\\\"categories.small\\\":\\\"명품브랜드\\\",\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제1여객터미널 3층 면세지역 25번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"2289\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[Shilla Duty Free] LOEWE\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"Silla duty free\\\",\\\"categories.small\\\":\\\"luxury brand\\\",\\\"terminalId\\\":\\\"P01\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 25 on 3F Duty-Free Area, Terminal1\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "3267",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-194",
+        "sourceId": "3267",
+        "name": "[신라면세점] 몽블랑(MONTBLANC)",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 250번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 신라면세점 · 명품브랜드",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-996",
+        "sourceId": "3267",
+        "name": "[SHILLA Duty Free] MONTBLANC",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Near Gate 250on 3F, Terminal 2",
+        "categoryLabel": "Duty Free Shopping · Silla duty free · luxury brand",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"3267\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[신라면세점] 몽블랑(MONTBLANC)\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"신라면세점\\\",\\\"categories.small\\\":\\\"명품브랜드\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 250번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"3267\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[SHILLA Duty Free] MONTBLANC\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"Silla duty free\\\",\\\"categories.small\\\":\\\"luxury brand\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 250on 3F, Terminal 2\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    },
+    {
+      "sourceId": "577",
+      "categoryKey": null,
+      "ko": {
+        "id": "browse-195",
+        "sourceId": "577",
+        "name": "[신라면세점] 샤넬 (CHANEL)",
+        "terminalId": "P03",
+        "terminalLabel": "제2여객터미널",
+        "floor": "F3",
+        "locationDescription": "제2여객터미널 3층 면세지역 252번 게이트 부근",
+        "categoryLabel": "면세점쇼핑 · 신라면세점 · 명품브랜드",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "en": {
+        "id": "browse-987",
+        "sourceId": "577",
+        "name": "[SHILLA Duty Free] CHANEL",
+        "terminalId": "P03",
+        "terminalLabel": "Terminal 2",
+        "floor": "F3",
+        "locationDescription": "Near Gate 252on 3F, Terminal 2",
+        "categoryLabel": "Duty Free Shopping · Silla duty free · luxury brand",
+        "hoursText": "06:30 ~ 21:30"
+      },
+      "enMissingInPrototype": false,
+      "ref": "{\"version\":1,\"contentFingerprint\":\"{\\\"sourceId\\\":\\\"577\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"K\\\",\\\"name\\\":\\\"[신라면세점] 샤넬 (CHANEL)\\\",\\\"categories.large\\\":\\\"면세점쇼핑\\\",\\\"categories.medium\\\":\\\"신라면세점\\\",\\\"categories.small\\\":\\\"명품브랜드\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"제2여객터미널 3층 면세지역 252번 게이트 부근\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\",\"pairedContentFingerprint\":\"{\\\"sourceId\\\":\\\"577\\\",\\\"airportIata\\\":\\\"ICN\\\",\\\"language\\\":\\\"E\\\",\\\"name\\\":\\\"[SHILLA Duty Free] CHANEL\\\",\\\"categories.large\\\":\\\"Duty Free Shopping\\\",\\\"categories.medium\\\":\\\"Silla duty free\\\",\\\"categories.small\\\":\\\"luxury brand\\\",\\\"terminalId\\\":\\\"P03\\\",\\\"floor\\\":\\\"F3\\\",\\\"locationDescription\\\":\\\"Near Gate 252on 3F, Terminal 2\\\",\\\"hoursText\\\":\\\"06:30 ~ 21:30\\\",\\\"arrivalOrDeparture\\\":\\\"D\\\",\\\"dutyFreeFlag\\\":\\\"Y\\\",\\\"source.apiOperation\\\":\\\"B551177/FacilitiesInformation/getFacilitesInfo\\\",\\\"source.datasetId\\\":\\\"15095064\\\"}\"}"
+    }
+  ]
+}

@@ -7,6 +7,7 @@ import { FacilityBrowseCard } from "@/components/FacilityBrowseCard";
 import { FacilityDetailDialog } from "@/components/FacilityDetailDialog";
 import { TerminalSchematic } from "@/components/TerminalSchematic";
 import { useGateWiseSession } from "@/context/gatewise-session";
+import { useSfoDemoAppHref } from "@/components/useSfoDemoAppHref";
 import {
   countBrowseEligible,
   filterBrowseDirectory,
@@ -14,6 +15,8 @@ import {
 
 export function ExploreScreen() {
   const session = useGateWiseSession();
+  const flightHref = useSfoDemoAppHref("/flight");
+  const recommendationsHref = useSfoDemoAppHref("/recommendations");
   const [detailFacilityId, setDetailFacilityId] = useState<string | null>(null);
 
   const browseTotal = useMemo(
@@ -129,7 +132,7 @@ export function ExploreScreen() {
         <p className="text-sm text-muted-foreground" role="status">
           Flight context is incomplete — you can still browse facilities. Fix
           minutes and buffer on{" "}
-          <Link href="/flight" className="font-semibold underline">
+          <Link href={flightHref} className="font-semibold underline">
             Flight
           </Link>{" "}
           to open ranked recommendations.
@@ -220,7 +223,7 @@ export function ExploreScreen() {
       </details>
 
       <Link
-        href="/recommendations"
+        href={recommendationsHref}
         className="gw-btn-primary self-start no-underline"
       >
         Open ranked results (T2 D Gates scope)

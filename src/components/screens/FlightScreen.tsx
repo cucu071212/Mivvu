@@ -13,9 +13,12 @@ import {
 } from "@/types/airport";
 import { productionTravelMatrixMetadata } from "@/data/travel-times";
 import Link from "next/link";
+import { useSfoDemoAppHref } from "@/components/useSfoDemoAppHref";
 
 export function FlightScreen() {
   const session = useGateWiseSession();
+  const exploreHref = useSfoDemoAppHref("/explore");
+  const recommendationsHref = useSfoDemoAppHref("/recommendations");
 
   return (
     <div className="flex flex-col gap-4">
@@ -49,9 +52,9 @@ export function FlightScreen() {
         terminalLabel={SUPPORTED_TERMINAL_LABEL}
         zoneLabel={SUPPORTED_BOARDING_AREA_LABEL}
         actions={[
-          { href: "/explore", label: "Explore amenities", variant: "secondary" },
+          { href: exploreHref, label: "Explore amenities", variant: "secondary" },
           {
-            href: "/recommendations",
+            href: recommendationsHref,
             label: "View recommendations",
             variant: "primary",
           },
@@ -244,11 +247,11 @@ export function FlightScreen() {
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <Link href="/explore" className="gw-btn-primary no-underline">
+        <Link href={exploreHref} className="gw-btn-primary no-underline">
           Explore amenities
         </Link>
         <Link
-          href="/recommendations"
+          href={recommendationsHref}
           className="gw-focus-ring inline-flex min-h-11 items-center rounded-md border border-border bg-card px-4 text-sm font-semibold text-card-foreground no-underline hover:border-primary"
         >
           View results

@@ -8,14 +8,14 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
-    "test:e2e": "npm run build && playwright test",
-    "test:e2e:run": "playwright test",
+    "test:e2e": "GATEWISE_SFO_DEMO_HARNESS=1 npm run build && GATEWISE_SFO_DEMO_HARNESS=1 playwright test",
+    "test:e2e:run": "GATEWISE_SFO_DEMO_HARNESS=1 playwright test",
     "test:e2e:report": "playwright show-report",
     "sync:icn-facilities": "node scripts/sync-icn-facilities.mjs",
     "quality:icn-snapshots": "node scripts/check-icn-snapshots.mjs"
   },
   "dependencies": {
-    "next": "16.4.3",
+    "next": "16.4.5",
     "react": "19.3.0",
     "react-dom": "19.3.0"
   },
@@ -28,7 +28,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.4.3",
+    "eslint-config-next": "16.4.5",
     "jsdom": "^26.1.0",
     "tailwindcss": "^4",
     "typescript": "^5",

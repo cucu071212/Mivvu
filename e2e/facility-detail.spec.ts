@@ -1,9 +1,10 @@
 import { test, expect } from "./fixtures";
+import { sfoDemo } from "./sfo-demo-harness";
 
 test("Explore facility detail modal closes and restores focus", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.setViewportSize({ width: 1280, height: 900 });
-  await page.goto("/explore");
+  await page.goto(sfoDemo("/explore"));
 
   const trigger = page
     .getByRole("region", { name: "Facility directory", exact: true })
@@ -31,7 +32,7 @@ test("Explore facility details include Location guidance without inferred walks"
   page,
 }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
-  await page.goto("/explore");
+  await page.goto(sfoDemo("/explore"));
   await page.getByRole("searchbox", { name: /Search by facility name/ }).fill(
     "16th & Dolores",
   );
@@ -77,7 +78,7 @@ test("Unknown GW-B evidence does not mark Vino Volo Retail Street as current", a
   page,
 }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
-  await page.goto("/explore");
+  await page.goto(sfoDemo("/explore"));
   await page.getByRole("searchbox", { name: /Search by facility name/ }).fill("Vino Volo");
   await page
     .getByRole("region", { name: "Facility directory", exact: true })
@@ -97,7 +98,7 @@ test("Unknown GW-B evidence does not mark Vino Volo Retail Street as current", a
 
 test("Facility detail Tab cycle stays on visible dialog controls", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
-  await page.goto("/explore");
+  await page.goto(sfoDemo("/explore"));
   await page.getByRole("searchbox", { name: /Search by facility name/ }).fill(
     "16th & Dolores",
   );

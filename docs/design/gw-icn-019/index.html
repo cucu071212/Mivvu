@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GW-ICN-019 — ICN mobile UX prototype</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./prototype.css" />
+  </head>
+  <body>
+    <header class="doc-shell">
+      <h1>GW-ICN-019 — ICN Core Journey (design prototype)</h1>
+      <p>
+        Clickable mock of proposed <strong>/icn</strong>, <strong>/icn/f/[ref]</strong>, and
+        <strong>/icn/saved</strong> flows. Not shipped production UI. Open via local server
+        (<code>python3 -m http.server</code> in this folder) so fixture data loads.
+      </p>
+      <div class="doc-controls" aria-label="Prototype review controls">
+        <label>
+          Viewport
+          <select id="viewport-select">
+            <option value="360">360px</option>
+            <option value="390" selected>390px</option>
+            <option value="430">430px</option>
+          </select>
+        </label>
+        <label>
+          Demo scenario
+          <select id="demo-select">
+            <option value="normal">Normal</option>
+            <option value="storage-blocked">Storage unavailable (simulated)</option>
+            <option value="saved-missing">Saved entry missing from snapshot (simulated)</option>
+            <option value="direct-detail">Direct detail link, no browse history</option>
+            <option value="ko-fallback-demo">EN locale + KO fallback row (simulated)</option>
+          </select>
+        </label>
+        <a class="doc-link" href="./DESIGN-RATIONALE.md">Design rationale</a>
+        <a class="doc-link" href="./IMPLEMENTATION-HANDOFF.md">Implementation handoff</a>
+      </div>
+    </header>
+
+    <div class="phone-stage">
+      <div id="phone" class="phone" data-width="390">
+        <div id="app" class="mivvu-entry-root mivvu-icn-browse" hidden></div>
+      </div>
+    </div>
+
+    <footer class="doc-foot">
+      <p id="route-debug" class="route-debug"></p>
+    </footer>
+
+    <script type="module" src="./prototype.js"></script>
+  </body>
+</html>

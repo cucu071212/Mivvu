@@ -59,7 +59,8 @@ async function chooseSfoFromMivvu() {
     screen.getByRole("radio", { name: /San Francisco International Airport/i }),
   );
   fireEvent.click(screen.getByRole("button", { name: /Explore SFO/i }));
-  await waitFor(() => assert.equal(pushMock.mock.calls.at(-1)?.[0], "/explore"));
+  // 공개 SFO는 /sfo 셸로 가며 데모 acknowledge를 쓰지 않습니다.
+  await waitFor(() => assert.equal(pushMock.mock.calls.at(-1)?.[0], "/sfo"));
 }
 
 describe("Mivvu SFO entry and airport gate", () => {
@@ -81,24 +82,30 @@ describe("Mivvu SFO entry and airport gate", () => {
     clearStoredMivvuPreviewLocaleForTests();
   });
 
-  it("keeps /explore open when localStorage setItem throws QuotaExceededError", async () => {
+  it("routes SFO selection to /sfo without demo acknowledgment", async () => {
+    renderMivvuAirport();
+    await chooseSfoFromMivvu();
+    assert.equal(readStoredAirportSelection(), null);
+    assert.equal(isAirportSelectionAcknowledged(), false);
+  });
+
+  it("keeps harness /explore open when localStorage setItem throws QuotaExceededError after manual ack", async () => {
     vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
       throw new DOMException("quota", "QuotaExceededError");
     });
 
-    renderMivvuAirport();
-    await chooseSfoFromMivvu();
-    assert.equal(readStoredAirportSelection(), null);
+    // 공개 CTA는 acknowledge를 호출하지 않으므로, 데모 게이트 하니스만 수동 ack로 검증합니다.
+    acknowledgeAirportSelection(new Date().toISOString().slice(0, 10));
     assert.equal(isAirportSelectionAcknowledged(), true);
 
-    cleanup();
     replaceMock.mockReset();
     renderExploreShell();
     await screen.findByRole("heading", { name: "Browse vs recommend" });
     assert.equal(replaceMock.mock.calls.some((call) => call[0] === "/"), false);
   });
 
-  it("keeps /explore open when localStorage getItem throws SecurityError", async () => {
+  it("keeps harness /explore open when localStorage getItem throws SecurityError after manual ack", async () => {
+    acknowledgeAirportSelection(new Date().toISOString().slice(0, 10));
     vi.spyOn(Storage.prototype, "getItem").mockImplementation((key) => {
       if (key === AIRPORT_SELECTION_STORAGE_KEY) {
         throw new DOMException("denied", "SecurityError");
@@ -106,11 +113,9 @@ describe("Mivvu SFO entry and airport gate", () => {
       return null;
     });
 
-    renderMivvuAirport();
-    await chooseSfoFromMivvu();
+    // 세션 ack는 유지된 상태로 가정하고 레이아웃 게이트만 검증합니다.
     assert.equal(isAirportSelectionAcknowledged(), true);
 
-    cleanup();
     replaceMock.mockReset();
     renderExploreShell();
     await screen.findByRole("heading", { name: "Browse vs recommend" });

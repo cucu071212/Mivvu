@@ -4,6 +4,8 @@ Lightweight record of **canonical documentation** changes. This is not a substit
 
 | Revision ID | Date (documented) | Summary |
 | --- | --- | --- |
+| **GW-PLAN-REV-2026-10-29** | 2026-10-29 | Human acceptance of GW-ICN-011 and GW-ICN-012; publication packaging on `chore/gw-icn-011-012-package`. Register **GW-ICN-019** ICN UI/UX design and owner review as prerequisite for screen portions of GW-ICN-013–017; preserve GW-ICN-018 core-journey coverage and 012 integration notes. |
+| **GW-PLAN-REV-2026-10-28** | 2026-10-28 | GW-ICN-011 product scope: human-approved six core user actions and ICN-as-credible-demo outreach direction; ICN user-flow and bounded implementation sequence in [`docs/design/GW-ICN-011-product-flow.md`](design/GW-ICN-011-product-flow.md); future ICN completion tasks registered in `docs/IMPLEMENTATION_PLAN.md` (**not authorized** to implement). |
 | **GW-PLAN-REV-2026-10-26** | 2026-10-26 | Post-hackathon documentation reset (`GW-NEXT-001`). ICN primary; concise active `PLAN.md`; pre-reset plan archived @ `docs/archive/hackathon-sfo-through-phase-c/PLAN.md` from `c8b278f`. Agent roles, coordinator rules, task-state convention; implementation plan archived. |
 | **GW-PLAN-REV-2026-10-26** (correction) | 2026-10-26 | GW-NEXT-001 correction pass: remove hybrid PLAN drift; document responsibilities; coordinator dispatch rules; separate permission/progress/review/release. |
 | *(prior)* | HackPSU era | `PLAN.md` v1.6, `docs/IMPLEMENTATION_PLAN.md` v1.6 — SFO expansion through Phase X + GW-B-002 metadata. |

@@ -20,6 +20,7 @@ import {
 } from "@/lib/running-countdown-tick";
 import { formatBoardingStartLabel } from "@/lib/format-boarding-time";
 import Link from "next/link";
+import { useSfoDemoAppHref } from "@/components/useSfoDemoAppHref";
 
 export type BoardingCountdownControlsProps = {
   state: BoardingCountdownState;
@@ -73,6 +74,7 @@ export function BoardingCountdownControls({
   const [datetimeLocal, setDatetimeLocal] = useState("");
   const [startError, setStartError] = useState<string | null>(null);
   const [boardingStartedVisible, setBoardingStartedVisible] = useState(false);
+  const flightHref = useSfoDemoAppHref("/flight");
 
   const stateRef = useRef(state);
   const tickMemoryRef = useRef(freshTickMemory(preservedManualMinutes));
@@ -277,7 +279,7 @@ export function BoardingCountdownControls({
             <p className="text-xs text-muted-foreground">{liveLabel}</p>
           </div>
           <Link
-            href="/flight"
+            href={flightHref}
             className="gw-focus-ring inline-flex min-h-11 items-center rounded-md border border-border bg-card px-3 text-sm font-semibold text-card-foreground no-underline hover:border-primary"
           >
             Manage on Flight
@@ -352,7 +354,7 @@ export function BoardingCountdownControls({
             Clear
           </button>
           <Link
-            href="/flight"
+            href={flightHref}
             className="gw-focus-ring inline-flex min-h-11 items-center rounded-md px-2 text-sm font-semibold text-primary no-underline hover:underline"
           >
             Open Flight

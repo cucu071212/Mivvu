@@ -39,11 +39,16 @@ export default defineConfig({
     },
   ],
   webServer: {
+    // Harness must be open at runtime; production start without this env 404s harness URLs.
     command: "npm run start -- --hostname 127.0.0.1 --port 3100",
     url: baseURL,
     reuseExistingServer: false,
     timeout: 60_000,
     stdout: "pipe",
     stderr: "pipe",
+    env: {
+      ...process.env,
+      GATEWISE_SFO_DEMO_HARNESS: "1",
+    },
   },
 });

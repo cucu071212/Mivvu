@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "datasetId": "15095064",
+    "apiOperation": "B551177/FacilitiesInformation/getFacilitesInfo"
+  },
+  "targetCoreDigests": {
+    "K": "44e2613d9e4d6fd89a5bfe098b52bb325a7a50d4e9febb40a5c52406a967b2bf",
+    "E": "3a951cebf864e621e6e1e60faff163d1aafe1e35dc54789006aa1a27b7fa4d0c"
+  },
+  "captures": {
+    "K": {
+      "startedAt": "2026-10-01T00:00:00+09:00",
+      "completedAt": "2026-10-01T01:00:00+09:00",
+      "coverage": "retrievable_catalog",
+      "apiReportedTotalCount": 1,
+      "recordCount": 1,
+      "syncIntegrity": "complete",
+      "observations": [
+        {
+          "coreFingerprint": "{\"sourceId\":\"3289\",\"airportIata\":\"ICN\",\"language\":\"K\",\"name\":\"% 아라비카\",\"categories.large\":\"식・음료\",\"categories.medium\":\"스낵/카페/디저트\",\"categories.small\":null,\"terminalId\":\"P03\",\"floor\":\"F3\",\"locationDescription\":\"제2여객터미널 3층 면세지역 209번 게이트 부근\",\"hoursText\":\"06:00 ~ 22:00\",\"arrivalOrDeparture\":\"D\",\"dutyFreeFlag\":\"Y\",\"source.apiOperation\":\"B551177/FacilitiesInformation/getFacilitesInfo\",\"source.datasetId\":\"15095064\"}",
+          "fields": {
+            "facilityitem": { "present": true, "value": "DEV ONLY — labeled synthetic KO goods/services text for UI smoke. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." },
+            "goods": { "present": false },
+            "GOODS": { "present": false }
+          }
+        }
+      ]
+    },
+    "E": {
+      "startedAt": "2026-10-01T00:00:00+09:00",
+      "completedAt": "2026-10-01T01:00:00+09:00",
+      "coverage": "retrievable_catalog",
+      "apiReportedTotalCount": 1,
+      "recordCount": 1,
+      "syncIntegrity": "complete",
+      "observations": [
+        {
+          "coreFingerprint": "{\"sourceId\":\"3289\",\"airportIata\":\"ICN\",\"language\":\"E\",\"name\":\"% ARABICA\",\"categories.large\":\"Restaurants\",\"categories.medium\":\"Snack / Cafe / Dessert\",\"categories.small\":null,\"terminalId\":\"P03\",\"floor\":\"F3\",\"locationDescription\":\"Near Gate 209 on 3F, Terminal 2\",\"hoursText\":\"06:00 ~ 22:00\",\"arrivalOrDeparture\":\"D\",\"dutyFreeFlag\":\"Y\",\"source.apiOperation\":\"B551177/FacilitiesInformation/getFacilitesInfo\",\"source.datasetId\":\"15095064\"}",
+          "fields": {
+            "facilityitem": { "present": true, "value": null },
+            "goods": { "present": true, "value": " " },
+            "GOODS": { "present": true, "value": "-" }
+          }
+        }
+      ]
+    }
+  }
+}
