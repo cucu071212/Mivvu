@@ -1,82 +1,58 @@
-# GateWise
+# Mivvu
 
-*Your airport. Your gate. Your time.*
+Airport facility discovery for travelers — start at an airport, search and filter what’s nearby, open details, and keep a short list on this device.
 
-Airport maps show where a café or shop is. GateWise helps a traveler see whether a visit still fits **before boarding starts** — with every modeled minute labeled, and missing data left unknown.
+- **Live site:** [https://mivvu.vercel.app](https://mivvu.vercel.app)
+- **Source:** [github.com/cucu071212/Mivvu](https://github.com/cucu071212/Mivvu)
+- **Documentation revision:** `GW-PLAN-REV-2026-10-29` — see [`docs/plan-revisions.md`](docs/plan-revisions.md)
 
-**Live demo (SFO — shipped):** [https://gate-wise-iota.vercel.app](https://gate-wise-iota.vercel.app)
-**Source:** [github.com/cucu071212/GateWise](https://github.com/cucu071212/GateWise)
-**Documentation revision:** `GW-PLAN-REV-2026-10-26` — see [`docs/plan-revisions.md`](docs/plan-revisions.md)
-
-| Track | Status |
+| Airport | Live experience (verified against production UI + `main`) |
 | --- | --- |
-| **SFO demo** | Shipped — behavior below reflects the hackathon closeout release |
-| **Mivvu / ICN mobile** | **Production** (GW-ICN-006, 2026-10-28): `/` → airport selection → `/icn`, KO/EN saved snapshots; SFO demo preserved. See [`docs/submission/MIVVU_RELEASE_2026-10-28.md`](docs/submission/MIVVU_RELEASE_2026-10-28.md). |
+| **ICN (Incheon)** | Full directory browse: search, terminal and category filters, facility details, device-local saved list |
+| **SFO (San Francisco)** | Browse shell is live; **facility information is currently unavailable** |
 
-## The problem
+Same product also answers at the historical Vercel alias [https://gate-wise-iota.vercel.app](https://gate-wise-iota.vercel.app) (still serves Mivvu). Prefer **mivvu.vercel.app** as the current-facing link.
 
-Knowing that Peet’s is near Gate D7 does not answer the only question that matters in a terminal: *do I have time to go, wait, stay, and get back?* Most airport tools hide that budget. GateWise makes the arithmetic visible and refuses to invent the minutes it does not have.
+## What it does today
 
-## What it does
+Mivvu is a **mobile-first** web app. Choose ICN or SFO from the entry screen, then browse facilities without setting up a flight.
 
-GateWise is a **model-only** boarding-start planner. The **last recorded release** documents **San Francisco International Airport (SFO)** demo behavior (see [`docs/submission/RELEASE_FACTS.md`](docs/submission/RELEASE_FACTS.md)). **Primary development** is moving toward **ICN (Incheon)** with a mobile-first browse experience (see [`PLAN.md`](PLAN.md)).
+### ICN — live directory
 
-| Surface | What you can do |
-| --- | --- |
-| **Welcome** | Choose SFO. Other listed airports are coming soon. |
-| **Flight** | Enter minutes until boarding starts, a safety buffer, optional boarding countdown, and an optional demo wait/activity toggle. |
-| **Explore** | Browse **26** sourced facilities across SFO terminals. Open facility details, published hours, official listing links, and Location Guidance. |
-| **Results** | Time-model **12** Terminal 2 D Gates facilities. Rank feasible / tight / over budget / unknown / ineligible. |
-| **What-if** | Change remaining minutes or a queue adjustment. Same engine as the baseline. Baseline stays on screen. |
-| **My Plan** | Optional **demo** two-stop planner. Travel stays Unknown until you opt in to illustrative D-Gates walks. |
-| **Location Guidance** | GW-B sourced area evidence for 12 listings (`verified_area` or `unknown`). No measured indoor coordinates or drawn routes. |
+On [`/icn`](https://mivvu.vercel.app/icn):
 
-**26 browse / 12 recommend.** Time-based recommendations use the `legacy-d-v1` manifest only. Browse-only rows (other terminals, or T2 D listings outside that manifest) stay ineligible for the model.
+- **Search** facilities by name, location text, or category (KO/EN UI; search follows the active locale).
+- **Terminal filters** (all / T1 / concourse / T2) and **category** type filters.
+- **Facility details** with snapshot-backed fields (hours text, location labels, optional goods/services enrichment where adopted).
+- **Saved facilities** on [`/icn/saved`](https://mivvu.vercel.app/icn/saved) — stored in **this browser only** (`localStorage`); not synced across devices or accounts.
 
-## Screenshots
+Listings come from **saved ICN snapshots** shipped with the app — not a live open/closed feed, live queues, GPS coordinates, or measured walking times. The product labels snapshot limits in-product.
 
-Representative UI from the in-repo QA set (not a claim that every pixel matches a later polish pass):
+### SFO — browse shell only
 
-| Flight | Results | Two-stop (demo) |
-| --- | --- | --- |
-| ![Flight](docs/qa/gw-ux-polish/flight-desktop-1280.png) | ![Results](docs/qa/gw-ux-polish/recommendations-desktop-1280.png) | ![My Plan](docs/gw-e2-preview/two-stop-planner-desktop.png) |
+On [`/sfo`](https://mivvu.vercel.app/sfo):
 
-More: `docs/qa/gw-ux-polish/`, `docs/qa/facility-imagery/`, `docs/gw-e2-preview/`.
+- The **same browse layout** as ICN is available (language toggle, chrome, disabled search/filters).
+- Status copy: **facility information is not available** (KO: 시설 정보를 이용할 수 없습니다).
+- Legacy GateWise demo URLs (`/flight`, `/explore`, `/recommendations`, `/plan`) **redirect to `/sfo`** on the public site. Demo code remains in the repository for history and harnessed tests; it is not the public SFO experience today.
 
-## Stack and architecture
+## Honest limits (current product)
+
+- No claim of **live queues**, occupancy, or boarding feeds.
+- No claim of **official indoor walking routes** or measured gate-to-facility times.
+- No claim of an **airport partnership** or exclusive official dataset access beyond what release notes and provenance docs record.
+- Published hours text is **informational snapshot text**, not a guarantee the place is open now.
+- ICN coverage is large but not promised complete for the whole airport.
+
+Product rules: [`PLAN.md`](./PLAN.md). Agent collaboration rules: [`AGENTS.md`](./AGENTS.md).
+
+## Stack
 
 - **Next.js 16** App Router, **React 19**, **TypeScript**, **Tailwind CSS v4**
-- Local data: `src/data/facilities.json`, `src/data/travel-times.ts`, `src/data/sfo-t2-location-evidence.ts`
-- Pure calculation: `src/lib/recommend.ts` (single-stop + What-if), `src/lib/plan-two-stop-legacy.ts` (two-stop demo)
-- Tests: Vitest (unit/component) and Playwright (E2E)
+- Tests: Vitest (unit/component) and Playwright (E2E; SFO demo harness flagged in `package.json`)
 - Hosting: Vercel
 
-No auth, database, payments, live flight feed, boarding-pass scanner, or production indoor navigation.
-
-```text
-required = outbound + return + queue + activity + safety buffer
-margin   = minutes until boarding starts − required
-```
-
-| Margin | Classification |
-| --- | --- |
-| ≥ 10 | Feasible in model |
-| 0–9 | Tight in model |
-| < 0 | Over budget |
-| Missing essential minutes | Unknown (never zero-filled) |
-
-Directed outbound and return are evaluated separately. `minutesUntilBoarding` means **minutes until boarding starts**, not gate closure.
-
-## Demo mode and Unknown
-
-Official facility records keep **queue and activity as unknown**. GateWise does not invent them.
-
-- **Flight → Demo estimates:** labeled in-memory **8 min queue** and **10 min activity**. Off by default.
-- **D→D walking:** unverified **3 min** demo estimate per directed leg (`legacy_zone` / `legacy-d-demo-v1`). Not a measured SFO walk.
-- **My Plan travel:** stays Unknown until **Use illustrative D-Gates travel times** is checked.
-- Personal overrides on Results are user-supplied estimates, not official waits.
-
-A “feasible” result is a **model outcome**, not a promise you will board on time.
+No auth, database, payments, or production indoor navigation in the current product.
 
 ## Local development
 
@@ -87,9 +63,7 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). No environment variables are required for the local demo. Do not commit secrets.
-
-The feature branch opens Mivvu at `/`, browses ICN at `/icn`, and preserves SFO at `/flight`, `/explore`, `/recommendations`, and `/plan`. The old `/preview/mivvu-entry` and `/preview/mivvu-entry/icn` URLs redirect to `/` and `/icn`. KO/EN covers Mivvu entry and ICN snapshot browsing; the SFO demo remains in English.
+Open [http://localhost:3000](http://localhost:3000). No environment variables are required for the local browse demo. Do not commit secrets.
 
 | Command | Purpose |
 | --- | --- |
@@ -100,54 +74,57 @@ The feature branch opens Mivvu at `/`, browses ICN at `/icn`, and preserves SFO 
 | `npm test` | Vitest |
 | `npx tsc --noEmit` | Typecheck |
 | `npm run test:e2e:run` | Playwright (after `npx playwright install chromium`) |
+| `npm run quality:icn-snapshots` | ICN snapshot quality check |
 
-## Production
+Canonical routes: `/` (entry), `/icn`, `/icn/f/...` (detail), `/icn/saved`, `/sfo`. Legacy preview paths `/preview/mivvu-entry` and `/preview/mivvu-entry/icn` redirect to `/` and `/icn`.
+
+## Historical context — GateWise hackathon (SFO)
+
+Mivvu grew out of **GateWise**, a HackPSU-era **boarding-time planner** demo for **SFO Terminal 2 D Gates**:
+
+- Time-budget recommendations, What-if, and a two-stop **demo** planner.
+- Model-only math: outbound + return + queue + activity + one safety buffer; unknowns never zero-filled.
+- D→D walks and queue/activity minutes were **labeled demo estimates**, not official SFO measurements.
+
+Those demo features belong to **hackathon history**. They are preserved in source, submission docs, and QA archives; they are **not** what the public `/sfo` shell shows today.
+
+| Historical record | Purpose |
+| --- | --- |
+| [`docs/submission/RELEASE_FACTS.md`](docs/submission/RELEASE_FACTS.md) | SFO hackathon production SHA `c9c163c` and deployment facts |
+| [`docs/submission/MIVVU_RELEASE_2026-10-28.md`](docs/submission/MIVVU_RELEASE_2026-10-28.md) | First Mivvu entry + ICN browse production record |
+| [`docs/submission/MIVVU_RELEASE_2026-10-28-icn-search.md`](docs/submission/MIVVU_RELEASE_2026-10-28-icn-search.md) | ICN search / snapshot integration follow-on |
+| [`docs/submission/DEVPOST_TECHNICAL_BRIEF.md`](docs/submission/DEVPOST_TECHNICAL_BRIEF.md) | Hackathon technical brief |
+| [`docs/submission/FEATURE_VERIFICATION_MATRIX.md`](docs/submission/FEATURE_VERIFICATION_MATRIX.md) | Feature verification matrix |
+| [`docs/submission/KNOWN_LIMITATIONS.md`](docs/submission/KNOWN_LIMITATIONS.md) | Known limitations (hackathon-era) |
+| [`docs/submission/DEMO_RUNBOOK.md`](docs/submission/DEMO_RUNBOOK.md) | Demo runbook |
+| [`docs/archive/hackathon-sfo-through-phase-c/`](docs/archive/hackathon-sfo-through-phase-c/) | Archived SFO roadmap |
+
+Handoffs under [`docs/handoffs/`](docs/handoffs/) and QA under [`docs/qa/`](docs/qa/) remain the evidence trail for ICN slices and older SFO work — **not** live authorization to re-enable demo claims on the public site.
+
+Representative **historical** GateWise UI screenshots (hackathon polish set; not a claim about current `/sfo`):
+
+| Flight | Results | Two-stop (demo) |
+| --- | --- | --- |
+| ![Flight](docs/qa/gw-ux-polish/flight-desktop-1280.png) | ![Results](docs/qa/gw-ux-polish/recommendations-desktop-1280.png) | ![My Plan](docs/gw-e2-preview/two-stop-planner-desktop.png) |
+
+## Production notes
 
 | Item | Value |
 | --- | --- |
-| Alias | https://gate-wise-iota.vercel.app |
-| SFO release SHA (submission record) | `c9c163cd7ee51d270e1a079daf84ffaf37b5952a` — see [`docs/submission/RELEASE_FACTS.md`](docs/submission/RELEASE_FACTS.md) |
-| Mivvu / ICN release SHA (`main`) | `556943b020749405f34f4b21622fbd1f5993bce0` — see [`docs/submission/MIVVU_RELEASE_2026-10-28.md`](docs/submission/MIVVU_RELEASE_2026-10-28.md) |
-| Prior SFO-only Vercel deployment (historical) | `dpl_AVbZEGA48z5evM1GRRssLPfAgQLF` (READY) — superseded on alias by automatic deploy after merge |
-| Current production deploy (2026-10-28) | [Vercel deployment](https://vercel.com/gate-wise/gate-wise/5jA6L2Fo3MffGQ2AjrwcputsQNgW) — commit status **success** on `556943b` |
+| Current-facing alias | https://mivvu.vercel.app |
+| Historical / alternate alias | https://gate-wise-iota.vercel.app (serves the same Mivvu entry) |
+| `main` tip used for this README pass | `7b7fead` — `Merge pull request #23` (verify before treating as forever-current) |
+| SFO hackathon product SHA (record) | `c9c163cd7ee51d270e1a079daf84ffaf37b5952a` — [`RELEASE_FACTS.md`](docs/submission/RELEASE_FACTS.md) |
+| Early Mivvu/ICN release SHA (record) | `556943b020749405f34f4b21622fbd1f5993bce0` — [`MIVVU_RELEASE_2026-10-28.md`](docs/submission/MIVVU_RELEASE_2026-10-28.md) |
 
-Vercel inspect metadata does **not** currently expose a Git SHA. Treat the repo SHA plus the lead-recorded deployment ID as the release pair. Preview deployments may require Vercel Authentication.
-
-**Deployment caution:** Pushing or merging to `main` may trigger an automatic Vercel **production** deployment (typical GitHub integration). Neither `c9c163c` (SFO product record) nor `c8b278f` (doc closeout on `main`) is proof of what is currently serving without fresh deploy evidence.
-
-## Limitations
-
-- SFO only. One recommend zone: Terminal 2 D Gates.
-- Walking, queue, and activity times are demo estimates or unknown — not live airport data.
-- Published hours are informational, not live open/closed status.
-- Location Guidance is listing-backed area evidence, not a floor plan or route.
-- Two-stop planner is an in-app demo, not a certified itinerary tool.
-- Most facility photos are category illustrations. See [`docs/FACILITY-IMAGE-RIGHTS-AUDIT.md`](docs/FACILITY-IMAGE-RIGHTS-AUDIT.md).
-
-## What’s next
-
-**ICN mobile** first entry and static browse shipped in production (GW-ICN-006). Live API sync, full shell redesign, and broader coverage remain in the task queue: [`docs/IMPLEMENTATION_PLAN.md`](docs/IMPLEMENTATION_PLAN.md).
-
-SFO demo scope (26 browse / 12 recommend, legacy travel model) stays available for regression. Archived SFO Phase C/E roadmap: [`docs/archive/hackathon-sfo-through-phase-c/`](docs/archive/hackathon-sfo-through-phase-c/).
-
-Product rules: [`PLAN.md`](./PLAN.md). Agent rules: [`AGENTS.md`](./AGENTS.md).
+**Deployment caution:** Merging or pushing to `main` may trigger an automatic Vercel **production** deployment. Recorded SHAs are not fresh proof of what is serving until re-checked against the live alias.
 
 ## Attribution
 
-- Facility names, hours text, and listing URLs: [SFO Shop, Dine & Relax](https://www.flysfo.com/passengers/shop-dine-relax) and related official SFO pages. Research date recorded on each row (typically 2026-10-25).
-- Provenance: [`docs/data-provenance.md`](docs/data-provenance.md).
-- Approved images: Wikimedia CC0 (Compass Books / Books Inc.) and Unsplash illustrative stills listed in the rights audit. Official SFO listing photos are **not** reused.
+- ICN facility content: saved snapshots derived from the public 공항서비스 API reference documented in project data notes — documentation of an API is **not** proof of partnership, completeness, or live accuracy.
+- Historical SFO facility names, hours text, and listing URLs: [SFO Shop, Dine & Relax](https://www.flysfo.com/passengers/shop-dine-relax) and related official SFO pages (research dates on rows; typically 2026-10-25). See [`docs/data-provenance.md`](docs/data-provenance.md).
+- Approved images (hackathon-era): Wikimedia CC0 and Unsplash stills listed in [`docs/FACILITY-IMAGE-RIGHTS-AUDIT.md`](docs/FACILITY-IMAGE-RIGHTS-AUDIT.md). Official SFO listing photos are **not** reused.
 
 ## License
 
 This repository does not currently include a license file.
-
-## Submission package
-
-Hackathon technical drafts (not presentation slides):
-
-- [`docs/submission/RELEASE_FACTS.md`](docs/submission/RELEASE_FACTS.md)
-- [`docs/submission/DEVPOST_TECHNICAL_BRIEF.md`](docs/submission/DEVPOST_TECHNICAL_BRIEF.md)
-- [`docs/submission/FEATURE_VERIFICATION_MATRIX.md`](docs/submission/FEATURE_VERIFICATION_MATRIX.md)
-- [`docs/submission/KNOWN_LIMITATIONS.md`](docs/submission/KNOWN_LIMITATIONS.md)
-- [`docs/submission/DEMO_RUNBOOK.md`](docs/submission/DEMO_RUNBOOK.md)
